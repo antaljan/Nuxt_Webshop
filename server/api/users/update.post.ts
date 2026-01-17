@@ -2,14 +2,11 @@ import { BACKEND_BASE_URL } from '../../utils/backend'
 
 export default defineEventHandler(async (event) => {
   const token = getCookie(event, 'token')
-  if (!token) return null
+  const body = await readBody(event)
 
-  // you might have a dedicated "me" endpoint later;
-  // for now we reuse /user/get and adapt as needed
-  const users = await $fetch(`${BACKEND_BASE_URL}/user/get`, {
+  return $fetch(`${BACKEND_BASE_URL}/user/update`, {
     method: 'POST',
+    body,
     headers: { Authorization: `Bearer ${token}` }
   })
-
-  return users
 })

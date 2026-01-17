@@ -1,11 +1,12 @@
-// subscribe.post.ts
 import { BACKEND_BASE_URL } from '../../../utils/backend'
 
 export default defineEventHandler(async (event) => {
+  const token = getCookie(event, 'token')
   const body = await readBody(event)
 
-  return $fetch(`${BACKEND_BASE_URL}/newsletter/subscribe`, {
+  return $fetch(`${BACKEND_BASE_URL}/newsletter/save`, {
     method: 'POST',
-    body
+    body,
+    headers: { Authorization: `Bearer ${token}` }
   })
 })

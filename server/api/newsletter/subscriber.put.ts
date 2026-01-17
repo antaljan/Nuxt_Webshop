@@ -1,12 +1,11 @@
-// create.post.ts
-import { BACKEND_BASE_URL } from '../../utils/backend'
+import { BACKEND_BASE_URL } from '../../../utils/backend'
 
 export default defineEventHandler(async (event) => {
   const token = getCookie(event, 'token')
   const body = await readBody(event)
 
-  return $fetch(`${BACKEND_BASE_URL}/posts/new`, {
-    method: 'POST',
+  return $fetch(`${BACKEND_BASE_URL}/newsletter/subscriber`, {
+    method: 'PUT',
     body,
     headers: { Authorization: `Bearer ${token}` }
   })

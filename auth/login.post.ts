@@ -1,25 +1,31 @@
+import { BACKEND_BASE_URL } from '../utils/backend'
+
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
 
-  // Meghívjuk a saját Express backend login endpointodat
-  const backendRes = await $fetch('http://localhost:4000/user/login', {
+  const backendRes = await $fetch(`${BACKEND_BASE_URL}/user/login`, {
     method: 'POST',
-    body
+    body: {
+      email: body.email,
+      psw: body.password
+    }
   })
 
   if (!backendRes.success) {
     throw createError({ statusCode: 401, statusMessage: 'Invalid credentials' })
   }
 
-  // JWT cookie beállítása
+  // JWT cookie
   setCookie(event, 'jwt', backendRes.token, {
     httpOnly: true,
     sameSite: 'strict',
     secure: process.env.NODE_ENV === 'production',
     path: '/',
-    maxAge: 60 * 60 * 6 // 6 óra
+    maxAge: 60 * 60 * 6
   })
 
-  // A user objektumot visszaadjuk a frontendnek
-  return { user: backendRes.user }
+  return {
+    success: true,
+    user: backendRes.user
+  }
 })

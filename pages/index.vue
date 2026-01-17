@@ -8,8 +8,8 @@
         Sell digital products, manage clients, and grow your practice with a modern web presence.
       </p>
       <div class="hero__actions">
-        <v-btn color="primary" class="mr-4" to="/products">
-          View Products
+        <v-btn color="primary" class="mr-4" to="/login">
+          Login
         </v-btn>
         <v-btn variant="outlined" to="/blog">
           Read the Blog

@@ -25,7 +25,10 @@ export default defineNuxtRouteMiddleware(async (to) => {
   }
 
   // 4) Ha be van jelentkezve és a login oldalra menne → dashboard
-  if (loggedIn.value && to.path === '/login') {
-    return navigateTo('/user')
+  if (to.path === '/login') {
+    if (loggedIn.value) {
+      return navigateTo('/user')
+    }
+    return
   }
 })

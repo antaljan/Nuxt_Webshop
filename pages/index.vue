@@ -2,7 +2,10 @@
   <MyHeader />
 
   <!-- HERO -->
-  <GenericHeroSection v-if="hero?.data" :content="hero.data" />
+  <GenericHeroSection
+    v-if="hero?.data?.value"
+    :content="hero.data.value"
+  />
 
   <!-- ABOUT 
   <GenericImageTextSection v-if="about?.data" :content="about.data" />

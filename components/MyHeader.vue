@@ -73,15 +73,25 @@ const closeMenu = () => (menuOpen.value = false)
 /* ---------------------------
    LANGUAGE
 --------------------------- */
-const lang = ref(document.documentElement.lang || 'hu')
+const lang = ref('hu')
 
-watch(lang, (val) => {
-  document.documentElement.lang = val
-})
+if (process.client) {
+  lang.value = document.documentElement.lang || 'hu'
+}
+
+if (process.client) {
+  watch(lang, (val) => {
+    document.documentElement.lang = val
+  })
+}
+
 
 const changeLanguage = () => {
-  document.documentElement.lang = lang.value
+  if (process.client) {
+    document.documentElement.lang = lang.value
+  }
 }
+
 
 /* ---------------------------
    LOGIN / LOGOUT

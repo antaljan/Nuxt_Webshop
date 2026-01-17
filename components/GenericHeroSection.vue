@@ -40,10 +40,10 @@
 
   <!-- ADMIN: editor panel -->
   <v-form v-if="showEditor" class="pa-4 mt-4 editor-panel" elevation="2">
-    <v-text-field v-model="content.title" label="Title"></v-text-field>
-    <v-text-field v-model="content.subtitle" label="Subtitle"></v-text-field>
-    <v-text-field v-model="content.ctaText" label="CTA Text"></v-text-field>
-    <v-text-field v-model="content.ctaLink" label="CTA Link"></v-text-field>
+    <v-text-field v-model="localContent.title" label="Title"></v-text-field>
+    <v-text-field v-model="localContent.subtitle" label="Subtitle"></v-text-field>
+    <v-text-field v-model="localContent.ctaText" label="CTA Text"></v-text-field>
+    <v-text-field v-model="localContent.ctaLink" label="CTA Link"></v-text-field>
 
     <v-btn color="primary" class="mt-4" @click="saveContent">
       Save Hero Content
@@ -55,21 +55,15 @@
 import { ref, computed, watch } from 'vue'
 import { useAuth } from '@/composables/useAuth'
 
+/* ---------------------------
+   PROPS
+--------------------------- */
 const props = defineProps({
-  sectionKey: { type: String, required: true }
+  content: { type: Object, required: true },
+  sectionKey: { type: String, required: false, default: 'hero' }
 })
 
-/* ---------------------------
-   LANGUAGE HANDLING
---------------------------- */
-const selectedLanguage = ref(document.documentElement.lang || 'hu')
-
-if (process.client) {
-  const observer = new MutationObserver(() => {
-    selectedLanguage.value = document.documentElement.lang
-  })
-  observer.observe(document.documentElement, { attributes: true })
-}
+console.log('GenericHeroSection content prop:', props.content)
 
 /* ---------------------------
    AUTH (admin check)
@@ -78,42 +72,29 @@ const { user } = useAuth()
 const isAdmin = computed(() => user.value?.role === 'admin')
 
 /* ---------------------------
-   LOAD CONTENT (SSR + CACHE)
+   LOCAL COPY OF CONTENT
 --------------------------- */
-const { data, refresh } = await useAsyncData(
-  `content-${props.sectionKey}-${selectedLanguage.value}`,
-  () => $fetch(`/api/content/${props.sectionKey}/${selectedLanguage.value}`),
-  {
-    staleTime: 1000 * 60 * 5 // 5 minutes cache
-  }
-)
 
-const content = ref({
-  title: '',
-  subtitle: '',
-  ctaText: '',
-  ctaLink: '',
-  backgroundImage: ''
-})
+const localContent = ref({})
 
 watch(
-  data,
-  () => {
-    if (data.value) {
-      content.value = { ...data.value }
-    }
+  () => props.content,
+  (val) => {
+    if (val) localContent.value = { ...val }
   },
   { immediate: true }
 )
+
 
 /* ---------------------------
    BACKGROUND IMAGE URL
 --------------------------- */
 const backgroundUrl = computed(() => {
-  if (content.value.backgroundImage) {
-    return content.value.backgroundImage.startsWith('http')
-      ? content.value.backgroundImage
-      : `https://antaligyongyi.hu/api${content.value.backgroundImage}`
+  const img = localContent.value.backgroundImage
+  if (img) {
+    return img.startsWith('http')
+      ? img
+      : `https://antaligyongyi.hu/api${img}`
   }
   return 'https://antaligyongyi.hu/forestbridge.jpg'
 })
@@ -134,8 +115,7 @@ async function onImageSelected(event) {
       body: formData
     })
 
-    content.value.backgroundImage = response.path + '?t=' + Date.now()
-    await refresh()
+    localContent.value.backgroundImage = response.path + '?t=' + Date.now()
   } catch (err) {
     console.error('Image upload failed:', err)
   }
@@ -146,12 +126,11 @@ async function onImageSelected(event) {
 --------------------------- */
 async function saveContent() {
   try {
-    await $fetch(`/api/content/${props.sectionKey}/${selectedLanguage.value}`, {
+    await $fetch(`/api/content/${props.sectionKey}/${document.documentElement.lang}`, {
       method: 'PUT',
-      body: content.value
+      body: localContent.value
     })
 
-    await refresh()
     alert('Hero content saved!')
   } catch (err) {
     console.error('Saving hero content failed:', err)

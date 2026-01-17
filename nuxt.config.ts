@@ -1,7 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   ssr: true,
-  srcDir: 'app',
   devtools: { enabled: true },
   modules: ['vuetify-nuxt-module'],
   css: [

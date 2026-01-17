@@ -1,8 +1,8 @@
 export default defineNuxtRouteMiddleware(async (to) => {
-  const { user, fetchUser } = useAuth()
+  const { user, fetchMe } = useAuth()
 
   if (!user.value) {
-    await fetchUser()
+    await fetchMe()
   }
 
   if (!user.value || user.value.role !== 'admin') {

@@ -1,5 +1,5 @@
 // send.post.ts
-import { BACKEND_BASE_URL } from '../../../utils/backend'
+import { BACKEND_BASE_URL } from '../../utils/backend'
 
 export default defineEventHandler(async (event) => {
   const token = getCookie(event, 'token')

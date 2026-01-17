@@ -1,4 +1,4 @@
-import { BACKEND_BASE_URL } from '../../../../utils/backend'
+import { BACKEND_BASE_URL } from '../../../utils/backend'
 
 export default defineEventHandler((event) => {
   const { emailId } = event.context.params!

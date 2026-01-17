@@ -5,3 +5,7 @@
     </v-main>
   </v-app>
 </template>
+
+<script setup lang="ts">
+// Public layout – landing, blog, products
+</script>

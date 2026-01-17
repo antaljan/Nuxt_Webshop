@@ -1,31 +1,23 @@
 export const useAuth = () => {
-  const user = useState('user', () => null)
-  const loggedIn = computed(() => !!user.value)
+  const user = useState<any>('user', () => null)
 
-  async function login(email, psw) {
-    const { data, error } = await useFetch('/api/auth/login', {
+  const login = async (email: string, password: string) => {
+    const data = await $fetch('/api/auth/login', {
       method: 'POST',
-      body: { email, psw }
+      body: { email, password }
     })
-
-    if (error.value) throw error.value
-
-    user.value = data.value.user
+    user.value = data
   }
 
-async function fetchUser() {
-  if (user.value !== null) return  // már be van töltve
-
-  const { data } = await useFetch('/api/auth/me')
-
-  user.value = data.value?.user || null
-}
-
-
-  async function logout() {
-    await useFetch('/api/auth/logout', { method: 'POST' })
+  const logout = async () => {
+    await $fetch('/api/auth/logout', { method: 'POST' })
     user.value = null
   }
 
-  return { user, loggedIn, login, logout, fetchUser }
+  const fetchMe = async () => {
+    const data = await $fetch('/api/auth/me')
+    user.value = data
+  }
+
+  return { user, login, logout, fetchMe }
 }

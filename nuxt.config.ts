@@ -13,10 +13,13 @@ export default defineNuxtConfig({
   ],
 
   i18n: {
-    locales: ['en', 'hu', 'de'],
+    locales: [
+      { code: 'hu', file: 'hu.json' },
+      { code: 'en', file: 'en.json' },
+      { code: 'de', file: 'de.json' }
+    ],
     defaultLocale: 'hu',
-    strategy: 'prefix_except_default',
-    vueI18n: 'i18n.config.ts'
+    langDir: 'locales/'
   },
 
   build: {

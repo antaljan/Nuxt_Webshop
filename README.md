@@ -130,7 +130,11 @@ project/
 ├─ nuxt.config.json                 # Nuxt config
 ├─ package-lock.json                # package lock
 ├─ package.json                     # package config
-├─ i18n.config.ts                   # i18n config
+├─ i18n/                            # i18n config
+│  └─ locales/
+│       ├─ de.json                  # német szöveg
+│       ├─ en.json                  # angol szöveg
+│       └─ hu.json                  # magyar szöveg
 ├─ assets/                          # built assets
 │  └─ css/
 │  └─ images/
@@ -152,7 +156,7 @@ project/
 │  └─ admin.global.ts
 │  └─ auth.ts
 ├─ pages/                           # pages
-│  └─ admin/
+│  ├─ admin/
 │  │    ├─ blog/
 │  │    │   ├─ create.vue
 │  │    │   └─ index.vue

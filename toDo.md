@@ -6,7 +6,7 @@ Nuxt-Backend (Nuxt server routes):
     Auth, blog, products, newsletter, stats, users, stb. endpointok már strukturálva vannak.
     Van külön backend.ts util a külső Node backendhez (ez igazából csak a BACKEND_BASE_URL definiálja ami most a VPS domain neve, de produktív módban ez a localhost:4000 lesz, mert a NUXT frontend és NODE backend ugyanazon a szerveren fog futni).
 Frontend:
-    Nuxt 4 SSR, Vuetify, komponens‑alapú felépítés ✔️
+    Nuxt 4 SSR, Vuetify, n18n, komponens‑alapú felépítés ✔️
     Már van: useAuth, useContent, de a többi composable (blog, product, newsletter, user) még üres.
 
 

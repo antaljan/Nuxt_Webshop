@@ -1,22 +1,18 @@
 export default defineNuxtRouteMiddleware(async (to) => {
-  const { user, fetchUser } = useAuth()
+  const { user, isAdmin, fetchUser } = useAuth()
 
-  // Csak admin oldalakra fusson
+  // Csak admin route-okon fusson
   if (!to.path.startsWith('/admin')) {
     return
   }
 
-  // Ha nincs user betöltve, próbáljuk meg lekérni
+  // Ha nincs user betöltve → próbáljuk meg lekérni
   if (!user.value) {
-    try {
-      await fetchUser()
-    } catch (err) {
-      console.error('fetchUser failed:', err)
-    }
+    await fetchUser()
   }
 
   // Ha nincs user vagy nem admin → redirect
-  if (!user.value || user.value.role !== 'admin') {
+  if (!isAdmin.value) {
     return navigateTo('/')
   }
 })

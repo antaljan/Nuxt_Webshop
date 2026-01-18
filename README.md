@@ -126,18 +126,144 @@ Statistics:
 
 📁 Project Structure (Nuxt 4 Recommended)
 project/
-├─ app/               # Nuxt 4 application
-│  ├─ pages/          # routes
-│  ├─ layouts/        # default, user, admin
-│  ├─ components/     # UI, blog, products, admin, newsletter
-│  ├─ composables/    # useAuth, useUser, useProducts, etc.
-│  └─ plugins/        # i18n, analytics
-│
-├─ server/            # SSR backend layer
-│  └─ api/            # auth, blog, products, newsletter, stats
-│
-├─ public/            # static files
-└─ assets/            # built assets
+├─ app.vue                          # Nuxt 4 application
+├─ nuxt.config.json                 # Nuxt config
+├─ package-lock.json                # package lock
+├─ package.json                     # package config
+├─ assets/                          # built assets
+│  └─ css/
+│  └─ images/
+├─ auth/
+│  └─ login.post.ts                 # login 
+├─ components/                      # UI, blog, products, admin, newsletter
+│  └─ GenericHeroSection.vue
+│  └─ MyHeadder.vue
+├─ composables/                     # useAuth, useUser, useProducts, etc.
+│  └─ useAuth.ts
+│  └─                               # useBlog.ts - empty
+│  └─ useContent.ts
+│  └─                               # useNewsletter.ts - empty
+│  └─                               # useProduct.ts -empty
+│  └─                               # useUser.ts - empty
+├─ layouts/                         # default, user, admin
+│  └─ admin.vue
+│  └─ default.vue
+│  └─ user.vue
+├─ middleware/                      # middleware
+│  └─ admin.global.ts
+│  └─ auth.ts
+├─ pages/                           # pages
+│  └─ admin/
+│  │    ├─ blog/
+│  │    │   ├─ create.vue
+│  │    │   └─ index.vue
+│  │    ├─ content/
+│  │    │   └─ index.vue
+│  │    ├─ newsletter/
+│  │    │   ├─ create.vue
+│  │    │   ├─ index.vue
+│  │    │   ├─ schedule.vue
+│  │    │   └─ stats.vue
+│  │    ├─ products/
+│  │    │   ├─ create.vue
+│  │    │   └─ index.vue
+│  │    ├─ stat/
+│  │    │   └─ index.vue
+│  │    ├─ users/
+│  │    │   └─ index.vue
+│  │    └─ index.vue
+│  ├─ blog/
+│  │    ├─ [slug].vue
+│  │    └─ index.vue
+│  ├─ products/
+│  │    └─ index.vue
+│  ├─ user/
+│  │    ├─ index.vue
+│  │    ├─ orders.vue
+│  │    ├─ products.vue
+│  │    ├─ settings.vue
+│  │    └─ videos.vue
+│  ├─ index.vue
+│  ├─ login.vue
+│  └─ register.vue
+├─ plugins/                           # plugins
+├─ public/                            # static files
+│  ├─ favicon.ivo
+│  └─ robots.txt
+└─ server/                            # SSR backend layer
+   ├─ api/
+   │    ├─ auth/
+   │    │   ├─ login.post.ts
+   │    │   ├─ logout.post.ts
+   │    │   └─ me.get.ts
+   │    ├─ blog/
+   │    │   ├─ [id].delete.ts
+   │    │   ├─ [id].get.ts
+   │    │   ├─ [id].put.ts
+   │    │   ├─ [slug].get.ts
+   │    │   ├─ create.post.ts
+   │    │   └─ index.get.ts
+   │    ├─ booking/
+   │    │   ├─ [date].get.ts
+   │    │   ├─ [id].delete.ts
+   │    │   ├─ [id].put.ts
+   │    │   ├─ all.get.ts
+   │    │   └─ new.post.ts
+   │    ├─ content/
+   │    │   ├─ [section]/
+   │    │   │     ├─ language.get.ts
+   │    │   │     └─ language.put.ts
+   │    │   └─ upload.post.ts
+   │    ├─ content-upload/
+   │    │   └─ index.post.ts
+   │    ├─ dashboard/
+   │    │   ├─ campaigns.get.ts
+   │    │   └─ summary.get.ts
+   │    ├─ emial/
+   │    │   └─ send.post.ts
+   │    ├─ feedbacks/
+   │    │   ├─ [id].delete.ts
+   │    │   ├─ [id].get.ts
+   │    │   ├─ [id].put.ts
+   │    │   ├─ index.get.ts
+   │    │   └─ new.post.ts
+   │    ├─ images/
+   │    │   ├─ [filename].delete.ts
+   │    │   └─ index.get.ts
+   │    ├─ logs/
+   │    │   └─ stats.get.ts
+   │    ├─ newsletter/
+   │    │   ├─ unsubscribe/
+   │    │   │     └─ [email].get.ts
+   │    │   ├─ deletetemplate.post.ts
+   │    │   ├─ getonetemplate.post.ts
+   │    │   ├─ getscheduled.post.ts
+   │    │   ├─ gettemplates.post.ts
+   │    │   ├─ save.post.ts
+   │    │   ├─ schedule.post.ts
+   │    │   ├─ send.post.ts
+   │    │   ├─ subscribe.post.ts
+   │    │   ├─ subscriber.put.ts
+   │    │   └─ subscribers.post.ts
+   │    ├─ products/
+   │    │   ├─ [id].get.ts
+   │    │   └─ index.get.ts
+   │    ├─ stats/
+   │    │   └─ track.post.ts
+   │    ├─ track/
+   │    │   ├─ click/
+   │    │   │     └─ [emailid].get.ts
+   │    │   └─ open/
+   │    │         └─ [emailid].get.ts
+   │    ├─ upload/
+   │    │   └─ index.post.ts
+   │    └─ users/
+   │        ├─ create.post.ts
+   │        ├─ delete.post.ts
+   │        ├─ index.post.ts
+   │        └─ update.post.ts
+   └─ utils/
+      └─ backend.ts                   # BACKEND_BASE_URL
 
 🔐 Authentication & Authorization
 Login Flow:
@@ -148,7 +274,7 @@ Login Flow:
   5. Middleware controls access
 
 Middleware:
-- auth.global.ts – checks login
+- auth.ts – checks login
 - admin.global.ts – checks admin role
 
 🛠️ Nuxt 4 Initialization:

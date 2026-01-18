@@ -7,7 +7,7 @@
 
     <!-- Center: Logo -->
     <NuxtLink to="/" class="logo">
-      Clima Coaching
+      Antali Gyöngyi Edit
     </NuxtLink>
 
     <!-- Right: Language + Login -->

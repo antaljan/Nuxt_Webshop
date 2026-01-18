@@ -1,34 +1,22 @@
 export default defineNuxtRouteMiddleware(async (to) => {
   const { loggedIn, fetchUser } = useAuth()
 
-  // 1) Csak a protected route-okon fusson
   const isProtected =
     to.path.startsWith('/user') ||
     to.path.startsWith('/admin')
 
+  // Public route → nincs teendő
   if (!isProtected) {
     return
   }
 
-  // 2) Ha nincs user betöltve, próbáljuk meg lekérni
+  // Ha még nincs user betöltve → próbáljuk meg
   if (!loggedIn.value) {
-    try {
-      await fetchUser()
-    } catch (err) {
-      console.error('fetchUser failed:', err)
-    }
+    await fetchUser()
   }
 
-  // 3) Ha még mindig nincs bejelentkezve → login oldal
+  // Ha továbbra sincs user → login
   if (!loggedIn.value) {
     return navigateTo('/login')
-  }
-
-  // 4) Ha be van jelentkezve és a login oldalra menne → dashboard
-  if (to.path === '/login') {
-    if (loggedIn.value) {
-      return navigateTo('/user')
-    }
-    return
   }
 })

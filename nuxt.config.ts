@@ -11,10 +11,10 @@ export default defineNuxtConfig({
   vite: { define: { 'process.env.DEBUG': false } }, 
   app: {
     head: {
-      title: 'Coaching Platform',
-      meta: [ 
+      title: 'A Te utad a Te életed!',
+      meta: [
         { name: 'description', content: 'Webshop & content platform for coaches' } 
-      ] 
-    } 
+      ]
+    }
   }
 })

@@ -1,97 +1,109 @@
 <template>
-  <header class="header">
-    <!-- Left: Mobile menu toggle -->
-    <button class="menu-btn" @click="toggleMenu">
-      <v-icon>mdi-menu</v-icon>
-    </button>
+  <v-app-bar flat color="white" class="border-b">
 
-    <!-- Center: Logo -->
-    <NuxtLink to="/" class="logo">
+    <!-- Mobile menu icon -->
+    <v-app-bar-nav-icon
+      v-if="smAndDown"
+      @click="menuOpen = true"
+    />
+
+    <!-- Logo -->
+    <NuxtLink to="/" class="text-xl font-semibold ml-2">
       Antali Gyöngyi Edit
     </NuxtLink>
 
-    <!-- Right: Language + Login -->
-    <div class="right-side">
-      <select v-model="lang" @change="changeLanguage" class="lang-select">
-        <option value="en">EN</option>
-        <option value="hu">HU</option>
-        <option value="de">DE</option>
-      </select>
+    <!-- Desktop menu -->
+    <div v-if="mdAndUp" class="flex gap-6 ml-10">
+      <NuxtLink to="/#home" class="menu-link">{{ $t('menu.home') }}</NuxtLink>
+      <NuxtLink to="/#about" class="menu-link">{{ $t('menu.about') }}</NuxtLink>
+      <NuxtLink to="/#story" class="menu-link">{{ $t('menu.story') }}</NuxtLink>
+      <NuxtLink to="/#methode" class="menu-link">{{ $t('menu.methode') }}</NuxtLink>
+      <NuxtLink to="/#contact" class="menu-link">{{ $t('menu.contact') }}</NuxtLink>
+      <NuxtLink to="/#blog" class="menu-link">{{ $t('menu.blog') }}</NuxtLink>
 
-      <v-btn
-        variant="text"
-        @click="onLoginLogout"
-        class="login-btn"
-      >
-        <v-icon v-if="loggedIn">mdi-logout</v-icon>
-        <v-icon v-else>mdi-login</v-icon>
-        <span class="ml-2">
-          {{ loggedIn ? user?.name : 'Login' }}
-        </span>
-      </v-btn>
+      <!-- Admin desktop menu -->
+      <template v-if="isAdmin">
+        <NuxtLink to="/admin/blog/create" class="menu-link">{{ $t('admin.newPost') }}</NuxtLink>
+        <NuxtLink to="/admin/users" class="menu-link">{{ $t('admin.users') }}</NuxtLink>
+        <NuxtLink to="/admin/newsletter" class="menu-link">{{ $t('admin.newsletter') }}</NuxtLink>
+        <NuxtLink to="/admin/stat" class="menu-link">{{ $t('admin.statistics') }}</NuxtLink>
+        <NuxtLink to="/admin/products" class="menu-link">{{ $t('admin.products') }}</NuxtLink>
+        <NuxtLink to="/admin/images" class="menu-link">{{ $t('admin.images') }}</NuxtLink>
+      </template>
     </div>
 
-    <!-- Mobile menu -->
-    <nav v-if="menuOpen" class="mobile-menu">
-      <NuxtLink to="/#home" @click="closeMenu">Home</NuxtLink>
-      <NuxtLink to="/#about" @click="closeMenu">About</NuxtLink>
-      <NuxtLink to="/#story" @click="closeMenu">Story</NuxtLink>
-      <NuxtLink to="/#methode" @click="closeMenu">Methode</NuxtLink>
-      <NuxtLink to="/#contact" @click="closeMenu">Contact</NuxtLink>
-      <NuxtLink to="/#blog" @click="closeMenu">Blog</NuxtLink>
+    <v-spacer />
 
-      <!-- Admin menu -->
-      <template v-if="user?.role === 'admin'">
-        <NuxtLink to="/newblog" @click="closeMenu">New Post</NuxtLink>
-        <NuxtLink to="/users" @click="closeMenu">Users</NuxtLink>
-        <NuxtLink to="/newsletter" @click="closeMenu">Newsletter</NuxtLink>
-        <NuxtLink to="/admin/statistics" @click="closeMenu">Statistics</NuxtLink>
-        <NuxtLink to="/productOverView" @click="closeMenu">Products</NuxtLink>
-        <NuxtLink to="/booking" @click="closeMenu">Booking</NuxtLink>
-        <NuxtLink to="/admin/ImagesLibrary" @click="closeMenu">Images</NuxtLink>
-      </template>
-    </nav>
-  </header>
+    <!-- Language selector -->
+    <v-select
+      v-model="locale"
+      :items="languages"
+      density="compact"
+      hide-details
+      class="w-20 mr-4"
+    />
+
+    <!-- Login / Logout -->
+    <v-btn variant="text" @click="onLoginLogout">
+      <v-icon v-if="loggedIn">mdi-logout</v-icon>
+      <v-icon v-else>mdi-login</v-icon>
+      <span class="ml-2">
+        {{ loggedIn ? user?.name : $t('header.login') }}
+      </span>
+    </v-btn>
+
+    <!-- Mobile drawer -->
+    <v-navigation-drawer v-model="menuOpen" temporary location="left">
+      <v-list>
+        <v-list-item to="/#home" @click="closeMenu">{{ $t('menu.home') }}</v-list-item>
+        <v-list-item to="/#about" @click="closeMenu">{{ $t('menu.about') }}</v-list-item>
+        <v-list-item to="/#story" @click="closeMenu">{{ $t('menu.story') }}</v-list-item>
+        <v-list-item to="/#methode" @click="closeMenu">{{ $t('menu.methode') }}</v-list-item>
+        <v-list-item to="/#contact" @click="closeMenu">{{ $t('menu.contact') }}</v-list-item>
+        <v-list-item to="/#blog" @click="closeMenu">{{ $t('menu.blog') }}</v-list-item>
+
+        <template v-if="isAdmin">
+          <v-divider class="my-2" />
+          <v-list-item to="/admin/blog/create" @click="closeMenu">{{ $t('admin.newPost') }}</v-list-item>
+          <v-list-item to="/admin/users" @click="closeMenu">{{ $t('admin.users') }}</v-list-item>
+          <v-list-item to="/admin/newsletter" @click="closeMenu">{{ $t('admin.newsletter') }}</v-list-item>
+          <v-list-item to="/admin/stat" @click="closeMenu">{{ $t('admin.statistics') }}</v-list-item>
+          <v-list-item to="/admin/products" @click="closeMenu">{{ $t('admin.products') }}</v-list-item>
+          <v-list-item to="/admin/images" @click="closeMenu">{{ $t('admin.images') }}</v-list-item>
+        </template>
+      </v-list>
+    </v-navigation-drawer>
+
+  </v-app-bar>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
+import { useDisplay } from 'vuetify'
 import { useAuth } from '@/composables/useAuth'
+import { useI18n } from 'vue-i18n'
 
 /* ---------------------------
    AUTH
 --------------------------- */
-const { user, loggedIn, logout } = useAuth()
+const { user, loggedIn, isAdmin, logout } = useAuth()
 
 /* ---------------------------
-   MENU STATE
+   RESPONSIVE BREAKPOINTS
+--------------------------- */
+const { smAndDown, mdAndUp } = useDisplay()
+
+/* ---------------------------
+   MOBILE MENU
 --------------------------- */
 const menuOpen = ref(false)
-const toggleMenu = () => (menuOpen.value = !menuOpen.value)
 const closeMenu = () => (menuOpen.value = false)
 
 /* ---------------------------
-   LANGUAGE
+   I18N LANGUAGE SWITCH
 --------------------------- */
-const lang = ref('hu')
-
-if (process.client) {
-  lang.value = document.documentElement.lang || 'hu'
-}
-
-if (process.client) {
-  watch(lang, (val) => {
-    document.documentElement.lang = val
-  })
-}
-
-
-const changeLanguage = () => {
-  if (process.client) {
-    document.documentElement.lang = lang.value
-  }
-}
-
+const { locale } = useI18n()
+const languages = ['en', 'hu', 'de']
 
 /* ---------------------------
    LOGIN / LOGOUT
@@ -107,59 +119,15 @@ const onLoginLogout = async () => {
 </script>
 
 <style scoped>
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 16px;
-  background: white;
+.menu-link {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+.menu-link:hover {
+  color: #000;
+}
+.border-b {
   border-bottom: 1px solid #ddd;
-}
-
-.menu-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-.logo {
-  font-size: 20px;
-  font-weight: bold;
-  text-decoration: none;
-  color: black;
-}
-
-.right-side {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.lang-select {
-  padding: 4px 8px;
-}
-
-.login-btn {
-  display: flex;
-  align-items: center;
-}
-
-.mobile-menu {
-  position: absolute;
-  top: 60px;
-  left: 0;
-  right: 0;
-  background: white;
-  border-top: 1px solid #ddd;
-  display: flex;
-  flex-direction: column;
-  padding: 12px;
-}
-
-.mobile-menu a {
-  padding: 12px;
-  text-decoration: none;
-  color: black;
-  border-bottom: 1px solid #eee;
 }
 </style>

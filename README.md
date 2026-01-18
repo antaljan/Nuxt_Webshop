@@ -130,11 +130,10 @@ project/
 ├─ nuxt.config.json                 # Nuxt config
 ├─ package-lock.json                # package lock
 ├─ package.json                     # package config
+├─ i18n.config.ts                   # i18n config
 ├─ assets/                          # built assets
 │  └─ css/
 │  └─ images/
-├─ auth/
-│  └─ login.post.ts                 # login 
 ├─ components/                      # UI, blog, products, admin, newsletter
 │  └─ GenericHeroSection.vue
 │  └─ MyHeadder.vue
@@ -283,6 +282,7 @@ Middleware:
   npm run dev
   npx nuxi@latest module add vuetify-nuxt-module
   npm install @mdi/font
+  npm install @nuxtjs/i18n
 
 🚀 Deployment (VPS)
 - NGINX reverse proxy

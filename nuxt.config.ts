@@ -1,19 +1,40 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   ssr: true,
   devtools: { enabled: true },
-  modules: ['vuetify-nuxt-module'],
+
+  modules: [
+    'vuetify-nuxt-module',
+    '@nuxtjs/i18n'
+  ],
+
   css: [
     'vuetify/styles',
     '@mdi/font/css/materialdesignicons.min.css'
   ],
-  build: { transpile: ['vuetify'] },
-  vite: { define: { 'process.env.DEBUG': false } }, 
+
+  i18n: {
+    locales: ['en', 'hu', 'de'],
+    defaultLocale: 'hu',
+    strategy: 'prefix_except_default',
+    vueI18n: 'i18n.config.ts'
+  },
+
+  build: {
+    transpile: ['vuetify']
+  },
+
+  vite: {
+    define: { 'process.env.DEBUG': false }
+  },
+
   app: {
     head: {
       title: 'A Te utad a Te életed!',
       meta: [
-        { name: 'description', content: 'Webshop & content platform for coaches' } 
+        {
+          name: 'description',
+          content: 'Webshop & content platform for coaches'
+        }
       ]
     }
   }

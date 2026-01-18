@@ -8,9 +8,10 @@
     <v-btn color="primary">Vuetify működik</v-btn>
   </v-container>
 </template>
+
 <script setup>
 definePageMeta({
-  middleware: 'admin'
+  layout: 'admin'
 })
 </script>
 

@@ -1,5 +1,4 @@
 <template>
-  <MyHeader />
 
   <!-- HERO -->
   <GenericHeroSection
@@ -32,13 +31,10 @@
   <blogSection />
    -->
 
-  <MyFooter />
 </template>
 
 <script setup>
 import { ref, watch } from 'vue'
-import MyHeader from '@/components/MyHeader.vue'
-//import MyFooter from '@/components/MyFooter.vue'
 import GenericHeroSection from '@/components/GenericHeroSection.vue'
 //import GenericImageTextSection from '@/components/GenericImageTextSection.vue'
 //import GenericTextSection from '@/components/GenericTextSection.vue'

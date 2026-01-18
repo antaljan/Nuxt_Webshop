@@ -1,5 +1,5 @@
 <!-- app/pages/index.vue -->
- <template>
+<template>
   <div>
     <h1>User oldal</h1>
     <p>itt lesz a felhasználói tartalom</p>
@@ -10,12 +10,11 @@
 </template>
 <script setup>
 definePageMeta({
-  middleware: 'auth'
+  layout: 'user'
 })
 async function goLogout() {
   const { logout } = useAuth()
   await logout()
   return navigateTo('/login')
 }
-
 </script>

@@ -18,7 +18,7 @@
       <div v-if="content.ctaText">
         <a
           :href="content.ctaLink"
-          class="inline-block bg-white/20 hover:bg-white text-white hover:text-black transition px-6 py-3 rounded-lg text-lg font-medium backdrop-blur-sm"
+          class="inline-block bg-white/20 hover:bg-white text-white transition px-6 py-3 rounded-lg text-lg font-medium backdrop-blur-sm hover:!text-black"
         >
           {{ content.ctaText }}
         </a>
@@ -56,6 +56,8 @@ import { ref, computed, watch } from 'vue'
 import { useAuth } from '@/composables/useAuth'
 import { useI18n } from 'vue-i18n'
 const { locale } = useI18n()
+const config = useRuntimeConfig()
+const backendBase = config.public.backendBase
 
 /* ---------------------------
    PROPS
@@ -91,20 +93,14 @@ const backgroundUrl = computed(() => {
   const img = localContent.value.image
 
   if (img) {
-    // Ha teljes URL
-    if (img.startsWith('http')) {
-      return img
-    }
+    if (img.startsWith('http')) return img
 
-    // Ha relatív path → Node backend URL
     const normalized = img.startsWith('/') ? img : `/${img}`
-    return `https://antaligyongyi.hu${normalized}`
+    return `${backendBase}${normalized}`
   }
 
-  // fallback
   return '/fallbackImages.jpg'
 })
-
 
 
 /* ---------------------------

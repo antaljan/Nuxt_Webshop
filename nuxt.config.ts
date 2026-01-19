@@ -42,6 +42,12 @@ export default defineNuxtConfig({
     define: { 'process.env.DEBUG': false }
   },
 
+  runtimeConfig: {
+    public: {
+      backendBase: process.env.BACKEND_BASE_URL || 'https://antaligyongyi.hu/api' 
+    }
+  },
+
   app: {
     head: {
       title: 'A Te utad a Te életed!',

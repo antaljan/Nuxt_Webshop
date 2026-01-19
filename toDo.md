@@ -21,10 +21,11 @@ layouts/admin.vue ✔️
 i18n ✔️
 MyHeader.vue ✔️
 Myfooter.vue ✔️
+GeneralHeroSection.vue ✔️
+index.vue for landingPage ✔️
 
 Tasks are open:
 → Generic elemek létrehozása (transzformálás a meglévő VUE projektből):
-    - GeneralHeroSection.vue - létezik, css optimálás és a mobil barát verzió kialakítása a régi w3.css helyett
     - GenericImageTextSection
     - GenericTextSection
     - GenericFeedbackSection

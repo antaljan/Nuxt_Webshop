@@ -101,7 +101,7 @@ const backgroundUrl = computed(() => {
 
   return '/fallbackImages.jpg'
 })
-
+console.log('Background URL:', backgroundUrl.value);
 
 /* ---------------------------
    IMAGE UPLOAD

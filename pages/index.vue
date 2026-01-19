@@ -38,6 +38,11 @@ const contact = await useAsyncData(
   () => `content-contact-${locale.value}`,
   () => $fetch(`/api/content/contact/${locale.value}`)
 )
+// CONTACT HERO
+const contactHero = await useAsyncData(
+  () => `content-contact-${locale.value}`,
+  () => $fetch(`/api/content/contact/${locale.value}`)
+)
 
 // Nyelvváltás figyelése
 watch(locale, () => {
@@ -46,6 +51,7 @@ watch(locale, () => {
   story.refresh()
   methode.refresh()
   feedback.refresh()
+  contactHero.refresh()
 })
 </script>
 
@@ -74,6 +80,10 @@ watch(locale, () => {
   />
   <section-separator />
   <GenericFeedbackSection />
+  <GenericHeroSection
+    v-if="contactHero?.data?.value"
+    :content="contactHero.data.value"
+  />
   <GenericContactSection
     v-if="contact?.data?.value"
     :content="contact.data.value"

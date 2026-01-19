@@ -32,7 +32,7 @@ GenericBlogSection ✔️
 Generic elemek létrehozása és integrálása a landing page-re (transzformálás a meglévő VUE projektből) ✔️
 
 Tasks are open:
-→ Generic elemek létrehozása (transzformálás a meglévő VUE projektből):
+→ landing page 2 hero nem ölti be a képet és a képek mentése sem működik (a contact content alá menti a mongoDB-be )
 → Admin dashboard (pages/admin/index.vue)
     - tatisztikák
     - funnel

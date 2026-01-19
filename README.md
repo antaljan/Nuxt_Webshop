@@ -287,6 +287,7 @@ Middleware:
   npx nuxi@latest module add vuetify-nuxt-module
   npm install @mdi/font
   npm install @nuxtjs/i18n
+  npm install -D @nuxtjs/tailwindcss
 
 🚀 Deployment (VPS)
 - NGINX reverse proxy

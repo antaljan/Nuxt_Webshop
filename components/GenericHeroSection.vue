@@ -1,43 +1,49 @@
 <template>
+  
+<section class="relative w-full h-[60vh] md:h-[75vh] overflow-hidden">
   <div
-    class="hero-container"
+    class="absolute inset-0 bg-cover bg-center will-change-transform"
     :style="{ backgroundImage: `url(${backgroundUrl})` }"
-  >
-    <!-- CENTER TEXT -->
-    <div class="hero-text">
-      <span class="hero-title">{{ content.title }}</span><br />
-      <span class="hero-subtitle">{{ content.subtitle }}</span>
-    </div>
-    <!-- CTA -->
-    <div
-      v-if="content.ctaText"
-      class="cta-wrapper"
-    >
-      <a :href="content.ctaLink" class="cta-link">
-        {{ content.ctaText }}
-      </a>
+    ref="parallax"
+  ></div>
+
+  <div class="relative z-10 flex items-center justify-center h-full text-center px-4">
+    <div class="max-w-3xl">
+      <h1 class="text-white font-bold text-3xl md:text-5xl mb-4 leading-tight">
+        {{ content.title }}
+      </h1>
+      <p class="text-white text-lg md:text-2xl opacity-90 mb-6">
+        {{ content.subtitle }}
+      </p>
+      <div v-if="content.ctaText">
+        <a
+          :href="content.ctaLink"
+          class="inline-block bg-white/20 hover:bg-white text-white hover:text-black transition px-6 py-3 rounded-lg text-lg font-medium backdrop-blur-sm"
+        >
+          {{ content.ctaText }}
+        </a>
+      </div>
     </div>
   </div>
+</section>
 
-  <!-- ADMIN: image upload -->
-  <div v-if="isAdmin" class="w3-padding">
+  <!-- ADMIN TOOLS (marad) -->
+  <div v-if="isAdmin" class="p-4">
     <label>Hero background image:</label>
     <input type="file" @change="onImageSelected" />
   </div>
 
-  <!-- ADMIN: toggle editor -->
-  <div v-if="isAdmin" class="w3-padding">
+  <div v-if="isAdmin" class="p-4">
     <v-btn color="primary" @click="showEditor = !showEditor">
       {{ showEditor ? 'Close Editor' : 'Edit Hero Section' }}
     </v-btn>
   </div>
 
-  <!-- ADMIN: editor panel -->
   <v-form v-if="showEditor" class="pa-4 mt-4 editor-panel" elevation="2">
-    <v-text-field v-model="localContent.title" label="Title"></v-text-field>
-    <v-text-field v-model="localContent.subtitle" label="Subtitle"></v-text-field>
-    <v-text-field v-model="localContent.ctaText" label="CTA Text"></v-text-field>
-    <v-text-field v-model="localContent.ctaLink" label="CTA Link"></v-text-field>
+    <v-text-field v-model="localContent.title" label="Title" />
+    <v-text-field v-model="localContent.subtitle" label="Subtitle" />
+    <v-text-field v-model="localContent.ctaText" label="CTA Text" />
+    <v-text-field v-model="localContent.ctaLink" label="CTA Link" />
 
     <v-btn color="primary" class="mt-4" @click="saveContent">
       Save Hero Content
@@ -48,6 +54,8 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { useAuth } from '@/composables/useAuth'
+import { useI18n } from 'vue-i18n'
+const { locale } = useI18n()
 
 /* ---------------------------
    PROPS
@@ -57,7 +65,6 @@ const props = defineProps({
   sectionKey: { type: String, required: false, default: 'hero' }
 })
 
-console.log('GenericHeroSection content prop:', props.content)
 
 /* ---------------------------
    AUTH (admin check)
@@ -68,9 +75,7 @@ const isAdmin = computed(() => user.value?.role === 'admin')
 /* ---------------------------
    LOCAL COPY OF CONTENT
 --------------------------- */
-
 const localContent = ref({})
-
 watch(
   () => props.content,
   (val) => {
@@ -79,19 +84,28 @@ watch(
   { immediate: true }
 )
 
-
 /* ---------------------------
    BACKGROUND IMAGE URL
 --------------------------- */
 const backgroundUrl = computed(() => {
-  const img = localContent.value.backgroundImage
+  const img = localContent.value.image
+
   if (img) {
-    return img.startsWith('http')
-      ? img
-      : `https://antaligyongyi.hu/api${img}`
+    // Ha teljes URL
+    if (img.startsWith('http')) {
+      return img
+    }
+
+    // Ha relatív path → Node backend URL
+    const normalized = img.startsWith('/') ? img : `/${img}`
+    return `https://antaligyongyi.hu${normalized}`
   }
-  return 'https://antaligyongyi.hu/forestbridge.jpg'
+
+  // fallback
+  return '/fallbackImages.jpg'
 })
+
+
 
 /* ---------------------------
    IMAGE UPLOAD
@@ -109,7 +123,7 @@ async function onImageSelected(event) {
       body: formData
     })
 
-    localContent.value.backgroundImage = response.path + '?t=' + Date.now()
+  localContent.value.image = response.path + '?t=' + Date.now()
   } catch (err) {
     console.error('Image upload failed:', err)
   }
@@ -120,11 +134,10 @@ async function onImageSelected(event) {
 --------------------------- */
 async function saveContent() {
   try {
-    await $fetch(`/api/content/${props.sectionKey}/${document.documentElement.lang}`, {
+    await $fetch(`/api/content/${props.sectionKey}/${locale.value}`, {
       method: 'PUT',
       body: localContent.value
     })
-
     alert('Hero content saved!')
   } catch (err) {
     console.error('Saving hero content failed:', err)
@@ -136,69 +149,36 @@ async function saveContent() {
    ADMIN EDITOR TOGGLE
 --------------------------- */
 const showEditor = ref(false)
+
+
+/* ---------------------------
+   Parallax Effect
+--------------------------- */
+const parallax = ref(null) 
+onMounted(() => {
+  const handler = () => {
+    const offset = window.scrollY * 0.4
+    if (parallax.value) {
+      parallax.value.style.transform = `translateY(${offset}px)`
+    }
+  }
+  window.addEventListener('scroll', handler)
+  onUnmounted(() => {
+    window.removeEventListener('scroll', handler)
+  })
+})
+
+
 </script>
 
 <style scoped>
-.hero-container {
-  background-attachment: fixed;
+  .hero-container {
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-size: cover;
-  min-height: 600px;
-  max-height: 100%;
-  opacity: 0.8;
-}
-.hero-text {
-  white-space: nowrap;
-  text-align: center;
-  position: absolute;
-  top: 20%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-.hero-title {
-  color: white;
-  padding: 12px;
-  background: black;
-  font-size: 32px;
-  font-weight: bold;
-}
-.hero-subtitle {
-  color: white;
-  padding: 12px;
-  font-size: 28px;
-}
-.hero-title-small {
-  color: white;
-  padding: 8px;
-  background: black;
-  font-size: 16px;
-}
-.hero-subtitle-small {
-  color: white;
-  padding: 8px;
-  font-size: 14px;
 }
 .editor-panel {
   background: white;
   border-radius: 8px;
-}
-.cta-wrapper {
-  color: white;
-  position: absolute;
-  align-self: auto;
-  bottom: 55%;
-  left: 20px;
-}
-.cta-link {
-  color: white;
-  padding: 8px 16px;
-  background: rgba(0, 0, 0, 0.7);
-  text-decoration: none;
-  font-size: 18px;
-}
-.cta-link:hover {
-  background: white;
-  color: black;
 }
 </style>

@@ -108,7 +108,7 @@ const form = ref(null)
 async function submit() {
   if (form.value && await form.value.validate()) {
     try {
-      await $fetch('https://antaligyongyi.hu/api/newsletter/subscribe', {
+      await $fetch('/api/newsletter/subscribe', {
         method: 'POST',
         body: {
           firstname: firstname.value,
@@ -132,6 +132,7 @@ async function submit() {
     }
   }
 }
+
 </script>
 
 <style scoped>

@@ -4,7 +4,8 @@ export default defineNuxtConfig({
 
   modules: [
     'vuetify-nuxt-module',
-    '@nuxtjs/i18n'
+    '@nuxtjs/i18n',
+    '@nuxtjs/tailwindcss'
   ],
 
   css: [

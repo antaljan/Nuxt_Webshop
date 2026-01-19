@@ -132,9 +132,9 @@ project/
 ├─ package.json                     # package config
 ├─ i18n/                            # i18n config
 │  └─ locales/
-│       ├─ de.json                  # német szöveg
-│       ├─ en.json                  # angol szöveg
-│       └─ hu.json                  # magyar szöveg
+│       ├─ de.ts                    # német szöveg
+│       ├─ en.ts                    # angol szöveg
+│       └─ hu.ts                    # magyar szöveg
 ├─ assets/                          # built assets
 │  └─ css/
 │  └─ images/

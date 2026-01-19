@@ -51,10 +51,15 @@ const languages = computed(() =>
 const onLoginLogout = async () => {
   if (loggedIn.value) {
     await logout()
-    return navigateTo('/')
+    // Kijelentkezés után maradjon ugyanott
+    return
   }
-  navigateTo('/login')
+
+  // Bejelentkezés → átirányítás a login oldalra, de megőrizzük a jelenlegi route-ot
+  const current = useRoute().fullPath
+  navigateTo(`/login?redirect=${encodeURIComponent(current)}`)
 }
+
 </script>
 
 

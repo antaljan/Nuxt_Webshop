@@ -24,8 +24,10 @@ const { login } = useAuth()
 
 async function doLogin() {
   try {
+    const route = useRoute()
+    const redirect = route.query.redirect || '/'
     await login(email.value, psw.value)
-    navigateTo('/user')
+    navigateTo(redirect)
   } catch (e) {
     error.value = 'Invalid credentials'
   }

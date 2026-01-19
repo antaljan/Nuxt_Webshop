@@ -22,7 +22,7 @@ i18n ✔️
 
 Tasks are open:
 → Generic elemek létrehozása (transzformálás a meglévő VUE projektből):
-    - MyHeader.vue - létezik, de a kinézete nem jó: layout, menü, nyelv választó
+    - MyHeader.vue - létezik,  jó, de mög a bejelentkezé nem megfelelő
     - Myfooter.vue - létezik, jól néz ki, de direkt a node backendet fetch-eli nem a nuxt backendet.
     - GeneralHeroSection.vue - létezik, css optimálás és a mobil barát verzió kialakítása a régi w3.css helyett
     - GenericImageTextSection

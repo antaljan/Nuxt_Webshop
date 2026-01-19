@@ -1,6 +1,9 @@
 <script setup>
 import GenericHeroSection from '@/components/GenericHeroSection.vue'
 import GenericImageTextSection from '@/components/GenericImageTextSection.vue'
+import SectionSeparator from '@/components/sectionSeparator.vue'
+import GenericTextSection from '~/components/GenericTextSection.vue'
+import { watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { locale } = useI18n()
@@ -15,6 +18,16 @@ const about = await useAsyncData(
   () => `content-about-${locale.value}`,
   () => $fetch(`/api/content/about/${locale.value}`)
 )
+// Story (GenericTextSection)
+const story = await useAsyncData(
+  () => `content-story-${locale.value}`,
+  () => $fetch(`/api/content/story/${locale.value}`)
+)
+// Methode (GenericTextSection)
+const methode = await useAsyncData(
+  () => `content-methode-${locale.value}`,
+  () => $fetch(`/api/content/methode/${locale.value}`)
+)
 
 // Nyelvváltás figyelése
 watch(locale, () => {
@@ -28,12 +41,24 @@ watch(locale, () => {
     v-if="hero?.data?.value"
     :content="hero.data.value"
   />
-
   <GenericImageTextSection
     v-if="about?.data?.value"
     :content="about.data.value"
     sectionKey="about"
     :reverse="false"
   />
+  <section-separator />
+  <GenericTextSection
+    v-if="story?.data?.value"
+    :content="story.data.value"
+    sectionKey="story"
+  />
+  <section-separator />
+  <GenericTextSection
+    v-if="methode?.data?.value"
+    :content="methode.data.value"
+    sectionKey="methode"
+  />
+  <section-separator />
 
 </template>

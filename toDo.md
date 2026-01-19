@@ -23,11 +23,11 @@ MyHeader.vue ✔️
 Myfooter.vue ✔️
 GeneralHeroSection.vue ✔️
 index.vue for landingPage ✔️
+GenericImageTextSection ✔️
+GenericTextSection ✔️
 
 Tasks are open:
 → Generic elemek létrehozása (transzformálás a meglévő VUE projektből):
-    - GenericImageTextSection
-    - GenericTextSection
     - GenericFeedbackSection
     - GenericContactSection
     - sectionSeparator

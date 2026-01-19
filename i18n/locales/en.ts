@@ -37,6 +37,9 @@ export default defineI18nLocale(async (locale) => {
   "common": {
     "send": "Send",
     "cancel": "Cancel"
+  },
+  "feedback": {
+    "title": "Testimonials"
   }
 }
 })

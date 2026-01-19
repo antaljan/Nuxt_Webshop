@@ -3,6 +3,7 @@ import GenericHeroSection from '@/components/GenericHeroSection.vue'
 import GenericImageTextSection from '@/components/GenericImageTextSection.vue'
 import SectionSeparator from '@/components/sectionSeparator.vue'
 import GenericTextSection from '~/components/GenericTextSection.vue'
+import GenericFeedbackSection from '~/components/GenericFeedbackSection.vue'
 import { watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -28,11 +29,16 @@ const methode = await useAsyncData(
   () => `content-methode-${locale.value}`,
   () => $fetch(`/api/content/methode/${locale.value}`)
 )
+// Feedback (GenericFeedbackSection) - nincs dinamikus tartalom
+const feedback = null
 
 // Nyelvváltás figyelése
 watch(locale, () => {
   hero.refresh()
   about.refresh()
+  story.refresh()
+  methode.refresh()
+  feedback.refresh()
 })
 </script>
 
@@ -60,5 +66,6 @@ watch(locale, () => {
     sectionKey="methode"
   />
   <section-separator />
+  <GenericFeedbackSection />
 
 </template>

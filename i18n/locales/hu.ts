@@ -37,6 +37,9 @@ export default defineI18nLocale(async (locale) => {
   "common": {
     "send": "Elküldés",
     "cancel": "Mégse"
+  },
+  "feedback": {
+    "title": "Visszajelzések"
   }
 }
 })

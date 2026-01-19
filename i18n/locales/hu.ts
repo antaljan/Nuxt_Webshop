@@ -40,6 +40,13 @@ export default defineI18nLocale(async (locale) => {
   },
   "feedback": {
     "title": "Visszajelzések"
+  },
+  "blog": {
+    "latest": "Legfrissebb Blogbejegyzések",
+    "loading": "Betöltés...",
+    "error": "Hiba történt a bejegyzések betöltésekor.",
+    "empty": "Jelenleg nincs elérhető bejegyzés ezen a nyelven.",
+    "readMore": "Tovább olvasom"
   }
 }
 })

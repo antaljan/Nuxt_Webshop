@@ -4,6 +4,8 @@ import GenericImageTextSection from '@/components/GenericImageTextSection.vue'
 import SectionSeparator from '@/components/sectionSeparator.vue'
 import GenericTextSection from '~/components/GenericTextSection.vue'
 import GenericFeedbackSection from '~/components/GenericFeedbackSection.vue'
+import GenericContactSection from '~/components/GenericContactSection.vue'
+import GenericBlogSection from '~/components/GenericBlogSection.vue'
 import { watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -31,6 +33,11 @@ const methode = await useAsyncData(
 )
 // Feedback (GenericFeedbackSection) - nincs dinamikus tartalom
 const feedback = null
+// Contact (GenericContactSection) 
+const contact = await useAsyncData(
+  () => `content-contact-${locale.value}`,
+  () => $fetch(`/api/content/contact/${locale.value}`)
+)
 
 // Nyelvváltás figyelése
 watch(locale, () => {
@@ -67,5 +74,10 @@ watch(locale, () => {
   />
   <section-separator />
   <GenericFeedbackSection />
-
+  <GenericContactSection
+    v-if="contact?.data?.value"
+    :content="contact.data.value"
+    sectionKey="contact"
+  />
+  <GenericBlogSection />
 </template>

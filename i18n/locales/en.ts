@@ -40,6 +40,13 @@ export default defineI18nLocale(async (locale) => {
   },
   "feedback": {
     "title": "Testimonials"
+  },
+  "blog": {
+    "latest": "Latest Blog Posts",
+    "loading": "Loading...",
+    "error": "Error loading blog posts.",
+    "empty": "No posts available in this language.",
+    "readMore": "Read More"
   }
 }
 })

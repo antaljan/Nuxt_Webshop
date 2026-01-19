@@ -22,20 +22,17 @@ i18n ✔️
 MyHeader.vue ✔️
 Myfooter.vue ✔️
 GeneralHeroSection.vue ✔️
-index.vue for landingPage ✔️
+landing page (index.vue) összerakás a Generic elemekből, Tailwind, SSR content loader finomítása ✔️
+sectionSeparator ✔️
 GenericImageTextSection ✔️
 GenericTextSection ✔️
+GenericFeedbackSection ✔️
+GenericContactSection ✔️
+GenericBlogSection ✔️
+Generic elemek létrehozása és integrálása a landing page-re (transzformálás a meglévő VUE projektből) ✔️
 
 Tasks are open:
 → Generic elemek létrehozása (transzformálás a meglévő VUE projektből):
-    - GenericFeedbackSection
-    - GenericContactSection
-    - sectionSeparator
-    - blogSection
-→ Landing page
-    - összerakás a Generic elemekből
-    - Tailwind
-    - SSR content loader finomítása
 → Admin dashboard (pages/admin/index.vue)
     - tatisztikák
     - funnel

@@ -1,39 +1,40 @@
 {
   "menu": {
-    "home": "Kezdőlap",
-    "about": "Rólam",
-    "story": "Történetem",
-    "methode": "Módszer",
-    "contact": "Kapcsolat",
+    "home": "Startseite",
+    "about": "Über mich",
+    "story": "Meine Geschichte",
+    "methode": "Methode",
+    "contact": "Kontakt",
     "blog": "Blog"
   },
   "admin": {
-    "newPost": "Új bejegyzés",
-    "users": "Felhasználók",
-    "newsletter": "Hírlevél",
-    "statistics": "Statisztika",
-    "products": "Termékek",
-    "images": "Képek"
+    "newPost": "Neue Beitrag",
+    "users": "Benutzer",
+    "newsletter": "Newsletter",
+    "statistics": "Statistiken",
+    "products": "Produkte",
+    "images": "Bilder"
   },
   "header": {
-    "login": "Bejelentkezés",
-    "logout": "Kijelentkezés"
+    "login": "Einloggen",
+    "logout": "Ausloggen",
+    "admin": "Admin"
   },
   "newsletter": {
-    "subscribeButton": "Hírlevél feliratkozás",
-    "firstname": "Keresztnév",
-    "lastname": "Vezetéknév",
+    "subscribeButton": "Newsletter abonnieren",
+    "firstname": "Vorname",
+    "lastname": "Nachname",
     "email": "Email",
-    "errorName": "A név kötelező",
-    "errorEmail": "Kérjük, adjon meg egy érvényes e-mail címet!",
-    "errorGdpr": "Kérjük, fogadja el az adatvédelmi nyilatkozatot!",
+    "errorName": "Name muss mindestens 2 Zeichen lang sein!",
+    "errorEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein!",
+    "errorGdpr": "Bitte akzeptieren Sie die Datenschutzerklärung!",
     "gdpr": {
-      "before": "Elfogadom az ",
-      "link": "adatvédelmi nyilatkozatot."
+      "before": "Ich akzeptiere die ",
+      "link": "Datenschutzerklärung."
     }
   },
   "common": {
-    "send": "Elküldés",
-    "cancel": "Mégse"
+    "send": "Senden",
+    "cancel": "Abbrechen"
   }
 }

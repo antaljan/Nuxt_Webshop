@@ -1,39 +1,40 @@
 {
   "menu": {
-    "home": "Kezdőlap",
-    "about": "Rólam",
-    "story": "Történetem",
-    "methode": "Módszer",
-    "contact": "Kapcsolat",
+    "home": "home",
+    "about": "About",
+    "story": "My Story",
+    "methode": "Method",
+    "contact": "Contact",
     "blog": "Blog"
   },
   "admin": {
-    "newPost": "Új bejegyzés",
-    "users": "Felhasználók",
-    "newsletter": "Hírlevél",
-    "statistics": "Statisztika",
-    "products": "Termékek",
-    "images": "Képek"
+    "newPost": "New Post",
+    "users": "Users",
+    "newsletter": "Newsletter",
+    "statistics": "Statistics",
+    "products": "Products",
+    "images": "Images"
   },
   "header": {
-    "login": "Bejelentkezés",
-    "logout": "Kijelentkezés"
+    "login": "Login",
+    "logout": "Logout",
+    "admin": "Admin"
   },
   "newsletter": {
-    "subscribeButton": "Hírlevél feliratkozás",
-    "firstname": "Keresztnév",
-    "lastname": "Vezetéknév",
+    "subscribeButton": "Subscribe to newsletter",
+    "firstname": "First Name",
+    "lastname": "Last Name",
     "email": "Email",
-    "errorName": "A név kötelező",
-    "errorEmail": "Kérjük, adjon meg egy érvényes e-mail címet!",
-    "errorGdpr": "Kérjük, fogadja el az adatvédelmi nyilatkozatot!",
+    "errorName": "Name must be defined",
+    "errorEmail": "please enter a valid email address",
+    "errorGdpr": "Please accept the privacy policy!",
     "gdpr": {
-      "before": "Elfogadom az ",
-      "link": "adatvédelmi nyilatkozatot."
+      "before": "I accept the ",
+      "link": "privacy policy."
     }
   },
   "common": {
-    "send": "Elküldés",
-    "cancel": "Mégse"
+    "send": "Send",
+    "cancel": "Cancel"
   }
 }

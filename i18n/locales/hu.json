@@ -17,7 +17,8 @@
   },
   "header": {
     "login": "Bejelentkezés",
-    "logout": "Kijelentkezés"
+    "logout": "Kijelentkezés",
+    "admin": "Admin"
   },
   "newsletter": {
     "subscribeButton": "Hírlevél feliratkozás",

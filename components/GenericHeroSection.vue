@@ -1,19 +1,13 @@
 <template>
   <div
-    class="hero-container w3-display-container w3-opacity-min"
+    class="hero-container"
     :style="{ backgroundImage: `url(${backgroundUrl})` }"
   >
     <!-- CENTER TEXT -->
-    <div class="w3-display-middle hero-text">
-      <!-- Desktop -->
-      <span class="hero-title w3-hide-small">{{ content.title }}</span><br />
-      <span class="hero-subtitle w3-hide-small">{{ content.subtitle }}</span>
-
-      <!-- Mobile -->
-      <span class="hero-title-small w3-hide-medium w3-hide-large">{{ content.title }}</span><br />
-      <span class="hero-subtitle-small w3-hide-medium w3-hide-large">{{ content.subtitle }}</span>
+    <div class="hero-text">
+      <span class="hero-title">{{ content.title }}</span><br />
+      <span class="hero-subtitle">{{ content.subtitle }}</span>
     </div>
-
     <!-- CTA -->
     <div
       v-if="content.ctaText"
@@ -155,6 +149,11 @@ const showEditor = ref(false)
 }
 .hero-text {
   white-space: nowrap;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .hero-title {
   color: white;

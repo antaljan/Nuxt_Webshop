@@ -13,14 +13,14 @@ export default defineNuxtConfig({
   ],
 
   i18n: {
-    lazy: true,
-    langDir: 'locales/',
-    defaultLocale: 'hu',
     locales: [
       { code: 'hu', file: 'hu.json' },
       { code: 'en', file: 'en.json' },
       { code: 'de', file: 'de.json' }
-    ]
+    ],
+    defaultLocale: 'hu',
+    lazy: true,
+    langDir: 'locales/'
   },
 
   build: {

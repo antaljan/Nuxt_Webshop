@@ -1,40 +1,28 @@
 <template>
   <v-app-bar flat color="white" class="border-b">
-
-    <!-- Mobile menu icon -->
-    <v-app-bar-nav-icon
-      v-if="smAndDown"
-      @click="menuOpen = true"
-    />
-
-    <!-- Logo -->
-    <NuxtLink to="/" class="text-xl font-semibold ml-2">
-      Antali Gyöngyi Edit
-    </NuxtLink>
-
-    <!-- Desktop menu -->
-    <div v-if="mdAndUp" class="flex gap-6 ml-10">
-      <NuxtLink to="/#home" class="menu-link">{{ $t('menu.home') }}</NuxtLink>
-      <NuxtLink to="/#about" class="menu-link">{{ $t('menu.about') }}</NuxtLink>
-      <NuxtLink to="/#story" class="menu-link">{{ $t('menu.story') }}</NuxtLink>
-      <NuxtLink to="/#methode" class="menu-link">{{ $t('menu.methode') }}</NuxtLink>
-      <NuxtLink to="/#contact" class="menu-link">{{ $t('menu.contact') }}</NuxtLink>
-      <NuxtLink to="/#blog" class="menu-link">{{ $t('menu.blog') }}</NuxtLink>
-
-      <!-- Admin desktop menu -->
-      <template v-if="isAdmin">
-        <NuxtLink to="/admin/blog/create" class="menu-link">{{ $t('admin.newPost') }}</NuxtLink>
-        <NuxtLink to="/admin/users" class="menu-link">{{ $t('admin.users') }}</NuxtLink>
-        <NuxtLink to="/admin/newsletter" class="menu-link">{{ $t('admin.newsletter') }}</NuxtLink>
-        <NuxtLink to="/admin/stat" class="menu-link">{{ $t('admin.statistics') }}</NuxtLink>
-        <NuxtLink to="/admin/products" class="menu-link">{{ $t('admin.products') }}</NuxtLink>
-        <NuxtLink to="/admin/images" class="menu-link">{{ $t('admin.images') }}</NuxtLink>
-      </template>
-    </div>
-
+    <v-app-bar-nav-icon @click="menuOpen = !menuOpen"/>
     <v-spacer />
-
-    <!-- Language selector -->
+    <v-toolbar-title>Antali Gyöngyi Edit</v-toolbar-title>
+    <v-navigation-drawer app v-model="menuOpen" clipped>
+      <v-list>
+        <v-list-item to="/#home" @click="menuOpen = !menuOpen">1...{{ $t('menu.home') }}</v-list-item>
+        <v-list-item to="/#about" @click="menuOpen = !menuOpen">2...{{ $t('menu.about') }}</v-list-item>
+        <v-list-item to="/#story" @click="menuOpen = !menuOpen">3...{{ $t('menu.story') }}</v-list-item>
+        <v-list-item to="/#methode" @click="menuOpen = !menuOpen">4...{{ $t('menu.methode') }}</v-list-item>
+        <v-list-item to="/#contact" @click="menuOpen = !menuOpen">5...{{ $t('menu.contact') }}</v-list-item>
+        <v-list-item to="/#blog" @click="menuOpen = !menuOpen">6...{{ $t('menu.blog') }}</v-list-item>
+        <div v-if="isAdmin">
+          <v-divider class="my-2" />
+          <v-list-item to="/admin/blog/create" @click="menuOpen = !menuOpen">{{ $t('admin.newPost') }}</v-list-item>
+          <v-list-item to="/admin/users" @click="menuOpen = !menuOpen">{{ $t('admin.users') }}</v-list-item>
+          <v-list-item to="/admin/newsletter" @click="menuOpen = !menuOpen">{{ $t('admin.newsletter') }}</v-list-item>
+          <v-list-item to="/admin/stat" @click="menuOpen = !menuOpen">{{ $t('admin.statistics') }}</v-list-item>
+          <v-list-item to="/admin/products" @click="menuOpen = !menuOpen">{{ $t('admin.products') }}</v-list-item>
+          <v-list-item to="/admin/images" @click="menuOpen = !menuOpen">{{ $t('admin.images') }}</v-list-item>
+        </div>
+      </v-list>
+    </v-navigation-drawer>
+    <v-spacer />
     <v-select
       v-model="locale"
       :items="languages"
@@ -42,8 +30,6 @@
       hide-details
       class="w-20 mr-4"
     />
-
-    <!-- Login / Logout -->
     <v-btn variant="text" @click="onLoginLogout">
       <v-icon v-if="loggedIn">mdi-logout</v-icon>
       <v-icon v-else>mdi-login</v-icon>
@@ -51,29 +37,6 @@
         {{ loggedIn ? user?.name : $t('header.login') }}
       </span>
     </v-btn>
-
-    <!-- Mobile drawer -->
-    <v-navigation-drawer v-model="menuOpen" temporary location="left">
-      <v-list>
-        <v-list-item to="/#home" @click="closeMenu">{{ $t('menu.home') }}</v-list-item>
-        <v-list-item to="/#about" @click="closeMenu">{{ $t('menu.about') }}</v-list-item>
-        <v-list-item to="/#story" @click="closeMenu">{{ $t('menu.story') }}</v-list-item>
-        <v-list-item to="/#methode" @click="closeMenu">{{ $t('menu.methode') }}</v-list-item>
-        <v-list-item to="/#contact" @click="closeMenu">{{ $t('menu.contact') }}</v-list-item>
-        <v-list-item to="/#blog" @click="closeMenu">{{ $t('menu.blog') }}</v-list-item>
-
-        <template v-if="isAdmin">
-          <v-divider class="my-2" />
-          <v-list-item to="/admin/blog/create" @click="closeMenu">{{ $t('admin.newPost') }}</v-list-item>
-          <v-list-item to="/admin/users" @click="closeMenu">{{ $t('admin.users') }}</v-list-item>
-          <v-list-item to="/admin/newsletter" @click="closeMenu">{{ $t('admin.newsletter') }}</v-list-item>
-          <v-list-item to="/admin/stat" @click="closeMenu">{{ $t('admin.statistics') }}</v-list-item>
-          <v-list-item to="/admin/products" @click="closeMenu">{{ $t('admin.products') }}</v-list-item>
-          <v-list-item to="/admin/images" @click="closeMenu">{{ $t('admin.images') }}</v-list-item>
-        </template>
-      </v-list>
-    </v-navigation-drawer>
-
   </v-app-bar>
 </template>
 

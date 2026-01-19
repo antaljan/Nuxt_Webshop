@@ -1,4 +1,5 @@
-{
+export default defineI18nLocale(async (locale) => {
+  return {
   "menu": {
     "home": "home",
     "about": "About",
@@ -38,3 +39,4 @@
     "cancel": "Cancel"
   }
 }
+})

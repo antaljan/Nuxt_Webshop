@@ -11,7 +11,7 @@
     <!-- CTA -->
     <div
       v-if="content.ctaText"
-      class="w3-display-bottomleft w3-padding-large w3-animate-opacity cta-wrapper"
+      class="cta-wrapper"
     >
       <a :href="content.ctaLink" class="cta-link">
         {{ content.ctaText }}
@@ -146,12 +146,13 @@ const showEditor = ref(false)
   background-size: cover;
   min-height: 600px;
   max-height: 100%;
+  opacity: 0.8;
 }
 .hero-text {
   white-space: nowrap;
   text-align: center;
   position: absolute;
-  top: 50%;
+  top: 20%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
@@ -184,6 +185,10 @@ const showEditor = ref(false)
 }
 .cta-wrapper {
   color: white;
+  position: absolute;
+  align-self: auto;
+  bottom: 55%;
+  left: 20px;
 }
 .cta-link {
   color: white;

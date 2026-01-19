@@ -12,16 +12,26 @@ export default defineNuxtConfig({
     '@mdi/font/css/materialdesignicons.min.css'
   ],
 
-  i18n: {
-    locales: [
-      { code: 'hu', file: 'hu.json' },
-      { code: 'en', file: 'en.json' },
-      { code: 'de', file: 'de.json' }
-    ],
-    defaultLocale: 'hu',
-    lazy: true,
-    langDir: 'locales/'
+  vuetify: {
+    icons: {
+      defaultSet: 'mdi'
+    },
+    display: {
+      mobileBreakpoint: 'md'
+    }
   },
+
+  i18n: {
+  locales: [
+    { code: 'hu', file: 'hu.ts', language: 'hu-HU' },
+    { code: 'en', file: 'en.ts', language: 'en-US' },
+    { code: 'de', file: 'de.ts', language: 'de-DE' }
+  ],
+  defaultLocale: 'hu',
+  strategy: 'prefix_except_default',
+  lazy: true,
+  langDir: 'locales',
+},
 
   build: {
     transpile: ['vuetify']

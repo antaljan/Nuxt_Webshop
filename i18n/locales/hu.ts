@@ -1,4 +1,5 @@
-{
+export default defineI18nLocale(async (locale) => {
+  return {
   "menu": {
     "home": "Kezdőlap",
     "about": "Rólam",
@@ -38,3 +39,4 @@
     "cancel": "Mégse"
   }
 }
+})

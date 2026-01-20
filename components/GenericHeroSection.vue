@@ -2,7 +2,7 @@
   
 <section class="relative w-full h-[60vh] md:h-[75vh] overflow-hidden">
   <div
-    class="absolute inset-0 bg-cover bg-center will-change-transform"
+    class="absolute inset-0 bg-cover bg-center will-change-transform parallax-bg"
     :style="{ backgroundImage: `url(${backgroundUrl})` }"
     ref="parallax"
   ></div>
@@ -159,10 +159,10 @@ const showEditor = ref(false)
 const parallax = ref(null) 
 onMounted(() => {
   const handler = () => {
-    const offset = window.scrollY * 0.4
-    if (parallax.value) {
-      parallax.value.style.transform = `translateY(${offset}px)`
-    }
+    if (!parallax.value) return
+    const rect = parallax.value.getBoundingClientRect()
+    const offset = rect.top * -0.3
+    parallax.value.style.transform = `translateY(${offset}px)`
   }
   window.addEventListener('scroll', handler)
   onUnmounted(() => {
@@ -183,4 +183,12 @@ onMounted(() => {
   background: white;
   border-radius: 8px;
 }
+.parallax-bg {
+  transform: scale(1.1);
+  transform-origin: center;
+  background-size: cover; 
+  background-position: center; 
+  will-change: transform;
+}
+
 </style>

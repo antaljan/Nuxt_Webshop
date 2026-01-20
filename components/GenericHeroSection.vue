@@ -64,7 +64,7 @@ const backendBase = config.public.backendBase
 --------------------------- */
 const props = defineProps({
   content: { type: Object, required: true },
-  sectionKey: { type: String, required: false, default: 'hero' }
+  sectionKey: { type: String, required: true }
 })
 
 
@@ -77,30 +77,36 @@ const isAdmin = computed(() => user.value?.role === 'admin')
 /* ---------------------------
    LOCAL COPY OF CONTENT
 --------------------------- */
-const localContent = ref({})
+const localContent = ref({
+  title: '',
+  subtitle: '',
+  ctaText: '',
+  ctaLink: '',
+  image: ''
+})
 watch(
   () => props.content,
   (val) => {
-    if (val) localContent.value = { ...val }
+    if (val) localContent.value = { ...localContent.value, ...val }
   },
   { immediate: true }
 )
+
 
 /* ---------------------------
    BACKGROUND IMAGE URL
 --------------------------- */
 const backgroundUrl = computed(() => {
   const img = localContent.value.image
+  if (!img) return '/fallbackImages.jpg'
 
-  if (img) {
-    if (img.startsWith('http')) return img
+  // Ha teljes URL → hagyjuk
+  if (img.startsWith('http')) return img
 
-    const normalized = img.startsWith('/') ? img : `/${img}`
-    return `${backendBase}${normalized}`
-  }
-
-  return '/fallbackImages.jpg'
+  // Ha relatív → backendBase + path
+  return `${backendBase}${img.startsWith('/') ? img : '/' + img}`
 })
+
 console.log('Background URL:', backgroundUrl.value);
 
 /* ---------------------------
@@ -119,7 +125,7 @@ async function onImageSelected(event) {
       body: formData
     })
 
-  localContent.value.image = response.path + '?t=' + Date.now()
+  localContent.value.image = `${response.path}?t=${Date.now()}`
   } catch (err) {
     console.error('Image upload failed:', err)
   }

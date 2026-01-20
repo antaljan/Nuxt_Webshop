@@ -1,14 +1,19 @@
-Rövid “architectural reality check”
-Mostani állapot alapján:
+Short “architectural reality check”
+current situation:
 Backen (NODE Express)
-    összekapcsolva a MongoDB adatbázissal, kész és fut produktív módban egy VPS-en, nem konténerbe vagy devszerveren, mert a fejlesztésre használt gépem 8Gb memóriája nem bírja.
+    Running in productiv mode on a VPS (IONOS) , connected to MongoDB. (not on dev-server in docker or contener because my developper hardware has only 8GB RAM)
 Nuxt-Backend (Nuxt server routes):
-    Auth, blog, products, newsletter, stats, users, stb. endpointok már strukturálva vannak.
-    Van külön backend.ts util a külső Node backendhez (ez igazából csak a BACKEND_BASE_URL definiálja ami most a VPS domain neve, de produktív módban ez a localhost:4000 lesz, mert a NUXT frontend és NODE backend ugyanazon a szerveren fog futni).
+    Auth, blog, products, newsletter, stats, users ect... endpoints are structured and done.
+    There is an a backend.ts in /server/utils witch exported the BACKEND_BASE_URL item, this is the URL for NODE API Server on VPS. (backend and frontend will be running on same VPS in productiv system. frontend on port:3000 backend on port:4000 withit the NODE backend will be not any more visible for othert, only for frontend.)
 Frontend:
-    Nuxt 4 SSR, Vuetify, n18n, komponens‑alapú felépítés ✔️
-    Már van: useAuth, useContent, de a többi composable (blog, product, newsletter, user) még üres.
-
+    Nuxt 4 SSR, Vuetify, n18n, Tailwind and component based design ✔️
+    The composables useAuth, useContent are integrated, the others (blog, product, newsletter, user) not yet.
+    The content pictures are stored on upload directory of NODE backend server, in the nuxt.config.ts is an a environmental variable defined for reach out that:
+    runtimeConfig: {
+        public: {
+            backendBase: process.env.BACKEND_BASE_URL || 'https://antaligyongyi.hu/api'
+        }
+    }
 
 Tasks are done:
 useAuth.ts ✔️
@@ -32,13 +37,21 @@ GenericBlogSection ✔️
 Generic elemek létrehozása és integrálása a landing page-re (transzformálás a meglévő VUE projektből) ✔️
 
 Tasks are open:
-→ landing page 2 hero nem ölti be a képet és a képek mentése sem működik (a contact content alá menti a mongoDB-be )
+→ landing page: a 2. hero nem tölti be a képet és a képek mentése sem működik, adatbázisban a content/contact alá menti a helyes út az lenne ha a hero-contact elembe mentené mint hero content struktúra.
 → Admin dashboard (pages/admin/index.vue)
-    - tatisztikák
+    - statisztikák
     - funnel
     - pageview
-    - newsletter performance
+    - newsletter + performance
+→ webshop (products):
+    - overview with searching(picture, name, short descripion, price on v-card)
+    - product site / product with detalis and buy
+    - shopping basket
+    - purchase only registred user can buy (because billing) --> login or registration by buying
+    - paying due to serviceprovider (socket)
 → User dashboard (pages/user/index.vue)
-    - vásárlások
-    - videók
-    - letölthető anyagok
+    - My Products:
+        - video
+        - download materials (ebook, pdf..)
+        - Scheduled consultations/choacings
+

@@ -87,8 +87,31 @@ import { useRoute, useRouter } from '#imports'
 import { Editor, EditorContent } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
 
+  /*-----------------------------------
+        Admin Auth Guard
+  ---------------------------------- */
+const { isAdmin, loggedIn } = useAuth()
+// Client oldali guard
+onMounted(() => {
+  if (!loggedIn.value) {
+    return navigateTo('/login')
+  }
+  if (!isAdmin.value) {
+    return navigateTo('/')
+  }
+})
+// Ha kilépsz → automatikusan redirectel
+watch([loggedIn, isAdmin], () => {
+  if (!loggedIn.value) {
+    navigateTo('/')
+  } else if (!isAdmin.value) {
+    navigateTo('/')
+  }
+})
+
+
 /* ---------------------------
-   create Tiptap Editor
+    create Tiptap Editor
 --------------------------- */
 
 const editor = ref(null)
@@ -107,24 +130,24 @@ onBeforeUnmount(() => {
 
 
 /* ---------------------------
-   ROUTE + ROUTER
+    ROUTE + ROUTER
 --------------------------- */
 const route = useRoute()
 const router = useRouter()
 
 /* ---------------------------
-   BLOG COMPOSABLE
+    BLOG COMPOSABLE
 --------------------------- */
 const blog = useBlog()
 
 /* ---------------------------
-   EDIT MODE?
+    EDIT MODE?
 --------------------------- */
 const isEdit = computed(() => !!route.query.edit)
 const postId = computed(() => route.query.edit)
 
 /* ---------------------------
-   FORM STATE
+    FORM STATE
 --------------------------- */
 const valid = ref(false)
 
@@ -138,7 +161,7 @@ const post = reactive({
 })
 
 /* ---------------------------
- LOAD EXISTING POST (EDIT MODE) 
+  LOAD EXISTING POST (EDIT MODE) 
 --------------------------- */
 if (isEdit.value) {
   const { data } = await useAsyncData(
@@ -153,7 +176,7 @@ if (isEdit.value) {
 
 
 /* ---------------------------
-   SLUG GENERATOR
+    SLUG GENERATOR
 --------------------------- */
 function generateSlug() {
   if (!isEdit.value) {
@@ -166,7 +189,7 @@ function generateSlug() {
 }
 
 /* ---------------------------
-   IMAGE UPLOAD
+    IMAGE UPLOAD
 --------------------------- */
 async function uploadImage(event) {
   const file = event.target.files[0]
@@ -187,7 +210,7 @@ async function uploadImage(event) {
 }
 
 /* ---------------------------
-   SAVE POST
+    SAVE POST
 --------------------------- */
 async function savePost() {
   if (!valid.value) return

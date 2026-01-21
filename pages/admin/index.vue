@@ -4,8 +4,10 @@
   </div>
 </template>
 <script setup>
+  /*-----------------------------------
+        Admin Auth Guard
+  ---------------------------------- */
 const { isAdmin, loggedIn } = useAuth()
-
 // Client oldali guard
 onMounted(() => {
   if (!loggedIn.value) {
@@ -15,7 +17,6 @@ onMounted(() => {
     return navigateTo('/')
   }
 })
-
 // Ha kilépsz → automatikusan redirectel
 watch([loggedIn, isAdmin], () => {
   if (!loggedIn.value) {

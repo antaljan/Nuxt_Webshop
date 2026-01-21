@@ -139,6 +139,9 @@ project/
 │  ├─ css/
 │  └─ images/
 ├─ components/                      # UI, blog, products, admin, newsletter
+│  ├─ charts/
+│  │    ├─ BarChart.vue
+│  │    └─ LineChart.vue
 │  ├─ GenericBlogSection.vue
 │  ├─ GenericContactSection.vue
 │  ├─ GenericFeedbackSection.vue
@@ -151,16 +154,10 @@ project/
 ├─ composables/                     # useAuth, useUser, useProducts, etc.
 │  ├─ useAuth.ts
 │  ├─ useBlog.ts
-│  ├─ useContent.ts
-│  ├─                               # useNewsletter.ts - empty
-│  ├─                               # useProduct.ts -empty
-│  └─                               # useUser.ts - empty
+│  └─ useContent.ts
 ├─ layouts/                         # default, user, admin
-│  ├─ admin.vue
-│  ├─ default.vue
-│  └─ user.vue
+│  └─ default.vue
 ├─ middleware/                      # middleware
-│  ├─ admin.global.ts
 │  └─ auth.ts
 ├─ pages/                           # pages
 │  ├─ admin/
@@ -297,6 +294,7 @@ Middleware:
   npm install @nuxtjs/i18n
   npm install -D @nuxtjs/tailwindcss
   npm install @tiptap/vue-3 @tiptap/starter-kit
+  npm install chart.js
 
 🚀 Deployment (VPS)
 - NGINX reverse proxy

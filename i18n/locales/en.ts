@@ -61,6 +61,26 @@ export default defineI18nLocale(async (locale) => {
     viewAll: "View All Posts",
     allPosts: "All Posts",
     backToList: "Back to List"
-  }
+  },
+  products: {
+    title: "Products",
+    viewDetails: "Details",
+    buyFor: "Buy for",
+    noProducts: "No products available."
+  },
+  cart: {
+  title: "Shopping Cart",
+  empty: "Your cart is empty.",
+  total: "Total",
+  checkout: "Proceed to Checkout",
+  clear: "Clear Cart"
+},
+checkout: {
+  successTitle: "Successful Payment",
+  successText: "Thank you for your purchase! The products will be available in your user account soon.",
+  goToDashboard: "Go to User Dashboard",
+  cancelTitle: "Payment Cancelled",
+  cancelText: "No charges were made. If you'd like, you can try purchasing again.",
+  backToProducts: "Back to Products"
 }
-})
+}})

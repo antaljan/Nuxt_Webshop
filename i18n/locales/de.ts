@@ -61,6 +61,26 @@ export default defineI18nLocale(async (locale) => {
     viewAll: "Alle Beiträge anzeigen",
     allPosts: "Alle Beiträge",
     backToList: "Zurück zur Liste"
-  }
+  },  products: {
+    title: "Produkte",
+    viewDetails: "Details",
+    buyFor: "Kaufen für",
+    noProducts: "Keine Produkte verfügbar."
+  },
+  cart: {
+  title: "Einkaufswagen",
+  empty: "Ihr Warenkorb ist leer.",
+  total: "Gesamt",
+  checkout: "Zur Kasse gehen",
+  clear: "Warenkorb leeren"
+},
+checkout: {
+  successTitle: "Erfolgreiche Zahlung",
+  successText: "Vielen Dank für Ihren Einkauf! Die Produkte stehen bald in Ihrem Benutzerkonto zur Verfügung.",
+  goToDashboard: "Zum Benutzerbereich",
+  cancelTitle: "Zahlung abgebrochen",
+  cancelText: "Es wurden keine Gebühren berechnet. Wenn Sie möchten, können Sie erneut versuchen zu kaufen.",
+  backToProducts: "Zurück zu den Produkten"
+}
 }
 })

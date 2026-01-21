@@ -3,10 +3,18 @@
     <!-- ALWAYS VISIBLE HAMBURGER -->
     <v-app-bar-nav-icon @click="$emit('toggle-menu')" />
 
-    <!-- LOGO -->
-    <v-toolbar-title class="font-weight-medium">
-      Antali Gyöngyi Edit
-    </v-toolbar-title>
+    <!-- customer cart -->
+
+    <v-btn icon @click="openCart">
+      <v-badge
+        :content="cart.length"
+        color="red"
+        v-if="cart.length > 0"
+      >
+        <v-icon>mdi-cart</v-icon>
+      </v-badge>
+      <v-icon v-else>mdi-cart-outline</v-icon>
+    </v-btn>
 
     <v-spacer />
 
@@ -58,6 +66,15 @@ const onLoginLogout = async () => {
   // Bejelentkezés → átirányítás a login oldalra, de megőrizzük a jelenlegi route-ot
   const current = useRoute().fullPath
   navigateTo(`/login?redirect=${encodeURIComponent(current)}`)
+}
+
+// Cart drawer kezelése
+import { useProducts } from '~/composables/useProducts'
+import { useCartDrawer } from '~/composables/useCartDrawer'
+const { cart } = useProducts()
+const { isOpen } = useCartDrawer()
+function openCart() {
+  isOpen.value = true
 }
 
 </script>

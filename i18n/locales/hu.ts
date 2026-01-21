@@ -1,4 +1,5 @@
-export default defineI18nLocale(() => ({
+export default defineI18nLocale(async (locale) => {
+  return {
   $vuetify: {
     carousel: {
       prev: 'Előző',
@@ -8,7 +9,6 @@ export default defineI18nLocale(() => ({
       }
     }
   },
-
   menu: {
     home: "Kezdőlap",
     about: "Rólam",
@@ -17,7 +17,6 @@ export default defineI18nLocale(() => ({
     contact: "Kapcsolat",
     blog: "Blog"
   },
-
   admin: {
     newPost: "Új bejegyzés",
     Posts: "Bejegyzések",
@@ -27,13 +26,11 @@ export default defineI18nLocale(() => ({
     products: "Termékek",
     images: "Képek"
   },
-
   header: {
     login: "Bejelentkezés",
     logout: "Kijelentkezés",
     admin: "Admin"
   },
-
   newsletter: {
     subscribeButton: "Hírlevél feliratkozás",
     firstname: "Keresztnév",
@@ -47,17 +44,14 @@ export default defineI18nLocale(() => ({
       link: "adatvédelmi nyilatkozatot."
     }
   },
-
   common: {
     send: "Elküldés",
     cancel: "Mégse",
     backtohome: "← Vissza a kezdőlapra"
   },
-
   feedback: {
     title: "Visszajelzések"
   },
-
   blog: {
     latest: "Legfrissebb Blogbejegyzések",
     loading: "Betöltés...",
@@ -67,5 +61,26 @@ export default defineI18nLocale(() => ({
     viewAll: "Összes bejegyzés megtekintése",
     allPosts: "Összes bejegyzés",
     backToList: "Vissza a listához"
-  }
-}))
+  },
+  products: {
+    title: "Termékek",
+    viewDetails: "Részletek",
+    buyFor: "Vásárlás",
+    noProducts: "Nincs elérhető termék."
+  },
+  cart: {
+  title: "Bevásárló kosár",
+  empty: "A kosár üres.",
+  total: "Végösszeg",
+  checkout: "Tovább a fizetéshez",
+  clear: "Kosár ürítése"
+},
+checkout: {
+  successTitle: "Sikeres fizetés",
+  successText: "Köszönöm a vásárlást! A termékek hamarosan elérhetőek a felhasználói fiókodban.",
+  goToDashboard: "Tovább a felhasználói felületre",
+  cancelTitle: "A fizetés megszakadt",
+  cancelText: "Nem történt terhelés. Ha szeretnéd, újra megpróbálhatod a vásárlást.",
+  backToProducts: "Vissza a termékekhez"
+}
+}})

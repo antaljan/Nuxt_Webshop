@@ -196,7 +196,7 @@ async function uploadImage(event) {
   if (!file) return
 
   const formData = new FormData()
-  formData.append('file', file)
+formData.append('image', file)
 
   const config = useRuntimeConfig()
   const backendBase = config.public.backendBase

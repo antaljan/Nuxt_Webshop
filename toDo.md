@@ -36,7 +36,9 @@ GenericContactSection ✔️
 GenericBlogSection ✔️
 Generic elemek létrehozása és integrálása a landing page-re (transzformálás a meglévő VUE projektből) ✔️
 Blog pages (overview, one view) ✔️
-Blog admin (list, create, edit, delete) ✔️
+Blog admin (list, create with tiptap editor, edit, delete) ✔️
+SSR safe user status, stabilised duo to useRequestHeaders(['cookie']) ✔️
+menü links are ssr safe fixed ✔️
 
 Tasks are open:
 → Admin dashboard (pages/admin/index.vue)

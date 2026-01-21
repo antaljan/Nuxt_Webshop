@@ -1,5 +1,5 @@
 <template>
-  <section id="feedback" class="py-20 bg-gray-50">
+  <section :id="sectionKey" class="py-20 bg-gray-50">
     <div class="container mx-auto">
 
       <!-- TITLE -->

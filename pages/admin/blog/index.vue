@@ -66,6 +66,16 @@
       </tbody>
     </v-table>
 
+    <!-- BACK TO HOME BUTTON -->
+    <div class="mt-10">
+      <NuxtLink
+        to="/"
+        class="inline-block px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800"
+      >
+        ← Back to Home
+      </NuxtLink>
+    </div>
+    
   </section>
 </template>
 

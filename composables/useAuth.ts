@@ -8,7 +8,14 @@ export const useAuth = () => {
   const fetchUser = async () => {
     loading.value = true
     try {
-      const data = await $fetch('/api/auth/me', { method: 'GET' })
+      // SSR alatt szükséges → átadjuk a cookie-t
+      const headers = useRequestHeaders(['cookie'])
+
+      const data = await $fetch('/api/auth/me', {
+        method: 'GET',
+        headers
+      })
+
       user.value = data.user || null
     } catch {
       user.value = null
@@ -25,15 +32,16 @@ export const useAuth = () => {
         body: { email, password }
       })
 
-      // Ha a backend nem küldi vissza a usert → fetchUser()
+      // Ha a backend visszaadja a usert → beállítjuk
       if (data.user) {
         user.value = data.user
       } else {
+        // Ha nem → lekérjük a /me endpointból
         await fetchUser()
       }
 
       return true
-    } catch (err) {
+    } catch {
       throw new Error('Login failed')
     } finally {
       loading.value = false

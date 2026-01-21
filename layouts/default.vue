@@ -13,15 +13,15 @@ const { t } = useI18n()
    MAIN MENU (hash + route keverve)
 ----------------------------------------- */
 const mainMenu = [
-  { type: 'hash', href: '#home', label: 'menu.home' },
-  { type: 'hash', href: '#about', label: 'menu.about' },
-  { type: 'hash', href: '#story', label: 'menu.story' },
-  { type: 'hash', href: '#methode', label: 'menu.methode' },
-  { type: 'hash', href: '#contact', label: 'menu.contact' },
+  { type: 'hash', to: '/#home', label: 'menu.home' },
+  { type: 'hash', to: '/#about', label: 'menu.about' },
+  { type: 'hash', to: '/#story', label: 'menu.story' },
+  { type: 'hash', to: '/#methode', label: 'menu.methode' },
+  { type: 'hash', to: '/#contact', label: 'menu.contact' },
 
-  // BLOG → normál route + fancy ikon
   { type: 'route', to: '/blog', label: 'menu.blog', icon: 'mdi-book-open-page-variant' }
 ]
+
 
 /* -----------------------------------------
    ADMIN MENU
@@ -70,9 +70,9 @@ const closeMenu = () => (menuOpen.value = false)
 
           <!-- HASH LINK -->
           <template v-else>
-            <a :href="item.href" class="flex items-center w-full py-2">
+            <NuxtLink :to="item.to" class="flex items-center w-full py-2">
               {{ t(item.label) }}
-            </a>
+            </NuxtLink>
           </template>
         </v-list-item>
 

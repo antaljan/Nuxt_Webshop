@@ -1,5 +1,5 @@
 <template>
-  <section class="py-16">
+  <section :id="sectionKey" class="py-16">
     <div
       class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center"
       :class="reverse ? 'md:flex-row-reverse' : ''"

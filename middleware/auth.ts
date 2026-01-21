@@ -6,11 +6,9 @@ export default defineNuxtRouteMiddleware(async (to) => {
     to.path.startsWith('/admin')
 
   // Public route → nincs teendő
-  if (!isProtected) {
-    return
-  }
+  if (!isProtected) return
 
-  // Ha még nincs user betöltve → próbáljuk meg
+  // Ha még nincs user betöltve → próbáljuk meg SSR-ben is
   if (!loggedIn.value) {
     await fetchUser()
   }

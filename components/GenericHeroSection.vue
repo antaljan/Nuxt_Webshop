@@ -1,6 +1,6 @@
 <template>
   
-<section class="relative w-full h-[60vh] md:h-[75vh] overflow-hidden">
+<section :id="sectionKey" class="relative w-full h-[60vh] md:h-[75vh] overflow-hidden">
   <div
     class="absolute inset-0 bg-cover bg-center will-change-transform parallax-bg"
     :style="{ backgroundImage: `url(${backgroundUrl})` }"

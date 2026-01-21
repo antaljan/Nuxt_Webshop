@@ -1,5 +1,5 @@
 <template>
-  <section id="blog" class="py-20">
+  <section :id="sectionKey" class="py-20">
     <div class="container mx-auto">
 
       <!-- TITLE -->

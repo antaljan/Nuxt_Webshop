@@ -8,6 +8,7 @@ import { useI18n } from 'vue-i18n'
 const menuOpen = ref(false)
 const { isAdmin } = useAuth()
 const { t } = useI18n()
+console.log('isAdmin:', isAdmin.value)
 
 /* -----------------------------------------
    MAIN MENU (hash + route keverve)
@@ -27,6 +28,7 @@ const mainMenu = [
    ADMIN MENU
 ----------------------------------------- */
 const adminMenu = [
+  { to: '/admin', label: 'admin.dashboard' },
   { to: '/admin/blog/create', label: 'admin.newPost' },
   { to: '/admin/blog', label: 'admin.Posts' },
   { to: '/admin/users', label: 'admin.users' },

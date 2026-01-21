@@ -6,23 +6,27 @@ export const useAuth = () => {
   const isAdmin = computed(() => user.value?.role === 'admin')
 
   const fetchUser = async () => {
+    if (process.server) return
     loading.value = true
     try {
-      // SSR alatt szükséges → átadjuk a cookie-t
-      const headers = useRequestHeaders(['cookie'])
-
       const data = await $fetch('/api/auth/me', {
         method: 'GET',
-        headers
+        credentials: 'include'
       })
-
-      user.value = data.user || null
-    } catch {
-      user.value = null
+      // Csak akkor írjuk felül, ha tényleg kaptunk usert
+      if (data?.user) {
+        user.value = data.user
+      }
+      // ❗ Ha nincs user a válaszban, NEM nullázzuk le
+    } catch (err) {
+      console.warn('fetchUser failed, keeping existing user:', err)
+      // ❗ Hibára sem nullázzuk le a usert
     } finally {
       loading.value = false
     }
   }
+
+
 
   const login = async (email: string, password: string) => {
     loading.value = true
@@ -36,7 +40,7 @@ export const useAuth = () => {
       if (data.user) {
         user.value = data.user
       } else {
-        // Ha nem → lekérjük a /me endpointból
+        // Client oldalon újra lekérjük
         await fetchUser()
       }
 

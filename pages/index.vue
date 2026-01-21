@@ -60,36 +60,51 @@ watch(locale, () => {
   <GenericHeroSection
     v-if="hero?.data?.value"
     :content="hero.data.value"
+    sectionKey="hero"
   />
+
   <GenericImageTextSection
     v-if="about?.data?.value"
     :content="about.data.value"
     sectionKey="about"
     :reverse="false"
   />
+
   <section-separator />
+
   <GenericTextSection
     v-if="story?.data?.value"
     :content="story.data.value"
     sectionKey="story"
   />
+
   <section-separator />
+
   <GenericTextSection
     v-if="methode?.data?.value"
     :content="methode.data.value"
     sectionKey="methode"
   />
+
   <section-separator />
-  <GenericFeedbackSection />
+
+  <GenericFeedbackSection
+    sectionKey="feedback"
+  />
+
   <GenericHeroSection
     v-if="contactHero?.data?.value"
     :content="contactHero.data.value"
     sectionKey="contact-hero"
   />
+
   <GenericContactSection
     v-if="contact?.data?.value"
     :content="contact.data.value"
     sectionKey="contact"
   />
-  <GenericBlogSection />
+
+  <GenericBlogSection
+    sectionKey="blog"
+  />
 </template>

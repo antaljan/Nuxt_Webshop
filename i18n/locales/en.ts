@@ -1,5 +1,14 @@
 export default defineI18nLocale(async (locale) => {
   return {
+    $vuetify: {
+    carousel: {
+      prev: 'Previous',
+      next: 'Next',
+      ariaLabel: {
+        delimiter: 'Carousel slide {0} / {1}'
+      }
+    }
+  },
   "menu": {
     "home": "home",
     "about": "About",
@@ -49,15 +58,6 @@ export default defineI18nLocale(async (locale) => {
     "empty": "No posts available in this language.",
     "readMore": "Read More",
     "viewAll": "View All Posts"
-  },
-  "vuetify": {
-    "carousel": {
-      "prev": 'Previous',
-      "next": 'Next',
-      "ariaLabel": {
-        "delimiter": 'Carousel slide {0} / {1}'
-      }
-    }
   }
 }
 })

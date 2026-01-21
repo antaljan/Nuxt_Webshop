@@ -4,3 +4,8 @@
         <!-- Newsletter content will be rendered here -->
     </div>
 </template>
+<script setup>
+  definePageMeta({
+    layout: 'admin'
+  })
+</script>

@@ -71,6 +71,10 @@ import { useI18n } from 'vue-i18n'
 import { useAuth } from '@/composables/useAuth'
 import { useRouter } from 'vue-router'
 
+const props = defineProps({
+  sectionKey: { type: String, required: true }
+})
+
 /* ---------------------------
    AUTH
 --------------------------- */

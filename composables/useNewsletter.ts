@@ -1,2 +1,0 @@
-// useNewsletter.ts
-

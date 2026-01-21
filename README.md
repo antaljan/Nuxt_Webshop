@@ -136,24 +136,31 @@ project/
 │       ├─ en.ts                    # angol szöveg
 │       └─ hu.ts                    # magyar szöveg
 ├─ assets/                          # built assets
-│  └─ css/
+│  ├─ css/
 │  └─ images/
 ├─ components/                      # UI, blog, products, admin, newsletter
-│  └─ GenericHeroSection.vue
+│  ├─ GenericBlogSection.vue
+│  ├─ GenericContactSection.vue
+│  ├─ GenericFeedbackSection.vue
+│  ├─ GenericHeroSection.vue
+│  ├─ GenericImageTextSection.vue
+│  ├─ GenericTextSection.vue
+│  ├─ sectionSeparator.vue
+│  ├─ MyFooter.vue
 │  └─ MyHeadder.vue
 ├─ composables/                     # useAuth, useUser, useProducts, etc.
-│  └─ useAuth.ts
-│  └─                               # useBlog.ts - empty
-│  └─ useContent.ts
-│  └─                               # useNewsletter.ts - empty
-│  └─                               # useProduct.ts -empty
+│  ├─ useAuth.ts
+│  ├─ useBlog.ts
+│  ├─ useContent.ts
+│  ├─                               # useNewsletter.ts - empty
+│  ├─                               # useProduct.ts -empty
 │  └─                               # useUser.ts - empty
 ├─ layouts/                         # default, user, admin
-│  └─ admin.vue
-│  └─ default.vue
+│  ├─ admin.vue
+│  ├─ default.vue
 │  └─ user.vue
 ├─ middleware/                      # middleware
-│  └─ admin.global.ts
+│  ├─ admin.global.ts
 │  └─ auth.ts
 ├─ pages/                           # pages
 │  ├─ admin/
@@ -191,6 +198,7 @@ project/
 │  └─ register.vue
 ├─ plugins/                           # plugins
 ├─ public/                            # static files
+│  ├─ fabackImages.jpg
 │  ├─ favicon.ivo
 │  └─ robots.txt
 └─ server/                            # SSR backend layer
@@ -288,6 +296,7 @@ Middleware:
   npm install @mdi/font
   npm install @nuxtjs/i18n
   npm install -D @nuxtjs/tailwindcss
+  npm install @tiptap/vue-3 @tiptap/starter-kit
 
 🚀 Deployment (VPS)
 - NGINX reverse proxy

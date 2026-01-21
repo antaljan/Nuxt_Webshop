@@ -107,8 +107,6 @@ const backgroundUrl = computed(() => {
   return `${backendBase}${img.startsWith('/') ? img : '/' + img}`
 })
 
-console.log('Background URL:', backgroundUrl.value);
-
 /* ---------------------------
    IMAGE UPLOAD
 --------------------------- */

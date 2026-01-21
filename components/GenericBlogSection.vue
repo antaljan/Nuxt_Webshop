@@ -76,7 +76,7 @@
 
                   <div class="mt-3">
                     <NuxtLink
-                      :to="`/blog/${post._id}`"
+                      :to="`/blog/${post.slug}`"
                       class="text-blue-600 font-semibold hover:underline"
                     >
                       {{ t('blog.readMore') }}
@@ -89,7 +89,15 @@
           </v-row>
         </v-carousel-item>
       </v-carousel>
-
+      <!-- VIEW ALL BUTTON -->
+      <div class="text-center mt-10">
+        <NuxtLink
+          to="/blog"
+          class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+        >
+          {{ t('blog.viewAll') }}
+        </NuxtLink>
+      </div>
     </div>
   </section>
 </template>

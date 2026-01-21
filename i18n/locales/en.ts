@@ -10,6 +10,7 @@ export default defineI18nLocale(async (locale) => {
   },
   "admin": {
     "newPost": "New Post",
+    "Posts": "Posts",
     "users": "Users",
     "newsletter": "Newsletter",
     "statistics": "Statistics",
@@ -46,7 +47,17 @@ export default defineI18nLocale(async (locale) => {
     "loading": "Loading...",
     "error": "Error loading blog posts.",
     "empty": "No posts available in this language.",
-    "readMore": "Read More"
+    "readMore": "Read More",
+    "viewAll": "View All Posts"
+  },
+  "vuetify": {
+    "carousel": {
+      "prev": 'Previous',
+      "next": 'Next',
+      "ariaLabel": {
+        "delimiter": 'Carousel slide {0} / {1}'
+      }
+    }
   }
 }
 })

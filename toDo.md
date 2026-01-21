@@ -35,9 +35,10 @@ GenericFeedbackSection ✔️
 GenericContactSection ✔️
 GenericBlogSection ✔️
 Generic elemek létrehozása és integrálása a landing page-re (transzformálás a meglévő VUE projektből) ✔️
+Blog pages (overview, one view) ✔️
+Blog admin (list, create, edit, delete) ✔️
 
 Tasks are open:
-→ landing page: a 2. hero nem tölti be a képet és a képek mentése sem működik, adatbázisban a content/contact alá menti a helyes út az lenne ha a hero-contact elembe mentené mint hero content struktúra.
 → Admin dashboard (pages/admin/index.vue)
     - statisztikák
     - funnel

@@ -9,17 +9,26 @@ const menuOpen = ref(false)
 const { isAdmin } = useAuth()
 const { t } = useI18n()
 
+/* -----------------------------------------
+   MAIN MENU (hash + route keverve)
+----------------------------------------- */
 const mainMenu = [
-  { to: '/#home', label: 'menu.home' },
-  { to: '/#about', label: 'menu.about' },
-  { to: '/#story', label: 'menu.story' },
-  { to: '/#methode', label: 'menu.methode' },
-  { to: '/#contact', label: 'menu.contact' },
-  { to: '/#blog', label: 'menu.blog' }
+  { type: 'hash', href: '#home', label: 'menu.home' },
+  { type: 'hash', href: '#about', label: 'menu.about' },
+  { type: 'hash', href: '#story', label: 'menu.story' },
+  { type: 'hash', href: '#methode', label: 'menu.methode' },
+  { type: 'hash', href: '#contact', label: 'menu.contact' },
+
+  // BLOG → normál route + fancy ikon
+  { type: 'route', to: '/blog', label: 'menu.blog', icon: 'mdi-book-open-page-variant' }
 ]
 
+/* -----------------------------------------
+   ADMIN MENU
+----------------------------------------- */
 const adminMenu = [
   { to: '/admin/blog/create', label: 'admin.newPost' },
+  { to: '/admin/blog', label: 'admin.Posts' },
   { to: '/admin/users', label: 'admin.users' },
   { to: '/admin/newsletter', label: 'admin.newsletter' },
   { to: '/admin/stat', label: 'admin.statistics' },
@@ -32,10 +41,11 @@ const closeMenu = () => (menuOpen.value = false)
 
 <template>
   <v-app>
+
     <!-- HEADER -->
     <MyHeader @toggle-menu="menuOpen = !menuOpen" />
 
-    <!-- DRAWER – NEM az app-bar-ben, hanem KÍVÜL -->
+    <!-- MOBILE DRAWER -->
     <v-navigation-drawer
       v-model="menuOpen"
       location="start"
@@ -43,26 +53,44 @@ const closeMenu = () => (menuOpen.value = false)
       width="280"
     >
       <v-list>
+
+        <!-- MAIN MENU -->
         <v-list-item
           v-for="item in mainMenu"
-          :key="item.to"
-          :to="item.to"
+          :key="item.label"
           @click="closeMenu"
         >
-          {{ t(item.label) }}
+          <!-- ROUTE LINK -->
+          <template v-if="item.type === 'route'">
+            <NuxtLink :to="item.to" class="flex items-center w-full py-2">
+              <v-icon v-if="item.icon" class="mr-2">{{ item.icon }}</v-icon>
+              {{ t(item.label) }}
+            </NuxtLink>
+          </template>
+
+          <!-- HASH LINK -->
+          <template v-else>
+            <a :href="item.href" class="flex items-center w-full py-2">
+              {{ t(item.label) }}
+            </a>
+          </template>
         </v-list-item>
 
+        <!-- ADMIN SECTION -->
         <template v-if="isAdmin">
           <v-divider class="my-2" />
+
           <v-list-item
             v-for="item in adminMenu"
             :key="item.to"
-            :to="item.to"
             @click="closeMenu"
           >
-            {{ t(item.label) }}
+            <NuxtLink :to="item.to" class="w-full block py-2">
+              {{ t(item.label) }}
+            </NuxtLink>
           </v-list-item>
         </template>
+
       </v-list>
     </v-navigation-drawer>
 
@@ -71,6 +99,14 @@ const closeMenu = () => (menuOpen.value = false)
       <slot />
     </v-main>
 
+    <!-- FOOTER -->
     <MyFooter />
+
   </v-app>
 </template>
+
+<style>
+html {
+  scroll-behavior: smooth;
+}
+</style>

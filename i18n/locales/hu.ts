@@ -10,6 +10,7 @@ export default defineI18nLocale(async (locale) => {
   },
   "admin": {
     "newPost": "Új bejegyzés",
+    "Posts": "Bejegyzések",
     "users": "Felhasználók",
     "newsletter": "Hírlevél",
     "statistics": "Statisztika",
@@ -46,7 +47,16 @@ export default defineI18nLocale(async (locale) => {
     "loading": "Betöltés...",
     "error": "Hiba történt a bejegyzések betöltésekor.",
     "empty": "Jelenleg nincs elérhető bejegyzés ezen a nyelven.",
-    "readMore": "Tovább olvasom"
+    "readMore": "Tovább olvasom",
+    "viewAll": "Összes bejegyzés megtekintése"
+  },
+  "vuetify": {
+    "carousel": {
+      "prev": 'Előző',
+      "next": 'Következő',
+      "ariaLabel": {
+        "delimiter": 'Carousel slide {0} / {1}'
+      }
+    }
   }
-}
-})
+}});

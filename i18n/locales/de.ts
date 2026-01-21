@@ -10,6 +10,7 @@ export default defineI18nLocale(async (locale) => {
   },
   "admin": {
     "newPost": "Neue Beitrag",
+    "Posts": "Beiträge",
     "users": "Benutzer",
     "newsletter": "Newsletter",
     "statistics": "Statistiken",
@@ -46,7 +47,17 @@ export default defineI18nLocale(async (locale) => {
     "loading": "Wird geladen...",
     "error": "Fehler beim Laden der Blogbeiträge.",
     "empty": "Derzeit keine Beiträge in dieser Sprache verfügbar.",
-    "readMore": "Weiterlesen"
+    "readMore": "Weiterlesen",
+    "viewAll": "Alle Beiträge anzeigen"
+  },
+  "vuetify": {
+    "carousel": {
+      "prev": 'Vorherige',
+      "next": 'Nächste',
+      "ariaLabel": {
+        "delimiter": 'Carousel slide {0} / {1}'
+      }
+    }
   }
 }
 })

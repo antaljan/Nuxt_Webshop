@@ -1,18 +1,29 @@
 <template>
-    <div>
-        <h1>Admin Dashboard </h1>
-        <!-- User management content will be rendered here -->
-    </div>
+  <div>
+    <h1>Admin Dashboard</h1>
+  </div>
 </template>
 <script setup>
-const { isAdmin, fetchUser } = useAuth()
-console.log = "admin index isAdmin: ", isAdmin.value
-onMounted(async () => {
-  await fetchUser()
+const { isAdmin, loggedIn } = useAuth()
 
+// Client oldali guard
+onMounted(() => {
+  if (!loggedIn.value) {
+    return navigateTo('/login')
+  }
   if (!isAdmin.value) {
-    alert('Access denied. Admins only.')
     return navigateTo('/')
   }
 })
+
+// Ha kilépsz → automatikusan redirectel
+watch([loggedIn, isAdmin], () => {
+  if (!loggedIn.value) {
+    navigateTo('/')
+  } else if (!isAdmin.value) {
+    navigateTo('/')
+  }
+})
 </script>
+
+

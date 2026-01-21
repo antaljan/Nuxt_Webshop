@@ -39,10 +39,13 @@ Blog pages (overview, one view) ✔️
 Blog admin (list, create with tiptap editor, edit, delete) ✔️
 SSR safe user status, stabilised duo to useRequestHeaders(['cookie']) ✔️
 menü links are ssr safe fixed ✔️
+chart.js installed ✔️
+LineChart.vue and BarChart.vue added to components/charts/ ✔️
+admin dashbord and pages acsess controll realised ✔️
 
 Tasks are open:
 → Admin dashboard (pages/admin/index.vue)
-    - statisztikák
+    - statistics
     - funnel
     - pageview
     - newsletter + performance

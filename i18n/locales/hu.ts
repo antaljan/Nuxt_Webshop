@@ -50,7 +50,8 @@ export default defineI18nLocale(() => ({
 
   common: {
     send: "Elküldés",
-    cancel: "Mégse"
+    cancel: "Mégse",
+    backtohome: "← Vissza a kezdőlapra"
   },
 
   feedback: {
@@ -63,6 +64,8 @@ export default defineI18nLocale(() => ({
     error: "Hiba történt a bejegyzések betöltésekor.",
     empty: "Jelenleg nincs elérhető bejegyzés ezen a nyelven.",
     readMore: "Tovább olvasom",
-    viewAll: "Összes bejegyzés megtekintése"
+    viewAll: "Összes bejegyzés megtekintése",
+    allPosts: "Összes bejegyzés",
+    backToList: "Vissza a listához"
   }
 }))

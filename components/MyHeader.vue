@@ -44,6 +44,8 @@
 </template>
 
 <script setup>
+import { useProducts } from '~/composables/useProducts'
+import { useCartDrawer } from '~/composables/useCartDrawer'
 // NE importáld a vue-i18n-t manuálisan!
 const { locale, setLocale, locales } = useI18n()
 const { user, loggedIn, logout } = useAuth()
@@ -69,8 +71,6 @@ const onLoginLogout = async () => {
 }
 
 // Cart drawer kezelése
-import { useProducts } from '~/composables/useProducts'
-import { useCartDrawer } from '~/composables/useCartDrawer'
 const { cart } = useProducts()
 const { isOpen } = useCartDrawer()
 function openCart() {

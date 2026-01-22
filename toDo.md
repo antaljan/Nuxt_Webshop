@@ -16,39 +16,48 @@ Frontend:
     }
 
 Tasks are done:
-useAuth.ts ✔️
-auth.ts ✔️
-admin.global.ts ✔️
-login.post.ts ✔️
-layouts/default.vue ✔️
-layouts/user.vue ✔️
-layouts/admin.vue ✔️
-i18n ✔️
-MyHeader.vue ✔️
-Myfooter.vue ✔️
-GeneralHeroSection.vue ✔️
-landing page (index.vue) összerakás a Generic elemekből, Tailwind, SSR content loader finomítása ✔️
-sectionSeparator ✔️
-GenericImageTextSection ✔️
-GenericTextSection ✔️
-GenericFeedbackSection ✔️
-GenericContactSection ✔️
-GenericBlogSection ✔️
-Generic elemek létrehozása és integrálása a landing page-re (transzformálás a meglévő VUE projektből) ✔️
-Blog pages (overview, one view) ✔️
-Blog admin (list, create with tiptap editor, edit, delete) ✔️
-SSR safe user status, stabilised duo to useRequestHeaders(['cookie']) ✔️
-menü links are ssr safe fixed ✔️
-chart.js installed ✔️
-LineChart.vue and BarChart.vue added to components/charts/ ✔️
-acsess controll for admin dashbord and pages realised ✔️
+
+Architect:
+- useAuth.ts ✔️
+- auth.ts ✔️
+- admin.global.ts ✔️
+- login.post.ts ✔️
+- layouts/default.vue ✔️
+- i18n ✔️
+- MyHeader.vue ✔️
+- Myfooter.vue ✔️
+- chart.js installed ✔️
+- LineChart.vue and BarChart.vue added to components/charts/ ✔️
+
+Landing Page (public page):
+- GeneralHeroSection.vue ✔️
+- landing page (index.vue) összerakás a Generic elemekből, Tailwind, SSR content loader finomítása ✔️
+- sectionSeparator ✔️
+- GenericImageTextSection ✔️
+- GenericTextSection ✔️
+- GenericFeedbackSection ✔️
+- GenericContactSection ✔️
+- GenericBlogSection ✔️
+- Generic elemek létrehozása és integrálása a landing page-re (transzformálás a meglévő VUE projektből) ✔️
+- Blog pages (overview, one view) ✔️
+- Blog admin (list, create with tiptap editor, edit, delete) ✔️
+- SSR safe user status, stabilised duo to useRequestHeaders(['cookie']) ✔️
+- menü links are ssr safe fixed ✔️
+
+Admin functions:
+- acsess controll for admin dashbord and pages realised ✔️
+- Backend endpoints for product (router, model) ✔️
+- backend checkout, with stripe modul ✔️
+- Admin sites for product (overvie,create) ✔️
+
+User functions:
+- Product overview site with searching(picture, name, short descripion, price on v-card) ✔️
+- Product site with detalis and buy ✔️
+- Shopping Cart (basket) ✔️
 
 
 Tasks are open:
 → webshop (products):
-    - overview with searching(picture, name, short descripion, price on v-card)
-    - product site / product with detalis and buy
-    - shopping basket
     - purchase only registred user can buy (because billing) --> login or registration by buying
     - paying due to serviceprovider stripe
 → User dashboard (pages/user/index.vue)

@@ -9,7 +9,6 @@ import CartDrawer from '~/components/CartDrawer.vue'
 const menuOpen = ref(false)
 const { isAdmin } = useAuth()
 const { t } = useI18n()
-console.log('isAdmin:', isAdmin.value)
 
 /* -----------------------------------------
    MAIN MENU (hash + route keverve)

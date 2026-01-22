@@ -1,54 +1,42 @@
 // composables/useProducts.ts
-import { useCookie, useRuntimeConfig } from '#imports'
+import { useCookie, useRuntimeConfig, useRoute, navigateTo } from '#imports'
+import { useAuth } from '~/composables/useAuth'
+import { useCartDrawer } from '~/composables/useCartDrawer'
 
 export function useProducts() {
   const config = useRuntimeConfig()
   const backendBase = config.public.backendBase
 
-  // SSR-safe cart stored in a normal cookie (not httpOnly)
+  // Global cart stored in cookie
   const cart = useCookie('cart', {
     default: () => [],
     watch: true
   })
+
+  const { isOpen } = useCartDrawer()
 
   // -----------------------------
   // GET ALL PRODUCTS
   // -----------------------------
   async function getProducts() {
     try {
-      const { data, error } = await useFetch(`${backendBase}/products`, {
-        method: 'GET'
-      })
-
-      if (error.value) {
-        console.error('Product fetch error:', error.value)
-        return []
-      }
-
+      const { data, error } = await useFetch(`${backendBase}/products`)
+      if (error.value) return []
       return data.value || []
-    } catch (err) {
-      console.error('Unexpected product fetch error:', err)
+    } catch {
       return []
     }
   }
 
   // -----------------------------
-  // GET ONE PRODUCT BY ID
+  // GET ONE PRODUCT
   // -----------------------------
   async function getProduct(id: string) {
     try {
-      const { data, error } = await useFetch(`${backendBase}/products/${id}`, {
-        method: 'GET'
-      })
-
-      if (error.value) {
-        console.error('Single product fetch error:', error.value)
-        return null
-      }
-
+      const { data, error } = await useFetch(`${backendBase}/products/${id}`)
+      if (error.value) return null
       return data.value
-    } catch (err) {
-      console.error('Unexpected single product fetch error:', err)
+    } catch {
       return null
     }
   }
@@ -60,6 +48,9 @@ export function useProducts() {
     const current = cart.value || []
     current.push(product)
     cart.value = current
+
+    // Optional: open drawer automatically
+    // isOpen.value = true
   }
 
   // -----------------------------
@@ -79,7 +70,7 @@ export function useProducts() {
   }
 
   // -----------------------------
-  // CALCULATE TOTAL
+  // CART TOTAL
   // -----------------------------
   function cartTotal() {
     return (cart.value || []).reduce((sum: number, item: any) => {
@@ -88,32 +79,35 @@ export function useProducts() {
   }
 
   // -----------------------------
-  // CHECKOUT (backend order creation)
+  // CHECKOUT
   // -----------------------------
   async function checkout() {
-    try {
-      const { data, error } = await useFetch(`${backendBase}/order/checkout`, {
-        method: 'POST',
-        body: {
-          items: cart.value
-          // ide később beteheted a userId-t is, ha a backend a JWT-ből nem szedi ki
-        },
-        credentials: 'include'
-      })
-
-      if (error.value) {
-        console.error('Checkout error:', error.value)
-        return
-      }
-
-      const url = data.value?.url
-      if (url) {
-        // redirect Stripe Checkout-ra
-        window.location.href = url
-      }
-    } catch (err) {
-      console.error('Unexpected checkout error:', err)
+    const { user, loggedIn } = useAuth()
+    console.log('User in checkout:', user.value)
+    if (!loggedIn.value) {
+      const current = useRoute().fullPath
+      return navigateTo(`/login?redirect=${encodeURIComponent(current)}`)
     }
+    
+
+    const { data, error } = await useFetch(`${backendBase}/order/checkout`, {
+      method: 'POST',
+      body: {
+        items: cart.value,
+        userId: user.value._id
+      }
+    })
+
+    if (error.value) {
+      console.error('Checkout error:', error.value)
+      return
+    }
+
+    if (data.value?.url) {
+      window.location.href = data.value.url
+    }
+  
+
   }
 
   return {

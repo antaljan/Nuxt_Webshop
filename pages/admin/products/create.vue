@@ -171,7 +171,8 @@ async function uploadImage(event) {
     body: formData
   })
 
-  product.cover = res.url
+  // A backend path mezőjéből teljes URL-t építünk
+  product.cover = `${backendBase}${res.path}`
 }
 
 /* ---------------------------
@@ -180,12 +181,18 @@ async function uploadImage(event) {
 async function saveProduct() {
   if (!valid.value) return
 
+  // payload tisztítása
+  const payload = { ...product }
+  delete payload._id
+  delete payload.createdAt
+
   if (isEdit.value) {
-    await admin.updateProduct(productId.value, product)
+    await admin.updateProduct(productId.value, payload)
   } else {
-    await admin.createProduct(product)
+    await admin.createProduct(payload)
   }
 
   router.push('/admin/products')
 }
+
 </script>

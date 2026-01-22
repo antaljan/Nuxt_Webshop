@@ -92,7 +92,7 @@ export function useProducts() {
   // -----------------------------
   async function checkout() {
     try {
-      const { data, error } = await useFetch(`${backendBase}/orders/checkout`, {
+      const { data, error } = await useFetch(`${backendBase}/order/checkout`, {
         method: 'POST',
         body: {
           items: cart.value

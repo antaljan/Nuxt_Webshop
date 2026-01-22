@@ -23,7 +23,7 @@
           <td>{{ p.title }}</td>
           <td>€{{ p.price }}</td>
           <td>
-            <NuxtLink :to="`/admin/products/edit?edit=${p._id}`">
+            <NuxtLink :to="`/admin/products/create?edit=${p._id}`">
               Edit
             </NuxtLink>
           </td>

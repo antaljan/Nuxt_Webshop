@@ -4,6 +4,7 @@ import MyHeader from '~/components/MyHeader.vue'
 import MyFooter from '~/components/MyFooter.vue'
 import { useAuth } from '@/composables/useAuth'
 import { useI18n } from 'vue-i18n'
+import CartDrawer from '~/components/CartDrawer.vue'
 
 const menuOpen = ref(false)
 const { isAdmin } = useAuth()
@@ -46,7 +47,8 @@ const closeMenu = () => (menuOpen.value = false)
 
     <!-- HEADER -->
     <MyHeader @toggle-menu="menuOpen = !menuOpen" />
-
+    <!-- CART DRAWER (MINDEN OLDALON ELÉRHETŐ) -->
+    <CartDrawer />
     <!-- MOBILE DRAWER -->
     <v-navigation-drawer
       v-model="menuOpen"

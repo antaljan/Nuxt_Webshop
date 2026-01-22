@@ -116,7 +116,7 @@ Newsletter Management:
 Webshop:
 - products
 - cart
-- payment (Stripe/PayPal)
+- payment with Stripe
 - digital product access
 Statistics:
 - page views
@@ -142,6 +142,7 @@ project/
 │  ├─ charts/
 │  │    ├─ BarChart.vue
 │  │    └─ LineChart.vue
+│  ├─ ChartDrawer.vue
 │  ├─ GenericBlogSection.vue
 │  ├─ GenericContactSection.vue
 │  ├─ GenericFeedbackSection.vue
@@ -154,7 +155,10 @@ project/
 ├─ composables/                     # useAuth, useUser, useProducts, etc.
 │  ├─ useAuth.ts
 │  ├─ useBlog.ts
-│  └─ useContent.ts
+│  ├─ useChartDrawer.ts
+│  ├─ useContent.ts
+│  ├─ useProducts.ts
+│  └─ useProductsAdmin.ts
 ├─ layouts/                         # default, user, admin
 │  └─ default.vue
 ├─ middleware/                      # middleware
@@ -182,7 +186,11 @@ project/
 │  ├─ blog/
 │  │    ├─ [slug].vue
 │  │    └─ index.vue
+│  ├─ checkout/
+│  │    ├─ cancel.vue
+│  │    └─ sucess.vue
 │  ├─ products/
+│  │    ├─ [id].vue
 │  │    └─ index.vue
 │  ├─ user/
 │  │    ├─ index.vue

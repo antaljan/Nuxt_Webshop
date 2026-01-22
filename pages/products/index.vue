@@ -14,7 +14,7 @@
       >
         <v-card class="h-100 d-flex flex-column">
           <v-img
-            :src="product.cover"
+            :src="product.cover || '/placeholder.jpg'"
             height="200"
             cover
           />

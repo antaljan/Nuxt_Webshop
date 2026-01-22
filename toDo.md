@@ -43,21 +43,21 @@ chart.js installed ✔️
 LineChart.vue and BarChart.vue added to components/charts/ ✔️
 acsess controll for admin dashbord and pages realised ✔️
 
+
 Tasks are open:
-→ Admin dashboard (pages/admin/index.vue)
-    - statistics
-    - funnel
-    - pageview
-    - newsletter + performance
 → webshop (products):
     - overview with searching(picture, name, short descripion, price on v-card)
     - product site / product with detalis and buy
     - shopping basket
     - purchase only registred user can buy (because billing) --> login or registration by buying
-    - paying due to serviceprovider (socket)
+    - paying due to serviceprovider stripe
 → User dashboard (pages/user/index.vue)
     - My Products:
         - video
         - download materials (ebook, pdf..)
         - Scheduled consultations/choacings
-
+→ Admin dashboard (pages/admin/index.vue)
+    - statistics
+    - funnel
+    - pageview
+    - newsletter + performance

@@ -58,10 +58,10 @@ Technical Notes:
 - Dedicated admin layout (/admin)
 - SSR + auth middleware + role checks
 - Newsletter scheduler via backend cron
-- External email provider recommended (SMTP Server or Mailgun / SendGrid)
+- External email provider recommended (ionos SMTP Server or Mailgun / SendGrid)
 
 🌍 Multilingual Support & Design
-- Clean, modern UI (Vuetify + MDI)
+- Clean, modern UI (Vuetify + MDI + Tailwind)
 - Supported languages: English, German, Hungarian
 - Automatic language detection via browser settings
 - Default language: English
@@ -84,6 +84,7 @@ Frontend:
 - Vue 3
 - Vuetify
 - MDI Icons
+- Tailwind
 - i18n
 - SSR data fetching (useAsyncData, useFetch)
 Backend:
@@ -196,7 +197,7 @@ project/
 │  │    ├─ index.vue
 │  │    ├─ orders.vue
 │  │    ├─ products.vue
-│  │    ├─ settings.vue
+│  │    ├─ profile.vue
 │  │    └─ videos.vue
 │  ├─ index.vue
 │  ├─ login.vue

@@ -4,14 +4,16 @@
     <h1>User oldal</h1>
     <p>itt lesz a felhasználói tartalom</p>
   </div>
-  <v-container class="pa-4">
-    <v-btn color="primary" @click="goLogout">{{t('common.backtohome')}}</v-btn>
-  </v-container>
 </template>
 <script setup>
-async function goLogout() {
-  const { logout } = useAuth()
-  await logout()
-  return navigateTo('/login')
-}
+import { useAuth } from '~/composables/useAuth'
+const { loggedIn } = useAuth()
+import { onMounted } from 'vue'
+
+// Client site guard
+onMounted(() => {
+  if (!loggedIn.value) {
+    return navigateTo('/login')
+  }
+})
 </script>

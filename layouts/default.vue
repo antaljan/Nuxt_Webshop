@@ -7,7 +7,7 @@ import { useI18n } from 'vue-i18n'
 import CartDrawer from '~/components/CartDrawer.vue'
 
 const menuOpen = ref(false)
-const { isAdmin } = useAuth()
+const { isAdmin, loggedIn } = useAuth()
 const { t } = useI18n()
 
 /* -----------------------------------------
@@ -24,6 +24,13 @@ const mainMenu = [
   { type: 'route', to: '/products', label: 'menu.products', icon: 'mdi-medical-bag' }
 ]
 
+/* -----------------------------------------
+   User MENU
+----------------------------------------- */
+const userMenu = [
+  { to: '/user', label: 'user.dashboard' },
+  { to: '/user/profile', label: 'user.profile' }
+]
 
 /* -----------------------------------------
    ADMIN MENU
@@ -77,6 +84,20 @@ const closeMenu = () => (menuOpen.value = false)
             </NuxtLink>
           </template>
         </v-list-item>
+
+        <!-- User SECTION -->
+        <template v-if="loggedIn">
+          <v-divider class="my-2" />
+          <v-list-item
+            v-for="item in userMenu"
+            :key="item.to"
+            @click="closeMenu"
+          >
+            <NuxtLink :to="item.to" class="w-full block py-2">
+              {{ t(item.label) }}
+            </NuxtLink>
+          </v-list-item>
+        </template>
 
         <!-- ADMIN SECTION -->
         <template v-if="isAdmin">

@@ -38,6 +38,17 @@
 const config = useRuntimeConfig()
 const backendBase = config.public.backendBase
 
+// Client site guard
+onMounted(() => {
+  if (!loggedIn.value) {
+    return navigateTo('/login')
+  }
+  if (!isAdmin.value) {
+    return navigateTo('/')
+  }
+})
+
+// Fetch products from backend
 const { data: products } = await useAsyncData(
   'admin-products',
   () => $fetch(`${backendBase}/products`)

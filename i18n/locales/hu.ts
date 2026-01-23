@@ -70,11 +70,11 @@ export default defineI18nLocale(async (locale) => {
     noProducts: "Nincs elérhető termék."
   },
   cart: {
-  title: "Bevásárló kosár",
-  empty: "A kosár üres.",
-  total: "Végösszeg",
-  checkout: "Tovább a fizetéshez",
-  clear: "Kosár ürítése"
+    title: "Bevásárló kosár",
+    empty: "A kosár üres.",
+    total: "Végösszeg",
+    checkout: "Tovább a fizetéshez",
+    clear: "Kosár ürítése"
   },
   checkout: {
     successTitle: "Sikeres fizetés",
@@ -83,5 +83,9 @@ export default defineI18nLocale(async (locale) => {
     cancelTitle: "A fizetés megszakadt",
     cancelText: "Nem történt terhelés. Ha szeretnéd, újra megpróbálhatod a vásárlást.",
     backToProducts: "Vissza a termékekhez"
+  },
+  user: {
+    dashboard: "Saját fiók",
+    profile: "Profilom"
   }
-})
+}})

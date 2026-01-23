@@ -69,19 +69,23 @@ export default defineI18nLocale(async (locale) => {
     noProducts: "Keine Produkte verfügbar."
   },
   cart: {
-  title: "Einkaufswagen",
-  empty: "Ihr Warenkorb ist leer.",
-  total: "Gesamt",
-  checkout: "Zur Kasse gehen",
-  clear: "Warenkorb leeren"
-},
-checkout: {
-  successTitle: "Erfolgreiche Zahlung",
-  successText: "Vielen Dank für Ihren Einkauf! Die Produkte stehen bald in Ihrem Benutzerkonto zur Verfügung.",
-  goToDashboard: "Zum Benutzerbereich",
-  cancelTitle: "Zahlung abgebrochen",
-  cancelText: "Es wurden keine Gebühren berechnet. Wenn Sie möchten, können Sie erneut versuchen zu kaufen.",
-  backToProducts: "Zurück zu den Produkten"
-}
+    title: "Einkaufswagen",
+    empty: "Ihr Warenkorb ist leer.",
+    total: "Gesamt",
+    checkout: "Zur Kasse gehen",
+    clear: "Warenkorb leeren"
+  },
+  checkout: {
+    successTitle: "Erfolgreiche Zahlung",
+    successText: "Vielen Dank für Ihren Einkauf! Die Produkte stehen bald in Ihrem Benutzerkonto zur Verfügung.",
+    goToDashboard: "Zum Benutzerbereich",
+    cancelTitle: "Zahlung abgebrochen",
+    cancelText: "Es wurden keine Gebühren berechnet. Wenn Sie möchten, können Sie erneut versuchen zu kaufen.",
+    backToProducts: "Zurück zu den Produkten"
+  },
+  user: {
+    dashboard: "Mein Dashboard",
+    profile: "Mein Profil"
+  }
 }
 })

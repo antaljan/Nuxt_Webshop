@@ -70,18 +70,22 @@ export default defineI18nLocale(async (locale) => {
     noProducts: "No products available."
   },
   cart: {
-  title: "Shopping Cart",
-  empty: "Your cart is empty.",
-  total: "Total",
-  checkout: "Proceed to Checkout",
-  clear: "Clear Cart"
-},
-checkout: {
-  successTitle: "Successful Payment",
-  successText: "Thank you for your purchase! The products will be available in your user account soon.",
-  goToDashboard: "Go to User Dashboard",
-  cancelTitle: "Payment Cancelled",
-  cancelText: "No charges were made. If you'd like, you can try purchasing again.",
-  backToProducts: "Back to Products"
-}
+    title: "Shopping Cart",
+    empty: "Your cart is empty.",
+    total: "Total",
+    checkout: "Proceed to Checkout",
+    clear: "Clear Cart"
+  },
+  checkout: {
+    successTitle: "Successful Payment",
+    successText: "Thank you for your purchase! The products will be available in your user account soon.",
+    goToDashboard: "Go to User Dashboard",
+    cancelTitle: "Payment Cancelled",
+    cancelText: "No charges were made. If you'd like, you can try purchasing again.",
+    backToProducts: "Back to Products"
+  },
+  user: {
+    dashboard: "My Dashboard",
+    profile: "My Profile"
+  }
 }})

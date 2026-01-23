@@ -15,16 +15,17 @@ export default defineI18nLocale(async (locale) => {
     story: "My Story",
     methode: "Method",
     contact: "Contact",
-    blog: "Blog"
+    blog: "Blog",
+    products: "Products"
   },
   admin: {
-    newPost: "New Post",
-    Posts: "Posts",
-    users: "Users",
-    newsletter: "Newsletter",
-    statistics: "Statistics",
-    products: "Products",
-    images: "Images"
+    dashboard: "Admin Dashboard",
+    Posts: "Edit Blog Posts",
+    users: "Manage Users",
+    newsletter: "Manage Newsletter",
+    products: "Manage Products",
+    images: "Manage Images",
+    adminSection: "Admin Section"
   },
   header: {
     login: "Login",

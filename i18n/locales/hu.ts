@@ -15,16 +15,17 @@ export default defineI18nLocale(async (locale) => {
     story: "Történetem",
     methode: "Módszer",
     contact: "Kapcsolat",
-    blog: "Blog"
+    blog: "Blog",
+    products: "Termékek",
+    adminSection: "Admin szekció"
   },
   admin: {
-    newPost: "Új bejegyzés",
-    Posts: "Bejegyzések",
-    users: "Felhasználók",
-    newsletter: "Hírlevél",
-    statistics: "Statisztika",
-    products: "Termékek",
-    images: "Képek"
+    dashboard: "Admin irányítópult",
+    Posts: "Blogok szerkesztése",
+    users: "Felhasználók kezelése",
+    newsletter: "Hírlevelek kezelése",
+    products: "Termékek kezelése",
+    images: "Képek kezelése"
   },
   header: {
     login: "Bejelentkezés",
@@ -74,13 +75,13 @@ export default defineI18nLocale(async (locale) => {
   total: "Végösszeg",
   checkout: "Tovább a fizetéshez",
   clear: "Kosár ürítése"
-},
-checkout: {
-  successTitle: "Sikeres fizetés",
-  successText: "Köszönöm a vásárlást! A termékek hamarosan elérhetőek a felhasználói fiókodban.",
-  goToDashboard: "Tovább a felhasználói felületre",
-  cancelTitle: "A fizetés megszakadt",
-  cancelText: "Nem történt terhelés. Ha szeretnéd, újra megpróbálhatod a vásárlást.",
-  backToProducts: "Vissza a termékekhez"
-}
-}})
+  },
+  checkout: {
+    successTitle: "Sikeres fizetés",
+    successText: "Köszönöm a vásárlást! A termékek hamarosan elérhetőek a felhasználói fiókodban.",
+    goToDashboard: "Tovább a felhasználói felületre",
+    cancelTitle: "A fizetés megszakadt",
+    cancelText: "Nem történt terhelés. Ha szeretnéd, újra megpróbálhatod a vásárlást.",
+    backToProducts: "Vissza a termékekhez"
+  }
+})

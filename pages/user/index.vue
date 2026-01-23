@@ -5,13 +5,10 @@
     <p>itt lesz a felhasználói tartalom</p>
   </div>
   <v-container class="pa-4">
-    <v-btn color="primary" @click="goLogout">logout</v-btn>
+    <v-btn color="primary" @click="goLogout">{{t('common.backtohome')}}</v-btn>
   </v-container>
 </template>
 <script setup>
-definePageMeta({
-  layout: 'user'
-})
 async function goLogout() {
   const { logout } = useAuth()
   await logout()

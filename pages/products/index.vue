@@ -55,6 +55,9 @@
       {{ $t('products.noProducts') }}
     </v-alert>
   </v-container>
+  <v-container class="pa-4">
+    <v-btn color="primary" @click="goLogout">{{t('common.backtohome')}}</v-btn>
+  </v-container>
 </template>
 
 <script setup>

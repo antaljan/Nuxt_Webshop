@@ -20,7 +20,8 @@ const mainMenu = [
   { type: 'hash', to: '/#methode', label: 'menu.methode' },
   { type: 'hash', to: '/#contact', label: 'menu.contact' },
 
-  { type: 'route', to: '/blog', label: 'menu.blog', icon: 'mdi-book-open-page-variant' }
+  { type: 'route', to: '/blog', label: 'menu.blog', icon: 'mdi-book-open-page-variant' },
+  { type: 'route', to: '/products', label: 'menu.products', icon: 'mdi-medical-bag' }
 ]
 
 
@@ -29,11 +30,9 @@ const mainMenu = [
 ----------------------------------------- */
 const adminMenu = [
   { to: '/admin', label: 'admin.dashboard' },
-  { to: '/admin/blog/create', label: 'admin.newPost' },
   { to: '/admin/blog', label: 'admin.Posts' },
   { to: '/admin/users', label: 'admin.users' },
   { to: '/admin/newsletter', label: 'admin.newsletter' },
-  { to: '/admin/stat', label: 'admin.statistics' },
   { to: '/admin/products', label: 'admin.products' },
   { to: '/admin/images', label: 'admin.images' }
 ]
@@ -82,7 +81,7 @@ const closeMenu = () => (menuOpen.value = false)
         <!-- ADMIN SECTION -->
         <template v-if="isAdmin">
           <v-divider class="my-2" />
-
+          <p class="px-4 py-2 font-bold text-lg">{{ t('admin.adminSection') }}</p>
           <v-list-item
             v-for="item in adminMenu"
             :key="item.to"

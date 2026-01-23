@@ -54,19 +54,24 @@ User functions:
 - Product overview site with searching(picture, name, short descripion, price on v-card) ✔️
 - Product site with detalis and buy ✔️
 - Shopping Cart (basket) ✔️
-
+- paying due to serviceprovider stripe --> in sandbox running well ✔️
 
 Tasks are open:
 → webshop (products):
-    - purchase only registred user can buy (because billing) --> login or registration by buying
-    - paying due to serviceprovider stripe
+    - actualy the if we change to products side we loosing the user status even the checkout dosen´t giwe oder the userID for backend and therefore no new item in purchase table of database
+    - product - upload of education products (pdf file) and link in products database
+    - product - upload education video to Bunny Stream or Vimeo Pro and link it in the database
 → User dashboard (pages/user/index.vue)
-    - My Products:
+    - My Products overview, i think same like the product overview, but inster price and purchese button, only the purchese datum:
+    - My product view. opening the product from overview and read, view or download:
         - video
         - download materials (ebook, pdf..)
-        - Scheduled consultations/choacings
+        - Scheduled consultations/choacings --> take a look on scheduled time
+→ Admin: user managemant
+→ Admin: newsletter managemant
 → Admin dashboard (pages/admin/index.vue)
     - statistics
     - funnel
     - pageview
     - newsletter + performance
+

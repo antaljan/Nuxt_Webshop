@@ -1,11 +1,12 @@
-import { BACKEND_BASE_URL } from '../../../utils/backend'
+const config = useRuntimeConfig()
+const backendBase = config.public.backendBase
 
 export default defineEventHandler(async (event) => {
   const { section, language } = event.context.params!
   const token = getCookie(event, 'jwt')   // FIXED
   const body = await readBody(event)
 
-  return $fetch(`${BACKEND_BASE_URL}/content/${section}/${language}`, {
+  return $fetch(`${backendBase}/content/${section}/${language}`, {
     method: 'PUT',
     body,
     headers: token

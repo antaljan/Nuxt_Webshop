@@ -1,10 +1,11 @@
-import { BACKEND_BASE_URL } from '../../utils/backend'
+const config = useRuntimeConfig()
+const backendBase = config.public.backendBase
 
 export default defineEventHandler(async (event) => {
   const token = getCookie(event, 'token')
   const form = await readMultipartFormData(event)
 
-  return $fetch(`${BACKEND_BASE_URL}/content-upload`, {
+  return $fetch(`${backendBase}/content-upload`, {
     method: 'POST',
     body: form as any,
     headers: { Authorization: `Bearer ${token}` }

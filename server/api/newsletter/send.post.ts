@@ -1,11 +1,12 @@
 // send.post.ts
-import { BACKEND_BASE_URL } from '../../utils/backend'
+const config = useRuntimeConfig()
+const backendBase = config.public.backendBase
 
 export default defineEventHandler(async (event) => {
   const token = getCookie(event, 'token')
   const body = await readBody(event)
 
-  return $fetch(`${BACKEND_BASE_URL}/newsletter/send`, {
+  return $fetch(`${backendBase}/newsletter/send`, {
     method: 'POST',
     body,
     headers: { Authorization: `Bearer ${token}` }

@@ -1,11 +1,12 @@
 // create.post.ts
-import { BACKEND_BASE_URL } from '../../utils/backend'
+const config = useRuntimeConfig()
+const backendBase = config.public.backendBase
 
 export default defineEventHandler(async (event) => {
   const token = getCookie(event, 'token')
   const body = await readBody(event)
 
-  return $fetch(`${BACKEND_BASE_URL}/posts/new`, {
+  return $fetch(`${backendBase}/posts/new`, {
     method: 'POST',
     body,
     headers: { Authorization: `Bearer ${token}` }

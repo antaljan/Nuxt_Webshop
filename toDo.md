@@ -59,6 +59,8 @@ User functions:
 Tasks are open:
 → WEB Shop (products):
     - the checkout doesn't give over the userID for backend therefore no new item in purchase table of mongoDB database
+        honestly the user authentication is since the beginning an a big problem under SSR, maybe has to be rethink the concept, there
+        are many possible solutions one of them is the serverSupabaseUser - Nuxt Supabase.
     - product - upload of education products (pdf file) and link in products database
     - product - upload education video to Bunny Stream or Vimeo Pro and link it in the database
 → User dashboard (pages/user/index.vue)

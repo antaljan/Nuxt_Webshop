@@ -1,6 +1,7 @@
 // index.get.ts
-import { BACKEND_BASE_URL } from '../../utils/backend'
+const config = useRuntimeConfig()
+const backendBase = config.public.backendBase
 
 export default defineEventHandler(() => {
-  return $fetch(`${BACKEND_BASE_URL}/posts`)
+  return $fetch(`${backendBase}/posts`)
 })

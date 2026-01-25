@@ -1,9 +1,10 @@
-import { BACKEND_BASE_URL } from '../../utils/backend'
+const config = useRuntimeConfig()
+const backendBase = config.public.backendBase
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
 
-  const backendRes = await $fetch(`${BACKEND_BASE_URL}/user/login`, {
+  const backendRes = await $fetch(`${backendBase}/user/login`, {
     method: 'POST',
     body: {
       email: body.email,
@@ -18,11 +19,13 @@ export default defineEventHandler(async (event) => {
   // JWT cookie beállítása
   setCookie(event, 'jwt', backendRes.token, {
     httpOnly: true,
-    sameSite: 'strict',
+    sameSite: 'lax',
     secure: process.env.NODE_ENV === 'production',
     path: '/',
     maxAge: 60 * 60 * 6
   })
+
+
 
   return {
     success: true,

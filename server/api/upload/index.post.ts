@@ -1,9 +1,10 @@
-import { BACKEND_BASE_URL } from '../../utils/backend'
+const config = useRuntimeConfig()
+const backendBase = config.public.backendBase
 
 export default defineEventHandler(async (event) => {
   const form = await readMultipartFormData(event)
 
-  return $fetch(`${BACKEND_BASE_URL}/upload`, {
+  return $fetch(`${backendBase}/upload`, {
     method: 'POST',
     body: form as any
   })

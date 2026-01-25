@@ -1,4 +1,5 @@
-import { BACKEND_BASE_URL } from '../../utils/backend'
+const config = useRuntimeConfig()
+const backendBase = config.public.backendBase
 
 export default defineEventHandler(async (event) => {
   const token = getCookie(event, 'jwt')
@@ -12,7 +13,7 @@ export default defineEventHandler(async (event) => {
   const userId = decoded.id
 
   // 2) Backend: összes user lekérése
-  const users = await $fetch(`${BACKEND_BASE_URL}/user/get`, {
+  const users = await $fetch(`${backendBase}/user/get`, {
     method: 'POST',
     headers: { Authorization: `Bearer ${token}` }
   })

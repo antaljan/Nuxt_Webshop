@@ -1,9 +1,10 @@
-import { BACKEND_BASE_URL } from '../../utils/backend'
+const config = useRuntimeConfig()
+const backendBase = config.public.backendBase
 
 export default defineEventHandler(async (event) => {
   const token = getCookie(event, 'token')
 
-  return $fetch(`${BACKEND_BASE_URL}/user/get`, {
+  return $fetch(`${backendBase}/user/get`, {
     method: 'POST',
     headers: { Authorization: `Bearer ${token}` }
   })

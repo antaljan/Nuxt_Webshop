@@ -1,9 +1,10 @@
-import { BACKEND_BASE_URL } from '../../utils/backend'
+const config = useRuntimeConfig()
+const backendBase = config.public.backendBase
 
 export default defineEventHandler(async (event) => {
   const token = getCookie(event, 'jwt')
 
-  await $fetch(`${BACKEND_BASE_URL}/user/logout`, {
+  await $fetch(`${backendBase}/user/logout`, {
     method: 'POST',
     headers: token ? { Authorization: `Bearer ${token}` } : {}
   })

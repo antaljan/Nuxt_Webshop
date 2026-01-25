@@ -1,6 +1,7 @@
-import { BACKEND_BASE_URL } from '../../utils/backend'
+const config = useRuntimeConfig()
+const backendBase = config.public.backendBase
 
 export default defineEventHandler((event) => {
   const { date } = event.context.params!
-  return $fetch(`${BACKEND_BASE_URL}/booking/${date}`)
+  return $fetch(`${backendBase}/booking/${date}`)
 })

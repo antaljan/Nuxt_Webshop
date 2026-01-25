@@ -299,6 +299,7 @@ Middleware:
   npm install
   npm run dev
   npx nuxi@latest module add vuetify-nuxt-module
+  npm install jsonwebtoken
   npm install @mdi/font
   npm install @nuxtjs/i18n
   npm install -D @nuxtjs/tailwindcss

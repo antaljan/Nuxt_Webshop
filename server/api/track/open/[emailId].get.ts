@@ -1,6 +1,7 @@
-import { BACKEND_BASE_URL } from '../../../utils/backend'
+const config = useRuntimeConfig()
+const backendBase = config.public.backendBase
 
 export default defineEventHandler((event) => {
   const { emailId } = event.context.params!
-  return $fetch(`${BACKEND_BASE_URL}/track/open/${emailId}`)
+  return $fetch(`${backendBase}/track/open/${emailId}`)
 })

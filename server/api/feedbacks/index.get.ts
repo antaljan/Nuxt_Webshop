@@ -1,5 +1,6 @@
-import { BACKEND_BASE_URL } from '../../utils/backend'
+const config = useRuntimeConfig()
+const backendBase = config.public.backendBase
 
 export default defineEventHandler(() => {
-  return $fetch(`${BACKEND_BASE_URL}/feedbacks`)
+  return $fetch(`${backendBase}/feedbacks`)
 })

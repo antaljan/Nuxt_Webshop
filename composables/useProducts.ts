@@ -90,13 +90,14 @@ export function useProducts() {
     }
     
 
-    const { data, error } = await useFetch(`${backendBase}/order/checkout`, {
+    const { data, error } = await useFetch('/api/checkout', {
       method: 'POST',
       body: {
         items: cart.value,
-        userId: user.value._id
+        userId: user.value?._id
       }
     })
+    console.log("SSR forwarded userId:", data.value.forwardedUserId)
 
     if (error.value) {
       console.error('Checkout error:', error.value)

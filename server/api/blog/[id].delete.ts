@@ -1,10 +1,11 @@
-import { BACKEND_BASE_URL } from '../../utils/backend'
+const config = useRuntimeConfig()
+const backendBase = config.public.backendBase
 
 export default defineEventHandler((event) => {
   const token = getCookie(event, 'token')
   const { id } = event.context.params!
 
-  return $fetch(`${BACKEND_BASE_URL}/posts/${id}`, {
+  return $fetch(`${backendBase}/posts/${id}`, {
     method: 'DELETE',
     headers: { Authorization: `Bearer ${token}` }
   })

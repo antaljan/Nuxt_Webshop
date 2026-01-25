@@ -1,4 +1,5 @@
-import { BACKEND_BASE_URL } from '../../utils/backend'
+const config = useRuntimeConfig()
+const backendBase = config.public.backendBase
 
 export default defineEventHandler(async (event) => {
   const token = getCookie(event, 'jwt')
@@ -19,7 +20,7 @@ export default defineEventHandler(async (event) => {
   }
 
   // Továbbküldés a backend felé
-  const response = await $fetch(`${BACKEND_BASE_URL}/content-upload`, {
+  const response = await $fetch(`${backendBase}/content-upload`, {
     method: 'POST',
     body: backendForm,
     headers: {

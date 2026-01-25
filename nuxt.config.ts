@@ -1,6 +1,16 @@
 export default defineNuxtConfig({
   ssr: true,
   devtools: { enabled: true },
+  
+  nitro: {
+    devProxy: {
+      '/backend': {
+        target: 'https://antaligyongyi.hu/api',
+        changeOrigin: true,
+        prependPath: true
+      }
+    }
+  },
 
   modules: [
     'vuetify-nuxt-module',
@@ -43,8 +53,9 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    jwtSecret: process.env.JWT_SECRET,
     public: {
-      backendBase: process.env.BACKEND_BASE_URL || 'https://antaligyongyi.hu/api' 
+      backendBase: process.env.BACKEND_BASE_URL || 'https://antaligyongyi.hu/api'
     }
   },
 

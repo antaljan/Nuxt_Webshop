@@ -24,8 +24,27 @@ export default defineI18nLocale(async (locale) => {
     Posts: "Blogok szerkesztése",
     users: "Felhasználók kezelése",
     newsletter: "Hírlevelek kezelése",
-    products: "Termékek kezelése",
-    images: "Képek kezelése"
+    products: {
+      title: "Termékek kezelése",
+      listTitle: "Termékek",
+      new: "Új termék",
+      edit: "Szerkesztés",
+      delete: "Törlés",
+      confirmDelete: "Biztosan törlöd ezt a terméket?",
+      price: "Ár",
+      actions: "Műveletek",
+      cover: "Borítókép",
+      uploadPdf: "PDF feltöltése",
+      existingPdfs: "Meglévő PDF fájlok",
+      videoUrl: "Videó URL (Bunny Stream)",
+      fullDescription: "Teljes leírás",
+      save: "Mentés",
+      update: "Frissítés",
+      cancel: "Mégse",
+      menu: "Termékek kezelése"
+    },
+    images: "Képek kezelése",
+    adminSection: "Admin menü"
   },
   header: {
     login: "Bejelentkezés",
@@ -48,7 +67,18 @@ export default defineI18nLocale(async (locale) => {
   common: {
     send: "Elküldés",
     cancel: "Mégse",
-    backtohome: "← Vissza a kezdőlapra"
+    backtohome: "← Vissza a kezdőlapra",
+    sortBy: "Rendezés",
+    titleAZ: "Cím (A-Z)",
+    titleZA: "Cím (Z-A)",
+    priceLowHigh: "Ár (alacsony → magas)",
+    priceHighLow: "Ár (magas → alacsony)",
+    newestFirst: "Legújabbak elöl",
+    oldestFirst: "Legrégebbiek elöl",
+    loadMore: "További betöltése",
+    noItemsFound: "Nincs találat.",
+    search: "Keresés",
+    priceRange: "Ártartomány",
   },
   feedback: {
     title: "Visszajelzések"
@@ -67,7 +97,11 @@ export default defineI18nLocale(async (locale) => {
     title: "Termékek",
     viewDetails: "Részletek",
     buyFor: "Vásárlás",
-    noProducts: "Nincs elérhető termék."
+    noProducts: "Nincs elérhető termék.",
+    price: "Ár",
+    description: "Leírás",
+    downloadableFiles: "Letölthető fájlok",
+    video: "Videó"
   },
   cart: {
     title: "Bevásárló kosár",

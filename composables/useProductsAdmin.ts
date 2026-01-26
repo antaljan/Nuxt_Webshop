@@ -1,32 +1,44 @@
-export function useProductsAdmin() {
+export const useProductsAdmin = () => {
   const config = useRuntimeConfig()
-  const backendBase = config.public.backendBase
+  const backend = config.public.backendBase
 
-  async function getProduct(id) {
-    return await $fetch(`${backendBase}/products/${id}`)
+  const getAllProducts = () => {
+    return $fetch(`${backend}/products`, {
+      credentials: 'include'
+    })
   }
 
-  async function createProduct(data) {
-    return await $fetch(`${backendBase}/products`, {
+  const getProduct = (id: string) => {
+    return $fetch(`${backend}/products/${id}`, {
+      credentials: 'include'
+    })
+  }
+
+  const createProduct = (payload: any) => {
+    return $fetch(`${backend}/products/create`, {
       method: 'POST',
-      body: data
+      body: payload,
+      credentials: 'include'
     })
   }
 
-  async function updateProduct(id, data) {
-    return await $fetch(`${backendBase}/products/${id}`, {
+  const updateProduct = (id: string, payload: any) => {
+    return $fetch(`${backend}/products/${id}`, {
       method: 'PUT',
-      body: data
+      body: payload,
+      credentials: 'include'
     })
   }
 
-  async function deleteProduct(id) {
-    return await $fetch(`${backendBase}/products/${id}`, {
-      method: 'DELETE'
+  const deleteProduct = (id: string) => {
+    return $fetch(`${backend}/products/${id}`, {
+      method: 'DELETE',
+      credentials: 'include'
     })
   }
 
   return {
+    getAllProducts,
     getProduct,
     createProduct,
     updateProduct,

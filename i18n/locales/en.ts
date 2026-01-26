@@ -23,7 +23,25 @@ export default defineI18nLocale(async (locale) => {
     Posts: "Edit Blog Posts",
     users: "Manage Users",
     newsletter: "Manage Newsletter",
-    products: "Manage Products",
+    products: {
+      title: "Manage Products",
+      listTitle: "Products",
+      new: "New Product",
+      edit: "Edit",
+      delete: "Delete",
+      confirmDelete: "Are you sure you want to delete this product?",
+      price: "Price",
+      actions: "Actions",
+      cover: "Cover Image",
+      uploadPdf: "Upload PDF",
+      existingPdfs: "Existing PDF Files",
+      videoUrl: "Video URL (Bunny Stream)",
+      fullDescription: "Full Description",
+      save: "Save",
+      update: "Update",
+      cancel: "Cancel",
+      menu: "Manage Products"
+    },
     images: "Manage Images",
     adminSection: "Admin Section"
   },
@@ -48,7 +66,18 @@ export default defineI18nLocale(async (locale) => {
   common: {
     send: "Send",
     cancel: "Cancel",
-    backtohome: "← Back to Home"
+    backtohome: "← Back to Home",
+    sortBy: "Sort By",
+    titleAZ: "Title (A-Z)",
+    titleZA: "Title (Z-A)",
+    priceLowHigh: "Price (Low → High)",
+    priceHighLow: "Price (High → Low)",
+    newestFirst: "Newest First",
+    oldestFirst: "Oldest First",
+    loadMore: "Load More",
+    noItemsFound: "No items found.",
+    search: "Search",
+    priceRange: "Price Range",
   },
   feedback: {
     title: "Testimonials"
@@ -67,7 +96,11 @@ export default defineI18nLocale(async (locale) => {
     title: "Products",
     viewDetails: "Details",
     buyFor: "Buy for",
-    noProducts: "No products available."
+    noProducts: "No products available.",
+    price: "Price",
+    description: "Description",
+    downloadableFiles: "Downloadable Files",
+    video: "Video"
   },
   cart: {
     title: "Shopping Cart",

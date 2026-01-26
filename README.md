@@ -202,86 +202,77 @@ project/
 │  ├─ index.vue
 │  ├─ login.vue
 │  └─ register.vue
-├─ plugins/                           # plugins
 ├─ public/                            # static files
 │  ├─ fabackImages.jpg
 │  ├─ favicon.ivo
 │  └─ robots.txt
 └─ server/                            # SSR backend layer
-   ├─ api/
-   │    ├─ auth/
-   │    │   ├─ login.post.ts
-   │    │   ├─ logout.post.ts
-   │    │   └─ me.get.ts
-   │    ├─ blog/
-   │    │   ├─ [id].delete.ts
-   │    │   ├─ [id].get.ts
-   │    │   ├─ [id].put.ts
-   │    │   ├─ [slug].get.ts
-   │    │   ├─ create.post.ts
-   │    │   └─ index.get.ts
-   │    ├─ booking/
-   │    │   ├─ [date].get.ts
-   │    │   ├─ [id].delete.ts
-   │    │   ├─ [id].put.ts
-   │    │   ├─ all.get.ts
-   │    │   └─ new.post.ts
-   │    ├─ content/
-   │    │   ├─ [section]/
-   │    │   │     ├─ language.get.ts
-   │    │   │     └─ language.put.ts
-   │    │   └─ upload.post.ts
-   │    ├─ content-upload/
-   │    │   └─ index.post.ts
-   │    ├─ dashboard/
-   │    │   ├─ campaigns.get.ts
-   │    │   └─ summary.get.ts
-   │    ├─ emial/
-   │    │   └─ send.post.ts
-   │    ├─ feedbacks/
-   │    │   ├─ [id].delete.ts
-   │    │   ├─ [id].get.ts
-   │    │   ├─ [id].put.ts
-   │    │   ├─ index.get.ts
-   │    │   └─ new.post.ts
-   │    ├─ images/
-   │    │   ├─ [filename].delete.ts
-   │    │   └─ index.get.ts
-   │    ├─ logs/
-   │    │   └─ stats.get.ts
-   │    ├─ newsletter/
-   │    │   ├─ unsubscribe/
-   │    │   │     └─ [email].get.ts
-   │    │   ├─ deletetemplate.post.ts
-   │    │   ├─ getonetemplate.post.ts
-   │    │   ├─ getscheduled.post.ts
-   │    │   ├─ gettemplates.post.ts
-   │    │   ├─ save.post.ts
-   │    │   ├─ schedule.post.ts
-   │    │   ├─ send.post.ts
-   │    │   ├─ subscribe.post.ts
-   │    │   ├─ subscriber.put.ts
-   │    │   └─ subscribers.post.ts
-   │    ├─ products/
-   │    │   ├─ [id].get.ts
-   │    │   └─ index.get.ts
-   │    ├─ stats/
-   │    │   └─ track.post.ts
-   │    ├─ track/
-   │    │   ├─ click/
-   │    │   │     └─ [emailid].get.ts
-   │    │   └─ open/
-   │    │         └─ [emailid].get.ts
-   │    ├─ upload/
-   │    │   └─ index.post.ts
-   │    └─ users/
-   │        ├─ create.post.ts
-   │        ├─ delete.post.ts
-   │        ├─ index.post.ts
-   │        └─ update.post.ts
-   └─ utils/
-      └─ backend.ts                   # BACKEND_BASE_URL
-
+   └─ api/
+      ├─ auth/
+      │   ├─ login.post.ts
+      │   ├─ logout.post.ts
+      │   └─ me.get.ts
+      ├─ blog/
+      │   ├─ [id].delete.ts
+      │   ├─ [id].get.ts
+      │   ├─ [id].put.ts
+      │   ├─ create.post.ts
+      │   └─ index.get.ts
+      ├─ booking/
+      │   ├─ [date].get.ts
+      │   ├─ [id].delete.ts
+      │   ├─ [id].put.ts
+      │   ├─ all.get.ts
+      │   └─ new.post.ts
+      ├─ content/
+      │   ├─ [section]/
+      │   │     ├─ language.get.ts
+      │   │     └─ language.put.ts
+      │   └─ upload.post.ts
+      ├─ content-upload/
+      │   └─ index.post.ts
+      ├─ dashboard/
+      │   ├─ campaigns.get.ts
+      │   └─ summary.get.ts
+      ├─ emial/
+      │   └─ send.post.ts
+      ├─ feedbacks/
+      │   ├─ [id].delete.ts
+      │   ├─ [id].get.ts
+      │   ├─ [id].put.ts
+      │   ├─ index.get.ts
+      │   └─ new.post.ts
+      ├─ images/
+      │   ├─ [filename].delete.ts
+      │   └─ index.get.ts
+      ├─ logs/
+      │   └─ stats.get.ts
+      ├─ newsletter/
+      │   ├─ unsubscribe/
+      │   │     └─ [email].get.ts
+      │   ├─ deletetemplate.post.ts
+      │   ├─ getonetemplate.post.ts
+      │   ├─ getscheduled.post.ts
+      │   ├─ gettemplates.post.ts
+      │   ├─ save.post.ts
+      │   ├─ schedule.post.ts
+      │   ├─ send.post.ts
+      │   ├─ subscribe.post.ts
+      │   ├─ subscriber.put.ts
+      │   └─ subscribers.post.ts
+      ├─ track/
+      │   ├─ click/
+      │   │     └─ [emailid].get.ts
+      │   └─ open/
+      │         └─ [emailid].get.ts
+      ├─ upload/
+      │   └─ index.post.ts
+      └─ users/
+          ├─ create.post.ts
+          ├─ delete.post.ts
+          ├─ index.post.ts
+          └─ update.post.ts
+   
 🔐 Authentication & Authorization
 Login Flow:
   1. Nuxt → backend: email + password

@@ -32,7 +32,7 @@
         class="mb-4"
       />
 
-      <!-- IMAGE UPLOAD -->
+      <!-- COVER IMAGE UPLOAD -->
       <div class="mb-6">
         <label class="font-semibold block mb-2">Cover Image</label>
 
@@ -43,7 +43,44 @@
         </div>
       </div>
 
-      <!-- CONTENT (FULL DESCRIPTION) -->
+      <!-- PDF UPLOAD -->
+      <div class="mb-6">
+        <label class="font-semibold block mb-2">Upload PDF (optional)</label>
+
+        <input type="file" accept="application/pdf" @change="handlePdfUpload" />
+
+        <div v-if="uploadedPdfFilename" class="mt-2 text-green-700">
+          Uploaded: {{ uploadedPdfFilename }}
+        </div>
+
+        <!-- Existing PDFs in edit mode -->
+        <div v-if="isEdit && product.downloadableFiles?.length" class="mt-4">
+          <p class="font-semibold">Existing PDF files:</p>
+          <ul class="list-disc ml-6">
+            <li v-for="file in product.downloadableFiles" :key="file">
+              {{ file }}
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- VIDEO URL (Bunny) -->
+      <div class="mb-6">
+        <label class="font-semibold block mb-2">Video URL (Bunny Stream)</label>
+
+        <v-text-field
+          v-model="product.videoUrl"
+          label="https://iframe.mediadelivery.net/embed/..."
+          class="mb-2"
+        />
+
+        <p class="text-sm text-gray-500">
+          Paste the Bunny embed URL here.
+          Example: https://iframe.mediadelivery.net/embed/LIBRARY_ID/VIDEO_ID
+        </p>
+      </div>
+
+      <!-- FULL DESCRIPTION -->
       <label class="font-semibold block mb-2">Full Description</label>
       <EditorContent :editor="editor" class="border rounded-lg p-4 bg-white" />
 
@@ -75,20 +112,16 @@ import { useRoute, useRouter } from '#imports'
 import { Editor, EditorContent } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
 import { useProductsAdmin } from '~/composables/useProductsAdmin'
+import { useAuth } from '~/composables/useAuth'
 
 /* ---------------------------
-    ADMIN GUARD
+    ADMIN GUARD (SSR + client)
 --------------------------- */
 const { isAdmin, loggedIn } = useAuth()
 
-onMounted(() => {
-  if (!loggedIn.value) return navigateTo('/login')
-  if (!isAdmin.value) return navigateTo('/')
-})
-
-watch([loggedIn, isAdmin], () => {
-  if (!loggedIn.value || !isAdmin.value) navigateTo('/')
-})
+if (!loggedIn.value || !isAdmin.value) {
+  navigateTo('/login')
+}
 
 /* ---------------------------
     ROUTE + ROUTER
@@ -118,6 +151,8 @@ const product = reactive({
   description: '',
   cover: '',
   price: '',
+  downloadableFiles: [],
+  videoUrl: ''
 })
 
 /* ---------------------------
@@ -154,7 +189,7 @@ onBeforeUnmount(() => {
 })
 
 /* ---------------------------
-    IMAGE UPLOAD
+    IMAGE UPLOAD (PUBLIC)
 --------------------------- */
 async function uploadImage(event) {
   const file = event.target.files[0]
@@ -168,11 +203,35 @@ async function uploadImage(event) {
 
   const res = await $fetch(`${backendBase}/upload`, {
     method: 'POST',
-    body: formData
+    body: formData,
+    credentials: 'include'
   })
 
-  // A backend path mezőjéből teljes URL-t építünk
   product.cover = `${backendBase}${res.path}`
+}
+
+/* ---------------------------
+    PDF UPLOAD (PRIVATE)
+--------------------------- */
+const uploadedPdfFilename = ref(null)
+
+async function handlePdfUpload(event) {
+  const file = event.target.files[0]
+  if (!file) return
+
+  const formData = new FormData()
+  formData.append('file', file)
+
+  const config = useRuntimeConfig()
+  const backendBase = config.public.backendBase
+
+  const res = await $fetch(`${backendBase}/upload/pdf`, {
+    method: 'POST',
+    body: formData,
+    credentials: 'include'
+  })
+
+  uploadedPdfFilename.value = res.filename
 }
 
 /* ---------------------------
@@ -181,10 +240,14 @@ async function uploadImage(event) {
 async function saveProduct() {
   if (!valid.value) return
 
-  // payload tisztítása
   const payload = { ...product }
   delete payload._id
   delete payload.createdAt
+
+  // PDF hozzáadása
+  if (uploadedPdfFilename.value) {
+    payload.downloadableFiles = [uploadedPdfFilename.value]
+  }
 
   if (isEdit.value) {
     await admin.updateProduct(productId.value, payload)
@@ -194,5 +257,4 @@ async function saveProduct() {
 
   router.push('/admin/products')
 }
-
 </script>

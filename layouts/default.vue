@@ -40,7 +40,7 @@ const adminMenu = [
   { to: '/admin/blog', label: 'admin.Posts' },
   { to: '/admin/users', label: 'admin.users' },
   { to: '/admin/newsletter', label: 'admin.newsletter' },
-  { to: '/admin/products', label: 'admin.products' },
+  { to: '/admin/products', label: 'admin.products.menu' },
   { to: '/admin/images', label: 'admin.images' }
 ]
 

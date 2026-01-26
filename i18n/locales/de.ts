@@ -20,10 +20,28 @@ export default defineI18nLocale(async (locale) => {
   },
   admin: {
     dashboard: "Admin Dashboard",
-    Posts: "Blog Posts verwalten",
+    Posts: "Blogbeiträge bearbeiten",
     users: "Benutzer verwalten",
     newsletter: "Newsletter verwalten",
-    products: "Produkte verwalten",
+    products: {
+      title: "Produkte verwalten",
+      listTitle: "Produkte",
+      new: "Neues Produkt",
+      edit: "Bearbeiten",
+      delete: "Löschen",
+      confirmDelete: "Sind Sie sicher, dass Sie dieses Produkt löschen möchten?",
+      price: "Preis",
+      actions: "Aktionen",
+      cover: "Cover-Bild",
+      uploadPdf: "PDF hochladen",
+      existingPdfs: "Vorhandene PDF-Dateien",
+      videoUrl: "Video-URL (Bunny Stream)",
+      fullDescription: "Vollständige Beschreibung",
+      save: "Speichern",
+      update: "Aktualisieren",
+      cancel: "Abbrechen",
+      menu: "Produkte verwalten"
+    },
     images: "Bilder verwalten",
     adminSection: "Admin Section"
   },
@@ -48,7 +66,18 @@ export default defineI18nLocale(async (locale) => {
   common: {
     send: "Senden",
     cancel: "Abbrechen",
-    backtohome: "← Zurück zur Startseite"
+    backtohome: "← Zurück zur Startseite",
+    sortBy: "Sortieren nach",
+    titleAZ: "Titel (A-Z)",
+    titleZA: "Titel (Z-A)",
+    priceLowHigh: "Preis (niedrig → hoch)",
+    priceHighLow: "Preis (hoch → niedrig)",
+    newestFirst: "Neueste zuerst",
+    oldestFirst: "Älteste zuerst",
+    loadMore: "Mehr laden",
+    noItemsFound: "Keine Einträge gefunden.",
+    search: "Suche",
+    priceRange: "Preisbereich",
   },
   feedback: {
     title: "Rückmeldungen unserer Kunden"
@@ -62,11 +91,16 @@ export default defineI18nLocale(async (locale) => {
     viewAll: "Alle Beiträge anzeigen",
     allPosts: "Alle Beiträge",
     backToList: "Zurück zur Liste"
-  },  products: {
-    title: "Produkte",
+  },  
+  products: {
+    title: "Produkten",
     viewDetails: "Details",
     buyFor: "Kaufen für",
-    noProducts: "Keine Produkte verfügbar."
+    noProducts: "Keine Produkte verfügbar.",
+    price: "Preis",
+    description: "Beschreibung",
+    downloadableFiles: "Downloadbare Dateien",
+    video: "Video"
   },
   cart: {
     title: "Einkaufswagen",

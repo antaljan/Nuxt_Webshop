@@ -55,22 +55,21 @@ User functions:
 - Product site with details and buy ✔️
 - Shopping Cart (basket) ✔️
 - paying due to service provider stripe --> in sandbox running well ✔️
+- checkout process is correct ✔️
 
 Tasks are open:
-→ WEB Shop (products):
-    - the checkout doesn't give over the userID for backend therefore no new item in purchase table of mongoDB database
-        honestly the user authentication is since the beginning an a big problem under SSR, maybe has to be rethink the concept, there
-        are many possible solutions one of them is the serverSupabaseUser - Nuxt Supabase.
-    - product - upload of education products (pdf file) and link in products database
-    - product - upload education video to Bunny Stream or Vimeo Pro and link it in the database
+→ Admin user management
+→ relive the register.vue --> link in login, if no user registered, than redirect to register and check the functionality of register.vue
+→ Rework /pages/admin/products/create.vue:
+    - add upload of educationsmaterial (pdf file) and link in products database
+    - add upload education video to Bunny Stream or Vimeo Pro and link it in the database
 → User dashboard (pages/user/index.vue)
     - My Products overview, i think same like the product overview, but instead of price and purchase button, only the purchase datum screened:
     - My product view. opening the product from overview and read, view or download:
         - video
         - download materials (ebook, pdf..)
         - Scheduled consultations/coaching --> take a look on scheduled time
-→ Admin: user management
-→ Admin: newsletter management
+→ Admin newsletter management
 → Admin dashboard (pages/admin/index.vue)
     - statistics
     - funnel

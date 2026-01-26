@@ -1,1 +1,0 @@
-// [slug].get.ts

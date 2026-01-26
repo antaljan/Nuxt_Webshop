@@ -1,16 +1,6 @@
 export default defineNuxtConfig({
   ssr: true,
   devtools: { enabled: true },
-  
-  nitro: {
-    devProxy: {
-      '/backend': {
-        target: 'https://antaligyongyi.hu/api',
-        changeOrigin: true,
-        prependPath: true
-      }
-    }
-  },
 
   modules: [
     'vuetify-nuxt-module',
@@ -24,25 +14,21 @@ export default defineNuxtConfig({
   ],
 
   vuetify: {
-    icons: {
-      defaultSet: 'mdi'
-    },
-    display: {
-      mobileBreakpoint: 'md'
-    }
+    icons: { defaultSet: 'mdi' },
+    display: { mobileBreakpoint: 'md' }
   },
 
   i18n: {
-  locales: [
-    { code: 'hu', file: 'hu.ts', language: 'hu-HU' },
-    { code: 'en', file: 'en.ts', language: 'en-US' },
-    { code: 'de', file: 'de.ts', language: 'de-DE' }
-  ],
-  defaultLocale: 'hu',
-  strategy: 'prefix_except_default',
-  lazy: true,
-  langDir: 'locales',
-},
+    locales: [
+      { code: 'hu', file: 'hu.ts', language: 'hu-HU' },
+      { code: 'en', file: 'en.ts', language: 'en-US' },
+      { code: 'de', file: 'de.ts', language: 'de-DE' }
+    ],
+    defaultLocale: 'hu',
+    strategy: 'prefix_except_default',
+    lazy: true,
+    langDir: 'locales'
+  },
 
   build: {
     transpile: ['vuetify']

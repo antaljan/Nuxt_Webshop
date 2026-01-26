@@ -132,6 +132,20 @@ if (!loggedIn.value || !isAdmin.value) navigateTo('/login')
 
 const admin = useProductsAdmin()
 
+/* ---------------------------
+   AUTH GUARD
+--------------------------- */
+// SSR guard
+if (!loggedIn.value || !isAdmin.value) {
+  navigateTo('/login', { replace: true })
+}
+// Client guard
+watchEffect(() => {
+  if (!loggedIn.value || !isAdmin.value) {
+    navigateTo('/login', { replace: true })
+  }
+})
+
 // Fetch products
 const { data, refresh } = await useAsyncData('admin-products', () =>
   admin.getAllProducts()

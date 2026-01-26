@@ -15,7 +15,7 @@ export const useProductsAdmin = () => {
   }
 
   const createProduct = (payload: any) => {
-    return $fetch(`${backend}/products/create`, {
+    return $fetch(`${backend}/products`, {
       method: 'POST',
       body: payload,
       credentials: 'include'

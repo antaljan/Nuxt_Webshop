@@ -2,7 +2,7 @@
   <section class="p-10 max-w-4xl mx-auto">
 
     <h1 class="text-3xl font-bold mb-8">
-      {{ isEdit ? 'Edit Product' : 'Create New Product' }}
+      {{ isEdit ? t('admin.products.edit') : t('admin.products.new') }}
     </h1>
 
     <v-form ref="form" v-model="valid" lazy-validation>
@@ -10,31 +10,33 @@
       <!-- TITLE -->
       <v-text-field
         v-model="product.title"
-        label="Title"
-        :rules="[v => !!v || 'Title is required']"
+        :label="t('products.title')"
+        :rules="[v => !!v || t('common.required')]"
         class="mb-4"
       />
 
       <!-- SHORT DESCRIPTION -->
       <v-text-field
         v-model="product.shortDescription"
-        label="Short Description"
-        :rules="[v => !!v || 'Short description is required']"
+        :label="t('products.description')"
+        :rules="[v => !!v || t('common.required')]"
         class="mb-4"
       />
 
       <!-- PRICE -->
       <v-text-field
         v-model="product.price"
-        label="Price (€)"
+        :label="t('admin.products.price')"
         type="number"
-        :rules="[v => !!v || 'Price is required']"
+        :rules="[v => !!v || t('common.required')]"
         class="mb-4"
       />
 
       <!-- COVER IMAGE UPLOAD -->
       <div class="mb-6">
-        <label class="font-semibold block mb-2">Cover Image</label>
+        <label class="font-semibold block mb-2">
+          {{ t('admin.products.cover') }}
+        </label>
 
         <input type="file" @change="uploadImage" />
 
@@ -45,43 +47,43 @@
 
       <!-- PDF UPLOAD -->
       <div class="mb-6">
-        <label class="font-semibold block mb-2">Upload PDF (optional)</label>
+        <label class="font-semibold block mb-2">
+          {{ t('admin.products.uploadPdf') }}
+        </label>
 
         <input type="file" accept="application/pdf" @change="handlePdfUpload" />
 
         <div v-if="uploadedPdfFilename" class="mt-2 text-green-700">
-          Uploaded: {{ uploadedPdfFilename }}
+          {{ uploadedPdfFilename }}
         </div>
 
-        <!-- Existing PDFs in edit mode -->
+        <!-- Existing PDF -->
         <div v-if="isEdit && product.downloadableFiles?.length" class="mt-4">
-          <p class="font-semibold">Existing PDF files:</p>
+          <p class="font-semibold">{{ t('admin.products.existingPdfs') }}:</p>
           <ul class="list-disc ml-6">
-            <li v-for="file in product.downloadableFiles" :key="file">
-              {{ file }}
-            </li>
+            <li>{{ product.downloadableFiles[0] }}</li>
           </ul>
         </div>
       </div>
 
-      <!-- VIDEO URL (Bunny) -->
+      <!-- VIDEO URL -->
       <div class="mb-6">
-        <label class="font-semibold block mb-2">Video URL (Bunny Stream)</label>
+        <label class="font-semibold block mb-2">
+          {{ t('admin.products.videoUrl') }}
+        </label>
 
         <v-text-field
           v-model="product.videoUrl"
           label="https://iframe.mediadelivery.net/embed/..."
           class="mb-2"
         />
-
-        <p class="text-sm text-gray-500">
-          Paste the Bunny embed URL here.
-          Example: https://iframe.mediadelivery.net/embed/LIBRARY_ID/VIDEO_ID
-        </p>
       </div>
 
       <!-- FULL DESCRIPTION -->
-      <label class="font-semibold block mb-2">Full Description</label>
+      <label class="font-semibold block mb-2">
+        {{ t('admin.products.fullDescription') }}
+      </label>
+
       <EditorContent :editor="editor" class="border rounded-lg p-4 bg-white" />
 
       <!-- ACTIONS -->
@@ -91,14 +93,14 @@
           @click="saveProduct"
           :disabled="!valid"
         >
-          {{ isEdit ? 'Update Product' : 'Create Product' }}
+          {{ isEdit ? t('admin.products.update') : t('admin.products.save') }}
         </v-btn>
 
         <NuxtLink
           to="/admin/products"
           class="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400"
         >
-          Cancel
+          {{ t('common.cancel') }}
         </NuxtLink>
       </div>
 
@@ -109,19 +111,31 @@
 
 <script setup>
 import { useRoute, useRouter } from '#imports'
+import { useI18n } from 'vue-i18n'
 import { Editor, EditorContent } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
 import { useProductsAdmin } from '~/composables/useProductsAdmin'
 import { useAuth } from '~/composables/useAuth'
 
 /* ---------------------------
-    ADMIN GUARD (SSR + client)
+    I18N
 --------------------------- */
-const { isAdmin, loggedIn } = useAuth()
+const { t } = useI18n()
 
+/* ---------------------------
+   AUTH GUARD
+--------------------------- */
+const { loggedIn, isAdmin } = useAuth()
+// SSR guard
 if (!loggedIn.value || !isAdmin.value) {
-  navigateTo('/login')
+  navigateTo('/login', { replace: true })
 }
+// Client guard
+watchEffect(() => {
+  if (!loggedIn.value || !isAdmin.value) {
+    navigateTo('/login', { replace: true })
+  }
+})
 
 /* ---------------------------
     ROUTE + ROUTER
@@ -189,7 +203,7 @@ onBeforeUnmount(() => {
 })
 
 /* ---------------------------
-    IMAGE UPLOAD (PUBLIC)
+    IMAGE UPLOAD
 --------------------------- */
 async function uploadImage(event) {
   const file = event.target.files[0]
@@ -211,7 +225,7 @@ async function uploadImage(event) {
 }
 
 /* ---------------------------
-    PDF UPLOAD (PRIVATE)
+    PDF UPLOAD
 --------------------------- */
 const uploadedPdfFilename = ref(null)
 
@@ -244,7 +258,7 @@ async function saveProduct() {
   delete payload._id
   delete payload.createdAt
 
-  // PDF hozzáadása
+  // PDF hozzáadása (egy darab)
   if (uploadedPdfFilename.value) {
     payload.downloadableFiles = [uploadedPdfFilename.value]
   }

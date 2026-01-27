@@ -59,7 +59,7 @@
             </p>
 
             <NuxtLink
-              :to="`/user/products/${p._id}`"
+              :to="`/user/product/${p._id}`"
               class="inline-block mt-2 text-blue-600 hover:underline"
             >
               Megnyitás →

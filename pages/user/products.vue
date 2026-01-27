@@ -52,9 +52,7 @@ const config = useRuntimeConfig()
 const backend = config.public.backendBase
 
 const { data, pending, error } = await useAsyncData('user-purchases', () =>
-  $fetch(`${backend}/user/purchases`, {
-    credentials: 'include'
-  })
+  $fetch('/api/user/purchases')
 )
 
 const purchases = computed(() => data.value?.purchases || [])

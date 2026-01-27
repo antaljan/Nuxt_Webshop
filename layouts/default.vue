@@ -29,7 +29,8 @@ const mainMenu = [
 ----------------------------------------- */
 const userMenu = [
   { to: '/user', label: 'user.dashboard' },
-  { to: '/user/profile', label: 'user.profile' }
+  { to: '/user/profile', label: 'user.profile' },
+  { to: '/user/products', label: 'user.products' }
 ]
 
 /* -----------------------------------------

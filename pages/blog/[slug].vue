@@ -98,37 +98,122 @@ function formatDate(dateStr) {
 /* ---------------------------
    SEO META
 --------------------------- */
-useHead(() => ({
-  title: post.value.title || 'Blog',
-  meta: [
-    {
-      name: 'description',
-      content: post.value.subtitle || post.value.title
-    },
-    {
-      property: 'og:title',
-      content: post.value.title
-    },
-    {
-      property: 'og:description',
-      content: post.value.subtitle
-    },
-    {
-      property: 'og:image',
-      content: post.value.image
-    }
-  ]
-}))
+useHead(() => {
+  const p = post.value || {}
+  const url = `https://antaligyongyi.hu/blog/${slug}`
+
+  return {
+    title: p.title,
+    meta: [
+      // Alap description (ha nincs subtitle, használjuk a tartalom 160 karakterét)
+      {
+        name: 'description',
+        content: p.subtitle || (p.content ? p.content.replace(/<[^>]+>/g, '').slice(0, 160) : '')
+      },
+
+      // Canonical (nagyon fontos duplikált tartalom miatt)
+      { rel: 'canonical', href: url },
+
+      // Open Graph
+      { property: 'og:title', content: p.title },
+      { property: 'og:description', content: p.subtitle },
+      { property: 'og:type', content: 'article' },
+      { property: 'og:image', content: p.image },
+      { property: 'og:url', content: url },
+      { property: 'og:locale', content: locale.value },
+
+      // Twitter Card
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: p.title },
+      { name: 'twitter:description', content: p.subtitle },
+      { name: 'twitter:image', content: p.image }
+    ],
+
+    // Rich Snippet (Google számára)
+    script: [
+      {
+        type: 'application/ld+json',
+        children: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'Article',
+          headline: p.title,
+          description: p.subtitle,
+          image: [p.image],
+          author: {
+            '@type': 'Person',
+            name: p.author
+          },
+          datePublished: p.date || p.createdAt,
+          dateModified: p.updatedAt || p.date || p.createdAt,
+          mainEntityOfPage: {
+            '@type': 'WebPage',
+            '@id': url
+          }
+        })
+      }
+    ]
+  }
+})
 </script>
 
-<style scoped>
-/* Optional: improve readability of HTML content */
-.prose p {
-  margin-bottom: 1rem;
-  line-height: 1.7;
+<style>
+/* Global blog typography override */
+
+.prose {
+  @apply text-gray-800 leading-relaxed;
 }
+
+/* Headings */
+.prose h1 {
+  @apply text-4xl font-extrabold text-primary-600 mb-6;
+}
+
+.prose h2 {
+  @apply text-3xl font-bold text-primary-600 mt-10 mb-4;
+}
+
+.prose h3 {
+  @apply text-2xl font-semibold text-primary-500 mt-8 mb-3;
+}
+
+/* Paragraphs */
+.prose p {
+  @apply mb-6 text-lg;
+}
+
+/* Links */
+.prose a {
+  @apply text-primary-600 font-semibold underline decoration-2 underline-offset-4
+         transition-colors hover:text-primary-700;
+}
+
+/* Images */
 .prose img {
-  border-radius: 12px;
-  margin: 1.5rem 0;
+  @apply my-8 rounded-xl shadow-md;
+}
+
+/* Blockquotes */
+.prose blockquote {
+  @apply border-l-4 border-primary-500 pl-6 italic my-6 text-gray-700 bg-gray-50 py-4 rounded-md;
+}
+
+/* Ordered & unordered lists */
+.prose ul,
+.prose ol {
+  @apply my-6 ml-6;
+}
+
+.prose li {
+  @apply mb-2;
+}
+
+/* Code blocks */
+.prose pre {
+  @apply bg-gray-900 text-gray-100 p-5 rounded-xl shadow-inner overflow-x-auto my-6;
+}
+
+/* Inline code */
+.prose code {
+  @apply bg-gray-200 px-1.5 py-0.5 rounded text-primary-700;
 }
 </style>

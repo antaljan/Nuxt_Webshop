@@ -101,7 +101,8 @@ export default defineI18nLocale(async (locale) => {
     price: "Ár",
     description: "Leírás",
     downloadableFiles: "Letölthető fájlok",
-    video: "Videó"
+    video: "Videó",
+    backToList: "Vissza a terméklistához"
   },
   cart: {
     title: "Bevásárló kosár",

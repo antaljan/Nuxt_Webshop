@@ -100,7 +100,8 @@ export default defineI18nLocale(async (locale) => {
     price: "Price",
     description: "Description",
     downloadableFiles: "Downloadable Files",
-    video: "Video"
+    video: "Video",
+    backToList: "Back to List"
   },
   cart: {
     title: "Shopping Cart",

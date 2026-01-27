@@ -17,9 +17,10 @@
           {{ product.title }}
         </h1>
 
-        <p class="text-body-1 mb-6">
-          {{ product.description }}
-        </p>
+        <div
+          class="text-body-1 mb-6 prose max-w-none"
+          v-html="product.description"
+        ></div>
 
         <div class="text-2xl font-semibold mb-6">
           €{{ product.price }}
@@ -61,14 +62,49 @@ const { data: product } = await useAsyncData(
 )
 
 // SEO meta tags
-useHead({
-  title: product.value?.title || 'Product',
-  meta: [
-    {
-      name: 'description',
-      content: product.value?.shortDescription || ''
-    }
-  ]
+useHead(() => {
+  const p = product.value || {}
+
+  return {
+    title: p.title,
+    meta: [
+      // Alap meta
+      { name: 'description', content: p.shortDescription || p.description?.slice(0, 160) },
+
+      // Open Graph (Facebook, LinkedIn)
+      { property: 'og:title', content: p.title },
+      { property: 'og:description', content: p.shortDescription },
+      { property: 'og:type', content: 'product' },
+      { property: 'og:image', content: p.cover },
+      { property: 'og:url', content: `https://YOUR_DOMAIN/products/${p._id}` },
+
+      // Twitter Card
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: p.title },
+      { name: 'twitter:description', content: p.shortDescription },
+      { name: 'twitter:image', content: p.cover }
+    ],
+
+    script: [
+      {
+        type: 'application/ld+json',
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Product",
+          name: p.title,
+          image: p.cover,
+          description: p.shortDescription,
+          sku: p._id,
+          offers: {
+            "@type": "Offer",
+            priceCurrency: "EUR",
+            price: p.price,
+            availability: "https://schema.org/InStock"
+          }
+        })
+      }
+    ]
+  }
 })
 
 function goBack() {

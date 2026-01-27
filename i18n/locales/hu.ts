@@ -1,3 +1,5 @@
+import Products from "~/pages/user/products.vue"
+
 export default defineI18nLocale(async (locale) => {
   return {
   $vuetify: {
@@ -121,6 +123,7 @@ export default defineI18nLocale(async (locale) => {
   },
   user: {
     dashboard: "Saját fiók",
-    profile: "Profilom"
+    profile: "Profilom",
+    products: "Saját termékek"
   }
 }})

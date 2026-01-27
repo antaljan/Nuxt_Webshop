@@ -13,7 +13,7 @@
       </NuxtLink>
 
       <NuxtLink
-        to="/profile"
+        to="/user/profile"
         class="p-6 rounded-xl shadow bg-white hover:bg-gray-50 transition"
       >
         <h2 class="text-xl font-semibold mb-2">👤 Profilom</h2>
@@ -72,24 +72,23 @@
 </template>
 
 <script setup>
-import { useAuth } from '~/composables/useAuth'
-const { loggedIn, user } = useAuth()
-
 const config = useRuntimeConfig()
-const backend = config.public.backendBase
 
 // Client-side guard
-onMounted(() => {
-  if (!loggedIn.value) {
-    return navigateTo('/login')
-  }
+definePageMeta({
+  middleware: 'auth'
 })
 
-const { data, pending, error } = await useAsyncData('dashboard-purchases', () =>
-  $fetch(`${backend}/user/purchases`, {
-    credentials: 'include'
-  })
-)
 
+// Fetch purchases
+const { data, pending, error } = await useAsyncData(
+  'dashboard-purchases',
+  async () => {
+    return await $fetch('api/user/purchases', {
+      headers: useRequestHeaders(['cookie']),
+    })
+  }
+)
 const purchases = computed(() => data.value?.purchases || [])
+
 </script>

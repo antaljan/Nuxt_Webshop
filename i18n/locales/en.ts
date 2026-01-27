@@ -120,6 +120,7 @@ export default defineI18nLocale(async (locale) => {
   },
   user: {
     dashboard: "My Dashboard",
-    profile: "My Profile"
+    profile: "My Profile",
+    products: "My Products"
   }
 }})

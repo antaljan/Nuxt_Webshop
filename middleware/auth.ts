@@ -1,11 +1,11 @@
 export default defineNuxtRouteMiddleware(async (to) => {
-  if (process.server) return
-
   const { loggedIn, fetchUser } = useAuth()
 
   // Public oldalak
   const publicRoutes = ['/', '/login', '/register']
-  if (publicRoutes.includes(to.path)) return
+  if (publicRoutes.includes(to.path)) {
+    return
+  }
 
   // Protected oldalak
   const isProtected =
@@ -14,7 +14,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
   if (!isProtected) return
 
-  // Ha nincs user → próbáljuk betölteni
+  // Ha még nem töltöttük be a usert → egyszer próbáld meg
   if (!loggedIn.value) {
     await fetchUser()
   }

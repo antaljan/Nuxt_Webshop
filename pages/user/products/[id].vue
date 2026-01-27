@@ -53,37 +53,40 @@
 
 <script setup>
 const route = useRoute()
-const config = useRuntimeConfig()
-const backend = config.public.backendBase
-
 const purchaseId = route.params.id
-const videoUrl = ref(null)
 
+definePageMeta({
+  middleware: 'auth'
+})
+
+// Product data
 const { data, pending, error } = await useAsyncData(
   `user-product-${purchaseId}`,
   () =>
-    $fetch(`${backend}/user/product/${purchaseId}`, {
-      credentials: 'include'
+    $fetch(`/api/user/product/${purchaseId}`, {
+      headers: useRequestHeaders(['cookie'])
     })
 )
 
 const product = computed(() => data.value?.product || null)
 
+// VIDEO TOKEN
+const videoUrl = ref(null)
+
 onMounted(async () => {
   if (product.value?.videoUrl) {
-    const res = await $fetch(`${backend}/user/video-token`, {
-      params: { purchaseId },
-      credentials: 'include'
+    const videoTokenResponse = await $fetch('/api/user/video-token', {
+      params: { purchaseId }
     })
-    videoUrl.value = res.url
+    videoUrl.value = videoTokenResponse.url
   }
 })
 
-const downloadPdf = async (file) => {
-  const res = await $fetch(`${backend}/user/pdf-token`, {
-    params: { file, purchaseId },
-    credentials: 'include'
+// PDF DOWNLOAD
+async function downloadPdf(file) {
+  const pdfTokenResponse = await $fetch('/api/user/pdf-token', {
+    params: { purchaseId, file }
   })
-  window.location.href = res.url
+  window.location.href = pdfTokenResponse.url
 }
 </script>

@@ -70,13 +70,6 @@ Technical Notes:
 🎬 Video Streaming
 Recommended providers:
 - Bunny Stream
-- Vimeo Pro
-Why?
-- HLS streaming
-- Domain lock
-- Token‑based protection
-- No load on the VPS
-- Easy integration (iframe or SDK)
 
 🏗️ Technology Stack
 Frontend:
@@ -87,6 +80,8 @@ Frontend:
 - Tailwind
 - i18n
 - SSR data fetching (useAsyncData, useFetch)
+- nuxt security
+- TipTap editor
 Backend:
 - Node.js  (Express)
 - MongoDB
@@ -296,6 +291,7 @@ Middleware:
   npm install -D @nuxtjs/tailwindcss
   npm install @tiptap/vue-3 @tiptap/starter-kit
   npm install chart.js
+  npm install nuxt-security
 
 🚀 Deployment (VPS)
 - NGINX reverse proxy

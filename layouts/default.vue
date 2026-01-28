@@ -56,6 +56,7 @@ const closeMenu = () => (menuOpen.value = false)
     <!-- CART DRAWER (MINDEN OLDALON ELÉRHETŐ) -->
     <CartDrawer />
     <!-- MOBILE DRAWER -->
+    <client-only>
     <v-navigation-drawer
       v-model="menuOpen"
       location="start"
@@ -117,6 +118,7 @@ const closeMenu = () => (menuOpen.value = false)
 
       </v-list>
     </v-navigation-drawer>
+    </client-only>
 
     <!-- MAIN CONTENT -->
     <v-main>

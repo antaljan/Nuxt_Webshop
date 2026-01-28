@@ -57,6 +57,19 @@ export const useAuth = () => {
     user.value = null
   }
 
+  const register = async (email, password) => {
+    try {
+      const data = await $fetch('/api/auth/register', {
+        method: 'POST',
+        body: { email, password }
+      })
+      await fetchUser()
+      return data
+    } catch (e) {
+      throw e
+    }
+  }
+
   return {
     user,
     loading,
@@ -64,6 +77,7 @@ export const useAuth = () => {
     isAdmin,
     login,
     logout,
-    fetchUser
+    fetchUser,
+    register
   }
 }

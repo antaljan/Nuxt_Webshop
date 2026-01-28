@@ -73,6 +73,7 @@
 
 <script setup>
 const config = useRuntimeConfig()
+const { user } = useAuth()
 
 // Client-side guard
 definePageMeta({
@@ -84,7 +85,7 @@ definePageMeta({
 const { data, pending, error } = await useAsyncData(
   'dashboard-purchases',
   async () => {
-    return await $fetch('api/user/purchases', {
+    return await $fetch('/api/user/purchases', {
       headers: useRequestHeaders(['cookie']),
     })
   }

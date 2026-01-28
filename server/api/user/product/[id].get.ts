@@ -1,6 +1,6 @@
 // server/api/user/product/[id].get.ts
 export default defineEventHandler(async (event) => {
-  const id = getRouterParam(event, 'id') // Biztonságosabb kinyerés
+  const id = getRouterParam(event, 'id') // safer id retrieval
   const config = useRuntimeConfig()
   const backend = config.public.backendBase
 

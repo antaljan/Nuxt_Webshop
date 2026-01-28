@@ -56,16 +56,17 @@ User functions:
 - Shopping Cart (basket) ✔️
 - paying due to service provider stripe --> in sandbox running well ✔️
 - checkout process is correct ✔️
-- Rework /pages/admin/products/create.vu:e ✔️
+- Rework /pages/admin/products/create.vue ✔️
     - add upload of educationsmaterial (pdf file) and link in products database ✔️
     - add upload education video to Bunny Stream or Vimeo Pro and link it in the database ✔️
+- User dashboard is done ✔️
+- User my products vew is done  ✔️
+
 
 Tasks are open:
 → Admin user management
 → relive the register.vue --> link in login, if no user registered, than redirect to register and check the functionality of register.vue
-→ User dashboard (pages/user/index.vue)
-    - My Products overview, i think same like the product overview, but instead of price and purchase button, only the purchase datum screened:
-    - My product view. opening the product from overview and read, view or download:
+→ User - My product view. opening the product from overview and read, view or download:
         - video
         - download materials (ebook, pdf..)
         - Scheduled consultations/coaching --> take a look on scheduled time

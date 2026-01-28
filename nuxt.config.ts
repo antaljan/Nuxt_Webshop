@@ -5,7 +5,8 @@ export default defineNuxtConfig({
   modules: [
     'vuetify-nuxt-module',
     '@nuxtjs/i18n',
-    '@nuxtjs/tailwindcss'
+    '@nuxtjs/tailwindcss',
+    'nuxt-security'
   ],
 
   css: [
@@ -16,6 +17,27 @@ export default defineNuxtConfig({
   vuetify: {
     icons: { defaultSet: 'mdi' },
     display: { mobileBreakpoint: 'md' }
+  },
+
+  security: {
+    headers: {
+      contentSecurityPolicy: {
+        'img-src': ["'self'", "data:", "https://antaligyongyi.hu", "https://bunny.net"],
+        'script-src': ["'self'", "'unsafe-inline'", "https://js.stripe.com"],
+        'frame-src': ["'self'", "https://js.stripe.com", "https://bunny.net"],
+      },
+      crossOriginEmbedderPolicy: 'unsafe-none',
+    },
+    // Rate limiting (DDoS)
+    rateLimiter: {
+      tokensPerInterval: 350,
+      interval: 'hour',
+    },
+    // Request filter (to safe SQL/NoSQL injection)
+    requestSizeLimiter: {
+      maxRequestSizeInBytes: 2000000, // 2MB
+      maxUploadFileRequestInBytes: 20000000, // 20MB a PDF-ekhez
+    }
   },
 
   i18n: {

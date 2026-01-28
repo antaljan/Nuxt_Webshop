@@ -16,62 +16,80 @@ Frontend:
     }
 
 Tasks are done:
-
 Architect:
-- useAuth.ts ✔️
-- auth.ts ✔️
-- admin.global.ts ✔️
-- login.post.ts ✔️
-- layouts/default.vue ✔️
-- i18n ✔️
-- MyHeader.vue ✔️
-- MyFooter.vue ✔️
+- .env ✔️
+- .gitignore ✔️
+- nuxt.config.ts ✔️
+- tailwind.config.js ✔️
+- /composable/useAuth.ts ✔️
+- /middleware/auth.ts ✔️
+- /server/auth/login.post.ts ✔️
+- /server/auth/logout.post.ts ✔️
+- /server/auth/me.get.ts ✔️
+- /server/auth/register.post.ts ✔️
+- /server/content/[section]/language.get.ts ✔️
+- /server/content/[section]/language.put.ts ✔️
+- /server/content/upload.post.ts ✔️
+- /server/content-upload/index.post.ts ✔️
+- /server/email/send.post.ts ✔️
+- /server/images/[filename].delete.ts ✔️
+- /server/images/index.get.ts ✔️
+- /server/track/click/[emailid].get.ts ✔️
+- /server/track/open/[emailid].get.ts ✔️
+- /server/upload/index.post.ts ✔️
+- /layouts/default.vue ✔️
+- install and config i18n ✔️
+- create /i18n/locales/hu.ts + de.ts + en.ts ✔️
+- /components/MyHeader.vue ✔️
+- /components/MyFooter.vue ✔️
 - chart.js installed ✔️
-- LineChart.vue and BarChart.vue added to components/charts/ ✔️
-
+- /components/charts/LineChart.vue + BarChart.vue ✔️
 Landing Page (public page):
-- GeneralHeroSection.vue ✔️
-- landing page (index.vue) create from generic items, Tailwind, SSR content loader fine tuning ✔️
-- sectionSeparator ✔️
-- GenericImageTextSection ✔️
-- GenericTextSection ✔️
-- GenericFeedbackSection ✔️
-- GenericContactSection ✔️
-- GenericBlogSection ✔️
-- Generic create and integrate them in landing page ✔️
-- Blog pages (overview, one view) ✔️
-- Blog admin (list, create with tiptap editor, edit, delete) ✔️
+- /components/GeneralHeroSection.vue ✔️
+- /pages/index.vue --> landing page create from generic items, Tailwind, SSR content loader fine tuning ✔️
+- /components/sectionSeparator ✔️
+- /components/GenericImageTextSection ✔️
+- /components/GenericTextSection ✔️
+- /components/GenericFeedbackSection ✔️
+- /components/GenericContactSection ✔️
+- /components/GenericBlogSection ✔️
+- Integrate all generic components to landing page ✔️
+- /pages/blog/index.vue --> Blog overview ✔️
+- /pages/blog/[id].vue --> Blog details view ✔️
 - SSR safe user status, stabilized duo to useRequestHeaders(['cookie']) ✔️
 - menu links are ssr safe fixed ✔️
-
 Admin functions:
 - access control for admin dashboard and pages realized ✔️
-- Backend endpoints for product (router, model) ✔️
-- backend checkout, with stripe module ✔️
-- Admin sites for product (overview,create) ✔️
-
-User functions:
-- Product overview site with searching(picture, name, short description, price on v-card) ✔️
-- Product site with details and buy ✔️
-- Shopping Cart (basket) ✔️
-- paying due to service provider stripe --> in sandbox running well ✔️
-- checkout process is correct ✔️
-- Rework /pages/admin/products/create.vue ✔️
-    - add upload of educationsmaterial (pdf file) and link in products database ✔️
+- /pages/admin/blog/index.vue --> admin blog post list with edit, delete + create ✔️
+- /pages/admin/blog/create.vue --> admin blog post create  ✔️
+    - add upload of educations material (pdf file) and link in products database ✔️
     - add upload education video to Bunny Stream or Vimeo Pro and link it in the database ✔️
-- User dashboard is done ✔️
-- User my products vew is done  ✔️
-
+- backend endpoints for product (router, model) ✔️
+- backend checkout, with stripe module ✔️
+- /pages/admin/products/index.vue --> admin product overview (list with paginator, sort, filter, delete, edit) ✔️
+- /pages/admin/products/create.vue --> admin product create or edit ✔️
+User functions:
+- /pages/products/index.vue --> Product overview site with searching(picture, name, short description, price on v-card) ✔️
+- /pages/products/[id].vue --> Product site with details and buy ✔️
+- /components/CartDrawer.vue + add to default layout --> Shopping Cart (basket) ✔️
+- backend: install stripe api + add order routes + webhook --> paying due to service provider stripe --> in sandbox running well ✔️
+- /pages/checkout/success.vue + cancel.vue + proxy + backend routes --> checkout process is correct ✔️
+- /pages/user/index.vue --> dashboard is done ✔️
+- /pages/user/products.vue --> User my products view is done  ✔️
 
 Tasks are open:
-→ Admin user management
-→ relive the register.vue --> link in login, if no user registered, than redirect to register and check the functionality of register.vue
-→ User - My product view. opening the product from overview and read, view or download:
-        - video
-        - download materials (ebook, pdf..)
-        - Scheduled consultations/coaching --> take a look on scheduled time
-→ Admin newsletter management
-→ Admin dashboard (pages/admin/index.vue)
+→ relive the /pages/register.vue --> link in login and test it.
+→ /pages/admin/coaching/index.vue --> overview of scheduled coaching sections in calender + create new slots button
+→ /pages/admin/coaching/create.vue --> crate new coaching slot in calendar
+→ /components/GenericScheduler.vue --> schedule coaching slot in calender according the availability
+→ /pages/user/product/[id].vue --> User product open: download pdf or play video or schedule/reschedule coaching sections
+→ /pages/user/profile.vue --> Settings Account settings: change billing adders ...
+→ /pages/admin/user/index.vue --> Admin user management (list with paginator, sort, filter, edit, delete + create button)
+→ /pages/admin/newsletter/index.vue --> admin newsletter management (list of newsletters with status and figures , paginator, filter, sort)
+→ /pages/admin/newsletter/create.vue --> admin newsletter template creator
+→ /pages/admin/newsletter/schedule.vue --> admin newsletter scheduler
+→ /pages/admin/newsletter/stats.vue --> admin newsletter statistic
+→ /pages/admin/index.vue --> admin dashboard
     - statistics
     - funnel
     - pageview

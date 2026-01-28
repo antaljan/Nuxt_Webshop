@@ -9,7 +9,7 @@
         Admin Auth Guard
   ---------------------------------- */
 const { isAdmin, loggedIn } = useAuth()
-// Client oldali guard
+// Client site guard
 onMounted(() => {
   if (!loggedIn.value) {
     return navigateTo('/login')
@@ -18,7 +18,7 @@ onMounted(() => {
     return navigateTo('/')
   }
 })
-// Ha kilépsz → automatikusan redirectel
+// automatic redirecting if you log out
 watch([loggedIn, isAdmin], () => {
   if (!loggedIn.value) {
     navigateTo('/')

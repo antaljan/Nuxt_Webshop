@@ -1,10 +1,12 @@
 Short “architectural reality check”
-current situation:
+
 backend (NODE Express)
-    Running in productive mode on a VPS (IONOS) , connected to MongoDB. (not on dev-server in docker or container because my developer hardware has only 8GB RAM)
+    Running in productive mode on a VPS (IONOS) on port 3000, connected to MongoDB.
+    linked with 2 domains: https://antaligyongyi.hu/api (primary), https://yowayoli.com/api
+    hosted with nginx, nginx controlled the /api tag.
 Nuxt-Backend (Nuxt server routes):
     Auth, blog, products, newsletter, stats, users ect... endpoints are structured and done.
-    There is an a backend.ts in /server/utils witch exported the BACKEND_BASE_URL item, this is the URL for NODE API Server on VPS. (backend and frontend will be running on same VPS in productive system. frontend on port:3000 backend on port:4000 within the NODE backend will be not any more visible for other, only for frontend.)
+    At the future (if the frontend finished and deployed on vps) the backend and frontend will be running on same VPS in productive system, frontend on port:3000 backend on port:4000 within the NODE backend will be not any more visible for others, only for frontend.
 Frontend:
     Nuxt 4 SSR, Vuetify, n18n, Tailwind and component based design ✔️
     The composables useAuth, useContent are integrated, the others (blog, product, newsletter, user) not yet.
@@ -22,6 +24,11 @@ Architect:
 - nuxt.config.ts ✔️
 - tailwind.config.js ✔️
 - /composable/useAuth.ts ✔️
+- /composable/useBlog.ts ✔️
+- /composable/useChartDrawer.ts ✔️
+- /composable/useContent.ts ✔️
+- /composable/useProducts.ts ✔️
+- /composable/useProductsAdmin.ts ✔️
 - /middleware/auth.ts ✔️
 - /server/auth/login.post.ts ✔️
 - /server/auth/logout.post.ts ✔️
@@ -46,14 +53,13 @@ Architect:
 - /components/charts/LineChart.vue + BarChart.vue ✔️
 Landing Page (public page):
 - /components/GeneralHeroSection.vue ✔️
-- /pages/index.vue --> landing page create from generic items, Tailwind, SSR content loader fine tuning ✔️
 - /components/sectionSeparator ✔️
 - /components/GenericImageTextSection ✔️
 - /components/GenericTextSection ✔️
 - /components/GenericFeedbackSection ✔️
 - /components/GenericContactSection ✔️
 - /components/GenericBlogSection ✔️
-- Integrate all generic components to landing page ✔️
+- /pages/index.vue --> landing page create from generic items, Tailwind, SSR content loader fine tuning ✔️
 - /pages/blog/index.vue --> Blog overview ✔️
 - /pages/blog/[id].vue --> Blog details view ✔️
 - SSR safe user status, stabilized duo to useRequestHeaders(['cookie']) ✔️
@@ -64,8 +70,8 @@ Admin functions:
 - /pages/admin/blog/create.vue --> admin blog post create  ✔️
     - add upload of educations material (pdf file) and link in products database ✔️
     - add upload education video to Bunny Stream or Vimeo Pro and link it in the database ✔️
-- backend endpoints for product (router, model) ✔️
-- backend checkout, with stripe module ✔️
+- backend endpoints for product created (router, model) ✔️
+- backend checkout, with stripe module created  ✔️
 - /pages/admin/products/index.vue --> admin product overview (list with paginator, sort, filter, delete, edit) ✔️
 - /pages/admin/products/create.vue --> admin product create or edit ✔️
 User functions:
@@ -92,6 +98,6 @@ Tasks are open:
 → /pages/admin/index.vue --> admin dashboard
     - statistics
     - funnel
-    - pageview
+    - pageviews
     - newsletter + performance
 

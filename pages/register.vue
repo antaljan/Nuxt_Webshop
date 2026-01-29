@@ -101,7 +101,8 @@ async function doRegister() {
         email: email.value,
         psw: psw.value,
         adress: adress.value,
-        phone: phone.value || ''
+        phone: phone.value || '',
+        rolle: 'user'
       }
     })
 

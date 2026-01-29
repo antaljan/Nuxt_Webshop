@@ -24,7 +24,6 @@ export default defineI18nLocale(async (locale) => {
   admin: {
     dashboard: "Admin irányítópult",
     Posts: "Blogok szerkesztése",
-    users: "Felhasználók kezelése",
     newsletter: "Hírlevelek kezelése",
     products: {
       title: "Termékek kezelése",
@@ -46,7 +45,15 @@ export default defineI18nLocale(async (locale) => {
       menu: "Termékek kezelése"
     },
     images: "Képek kezelése",
-    adminSection: "Admin menü"
+    adminSection: "Admin menü",
+    users: {
+      title: "Felhasználók kezelése",
+      new: "Új felhasználó",
+      edit: "Felhasználó szerkesztése",
+      create: "Új felhasználó létrehozása",
+      role: "Szerepkör",
+      confirmDelete: "Biztosan törlöd ezt a felhasználót?"
+    }
   },
   header: {
     login: "Bejelentkezés",
@@ -81,6 +88,8 @@ export default defineI18nLocale(async (locale) => {
     noItemsFound: "Nincs találat.",
     search: "Keresés",
     priceRange: "Ártartomány",
+    save: "Mentés",
+    delete: "Törlés"
   },
   feedback: {
     title: "Visszajelzések"
@@ -125,5 +134,34 @@ export default defineI18nLocale(async (locale) => {
     dashboard: "Saját fiók",
     profile: "Profilom",
     products: "Saját termékek"
+  },
+  auth: {
+  register: {
+    title: "Regisztráció",
+    firstname: "Keresztnév",
+    lastname: "Vezetéknév",
+    email: "Email",
+    password: "Jelszó",
+    adress: "Cím (számlázáshoz kötelező)",
+    phone: "Telefonszám (opcionális)",
+    button: "Regisztráció",
+    haveAccount: "Már van fiókom, belépek",
+    errors: {
+      required: "Kérlek tölts ki minden kötelező mezőt!",
+      emailExists: "Ez az email cím már regisztrálva van.",
+      general: "Hiba történt a regisztráció során."
+    }
+  },
+  login: {
+    title: "Bejelentkezés",
+    email: "Email",
+    password: "Jelszó",
+    button: "Belépés",
+    noAccount: "Még nincs fiókom, regisztrálok",
+    errors: {
+      invalid: "Hibás email vagy jelszó.",
+      general: "Hiba történt a bejelentkezés során."
+    }
   }
+}
 }})

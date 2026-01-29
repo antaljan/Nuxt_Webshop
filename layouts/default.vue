@@ -39,7 +39,7 @@ const userMenu = [
 const adminMenu = [
   { to: '/admin', label: 'admin.dashboard' },
   { to: '/admin/blog', label: 'admin.Posts' },
-  { to: '/admin/users', label: 'admin.users' },
+  { to: '/admin/users', label: 'admin.users.title' },
   { to: '/admin/newsletter', label: 'admin.newsletter' },
   { to: '/admin/products', label: 'admin.products.menu' },
   { to: '/admin/images', label: 'admin.images' }

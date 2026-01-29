@@ -21,7 +21,6 @@ export default defineI18nLocale(async (locale) => {
   admin: {
     dashboard: "Admin Dashboard",
     Posts: "Blogbeiträge bearbeiten",
-    users: "Benutzer verwalten",
     newsletter: "Newsletter verwalten",
     products: {
       title: "Produkte verwalten",
@@ -43,7 +42,15 @@ export default defineI18nLocale(async (locale) => {
       menu: "Produkte verwalten"
     },
     images: "Bilder verwalten",
-    adminSection: "Admin Section"
+    adminSection: "Admin Section",
+    users: {
+      title: "Benutzern verwalten",
+      new: "Neue Benutzer",
+      edit: "Benutzerdaten ändern",
+      create: "Neue Benutzer",
+      role: "Rollen",
+      confirmDelete: "Wollen Sie wirklich die Benutzer Löschen?"
+    }
   },
   header: {
     login: "Einloggen",
@@ -78,6 +85,8 @@ export default defineI18nLocale(async (locale) => {
     noItemsFound: "Keine Einträge gefunden.",
     search: "Suche",
     priceRange: "Preisbereich",
+    save: "speichern",
+    delete: "löschen"
   },
   feedback: {
     title: "Rückmeldungen unserer Kunden"
@@ -122,6 +131,35 @@ export default defineI18nLocale(async (locale) => {
     dashboard: "Mein Dashboard",
     profile: "Mein Profil",
     products: "Meine Produkte"
+  },
+  auth: {
+  register: {
+    title: "Registrierung",
+    firstname: "Vorname",
+    lastname: "Nachname",
+    email: "Email",
+    password: "Password",
+    adress: "Adresse (benötigt für Rechnung)",
+    phone: "Telephone Nummer (optional)",
+    button: "registrierung",
+    haveAccount: "Ich habe schon registriert, melde ich ein",
+    errors: {
+      required: "Bitte alle pflicht Felde ausfüllen!",
+      emailExists: "Die angegebene Email ist bereits registriert.",
+      general: "Eine Fehler ist beim Registrierung aufgeträten."
+    }
+  },
+  login: {
+    title: "Einmelden",
+    email: "Email",
+    password: "Password",
+    button: "einmelden",
+    noAccount: "Ich habe noch keine Account,  Ich registriere.",
+    errors: {
+      invalid: "Email oder Passwort inkorrekt.",
+      general: "Ein Fehler beim Einmeldung aufgeträten."
+    }
   }
+}
 }
 })

@@ -21,7 +21,6 @@ export default defineI18nLocale(async (locale) => {
   admin: {
     dashboard: "Admin Dashboard",
     Posts: "Edit Blog Posts",
-    users: "Manage Users",
     newsletter: "Manage Newsletter",
     products: {
       title: "Manage Products",
@@ -43,7 +42,15 @@ export default defineI18nLocale(async (locale) => {
       menu: "Manage Products"
     },
     images: "Manage Images",
-    adminSection: "Admin Section"
+    adminSection: "Admin Section",
+    users: {
+      title: "User management",
+      new: "New user",
+      edit: "Edit user",
+      create: "Create user",
+      role: "Rolle",
+      confirmDelete: "Do you want wrily delete the user?"
+    }
   },
   header: {
     login: "Login",
@@ -78,6 +85,8 @@ export default defineI18nLocale(async (locale) => {
     noItemsFound: "No items found.",
     search: "Search",
     priceRange: "Price Range",
+    save: "save",
+    delete: "delete"
   },
   feedback: {
     title: "Testimonials"
@@ -122,5 +131,34 @@ export default defineI18nLocale(async (locale) => {
     dashboard: "My Dashboard",
     profile: "My Profile",
     products: "My Products"
+  },
+  auth: {
+  register: {
+    title: "Register",
+    firstname: "First name",
+    lastname: "Name",
+    email: "Email",
+    password: "Password",
+    adress: "Adress (mandantory for billing)",
+    phone: "Phone (optional)",
+    button: "Registring",
+    haveAccount: "I have already account, log in",
+    errors: {
+      required: "Please fill all mandantory fields!",
+      emailExists: "The email is already registered.",
+      general: "Failure by registring."
+    }
+  },
+  login: {
+    title: "Login",
+    email: "Email",
+    password: "Password",
+    button: "login",
+    noAccount: "I do not have account, i will register one.",
+    errors: {
+      invalid: "Failure by email or password",
+      general: "Failure by login."
+    }
   }
+}
 }})

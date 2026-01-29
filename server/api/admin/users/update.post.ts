@@ -3,14 +3,14 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
 
   try {
-    return await $fetch(`${config.public.backendBase}/user/create`, {
+    return await $fetch(`${config.public.backendBase}/user/update`, {
       method: 'POST',
       body
     })
   } catch (error) {
     throw createError({
       statusCode: error.response?.status || 500,
-      statusMessage: 'Failure by registring'
+      statusMessage: 'User update failed'
     })
   }
 })

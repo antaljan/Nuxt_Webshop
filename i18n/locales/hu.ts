@@ -9,6 +9,16 @@ export default defineI18nLocale(async (locale) => {
       ariaLabel: {
         delimiter: 'Carousel slide {0} / {1}'
       }
+    },
+    noDataText:"nem áll rendelkezésre adat",
+    dataFooter:{
+      itemsPerPageText:"elem per lap",
+      itemsPerPageAll:"",
+      pageText:"lap",
+      firstPage:"első lap",
+      prevPage:"előző lap",
+      nextPage:"következő lap",
+      lastPage:"utolsó lap"
     }
   },
   menu: {

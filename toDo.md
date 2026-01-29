@@ -82,15 +82,16 @@ User functions:
 - /pages/checkout/success.vue + cancel.vue + proxy + backend routes --> checkout process is correct ✔️
 - /pages/user/index.vue --> dashboard is done ✔️
 - /pages/user/products.vue --> User my products view is done  ✔️
+- /pages/register.vue --> registring new user ✔️
+- /pages/admin/user/index.vue --> Admin user management (list with paginator, sort, filter, edit, delete + create button)  ✔️
 
 Tasks are open:
-→ relive the /pages/register.vue --> link in login and test it.
+
 → /pages/admin/coaching/index.vue --> overview of scheduled coaching sections in calender + create new slots button
 → /pages/admin/coaching/create.vue --> crate new coaching slot in calendar
 → /components/GenericScheduler.vue --> schedule coaching slot in calender according the availability
 → /pages/user/product/[id].vue --> User product open: download pdf or play video or schedule/reschedule coaching sections
 → /pages/user/profile.vue --> Settings Account settings: change billing adders ...
-→ /pages/admin/user/index.vue --> Admin user management (list with paginator, sort, filter, edit, delete + create button)
 → /pages/admin/newsletter/index.vue --> admin newsletter management (list of newsletters with status and figures , paginator, filter, sort)
 → /pages/admin/newsletter/create.vue --> admin newsletter template creator
 → /pages/admin/newsletter/schedule.vue --> admin newsletter scheduler

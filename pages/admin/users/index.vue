@@ -77,10 +77,14 @@
 </template>
 
 <script setup>
+// set language futures
 const { t } = useI18n()
 
 // SSR-safe user loading
-const { data: users, refresh } = await useFetch('/api/admin/users')
+const { data: users, refresh } = await useFetch('/api/admin/users', {
+  // Ez elengedhetetlen, hogy a Nuxt szerver átvegye a cookie-kat a böngészőtől!
+  headers: useRequestHeaders(['cookie']) 
+})
 
 const search = ref('')
 const editDialog = ref(false)

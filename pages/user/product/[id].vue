@@ -31,22 +31,21 @@
       </div>
 
       <!-- PDF DOWNLOADS -->
-      <div v-if="product.downloadableFiles?.length" class="mb-8">
-        <h2 class="text-xl font-semibold mb-2">Downloads</h2>
-        <ul class="list-disc ml-6">
-          <li
-            v-for="file in product.downloadableFiles"
-            :key="file"
-          >
-            <button
-              class="text-blue-600 hover:underline"
+      <div v-if="product?.downloadableFiles?.length" class="mb-8">
+        <h2 class="text-xl font-semibold mb-2">Letölthető anyagok</h2>
+          <v-list variant="flat" border>
+            <v-list-item
+              v-for="file in product.downloadableFiles"
+              :key="file"
+              prepend-icon="mdi-file-pdf-box"
               @click="downloadPdf(file)"
+              class="cursor-pointer"
             >
-              Download {{ file }}
-            </button>
-          </li>
-        </ul>
+              <v-list-item-title class="text-blue-600">{{ file }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
       </div>
+
     </div>
   </section>
 </template>
@@ -68,7 +67,11 @@ const { data, pending, error } = await useAsyncData(
     })
 )
 
-const product = computed(() => data.value?.product || null)
+const product = computed(() => {
+  const purchase = data.value?.product || data.value;
+  // Ha a purchase-ben van items tömb, vegyük az elsőt
+  return purchase?.items ? purchase.items[0] : purchase;
+});
 
 // VIDEO TOKEN
 const videoUrl = ref(null)

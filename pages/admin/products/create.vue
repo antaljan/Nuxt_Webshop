@@ -198,6 +198,12 @@ onMounted(() => {
   })
 })
 
+watch(() => product.description, (newContent) => {
+  if (editor.value && editor.value.getHTML() !== newContent) {
+    editor.value.commands.setContent(newContent)
+  }
+})
+
 onBeforeUnmount(() => {
   editor.value?.destroy()
 })
@@ -234,19 +240,23 @@ async function handlePdfUpload(event) {
   if (!file) return
 
   const formData = new FormData()
-  formData.append('file', file)
+  // FONTOS: Maradjon 'image', mert a backend ezen a néven várja!
+  formData.append('image', file) 
 
-  const config = useRuntimeConfig()
-  const backendBase = config.public.backendBase
-
-  const res = await $fetch(`${backendBase}/upload/pdf`, {
-    method: 'POST',
-    body: formData,
-    credentials: 'include'
-  })
-
-  uploadedPdfFilename.value = res.filename
+  try {
+    const res = await $fetch('/api/upload', {
+      method: 'POST',
+      body: formData
+    })
+    uploadedPdfFilename.value = res.filename
+  } catch (err) {
+    console.error('Feltöltési hiba:', err.data?.message || err.message)
+    alert('Hiba: ' + (err.data?.message || 'A fájl nem tölthető fel.'));
+  }
 }
+
+
+
 
 /* ---------------------------
     SAVE PRODUCT
@@ -254,21 +264,30 @@ async function handlePdfUpload(event) {
 async function saveProduct() {
   if (!valid.value) return
 
-  const payload = { ...product }
+  // Klónozzuk a terméket
+  const payload = JSON.parse(JSON.stringify(product))
   delete payload._id
   delete payload.createdAt
 
-  // PDF hozzáadása (egy darab)
+  // PDF KEZELÉSE: 
+  // Csak akkor írjuk felül a tömböt, ha történt új feltöltés
   if (uploadedPdfFilename.value) {
     payload.downloadableFiles = [uploadedPdfFilename.value]
+  } else if (isEdit.value) {
+    // Szerkesztésnél tartsuk meg a már meglévő fájlokat
+    payload.downloadableFiles = product.downloadableFiles || []
   }
 
-  if (isEdit.value) {
-    await admin.updateProduct(productId.value, payload)
-  } else {
-    await admin.createProduct(payload)
+  try {
+    if (isEdit.value) {
+      await admin.updateProduct(productId.value, payload)
+    } else {
+      await admin.createProduct(payload)
+    }
+    router.push('/admin/products')
+  } catch (err) {
+    console.error('Mentési hiba:', err)
   }
-
-  router.push('/admin/products')
 }
+
 </script>

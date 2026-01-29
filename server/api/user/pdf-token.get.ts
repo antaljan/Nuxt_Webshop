@@ -1,16 +1,12 @@
-import { defineEventHandler } from '#imports'
-import { getHeader, getQuery } from 'h3'
-
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
-  const backend = config.public.backendBase
+  const query = getQuery(event)
+  const token = getCookie(event, 'jwt') // Itt 'jwt'!
 
-  const { purchaseId, file } = getQuery(event)
-
-  return await $fetch(`${backend}/user/pdf-token`, {
+  return await $fetch(`${config.public.backendBase}/user/pdf-token`, {
+    params: query,
     headers: {
-      cookie: getHeader(event, 'cookie') || ''
-    },
-    params: { purchaseId, file }
+      cookie: `jwt=${token}` // Átadjuk a backendnek a sütit
+    }
   })
 })

@@ -87,9 +87,20 @@ onMounted(async () => {
 
 // PDF DOWNLOAD
 async function downloadPdf(file) {
-  const pdfTokenResponse = await $fetch('/api/user/pdf-token', {
-    params: { purchaseId, file }
-  })
-  window.location.href = pdfTokenResponse.url
+  try {
+    const config = useRuntimeConfig()
+    const res = await $fetch('/api/user/pdf-token', {
+      params: { purchaseId, file }
+    })
+    
+    // A res.url a backend végpontja, pl: /api/user/pdf-secure?token=...
+    // Ezt össze kell fűznünk a backend alapcímével (vagy az Nginx-en átengedni)
+    const downloadUrl = `${config.public.backendBase}${res.url.replace('/api', '')}`
+    
+    window.open(downloadUrl, '_blank')
+  } catch (err) {
+    console.error('Download error:', err)
+  }
 }
+
 </script>

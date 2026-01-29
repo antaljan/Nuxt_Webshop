@@ -44,23 +44,19 @@
           <td>{{ post.slug }}</td>
 
           <td class="space-x-3">
-
             <!-- EDIT -->
-            <NuxtLink
+            <v-btn
+              icon="mdi-pencil"
+              size="small"
               :to="`/admin/blog/create?edit=${post._id}`"
-              class="text-blue-600 hover:underline"
-            >
-              Edit
-            </NuxtLink>
-
+            />
             <!-- DELETE -->
-            <button
-              class="text-red-600 hover:underline"
+            <v-btn
+              icon="mdi-delete"
+              size="small"
+              color="red"
               @click="confirmDelete(post._id)"
-            >
-              Delete
-            </button>
-
+            />
           </td>
         </tr>
       </tbody>

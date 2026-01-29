@@ -1,4 +1,5 @@
 import Products from "~/pages/user/products.vue"
+import Profile from "~/pages/user/profile.vue"
 
 export default defineI18nLocale(async (locale) => {
   return {
@@ -142,7 +143,7 @@ export default defineI18nLocale(async (locale) => {
   },
   user: {
     dashboard: "Saját fiók",
-    profile: "Profilom",
+    profile: "Fiók beállítások",
     products: "Saját termékek"
   },
   auth: {

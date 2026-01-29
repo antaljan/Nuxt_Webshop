@@ -84,6 +84,8 @@ User functions:
 - /pages/user/products.vue --> User my products view is done  ✔️
 - /pages/register.vue --> registring new user ✔️
 - /pages/admin/user/index.vue --> Admin user management (list with paginator, sort, filter, edit, delete + create button)  ✔️
+- /pages/admin/images/index.vue --> Admin images management (list in mosaic with name, delete button)  ✔️
+- /pages/user/profile.vue --> Settings Account settings: change billing adders ...  ✔️
 
 Tasks are open:
 
@@ -91,7 +93,6 @@ Tasks are open:
 → /pages/admin/coaching/create.vue --> crate new coaching slot in calendar
 → /components/GenericScheduler.vue --> schedule coaching slot in calender according the availability
 → /pages/user/product/[id].vue --> User product open: download pdf or play video or schedule/reschedule coaching sections
-→ /pages/user/profile.vue --> Settings Account settings: change billing adders ...
 → /pages/admin/newsletter/index.vue --> admin newsletter management (list of newsletters with status and figures , paginator, filter, sort)
 → /pages/admin/newsletter/create.vue --> admin newsletter template creator
 → /pages/admin/newsletter/schedule.vue --> admin newsletter scheduler

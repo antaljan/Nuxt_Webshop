@@ -31,7 +31,12 @@
       <!-- ACTIONS BAR -->
       <v-card-actions class="p-4 flex flex-wrap gap-2">
         <template v-if="!showList">
-          <v-btn color="primary" variant="elevated" @click="dialog = true" prepend-icon="mdi-email">
+          <v-btn 
+            color="primary" 
+            variant="elevated" 
+            to="/admin/newsletter/schedule" 
+            prepend-icon="mdi-clock-send"
+          >
             {{ $t('admin.newsletter.sendNow') }}
           </v-btn>
           <v-btn color="secondary" variant="outlined" to="/admin/newsletter/create" prepend-icon="mdi-email-newsletter">
@@ -79,33 +84,7 @@
         </v-window-item>
       </v-window>
     </v-card>
-
-    <!-- SEND NEWSLETTER DIALOG -->
-    <v-dialog v-model="dialog" max-width="600px">
-      <v-card rounded="xl">
-        <v-card-title class="bg-blue-darken-3 text-white p-4">
-          {{ $t('admin.newsletter.sendDialogTitle') }}
-        </v-card-title>
-        <v-card-text class="p-6">
-          <v-text-field v-model="sendForm.subject" :label="$t('admin.newsletter.form.subject')" variant="outlined" />
-          <v-text-field v-model="sendForm.date" type="date" :label="$t('admin.newsletter.form.date')" variant="outlined" />
-          
-          <v-select
-            v-model="sendForm.group"
-            :items="subscriberGroups"
-            label="Szűrés csoportra"
-            variant="outlined"
-            clearable
-          />
-        </v-card-text>
-        <v-card-actions class="p-4">
-          <v-spacer />
-          <v-btn variant="text" @click="dialog = false">{{ $t('common.cancel') }}</v-btn>
-          <v-btn color="primary" variant="elevated" @click="handleSend">{{ $t('common.send') }}</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
+    
     <!-- dialog for preview the selected newsletter -->
     <v-dialog v-model="previewDialog" max-width="800px">
       <v-card rounded="xl">
@@ -220,6 +199,7 @@ async function openPreview(item) {
     }
   } catch (error) {
     console.error('Hírlevél betöltési hiba:', error)
+    alert("Sajnos nem sikerült betölteni a sablont.")
   }
 }
 

@@ -37,7 +37,12 @@ export default defineNuxtConfig({
     requestSizeLimiter: {
       maxRequestSizeInBytes: 2000000, // 2MB
       maxUploadFileRequestInBytes: 20000000, // 20MB a PDF-ekhez
-    }
+    },
+  },
+
+  routeRules: {
+    '/api/newsletter/create/save': { security: {xssValidator: false} },
+    '/api/newsletter/getonetemplate': { security: { xssValidator: false } }
   },
 
   i18n: {

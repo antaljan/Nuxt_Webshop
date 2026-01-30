@@ -154,6 +154,7 @@
 
 <script setup>
 import DOMPurify from 'dompurify'
+
 // Import of templates
 import { bodyImgL } from '~/utils/newsletter/TemplateBodyImgL'
 import { bodyImgC } from '~/utils/newsletter/TemplateBodyImgC'
@@ -271,43 +272,45 @@ async function uploadBlockImage(event, index) {
   if (!file) return
   const formData = new FormData()
   formData.append('image', file)
+  
   try {
     const config = useRuntimeConfig()
-    // A már meglévő Express upload route-odat hívjuk
     const res = await $fetch(`${config.public.backendBase}/upload`, {
       method: 'POST',
       body: formData
     })
-    // Frissítjük az editableLinks tömbben a megfelelő URL-t
-    editableLinks.value[index] = res.url
+    
+    // Biztosítsuk a reaktivitást: a splice kényszeríti a Vue-t a frissítésre
+    editableLinks.value.splice(index, 1, res.url) 
+    
   } catch (err) {
-    console.error("Blokk kép feltöltés hiba:", err)
+    console.error("Képfeltöltés hiba:", err)
+    alert("Hiba a kép feltöltésekor!")
   }
 }
 
+//  save newsletter template
 const { saveNewsletterTemplate } = useNewsletter() // Emeld be a composable-ből
-
 async function saveNewsletter() {
+  const payload = {
+    subject: subject.value,
+    fullHtml: sanitizedHtml.value,
+    structure: JSON.parse(JSON.stringify(structure.value)),
+    sendDate: new Date().toISOString()
+  }
   try {
-    const payload = {
-      subject: subject.value,
-      fullHtml: sanitizedHtml.value,
-      structure: JSON.parse(JSON.stringify(structure.value)),
-      sendDate: new Date().toISOString()
-    }
-
     const res = await saveNewsletterTemplate(payload)
     alert("✅ Mentve!")
+    await clearNewsletter()
+    await loadTemplates()
   } catch (err) {
-    // DAS HIER IST WICHTIG:
-    console.error("FULL ERROR OBJECT:", err);
-    if (err.data) {
-      console.log("Backend response details:", err.data);
+    console.error("Mentési hiba:", err)
+        if (err.data) {
+      console.log("Backend hiba részletei:", err.data)
     }
-    alert("❌ Mentési hiba! Ellenőrizd a konzolt.");
+    alert("❌ Mentési hiba! Ellenőrizd a konzolt.")
   }
 }
-
 
 async function loadTemplates() {
   const res = await $fetch('/api/newsletter/gettemplates', { method: 'POST' })
@@ -322,20 +325,13 @@ onMounted(() => {
 --------------------------- */
 async function loadSelectedTemplate(template) {
   try {
-    // 1. Alapadatok beállítása
-    subject.value = template.subject
-    // 2. Szerkezet visszaállítása
-    // Ha a backend 'structure' néven tárolja a blokkokat:
-    if (template.structure && Array.isArray(template.structure)) {
-      structure.value = [...template.structure]
-    } else {
-      // Fallback, ha csak rawcontent van (ez nehezebb, mert a blokkok elvesztek)
-      console.warn("A sablon szerkezeti információja hiányzik, csak HTML érhető el.")
+    subject.value = template.subject;
+    if (template.structure) {
+      structure.value = JSON.parse(JSON.stringify(template.structure));
     }
-    templateDialogVisible.value = false
-    // Opcionális: Snackbar/Toast értesítés "Sablon betöltve"
+    templateDialogVisible.value = false;
   } catch (err) {
-    console.error("Hiba a sablon betöltésekor:", err)
+    console.error("Hiba a sablon betöltésekor:", err);
   }
 }
 
@@ -345,18 +341,20 @@ async function loadSelectedTemplate(template) {
 async function deleteTemplate(id) {
   if (!confirm("Biztosan törölni szeretnéd ezt a sablont?")) return
   try {
-    const res = await $fetch('/api/newsletter/deletetemplate', {
+    await $fetch('/api/newsletter/deletetemplate', {
       method: 'POST',
       body: { _id: id }
     })
-    if (res.ok) {
-      // Lista frissítése a felületen
-      templates.value = templates.value.filter(t => t._id !== id)
-    }
+    // Ha ide eljut, a kérés sikeres volt
+    templates.value = templates.value.filter(t => t._id !== id)
+    await loadTemplates()
+    alert("Sablon törölve!")
   } catch (err) {
     console.error("Hiba a törlés során:", err)
+    alert("Nem sikerült a törlés!")
   }
 }
+
 
 /* ---------------------------
     SZERKESZTŐ KIÜRÍTÉSE

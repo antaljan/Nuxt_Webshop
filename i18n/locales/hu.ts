@@ -36,6 +36,30 @@ export default defineI18nLocale(async (locale) => {
     dashboard: "Admin irányítópult",
     Posts: "Blogok szerkesztése",
     newsletter: "Hírlevelek kezelése",
+    blog: {
+        title: "Blog kezelése",
+        listTitle: "Blogbejegyzések",
+        createTitle: "Új blogbejegyzés létrehozása",
+        editTitle: "Blogbejegyzés szerkesztése",
+        form: {
+          title: "Cím",
+          subtitle: "Alcím",
+          author: "Szerző",
+          date: "Publikálás dátuma",
+          slug: "Slug (URL útvonal)",
+          image: "Borítókép",
+          content: "Tartalom",
+          uploadImage: "Kép feltöltése",
+          imageHint: "Kattints a kép feltöltéséhez vagy húzd ide"
+        },
+        actions: {
+          create: "Bejegyzés létrehozása",
+          update: "Bejegyzés frissítése",
+          saveSuccess: "A bejegyzés sikeresen mentve!",
+          saveError: "Hiba történt a mentés során.",
+          deleteConfirm: "Biztosan törölni szeretnéd ezt a bejegyzést?"
+        }
+    },
     products: {
       title: "Termékek kezelése",
       listTitle: "Termékek",

@@ -22,6 +22,30 @@ export default defineI18nLocale(async (locale) => {
     dashboard: "Admin Dashboard",
     Posts: "Blogbeiträge bearbeiten",
     newsletter: "Newsletter verwalten",
+    blog: {
+        title: "Blog Editor",
+        listTitle: "Blog Posten",
+        createTitle: "Neue Blogeintrag",
+        editTitle: "Edit Blogeintrag",
+        form: {
+          title: "Title",
+          subtitle: "Subtitle",
+          author: "Author",
+          date: "Date",
+          slug: "Slug (URL)",
+          image: "Bild",
+          content: "Innhalt",
+          uploadImage: "Bild aufladen",
+          imageHint: "Klick für hochladen oder hier ziehen"
+        },
+        actions: {
+          create: "Blog Post erstellen",
+          update: "Blog Post aktualisieren",
+          saveSuccess: "Blog Post erfolgreich gespeichert!",
+          saveError: "Fehler beim speichern!",
+          deleteConfirm: "Wills Du wirchlig der Blogeintrag löschen?"
+        }
+    },
     products: {
       title: "Produkte verwalten",
       listTitle: "Produkte",

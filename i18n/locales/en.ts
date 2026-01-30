@@ -22,6 +22,30 @@ export default defineI18nLocale(async (locale) => {
     dashboard: "Admin Dashboard",
     Posts: "Edit Blog Posts",
     newsletter: "Manage Newsletter",
+    blog: {
+        title: "Blog editor",
+        listTitle: "Blog posts",
+        createTitle: "Create new blog post",
+        editTitle: "Edit blog post",
+        form: {
+          title: "title",
+          subtitle: "subtitle",
+          author: "author",
+          date: "date",
+          slug: "Slug (URL)",
+          image: "cover image",
+          content: "content",
+          uploadImage: "upload image",
+          imageHint: "click for upload or pull there"
+        },
+        actions: {
+          create: "Create Blog",
+          update: "Update Blog",
+          saveSuccess: "Save Succesful!",
+          saveError: "Failure by saving!",
+          deleteConfirm: "Do you wrilly wat to delete?"
+        }
+    },
     products: {
       title: "Manage Products",
       listTitle: "Products",

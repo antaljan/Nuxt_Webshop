@@ -126,6 +126,9 @@ project/
 ├─ nuxt.config.json                 # Nuxt config
 ├─ package-lock.json                # package lock
 ├─ package.json                     # package config
+├─ tailwind.config.js               # Tailwind config
+├─ tsconfig.json
+├─ .env                             # JWT_SECRET, BACKEND_BASE_URL
 ├─ i18n/                            # i18n config
 │  └─ locales/
 │       ├─ de.ts                    # német szöveg
@@ -166,6 +169,8 @@ project/
 │  │    │   └─ index.vue
 │  │    ├─ content/
 │  │    │   └─ index.vue
+│  │    ├─ images/
+│  │    │   └─ index.vue
 │  │    ├─ newsletter/
 │  │    │   ├─ create.vue
 │  │    │   ├─ index.vue
@@ -189,13 +194,14 @@ project/
 │  │    ├─ [id].vue
 │  │    └─ index.vue
 │  ├─ user/
+│  │    ├─ product.vue
+│  │    │   └─ [id].vue
 │  │    ├─ index.vue
-│  │    ├─ orders.vue
 │  │    ├─ products.vue
-│  │    ├─ profile.vue
-│  │    └─ videos.vue
+│  │    └─ profile.vue
 │  ├─ index.vue
 │  ├─ login.vue
+│  ├─ logout.vue
 │  └─ register.vue
 ├─ public/                            # static files
 │  ├─ fabackImages.jpg
@@ -203,10 +209,17 @@ project/
 │  └─ robots.txt
 └─ server/                            # SSR backend layer
    └─ api/
+      ├─ checkout.post.ts
+      ├─ admin/
+      │   ├─ users
+      │   │     ├─ delete.post.ts
+      │   │     └─ update.post.ts
+      │   └─ user.get.ts
       ├─ auth/
       │   ├─ login.post.ts
       │   ├─ logout.post.ts
-      │   └─ me.get.ts
+      │   ├─ me.get.ts
+      │   └─ register.post.ts
       ├─ blog/
       │   ├─ [id].delete.ts
       │   ├─ [id].get.ts
@@ -262,6 +275,12 @@ project/
       │         └─ [emailid].get.ts
       ├─ upload/
       │   └─ index.post.ts
+      └─ user/
+      │   ├─ product
+      │   │     └─ [id].get.ts
+      │   ├─ pdf-token.get.ts
+      │   ├─ purchases.get.ts
+      │   └─ video-token.get.ts
       └─ users/
           ├─ create.post.ts
           ├─ delete.post.ts

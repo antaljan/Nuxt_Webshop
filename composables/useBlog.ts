@@ -30,7 +30,7 @@ export function useBlog() {
      ADMIN: CREATE POST
   ----------------------------------------- */
   async function createPost(payload: any) {
-    return await $fetch(`${backendBase}/posts/create`, {
+    return await $fetch('/api/blog/create', {
       method: 'POST',
       body: payload
     })
@@ -40,7 +40,7 @@ export function useBlog() {
      ADMIN: UPDATE POST
   ----------------------------------------- */
   async function updatePost(id: string, payload: any) {
-    return await $fetch(`${backendBase}/posts/${id}`, {
+    return await $fetch(`/api/blog/${id}`, {
       method: 'PUT',
       body: payload
     })
@@ -50,7 +50,7 @@ export function useBlog() {
      ADMIN: DELETE POST
   ----------------------------------------- */
   async function deletePost(id: string) {
-    return await $fetch(`${backendBase}/posts/${id}`, {
+    return await $fetch(`/api/blog/${id}`, {
       method: 'DELETE'
     })
   }
@@ -59,7 +59,7 @@ export function useBlog() {
      GET ONE POST BY id
   ----------------------------------------- */
   async function getPost(id) {
-    return $fetch(`${backendBase}/posts/${id}`)
+    return $fetch(`/api/blog/${id}`)
   }
 
 

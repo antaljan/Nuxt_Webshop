@@ -311,6 +311,8 @@ Middleware:
   npm install @tiptap/vue-3 @tiptap/starter-kit
   npm install chart.js
   npm install nuxt-security
+  npm install dompurify
+  npm install -D @types/dompurify
 
 🚀 Deployment (VPS)
 - NGINX reverse proxy

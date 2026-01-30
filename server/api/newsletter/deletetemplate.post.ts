@@ -1,11 +1,9 @@
-const config = useRuntimeConfig()
-const backendBase = config.public.backendBase
-
 export default defineEventHandler(async (event) => {
-  const token = getCookie(event, 'token')
+  const config = useRuntimeConfig()
+  const token = getCookie(event, 'jwt')
   const body = await readBody(event)
 
-  return $fetch(`${backendBase}/newsletter/deletetemplate`, {
+  return await $fetch(`${config.public.backendBase}/newsletter/deletetemplate`, {
     method: 'POST',
     body,
     headers: { Authorization: `Bearer ${token}` }

@@ -72,8 +72,8 @@ export default defineNuxtConfig({
       title: 'A Te utad a Te életed!',
       meta: [
         {
-          name: 'description',
-          content: 'Webshop & content platform for coaches'
+          name: 'Antali Gyöngyi Edit',
+          content: 'Pscichology, Life- and Bussiness Coaching, Trasnversal skills development '
         }
       ]
     }

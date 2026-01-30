@@ -21,7 +21,6 @@ export default defineI18nLocale(async (locale) => {
   admin: {
     dashboard: "Admin Dashboard",
     Posts: "Edit Blog Posts",
-    newsletter: "Manage Newsletter",
     blog: {
         title: "Blog editor",
         listTitle: "Blog posts",
@@ -74,6 +73,25 @@ export default defineI18nLocale(async (locale) => {
       create: "Create user",
       role: "Rolle",
       confirmDelete: "Do you want wrily delete the user?"
+    },
+    newsletter: {
+      title: "Newsletter management",
+      campaigns: "Newsletters",
+      subscribers: "Subscribers",
+      sendNow: "Send newsletter",
+      templates: "Templates",
+      newSubscriber: "New subscribers",
+      sendDialogTitle: "Newsletter sending",
+      stats: {
+        totalNewsletters: "Number of Newsletters",
+        totalSubscribers: "total subscribers",
+        totalOpened: "total opened",
+        totalClicks: "total clicks"
+      },
+      form: {
+        subject: "Subject",
+        date: "Date"
+      }
     }
   },
   header: {

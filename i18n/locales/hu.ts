@@ -35,7 +35,6 @@ export default defineI18nLocale(async (locale) => {
   admin: {
     dashboard: "Admin irányítópult",
     Posts: "Blogok szerkesztése",
-    newsletter: "Hírlevelek kezelése",
     blog: {
         title: "Blog kezelése",
         listTitle: "Blogbejegyzések",
@@ -88,6 +87,25 @@ export default defineI18nLocale(async (locale) => {
       create: "Új felhasználó létrehozása",
       role: "Szerepkör",
       confirmDelete: "Biztosan törlöd ezt a felhasználót?"
+    },
+    newsletter: {
+      title: "Hírlevél menedzsment",
+      campaigns: "Hírlevelek",
+      subscribers: "Feliratkozók",
+      sendNow: "Hírlevél küldése",
+      templates: "Sablonok",
+      newSubscriber: "Új feliratkozó",
+      sendDialogTitle: "Hírlevél kiküldése",
+      stats: {
+        totalNewsletters: "Hírlevelek száma",
+        totalSubscribers: "Feliratkozók",
+        totalOpened: "Megnyitások",
+        totalClicks: "Kattintások"
+      },
+      form: {
+        subject: "Hírlevél tárgya",
+        date: "Küldés dátuma"
+      }
     }
   },
   header: {

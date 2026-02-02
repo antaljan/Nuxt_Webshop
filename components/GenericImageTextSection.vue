@@ -38,6 +38,16 @@
           </p>
         </div>
 
+        <!--  CTA   -->
+        <div v-if="localContent.ctaText">
+          <a
+            :href="localContent.ctaLink"
+            class="inline-block bg-grey/20 hover:bg-white text-blue transition px-6 py-3 rounded-lg text-lg font-medium backdrop-blur-sm hover:!text-blue"
+          >
+            {{ localContent.ctaText }}
+          </a>
+        </div>
+
         <!-- ADMIN: EDITOR TOGGLE -->
         <div v-if="isAdmin" class="mt-6">
           <v-btn color="primary" @click="showEditor = !showEditor">
@@ -72,6 +82,10 @@
               Delete paragraph
             </v-btn>
           </div>
+
+          <!-- CTA -->
+          <v-text-field v-model="localContent.ctaText" label="CTA Text" />
+          <v-text-field v-model="localContent.ctaLink" label="CTA Link" />
 
           <v-btn
             color="secondary"

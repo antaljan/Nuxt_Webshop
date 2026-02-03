@@ -42,6 +42,7 @@ const adminMenu = [
   { to: '/admin/users', label: 'admin.users.title' },
   { to: '/admin/newsletter', label: 'admin.newsletter.title' },
   { to: '/admin/products', label: 'admin.products.menu' },
+  { to: '/admin/coaching', label: 'admin.coaching.menu' },
   { to: '/admin/images', label: 'admin.images' }
 ]
 

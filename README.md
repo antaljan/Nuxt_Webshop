@@ -156,6 +156,7 @@ project/
 │  ├─ useBlog.ts
 │  ├─ useChartDrawer.ts
 │  ├─ useContent.ts
+│  ├─ useNewsletter.ts
 │  ├─ useProducts.ts
 │  └─ useProductsAdmin.ts
 ├─ layouts/                         # default, user, admin
@@ -199,6 +200,7 @@ project/
 │  │    ├─ index.vue
 │  │    ├─ products.vue
 │  │    └─ profile.vue
+│  ├─ about.vue
 │  ├─ index.vue
 │  ├─ login.vue
 │  ├─ logout.vue
@@ -256,13 +258,14 @@ project/
       ├─ logs/
       │   └─ stats.get.ts
       ├─ newsletter/
+      │   ├─ create/
+      │   │     └─ save.post.ts
       │   ├─ unsubscribe/
       │   │     └─ [email].get.ts
       │   ├─ deletetemplate.post.ts
       │   ├─ getonetemplate.post.ts
       │   ├─ getscheduled.post.ts
       │   ├─ gettemplates.post.ts
-      │   ├─ save.post.ts
       │   ├─ schedule.post.ts
       │   ├─ send.post.ts
       │   ├─ subscribe.post.ts

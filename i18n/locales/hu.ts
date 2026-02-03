@@ -106,6 +106,9 @@ export default defineI18nLocale(async (locale) => {
         subject: "Hírlevél tárgya",
         date: "Küldés dátuma"
       }
+    },
+    coaching: {
+      menu:"Időpontok"
     }
   },
   header: {

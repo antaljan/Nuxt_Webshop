@@ -5,6 +5,22 @@ export default defineEventHandler(async (event) => {
   const token = getCookie(event, 'jwt')
   if (!token) return { user: null }
 
+  // JWT dekódolása
+  const decoded = JSON.parse(
+    Buffer.from(token.split('.')[1], 'base64').toString()
+  )
+
+  // decoded = { id, email, role }
+
+  return {
+    user: decoded
+  }
+})
+
+/*export default defineEventHandler(async (event) => {
+  const token = getCookie(event, 'jwt')
+  if (!token) return { user: null }
+
   // 1) JWT dekódolása
   const decoded = JSON.parse(
     Buffer.from(token.split('.')[1], 'base64').toString()
@@ -23,3 +39,4 @@ export default defineEventHandler(async (event) => {
 
   return { user: me || null }
 })
+*/

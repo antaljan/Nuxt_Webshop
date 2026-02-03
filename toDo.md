@@ -86,13 +86,16 @@ User functions:
 - /pages/admin/user/index.vue --> Admin user management (list with paginator, sort, filter, edit, delete + create button)  ✔️
 - /pages/admin/images/index.vue --> Admin images management (list in mosaic with name, delete button)  ✔️
 - /pages/user/profile.vue --> Settings Account settings: change billing adders ...  ✔️
-- /pages/user/product/[id].vue --> User product open: download pdf
+- /pages/admin/newsletter/index.vue --> admin newsletter management (list of newsletters with status and figures , paginator, filter, sort)  ✔️
+- /pages/admin/newsletter/create.vue --> admin newsletter template creator  ✔️
+- /pages/admin/newsletter/schedule.vue --> admin newsletter scheduler  ✔️
+- /pages/admin/newsletter/stats.vue --> admin newsletter statistic  ✔️
 
 Tasks are open:
-
 → /pages/admin/coaching/index.vue --> overview of scheduled coaching sections in calender + create new slots button
 → /pages/admin/coaching/create.vue --> crate new coaching slot in calendar
 → /components/GenericScheduler.vue --> schedule coaching slot in calender according the availability
+→ /pages/user/product/[id].vue --> User product open: download pdf - only partialy finished, dowload from pdf is done, but scheduling coaching section or video view is still open
 → /pages/user/product/[id].vue --> User product open:  play video or schedule/reschedule coaching sections
 → /pages/admin/newsletter/index.vue --> admin newsletter management (list of newsletters with status and figures , paginator, filter, sort)
 → /pages/admin/newsletter/create.vue --> admin newsletter template creator

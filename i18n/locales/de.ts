@@ -92,6 +92,9 @@ export default defineI18nLocale(async (locale) => {
         subject: "Subject",
         date: "Datum"
       }
+    },
+    coaching: {
+      menu:"Coaching Zeiten"
     }
   },
   header: {

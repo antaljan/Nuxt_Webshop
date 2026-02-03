@@ -1,20 +1,37 @@
 <template>
   <section class="p-6">
-    <v-card class="mx-auto shadow-lg rounded-xl overflow-hidden">
-      <!-- HEADER & STATS -->
-      <div class="bg-blue-darken-3 p-6 text-white text-center">
-        <h2 class="text-2xl font-bold mb-4">{{ $t('admin.newsletter.title') }}</h2>
-        
-        <v-row dense class="mt-4">
-          <v-col v-for="(val, key) in statsMap" :key="key" cols="6" md="3">
-            <div class="bg-white/10 p-3 rounded-lg">
-              <div class="text-xs uppercase opacity-70">{{ $t(`admin.newsletter.stats.${key}`) }}</div>
-              <div class="text-xl font-bold">{{ val }}</div>
-            </div>
+    <v-card class="mx-auto shadow-lg rounded-xl overflow-hidden mb-6">
+      <!-- HEADER & VIZUÁLIS STATS -->
+      <div class="bg-blue-darken-4 p-6 text-white">
+        <v-row align="center">
+          <v-col cols="12" md="4">
+            <h2 class="text-2xl font-bold mb-4">{{ $t('admin.newsletter.title') }}</h2>
+            <v-row dense>
+              <v-col v-for="(val, key) in statsMap" :key="key" cols="6">
+                <div class="bg-white/10 p-3 rounded-lg border border-white/10">
+                  <div class="text-xs uppercase opacity-70">{{ $t(`admin.newsletter.stats.${key}`) }}</div>
+                  <div class="text-2xl font-black">{{ val }}</div>
+                </div>
+              </v-col>
+            </v-row>
+          </v-col>
+          
+          <!-- ÚJ: Kampány összehasonlító grafikon -->
+          <v-col cols="12" md="8">
+            <v-card theme="dark" variant="flat" class="bg-white/5 pa-4 rounded-lg h-full">
+              <div class="text-subtitle-2 mb-2 opacity-70 text-center uppercase">Utolsó 5 kampány teljesítménye (%)</div>
+              <div class="h-[200px]">
+                 <ChartsBarChart 
+                   v-if="chartData" 
+                   :chart-data="chartData" 
+                   :options="chartOptions" 
+                 />
+              </div>
+            </v-card>
           </v-col>
         </v-row>
       </div>
-
+      
       <!-- SWITCH FOR LIST TOGGLE -->
       <div class="flex justify-center items-center py-4 bg-gray-50 border-b">
         <span :class="!showList ? 'font-bold text-blue-600' : 'text-gray-400'">{{ $t('admin.newsletter.campaigns') }}</span>
@@ -202,6 +219,46 @@ async function openPreview(item) {
     alert("Sajnos nem sikerült betölteni a sablont.")
   }
 }
+
+// GRAFIKON LOGIKA
+const chartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: { display: true, position: 'top', labels: { color: '#fff' } }
+  },
+  scales: {
+    y: { beginAtZero: true, max: 100, ticks: { color: '#fff' }, grid: { color: 'rgba(255,255,255,0.1)' } },
+    x: { ticks: { color: '#fff' }, grid: { display: false } }
+  }
+}
+
+const chartData = computed(() => {
+  if (!campaigns.value || campaigns.value.length === 0) return null
+
+  // Utolsó 5 kampány vétele
+  const lastFive = [...campaigns.value]
+    .sort((a, b) => new Date(b.sendDate) - new Date(a.sendDate))
+    .slice(0, 5)
+    .reverse()
+
+  return {
+    labels: lastFive.map(c => c.subject.substring(0, 15) + '...'),
+    datasets: [
+      {
+        label: 'Megnyitás %',
+        backgroundColor: '#4CAF50',
+        data: lastFive.map(c => parseFloat(c.openRate) || 0)
+      },
+      {
+        label: 'Kattintás %',
+        backgroundColor: '#2196F3',
+        data: lastFive.map(c => parseFloat(c.clickRate) || 0)
+      }
+    ]
+  }
+})
+
 
 function newSubscriber() {
   // Hier könntest du einen Dialog öffnen oder zu einer neuen Seite leiten

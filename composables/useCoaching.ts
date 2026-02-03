@@ -1,60 +1,67 @@
 // composables/useCoaching.ts
 export function useCoaching() {
-  const config = useRuntimeConfig()
+  /**
+   * Mivel Proxy megoldást használsz, minden hívás a Nuxt belső /api mappájába megy.
+   * A Nuxt szerver oldali route-jai (pl. server/api/booking/all.get.ts) 
+   * fogják hozzáadni a JWT tokent és továbbküldeni a hívást a Node.js felé.
+   */
 
-  // ADMIN: összes slot
+  // --- ADMIN FUNKCIÓK ---
+
+  // Összes slot lekérése (táblázathoz vagy admin naptárhoz)
   const getAllSlots = async () => {
-    return await $fetch(`/api/booking/all`, {
-    })
+    return await $fetch('/api/booking/all')
   }
 
-  // USER: elérhető slotok
-  const getAvailableSlots = async () => {
-    return await $fetch(`api/booking/available`, {
-    })
-  }
-
-  // USER: adott nap slotjai
-  const getSlotsByDate = async (date: string) => {
-    return await $fetch(`api/booking/by-date/${date}`, {
-    })
-  }
-
-  // ADMIN: új slot
-  const createSlot = async (slot: any) => {
-    return await $fetch(`api/booking/new`, {
+  // Új slot létrehozása
+  const createSlot = async (slot: { title: string; start: string; end: string; duration: number; slotClass: string }) => {
+    return await $fetch('/api/booking/new', {
       method: 'POST',
-      body: slot,
+      body: slot
     })
   }
 
-  // ADMIN: slot törlése
-  const deleteSlot = async (id: string) => {
-    return await $fetch(`api/booking/${id}`, {
-      method: 'DELETE',
-    })
-  }
-
-  // ADMIN: slot módosítása
+  // Slot módosítása (időpont, cím vagy státusz)
   const updateSlot = async (id: string, update: any) => {
-    return await $fetch(`api/booking/${id}`, {
+    return await $fetch(`/api/booking/${id}`, {
       method: 'PUT',
-      body: update,
+      body: update
     })
   }
 
-  // USER: foglalás
-  const bookSlot = async (id: string, payload: any) => {
-    return await $fetch(`api/booking/book/${id}`, {
-      method: 'PUT',
-      body: payload,
+  // Slot végleges törlése
+  const deleteSlot = async (id: string) => {
+    return await $fetch(`/api/booking/${id}`, {
+      method: 'DELETE'
     })
   }
 
-  // USER: lemondás
+
+  // --- USER (CUSTOMER) FUNKCIÓK ---
+
+  // Csak a szabad (available) slotok lekérése
+  const getAvailableSlots = async () => {
+    return await $fetch('/api/booking/available')
+  }
+
+  // Szűrés adott napra (pl. naptárban egy napra kattintva)
+  const getSlotsByDate = async (date: string) => {
+    // date: 'YYYY-MM-DD'
+    return await $fetch(`/api/booking/by-date/${date}`)
+  }
+
+  // Időpont lefoglalása (Customer által)
+  const bookSlot = async (id: string, payload: { message?: string }) => {
+    return await $fetch(`/api/booking/book/${id}`, {
+      method: 'PUT',
+      body: payload
+    })
+  }
+
+  // Foglalás lemondása
   const cancelSlot = async (id: string) => {
-    return await $fetch(`api/booking/cancel/${id}`, {
-      method: 'PUT',
+    return await $fetch(`/api/booking/cancel/${id}`, {
+      method: 'PUT'
     })
   }
 
@@ -63,8 +70,8 @@ export function useCoaching() {
     getAvailableSlots,
     getSlotsByDate,
     createSlot,
-    deleteSlot,
     updateSlot,
+    deleteSlot,
     bookSlot,
     cancelSlot
   }

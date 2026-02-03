@@ -79,6 +79,20 @@
         />
       </div>
 
+      <!--  product type selector -->
+      <div class="mb-6">
+        <label class="font-semibold block mb-2">Termék típusa</label>
+        <v-select
+          v-model="product.type"
+          :items="[
+            { title: 'Digitális (PDF/Video)', value: 'digital' },
+            { title: 'Coaching (Időpont foglalós)', value: 'coaching' }
+          ]"
+          label="Válassz típust"
+          variant="outlined"
+        />
+      </div>
+
       <!-- FULL DESCRIPTION -->
       <label class="font-semibold block mb-2">
         {{ t('admin.products.fullDescription') }}
@@ -166,7 +180,8 @@ const product = reactive({
   cover: '',
   price: '',
   downloadableFiles: [],
-  videoUrl: ''
+  videoUrl: '',
+  type: 'digital'
 })
 
 /* ---------------------------

@@ -46,6 +46,25 @@
           </v-list>
       </div>
 
+      <!-- Coaching  -->
+      <div v-if="product?.type === 'coaching'" class="mb-8 border-t pt-6">
+        <h2 class="text-2xl font-bold mb-4 flex align-center">
+          <v-icon color="primary" class="mr-2">mdi-calendar-clock</v-icon>
+            Időpont foglalása
+        </h2>
+  
+        <v-alert v-if="hasBooking" type="success" variant="tonal" class="mb-4">
+          Már van lefoglalt időpontod ehhez a termékhez: 
+          <strong>{{ formatBookingDate(userBooking.start) }}</strong>
+        </v-alert>
+
+        <div v-else>
+          <p class="mb-4 text-gray-600">Válassz egy szabad időpontot a naptárban a konzultációhoz:</p>
+          <GenericScheduler v-if="product.type === 'coaching'" :product-id="product._id" />
+        </div>
+      </div>
+
+
     </div>
   </section>
 </template>
@@ -69,13 +88,11 @@ const { data, pending, error } = await useAsyncData(
 
 const product = computed(() => {
   const purchase = data.value?.product || data.value;
-  // Ha a purchase-ben van items tömb, vegyük az elsőt
   return purchase?.items ? purchase.items[0] : purchase;
 });
 
 // VIDEO TOKEN
 const videoUrl = ref(null)
-
 onMounted(async () => {
   if (product.value?.videoUrl) {
     const videoTokenResponse = await $fetch('/api/user/video-token', {
@@ -93,8 +110,6 @@ async function downloadPdf(file) {
       params: { purchaseId, file }
     })
     
-    // A res.url a backend végpontja, pl: /api/user/pdf-secure?token=...
-    // Ezt össze kell fűznünk a backend alapcímével (vagy az Nginx-en átengedni)
     const downloadUrl = `${config.public.backendBase}${res.url.replace('/api', '')}`
     
     window.open(downloadUrl, '_blank')
@@ -103,4 +118,33 @@ async function downloadPdf(file) {
   }
 }
 
+
+const { getAvailableSlots } = useCoaching() // inser Composable
+
+// bookins status handler
+const userBooking = ref(null)
+const hasBooking = computed(() => !!userBooking.value)
+
+// chceking the bookings of user for this product
+async function checkUserBooking() {
+  // A backend summary-ból vagy egy dedikált végpontról lekérjük
+  // Feltételezve, hogy a 'data.value' tartalmazza a vásárláshoz kapcsolt foglalást
+  if (data.value?.booking) {
+    userBooking.value = data.value.booking
+  }
+}
+
+onMounted(() => {
+  checkUserBooking()
+})
+
+function onBookingSuccess() {
+  refreshNuxtData(`user-product-${purchaseId}`)
+}
+
+function formatBookingDate(date) {
+  return new Date(date).toLocaleString('hu-HU', {
+    year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
+  })
+}
 </script>

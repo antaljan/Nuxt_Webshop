@@ -89,21 +89,17 @@ User functions:
 - /pages/admin/newsletter/index.vue --> admin newsletter management (list of newsletters with status and figures , paginator, filter, sort)  ✔️
 - /pages/admin/newsletter/create.vue --> admin newsletter template creator  ✔️
 - /pages/admin/newsletter/schedule.vue --> admin newsletter scheduler  ✔️
-- /pages/admin/newsletter/stats.vue --> admin newsletter statistic  ✔️
+- /pages/admin/coaching/index.vue --> overview of scheduled coaching sections in calender + create new slots button  ✔️
+- /pages/admin/coaching/create.vue --> crate new coaching slot in calendar  ✔️
+- /components/GenericScheduler.vue --> schedule coaching slot in calender according the availability  ✔️
+- /pages/user/product/[id].vue --> User product view: download pdf, scheduling coaching section or video view  ✔️
+- /pages/admin/index.vue --> admin dashboard  ✔️
+    - statistics  ✔️
+    - funnel  ✔️
+    - pageviews  ✔️
+    - newsletter + performance  ✔️
 
 Tasks are open:
-→ /pages/admin/coaching/index.vue --> overview of scheduled coaching sections in calender + create new slots button
-→ /pages/admin/coaching/create.vue --> crate new coaching slot in calendar
-→ /components/GenericScheduler.vue --> schedule coaching slot in calender according the availability
-→ /pages/user/product/[id].vue --> User product open: download pdf - only partialy finished, dowload from pdf is done, but scheduling coaching section or video view is still open
-→ /pages/user/product/[id].vue --> User product open:  play video or schedule/reschedule coaching sections
-→ /pages/admin/newsletter/index.vue --> admin newsletter management (list of newsletters with status and figures , paginator, filter, sort)
-→ /pages/admin/newsletter/create.vue --> admin newsletter template creator
-→ /pages/admin/newsletter/schedule.vue --> admin newsletter scheduler
-→ /pages/admin/newsletter/stats.vue --> admin newsletter statistic
-→ /pages/admin/index.vue --> admin dashboard
-    - statistics
-    - funnel
-    - pageviews
-    - newsletter + performance
+→ /pages/user/product/[id].vue --> User product open:  play video integrate bunny video
+→ /pages/admin/cibersecu.vue --> admin ciber security dashboard (feching potential risks from logs)
 

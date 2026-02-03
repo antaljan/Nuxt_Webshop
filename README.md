@@ -175,8 +175,7 @@ project/
 │  │    ├─ newsletter/
 │  │    │   ├─ create.vue
 │  │    │   ├─ index.vue
-│  │    │   ├─ schedule.vue
-│  │    │   └─ stats.vue
+│  │    │   └─ schedule.vue
 │  │    ├─ products/
 │  │    │   ├─ create.vue
 │  │    │   └─ index.vue
@@ -316,6 +315,7 @@ Middleware:
   npm install nuxt-security
   npm install dompurify
   npm install -D @types/dompurify
+  npm install v-calendar@next @popperjs/core
 
 🚀 Deployment (VPS)
 - NGINX reverse proxy

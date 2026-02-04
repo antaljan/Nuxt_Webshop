@@ -33,9 +33,6 @@
               :label="$t('auth.register.email')"
               variant="outlined"
               density="comfortable"
-              readonly
-              hint="Az email cím nem módosítható"
-              persistent-hint
               class="mb-4"
             />
 

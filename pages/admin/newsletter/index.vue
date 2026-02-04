@@ -73,11 +73,11 @@
         <v-window-item :value="0">
           <v-data-table
             :headers="campaignHeaders"
-            :items="campaigns || []" 
+            :items="campaigns || []"
             :loading="pendingCampaigns"
             hover
           >
-            <template v-slot:item.subject="{ item }">
+            <template #[`item.subject`]="{ item }">
               <a href="#" @click.prevent="openPreview(item)" class="text-blue-600 font-medium">
                 {{ item.subject }}
               </a>
@@ -93,9 +93,9 @@
             :loading="pendingSubscribers"
             hover
           >
-            <template v-slot:item.actions="{ item }">
-              <v-icon small class="mr-2" color="blue" @click="editSubscriber(item)">mdi-pencil</v-icon>
-              <v-icon small color="red" @click="confirmDelete(item._id)">mdi-delete</v-icon>
+            <template v-slot:[`item.actions`]="{ item }">
+              <v-icon size="small" class="mr-2" color="blue" @click="editSubscriber(item)">mdi-pencil</v-icon>
+              <v-icon size="small" color="red" @click="confirmDelete(item._id)">mdi-delete</v-icon>
             </template>
           </v-data-table>
         </v-window-item>
@@ -116,6 +116,34 @@
           <v-spacer></v-spacer>
           <v-btn color="primary" variant="tonal" @click="previewDialog = false">
             Bezárás
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-- dialog for editing or create new subscriber -->
+    <v-dialog v-model="editDialog" max-width="500px">
+      <v-card rounded="xl">
+        <v-card-title class="bg-blue-darken-3 text-white py-4 px-6">
+          {{ isEditMode ? 'Feliratkozó szerkesztése' : 'Új feliratkozó hozzáadása' }}
+        </v-card-title>
+        <v-card-text class="pt-6">
+          <v-text-field v-model="editingSubscriber.name" label="Vezetéknév" variant="outlined" density="compact" />
+          <v-text-field v-model="editingSubscriber.firstname" label="Keresztnév" variant="outlined" density="compact" />
+          <v-text-field v-model="editingSubscriber.email" label="Email cím" variant="outlined" density="compact" :disabled="isEditMode" />
+          <v-select 
+            v-model="editingSubscriber.group" 
+            :items="['ujjonc', 'torzsvasarlo', 'coach']" 
+            label="Csoport" 
+            variant="outlined" 
+            density="compact" 
+          />
+        </v-card-text>
+        <v-card-actions class="pa-4 bg-gray-50">
+          <v-spacer />
+          <v-btn color="grey" variant="text" @click="editDialog = false">Mégse</v-btn>
+          <v-btn color="primary" variant="elevated" @click="saveSubscriber">
+            {{ isEditMode ? 'Módosítások mentése' : 'Feliratkozó rögzítése' }}
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -266,16 +294,45 @@ const chartData = computed(() => {
   }
 })
 
-
+// edit subscribers
+const editDialog = ref(false)
+const isEditMode = ref(false)
+const editingSubscriber = ref({
+  _id: null,
+  firstname: '',
+  name: '',
+  email: '',
+  group: 'ujjonc'
+})
+// open new subscriber dialog
 function newSubscriber() {
-  // Hier könntest du einen Dialog öffnen oder zu einer neuen Seite leiten
-  alert("Új feliratkozó hozzáadása funkció hamarosan...");
+  isEditMode.value = false
+  editingSubscriber.value = { _id: null, firstname: '', name: '', email: '', group: 'ujjonc' }
+  editDialog.value = true
 }
-
+// open edit subscriber dialog
 function editSubscriber(item) {
-  console.log("Szerkesztés:", item);
-  // Logik für den Edit-Dialog
+  isEditMode.value = true
+  editingSubscriber.value = { ...item }
+  editDialog.value = true
 }
-
-
+// save subsciber
+async function saveSubscriber() {
+  try {
+    const url = isEditMode.value ? '/api/newsletter/subscriber' : '/api/newsletter/subscribe'
+    const method = isEditMode.value ? 'PUT' : 'POST'
+    const res = await $fetch(url, {
+      method: method,
+      body: editingSubscriber.value
+    })
+    if (res.ok || res.insertedId) {
+      editDialog.value = false
+      await refreshSubscribers()
+      alert(isEditMode.value ? "Sikeresen frissítve!" : "Sikeresen hozzáadva!")
+    }
+  } catch (error) {
+    console.error("Hiba a művelet során:", error)
+    alert("Hiba történt a mentéskor.")
+  }
+}
 </script>

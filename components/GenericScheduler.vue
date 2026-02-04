@@ -156,7 +156,6 @@ async function fetchDailySlots(date) {
     const month = String(date.getMonth() + 1).padStart(2, '0')
     const day = String(date.getDate()).padStart(2, '0')
     const dateStr = `${year}-${month}-${day}`
-    console.log("Lekérés erre a napra:", dateStr)
     dailySlots.value = await getSlotsByDate(dateStr)
   } catch (e) {
     console.error("Hiba a slotok lekérésekor", e)

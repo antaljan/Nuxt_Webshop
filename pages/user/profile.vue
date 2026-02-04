@@ -133,7 +133,6 @@ watch(profileData, (newData) => {
 
 // Ellenőrizzük a konzolon, mi jön meg
 onMounted(() => {
-  console.log('Profile Data received:', profileData.value)
   if (error.value) console.error('Fetch error:', error.value)
 })
 

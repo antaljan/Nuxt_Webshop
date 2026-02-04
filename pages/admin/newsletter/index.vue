@@ -141,14 +141,21 @@ const sendForm = reactive({
 const { data: summary } = await useAsyncData('newsletter-summary', () => fetchSummary())
 const { data: campaigns, pending: pendingCampaigns } = await useAsyncData(
   'campaigns', 
-  () => fetchCampaigns(),
-  { 
-    // Mivel a dashboard/campaigns direkt tömböt ad vissza:
-    transform: (res) => res 
-  }
+  async () => {
+    const res = await fetchCampaigns();
+    // Ha a res egy tömb, akkor transzformáljuk, hogy legyenek százalékos értékeink
+    return res.map(c => ({
+      ...c,
+      // Backendről jövő adatok alapján számolunk, ha a backend nem küldené a %-ot
+      openRate: c.recipients > 0 ? ((c.opens / c.recipients) * 100).toFixed(1) : 0,
+      clickRate: c.recipients > 0 ? ((c.clicks / c.recipients) * 100).toFixed(1) : 0,
+      sendDate: c.sentAt // A backend sentAt-et küld, a táblázat sendDate-et vár
+    }));
+  },
+  { watch: [showList] }
 )
-const { data: subscribers, pending: pendingSubscribers, refresh: refreshSubscribers } = await useAsyncData('subscribers', () => fetchSubscribers())
 
+const { data: subscribers, pending: pendingSubscribers, refresh: refreshSubscribers } = await useAsyncData('subscribers', () => fetchSubscribers())
 const statsMap = computed(() => ({
   totalNewsletters: summary.value?.totalNewsletters || 0,
   totalSubscribers: summary.value?.totalSubscribers || 0,

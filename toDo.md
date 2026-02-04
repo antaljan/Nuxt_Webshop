@@ -102,4 +102,54 @@ User functions:
 Tasks are open:
 → /pages/user/product/[id].vue --> User product open:  play video integrate bunny video
 → /pages/admin/cibersecu.vue --> admin ciber security dashboard (feching potential risks from logs)
+→ User dashboard (/pages/user/index.vue) need to expand with list of booked coachings
 
+Bugs:
+critical:
+→ Admin newsletter Dashboard -->   Error: [GET] "https://antaligyongyi.hu/api/dashboard/campaigns": 404 Not Found
+→ /pages/user/profile.vue load only the first name of user
+→ /components/GenericScheduler.vue dont save the userId in the database, if the userId will be saved, then in case of bookink has to be show on product, neaded an a aditional slotClass - "done" for the alraedy done coachings and this status has to be deactivating the product:
+{
+    _id: ObjectId('69825e9c4a160ae63a2899f9'),
+    title: "Coaching",
+    start: 2026-02-10T13:50:00.000+00:00,
+    end: 2026-02-10T14:35:00.000+00:00,
+    duration:45,
+    slotClass:"booked",
+    userId:null,
+    productId: "69827047427b1c8bb21c786a",
+    meetingUrl:null,
+    createdAt:2026-02-03T20:46:20.921+00:00,
+    updatedAt:2026-02-03T22:26:28.609+00:00
+}
+warning:
+→ [intlify] Not found 'blog.metaDescription' key in 'hu' locale messages.
+→ devtools-EWN81iOl.mjs:61  [Vue Router warn]: Couldn't find element using selector "#home" returned by scrollBehavior.
+→ tried to use the 'fill' option without the 'Filler' plugin enabled. Please import and register the 'Filler' plugin and make sure it is not disabled in the options
+→ [intlify] Not found '$vuetify.pagination.ariaLabel.root' key in 'hu' locale messages.
+→ [intlify] Not found '$vuetify.input.clear' key in 'hu' locale messages.
+→ The `integrity` attribute is currently ignored for preload destinations that do not support subresource integrity. See https://crbug.com/981419 for more information
+→ Vue warn]: Hydration node mismatch:
+  rendered on server: <!--]-->  
+  expected on client: div 
+  at <BaseTransition appear=false persisted=false mode=undefined  ... > 
+  at <Transition name="" > 
+  at <MaybeTransition transition=false disabled=true > 
+  at <VWindowItem class="v-carousel-item" reverseTransition=undefined transition=undefined  ... > 
+  at <VCarouselItem key=1 > 
+  at <VWindow ref=Ref< undefined > continuous=true nextIcon="$next"  ... > 
+  at <VCarousel height="360" hide-delimiters="" show-arrows="hover"  ... > 
+  at <GenericFeedbackSection sectionKey="feedback" > 
+  at <Index onVnodeUnmounted=fn<onVnodeUnmounted> ref=Ref< undefined > > 
+  at <RouteProvider key="/" vnode= Object route= Object  ... > 
+  at <RouterView name=undefined route=undefined > 
+  at <NuxtPage > 
+  at <VMain > 
+  at <VApp > 
+  at <Default ref=Ref< undefined > > 
+  at <AsyncComponentWrapper ref=Ref< undefined > > 
+  at <LayoutLoader key="default" layoutProps= Object name="default" > 
+  at <NuxtLayoutProvider layoutProps= Object key="default" name="default"  ... > 
+  at <NuxtLayout > 
+  at <App key=4 > 
+  at <NuxtRoot>

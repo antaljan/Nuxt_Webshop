@@ -5,7 +5,7 @@
       Üdvözöllek, {{ user?.name || 'Gyöngyi' }}! 👋
     </h1>
 
-    <!-- KPI kártyák -->
+    <!-- KPI cards -->
     <v-row class="mb-6">
       <v-col cols="12" sm="6" md="3">
         <v-card border elevation="1" class="rounded-xl">
@@ -14,7 +14,7 @@
               <div>
                 <div class="text-overline mb-1">Havi bevétel</div>
                 <div class="text-h5 font-weight-black text-green-darken-2">
-                  {{ summary?.monthlyRevenue?.toLocaleString() }} Ft
+                  {{ summary?.monthlyRevenue?.toLocaleString() }} €
                 </div>
               </div>
               <v-avatar color="green-lighten-4" size="large">
@@ -136,21 +136,17 @@ const { user } = useAuth()
 const { data: summary } = await useFetch('/api/dashboard/summary')
 
 const upcomingSessions = computed(() => {
-  // Adjunk hozzá egy logot, hogy lássuk a böngészőben is
-  console.log('Feldolgozás alatt lévő summary:', summary.value)
   return summary.value?.upcomingSessions || []
 })
 
 const salesData = computed(() => {
-  // Biztosítsuk, hogy a salesHistory létezik és tömb
   if (!summary.value?.salesHistory || !Array.isArray(summary.value.salesHistory)) {
     return null
   }
-  
   return {
     labels: summary.value.salesHistory.map(s => s.month),
     datasets: [{
-      label: 'Bevétel (Ft)',
+      label: 'Bevétel (€)',
       borderColor: '#1976D2',
       backgroundColor: 'rgba(25, 118, 210, 0.1)',
       data: summary.value.salesHistory.map(s => s.amount),
@@ -161,11 +157,11 @@ const salesData = computed(() => {
 })
 
 const formatSessionTime = (date) => {
-  return new Date(date).toLocaleString('hu-HU', { 
-    month: 'short', 
-    day: 'numeric', 
-    hour: '2-digit', 
-    minute: '2-digit' 
+  return new Date(date).toLocaleString('hu-HU', {
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
   })
 }
 </script>

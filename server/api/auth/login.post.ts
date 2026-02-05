@@ -3,7 +3,6 @@ const backendBase = config.public.backendBase
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
-
   const backendRes = await $fetch(`${backendBase}/user/login`, {
     method: 'POST',
     body: {
@@ -11,7 +10,6 @@ export default defineEventHandler(async (event) => {
       psw: body.password
     }
   })
-
   if (!backendRes.success) {
     throw createError({ statusCode: 401, statusMessage: 'Invalid credentials' })
   }
@@ -25,10 +23,11 @@ export default defineEventHandler(async (event) => {
     maxAge: 60 * 60 * 6
   })
 
-
-
   return {
     success: true,
-    user: backendRes.user
+    user: {
+      ...backendRes.user,
+      _id: backendRes.user._id.toString()
+    }
   }
 })

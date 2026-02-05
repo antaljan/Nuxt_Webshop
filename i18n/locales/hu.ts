@@ -9,6 +9,30 @@ export default defineI18nLocale(async (locale) => {
       next: 'Következő',
       ariaLabel: {
         delimiter: 'Carousel slide {0} / {1}'
+      },
+      pagination: {
+        ariaLabel: {
+          root: 'Oldalnavigáció',
+          next: 'Következő oldal',
+          previous: 'Előző oldal',
+          page: 'Ugrás a(z) {0}. oldalra',
+          currentPage: 'Aktuális oldal, {0}. oldal',
+          first: 'Első oldal',
+          last: 'Utolsó oldal',
+        },
+      },
+      input: {
+        clear: 'Mező törlése',
+      },
+      noDataText: "nem áll rendelkezésre adat",
+      dataFooter: {
+        itemsPerPageText: "elem per lap",
+        itemsPerPageAll: "Mind",
+        pageText: "{0}-{1} / {2}",
+        firstPage: "első lap",
+        prevPage: "előző lap",
+        nextPage: "következő lap",
+        lastPage: "utolsó lap"
       }
     },
     noDataText:"nem áll rendelkezésre adat",

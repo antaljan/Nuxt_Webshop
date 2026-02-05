@@ -6,7 +6,7 @@
       <h2 class="text-3xl font-bold text-center mb-10">
         {{ t('blog.latest') }}
       </h2>
-
+      <ClientOnly>
       <!-- LOADING -->
       <div v-if="pending" class="text-center text-gray-500">
         {{ t('blog.loading') }}
@@ -23,6 +23,7 @@
       </div>
 
       <!-- CAROUSEL -->
+      
       <v-carousel
         v-else
         height="480"
@@ -89,6 +90,12 @@
           </v-row>
         </v-carousel-item>
       </v-carousel>
+      <template #fallback>
+        <div class="h-[360px] w-full bg-gray-100 animate-pulse flex items-center justify-center">
+          Loading content...
+        </div>
+      </template>
+      </ClientOnly>
       <!-- VIEW ALL BUTTON -->
       <div class="text-center mt-10">
         <NuxtLink

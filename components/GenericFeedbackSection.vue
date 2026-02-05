@@ -9,6 +9,7 @@
       </h2>
 
       <!-- CAROUSEL -->
+      <ClientOnly>
       <v-carousel
         height="360"
         hide-delimiters
@@ -53,7 +54,13 @@
           </v-row>
         </v-carousel-item>
       </v-carousel>
-
+      <template #fallback>
+        <div class="h-[360px] w-full bg-gray-100 animate-pulse flex items-center justify-center">
+          Loading content...
+        </div>
+      </template>
+      </ClientOnly>
+      
       <!-- ADMIN BUTTON -->
       <div v-if="isAdmin" class="text-center mt-8">
         <v-btn color="primary" @click="goAdmin">

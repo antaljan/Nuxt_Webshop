@@ -14,7 +14,7 @@ const { t } = useI18n()
    MAIN MENU (hash + route keverve)
 ----------------------------------------- */
 const mainMenu = [
-  { type: 'hash', to: '/#home', label: 'menu.home' },
+  { type: 'hash', to: '/#hero', label: 'menu.home' },
   { type: 'hash', to: '/#about', label: 'menu.about' },
   { type: 'hash', to: '/#story', label: 'menu.story' },
   { type: 'hash', to: '/#methode', label: 'menu.methode' },

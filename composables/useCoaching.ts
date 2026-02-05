@@ -51,18 +51,21 @@ export function useCoaching() {
   }
 
   // Időpont lefoglalása (Customer által)
-  const bookSlot = async (id: string, payload: { message?: string }) => {
-    return await $fetch(`/api/booking/book/${id}`, {
-      method: 'PUT',
-      body: payload
-    })
-  }
+  const bookSlot = async (id: string, payload: { userId: string, productId: string, message?: string }) => {
+  return await $fetch(`/api/booking/book/${id}`, {
+    method: 'PUT',
+    body: payload // Így a teljes objektumot továbbküldi a Nuxt Proxy-nak
+  })
+}
 
   // Foglalás lemondása
   const cancelSlot = async (id: string) => {
-    return await $fetch(`/api/booking/cancel/${id}`, {
-      method: 'PUT'
-    })
+    return await $fetch(`/api/booking/cancel/${id}`, { method: 'PUT' })
+  }
+
+  // composables/useCoaching.ts - add hozzá a visszatérési listához
+  const getMyBookings = async () => {
+    return await $fetch('/api/booking/mybookings')
   }
 
   return {
@@ -73,6 +76,7 @@ export function useCoaching() {
     updateSlot,
     deleteSlot,
     bookSlot,
-    cancelSlot
+    cancelSlot,
+    getMyBookings
   }
 }

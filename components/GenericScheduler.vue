@@ -99,12 +99,9 @@ import { useAuth } from '~/composables/useAuth'
 import { DatePicker as VCalendarDatePicker } from 'v-calendar'
 import 'v-calendar/dist/style.css'
 
-const components = {
-  VCalendarDatePicker
-}
+const components = { VCalendarDatePicker }
 const { getAvailableSlots, getSlotsByDate, bookSlot } = useCoaching()
 const { user } = useAuth()
-
 const selectedDate = ref(new Date())
 const dailySlots = ref([])
 const allAvailableSlots = ref([])
@@ -116,7 +113,7 @@ const props = defineProps({
   productId: { type: String, required: true }
 })
 
-// Naptár vizuális jelölői (pöttyök az elérhető napokon)
+// calender visuel marks (dots on days wich is available)
 const attributes = computed(() => [
   {
     highlight: true,
@@ -129,25 +126,25 @@ const attributes = computed(() => [
   }))
 ])
 
+// Date formating
 const formattedDate = computed(() => {
   return selectedDate.value.toLocaleDateString('hu-HU', { year: 'numeric', month: 'long', day: 'numeric' })
 })
 
+// Time formating
 const formatTime = (dateStr) => {
   return new Date(dateStr).toLocaleTimeString('hu-HU', { hour: '2-digit', minute: '2-digit' })
 }
 
-// Kezdeti adatok betöltése
+// Load initial data
 onMounted(async () => {
   await fetchAllAvailable()
   await fetchDailySlots(selectedDate.value)
 })
-
 async function fetchAllAvailable() {
   const data = await getAvailableSlots()
   allAvailableSlots.value = data || []
 }
-
 async function fetchDailySlots(date) {
   if (!date) return
   loading.value = true
@@ -164,36 +161,44 @@ async function fetchDailySlots(date) {
   }
 }
 
+// filter for days
 function handleDayClick(day) {
   selectedDate.value = day.date
   fetchDailySlots(day.date)
 }
 
+// booking comfirmation
 function confirmBooking(slot) {
   selectedSlot.value = slot
   bookingDialog.value = true
 }
 
+// booking
 async function executeBooking() {
-  if (!selectedSlot.value || !user.value) return
-  
+  // Debug: Ellenőrizzük, mi van a user objektumban
+  console.log("User adatok foglaláskor:", user.value)
+  if (!selectedSlot.value || !user.value?._id) {
+    alert("A foglaláshoz be kell jelentkezned!")
+    return
+  }
   bookingLoading.value = true
   try {
-    await bookSlot(selectedSlot.value._id, {
+    const payload = {
       userId: user.value._id,
       productId: props.productId
-    })
+    }
+    await bookSlot(selectedSlot.value._id, payload)
     bookingDialog.value = false
     await fetchDailySlots(selectedDate.value)
     await fetchAllAvailable()
-    emit('booked')
+    // emit('booked') // Ellenőrizd, hogy a defineEmits(['booked']) kint van-e a script setup-ban!
   } catch (e) {
+    console.error("Foglalási hiba:", e)
     alert("Hiba történt a foglalás során.")
   } finally {
     bookingLoading.value = false
   }
-}
-</script>
+}</script>
 
 <style scoped>
 .scheduler-container {

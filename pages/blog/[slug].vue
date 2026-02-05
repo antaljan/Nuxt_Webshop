@@ -62,14 +62,14 @@ import { useI18n } from 'vue-i18n'
 const route = useRoute()
 const { locale, t } = useI18n()
 const blog = useBlog()
-console.log('ROUTE PARAMS:', route.params)
+//console.log('ROUTE PARAMS:', route.params)
 /* ---------------------------
    SSR FETCH SINGLE POST
 --------------------------- */
 const slug = Array.isArray(route.params.slug)
   ? route.params.slug[0]
   : route.params.slug
-console.log('SLUG:', slug)
+//console.log('SLUG:', slug)
 const { data, pending, error, refresh } = await useAsyncData(
   () => `blog-${slug}-${locale.value}`,
   () => blog.getPostBySlug(slug)

@@ -138,7 +138,7 @@ function getPreview(text) {
 
 /* ---------------------------
    SEO META
---------------------------- */
+--------------------------- 
 useHead({
   title: t('blog.allPosts'),
   meta: [
@@ -147,5 +147,5 @@ useHead({
       content: t('blog.metaDescription')
     }
   ]
-})
+})*/
 </script>

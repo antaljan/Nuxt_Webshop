@@ -1,7 +1,7 @@
-Webshop & Content Management Platform for Coaches, Psychologists, and Consultants
+# Webshop & Content Management Platform for Coaches, Psychologists, and Consultants
 Modern MEVN + Nuxt 4 SSR based content and client management system
 
-📌 Overview
+## 📌 Overview
 This project is a complete webshop + content management + client portal designed for coaches, psychologists, and consultants operating as small businesses.
 The platform enables:
 - Selling digital products (PDFs, e‑books, videos, coaching time)
@@ -14,7 +14,7 @@ The system supports three main user roles:
 - Customer (authenticated user)
 - Admin (coach / business owner)
 
-👤 User Roles & Capabilities
+## 👤 User Roles & Capabilities
 1) Visitor (Public User)
 Capabilities:
 - View landing page
@@ -60,18 +60,18 @@ Technical Notes:
 - Newsletter scheduler via backend cron
 - External email provider recommended (ionos SMTP Server or Mailgun / SendGrid)
 
-🌍 Multilingual Support & Design
+## 🌍 Multilingual Support & Design
 - Clean, modern UI (Vuetify + MDI + Tailwind)
 - Supported languages: English, German, Hungarian
 - Automatic language detection via browser settings
 - Default language: English
 - Multi‑domain support
 
-🎬 Video Streaming
-Recommended providers:
+## 🎬 Video Streaming
+Recommended provider:
 - Bunny Stream
 
-🏗️ Technology Stack
+## 🏗️ Technology Stack
 Frontend:
 - Nuxt 4 (SSR)
 - Vue 3
@@ -92,7 +92,7 @@ Hosting:
 - NGINX reverse proxy
 - PM2 (recomended for monitorin)
 
-🧱 Backend Modules
+## 🧱 Backend Modules
 User Management:
 - registration, login
 - roles: user, admin
@@ -108,7 +108,7 @@ Newsletter Management:
 - templates
 - editor
 - scheduler
-- sending via Mailgun/SendGrid
+- sending via nodemailer
 Webshop:
 - products
 - cart
@@ -120,7 +120,7 @@ Statistics:
 - purchase funnel
 - admin dashboard charts
 
-📁 Project Structure (Nuxt 4 Recommended)
+## 📁 Project Structure (Nuxt 4 Recommended)
 project/
 ├─ app.vue                          # Nuxt 4 application
 ├─ nuxt.config.json                 # Nuxt config
@@ -289,7 +289,7 @@ project/
           ├─ index.post.ts
           └─ update.post.ts
    
-🔐 Authentication & Authorization
+## 🔐 Authentication & Authorization
 Login Flow:
   1. Nuxt → backend: email + password
   2. Backend generates JWT
@@ -297,11 +297,7 @@ Login Flow:
   4. SSR recognizes user state
   5. Middleware controls access
 
-Middleware:
-- auth.ts – checks login
-- admin.global.ts – checks admin role
-
-🛠️ Nuxt 4 Initialization:
+## 🛠️ Nuxt 4 Initialization:
   npx nuxi init
   npm install
   npm run dev
@@ -317,11 +313,11 @@ Middleware:
   npm install -D @types/dompurify
   npm install v-calendar@next @popperjs/core
 
-🚀 Deployment (VPS)
+## 🚀 Deployment (VPS)
 - NGINX reverse proxy
 - PM2 process manager
 - HTTPS via Let's Encrypt
 - Node backend + Nuxt SSR as separate processes
 
-📄 License
-  License can be chosen freely (MIT recommended).
+## 📄 License
+  MIT License.

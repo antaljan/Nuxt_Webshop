@@ -1,13 +1,37 @@
 export default defineI18nLocale(async (locale) => {
   return {
     $vuetify: {
-    carousel: {
-      prev: 'Vorherige',
-      next: 'Nächste',
-      ariaLabel: {
-        delimiter: 'Carousel slide {0} / {1}'
+      carousel: {
+        prev: 'Vorherige',
+        next: 'Nächste',
+        ariaLabel: {
+          delimiter: 'Carousel slide {0} / {1}'
+        }
+      },
+      pagination: {
+        ariaLabel: {
+          root: 'Seitennavigation',
+          next: 'Nächste Seite',
+          previous: 'Vorherige Seite',
+          page: 'Gehe zu Seite {0}',
+          currentPage: 'Aktuelle Seite, Seite {0}',
+          first: 'Erste Seite',
+          last: 'Letzte Seite',
+        },
+      },
+      input: {
+        clear: 'Feld leeren',
+      },
+      noDataText: "Keine Daten verfügbar",
+      dataFooter: {
+        itemsPerPageText: "Elemente pro Seite:",
+        itemsPerPageAll: "Alle",
+        pageText: "{0}-{1} von {2}",
+        firstPage: "Erste Seite",
+        prevPage: "Vorherige Seite",
+        nextPage: "Nächste Seite",
+        lastPage: "Letzte Seite"
       }
-    }
   },
   menu: {
     home: "Startseite",

@@ -1,36 +1,25 @@
 export default defineI18nLocale(async (locale) => {
   return {
     $vuetify: {
-      carousel: {
-        prev: 'Previous',
-        next: 'Next',
-        ariaLabel: {
-          delimiter: 'Carousel slide {0} / {1}'
-        }
-      },
-      pagination: {
-        ariaLabel: {
-          root: 'Pagination Navigation',
-          next: 'Next page',
-          previous: 'Previous page',
-          page: 'Go to page {0}',
-          currentPage: 'Current page, page {0}',
-          first: 'First page',
-          last: 'Last page',
-        },
-      },
       input: {
-        clear: 'Clear field',
+        clear: 'Field clear',
       },
-      noDataText: "No data available",
+      noDataText: "no data",
       dataFooter: {
-        itemsPerPageText: "Items per page:",
-        itemsPerPageAll: "All",
-        pageText: "{0}-{1} of {2}",
-        firstPage: "First page",
-        prevPage: "Previous page",
-        nextPage: "Next page",
-        lastPage: "Last page"
+        itemsPerPageText: "item per page:",
+        itemsPerPageAll: "all",
+        pageText: "{0}-{1} / {2}",
+        firstPage: "first page",
+        prevPage: "prevous page",
+        nextPage: "next page",
+        lastPage: "last page"
+      },
+      carousel: {
+        prev: 'prev',
+        next: 'next',
+        ariaLabel: {
+          delimiter: 'Slide {0} / {1}'
+        }
       }
   },
   menu: {
@@ -44,6 +33,7 @@ export default defineI18nLocale(async (locale) => {
   },
   admin: {
     dashboard: "Admin Dashboard",
+    cibersecu: "Cibersecurity",
     Posts: "Edit Blog Posts",
     blog: {
         title: "Blog editor",

@@ -62,44 +62,7 @@
         </div>
       </v-card>
     </div>
-
-    <div>
-      <h2 class="text-2xl font-semibold mb-4">Legutóbbi vásárlásaid</h2>
-
-      <div v-if="pending" class="text-gray-500 italic">Vásárlások betöltése...</div>
-      <div v-else-if="error" class="text-red-600">Nem sikerült betölteni a vásárlásokat.</div>
-      <div v-else-if="!purchases.length" class="p-8 border rounded-xl text-center text-gray-500 bg-gray-50">
-        Még nem vásároltál semmit.
-      </div>
-
-      <div v-else class="space-y-4">
-        <div
-          v-for="p in purchases.slice(0, 3)"
-          :key="p._id"
-          class="p-4 border rounded-xl shadow-sm flex gap-4 bg-white items-center"
-        >
-          <img
-            v-if="p.items[0]?.cover"
-            :src="p.items[0].cover"
-            class="w-20 h-20 object-cover rounded-lg"
-          />
-
-          <div class="flex-1">
-            <h3 class="text-lg font-semibold">{{ p.items[0].title }}</h3>
-            <p class="text-xs text-gray-400 mt-1">
-              Dátum: {{ new Date(p.createdAt).toLocaleDateString('hu-HU') }}
-            </p>
-
-            <NuxtLink
-              :to="`/user/product/${p._id}`"
-              class="inline-block mt-2 text-blue-600 hover:underline text-sm font-medium"
-            >
-              Megnyitás →
-            </NuxtLink>
-          </div>
-        </div>
-      </div>
-    </div>
+    
   </section>
 </template>
 

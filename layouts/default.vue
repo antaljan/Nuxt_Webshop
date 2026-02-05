@@ -38,6 +38,7 @@ const userMenu = [
 ----------------------------------------- */
 const adminMenu = [
   { to: '/admin', label: 'admin.dashboard' },
+  { to: '/admin/cibersecu', label: 'admin.cibersecu' },
   { to: '/admin/blog', label: 'admin.Posts' },
   { to: '/admin/users', label: 'admin.users.title' },
   { to: '/admin/newsletter', label: 'admin.newsletter.title' },

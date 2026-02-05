@@ -4,47 +4,26 @@ import Profile from "~/pages/user/profile.vue"
 export default defineI18nLocale(async (locale) => {
   return {
   $vuetify: {
-    carousel: {
-      prev: 'Előző',
-      next: 'Következő',
-      ariaLabel: {
-        delimiter: 'Carousel slide {0} / {1}'
-      },
-      pagination: {
-        ariaLabel: {
-          root: 'Oldalnavigáció',
-          next: 'Következő oldal',
-          previous: 'Előző oldal',
-          page: 'Ugrás a(z) {0}. oldalra',
-          currentPage: 'Aktuális oldal, {0}. oldal',
-          first: 'Első oldal',
-          last: 'Utolsó oldal',
-        },
-      },
       input: {
         clear: 'Mező törlése',
       },
-      noDataText: "nem áll rendelkezésre adat",
+      noDataText: "Nem áll rendelkezésre adat",
       dataFooter: {
-        itemsPerPageText: "elem per lap",
+        itemsPerPageText: "Elem per lap:",
         itemsPerPageAll: "Mind",
         pageText: "{0}-{1} / {2}",
-        firstPage: "első lap",
-        prevPage: "előző lap",
-        nextPage: "következő lap",
-        lastPage: "utolsó lap"
+        firstPage: "Első lap",
+        prevPage: "Előző lap",
+        nextPage: "Következő lap",
+        lastPage: "Utolsó lap"
+      },
+      carousel: {
+        prev: 'Előző',
+        next: 'Következő',
+        ariaLabel: {
+          delimiter: 'Slide {0} / {1}'
+        }
       }
-    },
-    noDataText:"nem áll rendelkezésre adat",
-    dataFooter:{
-      itemsPerPageText:"elem per lap",
-      itemsPerPageAll:"",
-      pageText:"lap",
-      firstPage:"első lap",
-      prevPage:"előző lap",
-      nextPage:"következő lap",
-      lastPage:"utolsó lap"
-    }
   },
   menu: {
     home: "Kezdőlap",
@@ -58,6 +37,7 @@ export default defineI18nLocale(async (locale) => {
   },
   admin: {
     dashboard: "Admin irányítópult",
+    cibersecu: "Cibersecurity",
     Posts: "Blogok szerkesztése",
     blog: {
         title: "Blog kezelése",

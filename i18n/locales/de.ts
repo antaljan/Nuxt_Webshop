@@ -1,36 +1,25 @@
 export default defineI18nLocale(async (locale) => {
   return {
     $vuetify: {
-      carousel: {
-        prev: 'Vorherige',
-        next: 'Nächste',
-        ariaLabel: {
-          delimiter: 'Carousel slide {0} / {1}'
-        }
-      },
-      pagination: {
-        ariaLabel: {
-          root: 'Seitennavigation',
-          next: 'Nächste Seite',
-          previous: 'Vorherige Seite',
-          page: 'Gehe zu Seite {0}',
-          currentPage: 'Aktuelle Seite, Seite {0}',
-          first: 'Erste Seite',
-          last: 'Letzte Seite',
-        },
-      },
       input: {
         clear: 'Feld leeren',
       },
-      noDataText: "Keine Daten verfügbar",
+      noDataText: "keine Daten vorhanden",
       dataFooter: {
-        itemsPerPageText: "Elemente pro Seite:",
-        itemsPerPageAll: "Alle",
-        pageText: "{0}-{1} von {2}",
-        firstPage: "Erste Seite",
-        prevPage: "Vorherige Seite",
-        nextPage: "Nächste Seite",
-        lastPage: "Letzte Seite"
+        itemsPerPageText: "item pro Seite",
+        itemsPerPageAll: "alle",
+        pageText: "{0}-{1} / {2}",
+        firstPage: "erste Seite",
+        prevPage: "vorige Seite",
+        nextPage: "nächste Seite",
+        lastPage: "letzte Seite"
+      },
+      carousel: {
+        prev: 'vorherige',
+        next: 'nächste',
+        ariaLabel: {
+          delimiter: 'Slide {0} / {1}'
+        }
       }
   },
   menu: {
@@ -44,6 +33,7 @@ export default defineI18nLocale(async (locale) => {
   },
   admin: {
     dashboard: "Admin Dashboard",
+    cibersecu: "Cibersecurity",
     Posts: "Blogbeiträge bearbeiten",
     blog: {
         title: "Blog Editor",

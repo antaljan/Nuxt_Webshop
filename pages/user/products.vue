@@ -63,5 +63,21 @@ const { data, pending, error } = await useAsyncData(
   }
 )
 
-const purchases = computed(() => data.value?.purchases || [])
+const purchases = computed(() => {
+  const rawList = data.value?.purchases || data.value || [];
+  
+  // Csoportosítás a termék címe alapján, hogy ne legyen duplikáció
+  const uniqueProducts = [];
+  const seenTitles = new Set();
+
+  rawList.forEach(p => {
+    const title = p.items[0]?.title;
+    if (title && !seenTitles.has(title)) {
+      seenTitles.add(title);
+      uniqueProducts.push(p);
+    }
+  });
+
+  return uniqueProducts;
+});
 </script>

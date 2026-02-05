@@ -100,26 +100,24 @@ User functions:
     - newsletter + performance  ✔️
 - User dashboard (/pages/user/index.vue) is extended with list of booked coachings ✔️
 
+Bugs:
+    critical:
+        - none
+    Warnings:
+        → [intlify] Not found '$vuetify.input.clear' key in 'hu' locale messages
+
 Tasks are open:
-→ /pages/user/product/[id].vue --> User product open:  play video integrate bunny video
 → /pages/admin/cibersecu.vue --> admin ciber security dashboard (feching potential risks from logs)
 → /pages/admin/products/create.vue --> add the language to product creatig or edit - product has to be language relevant
 → /pages/products/index.vue --> filter the product for language - product has to be language relevant
 
-Bugs:
-critical:
-- none
-Warnings:
-→ [intlify] Not found '$vuetify.input.clear' key in 'hu' locale messages
-
---> a terméket töbször is megvejeti a user, mert csak egy coaching időpontot foglalhat vele, így nem elég a termékre szűrni. meg kell vizsgálni, hogy hányszor vettemeg a terméket és hány foglalása van és ezeket is meg kell jeleníteni a GeneralScheduler.vue-ban. valamint amikor a coaching lezárult, már nem szabad, hogy módosítsa az időpontot. De mivel ez egy nagyobb feladat és nekem már nincs több időm, így majd estére marad.
-A Logikai Terv (Estére)
-1. Vásárlások számlálása: Meg kell nézni a purchases tömbben, hányszor szerepel az adott productId. Ez lesz a felhasználó "kerete".
-2. Foglalások számlálása: Le kell kérni az összes foglalást, ami ehhez a termékhez és felhasználóhoz tartozik.
-3. Különbségkezelés: * Ha vásárlások száma > foglalások száma, akkor a Scheduler engedjen új időpontot választani.
-4. Ha egyenlő, akkor csak a meglévők listázása és (ha még nem zajlott le) módosítása engedélyezett.
-5. Múltbéli időpontok védelme: A cancelSlot gombot egy extra feltétellel kell ellátni: if (new Date(slot.start) > new Date()). Ha az időpont már elmúlt, a lemondás/módosítás gomb tűnjön el.
-Amiben segíteni tudok, ha visszatérsz:
-- Egy olyan számított mező (computed property) megírása, ami összesíti a "szabad kreditjeit" a felhasználónak.
-- A GenericScheduler.vue sablonjának felkészítése arra, hogy ne csak egy, hanem több korábbi foglalást is szépen kilistázzon (pl. "1. alkalom - Lezárult", "2. alkalom - Közelgő").
-- A backend lekérdezés finomítása, hogy egyszerre kapjuk meg a vásárlási adatokat és a slotokat.
+→ /pages/user/product/[id].vue 
+    --> User product open:  integrate bunny video
+    --> A Coaching terméket töbször is megveheti a user, mert egy vásárlás csak egy alkalomra jogosítja fel, a vásárlás után lefoglalhatja az elérhető időpontok közül amelyik megfelő neki és a foglalás napjáig módosíthatja akár többször is. Nem szeretnék a user termék oldalán több kártyát listázni az azonos termékre, mert elveszti az átekinhetőséget, ha egy 20 alkalmas coaching sorozatot vásárol és 20 kártya lesz a listában. Összafoglalva, a coaching termék betöltésekor meg kell vizsgálni, hogy hányszor vettemeg a terméket és ezeket listázni. A listában fel kel tünteni, hogy van-e már időpont foglalva, ha van lehesen módosítani, ha nincs akkor jelenjen meg egy foglalás gomb (icon). Ha a lefoglalt coaching időpont teljesült akkor ez legyen felismerhető a listában a teljesülés dátumával és ne lessen többé módosítani. Ehhez a phurcase adarbáziba be kell rakni a foglalás számát és a foglalásba a státuszt. Továbbá a termék egyedi lapját (frontend/pages/user/product/[id].vue) ki kell egészíteni egy csak a coaching tipusu termékeknél megjelenő listával és a GenericScheduler.vue modult el kell rejteni és majs csak a foglalás vagy módosítás akciókra megjeleníteni.
+    A Logikai Terv:
+        1. Vásárlások számlálása: Meg kell nézni a purchases tömbben, hányszor szerepel az adott productId. Ezeket listázni kell.
+        2. Le kell kérni az összes foglalást, amelyet a purchase tömb az adot termékhez és userhez rendel.
+        3. Azoknál a vásárlásoknál ahol nincs foglalás, legyen egy a foglalást engedélyező gomb.
+        4. Azoknál a vásárlásoknál ahol van foglalás, de holnap vagy azutáni időpontra, legyen engedélyezve az átfoglalás és cancel.
+        5. A mai vagy múltbéli időpontok védelme: Ha az időpont már elmúlt vagy mai, a lemondás/módosítás gomb tűnjön el.
+        6. A teljesült időpontok esetében (melyeket a coach visszaigazol) jelenjen meg, hogy teljesült és mikor(dátum).

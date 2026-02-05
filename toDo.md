@@ -98,11 +98,11 @@ User functions:
     - funnel  ✔️
     - pageviews  ✔️
     - newsletter + performance  ✔️
+- User dashboard (/pages/user/index.vue) is extended with list of booked coachings ✔️
 
 Tasks are open:
 → /pages/user/product/[id].vue --> User product open:  play video integrate bunny video
 → /pages/admin/cibersecu.vue --> admin ciber security dashboard (feching potential risks from logs)
-→ User dashboard (/pages/user/index.vue) need to expand with list of booked coachings
 → /pages/admin/products/create.vue --> add the language to product creatig or edit - product has to be language relevant
 → /pages/products/index.vue --> filter the product for language - product has to be language relevant
 
@@ -112,3 +112,14 @@ critical:
 Warnings:
 → [intlify] Not found '$vuetify.input.clear' key in 'hu' locale messages
 
+--> a terméket töbször is megvejeti a user, mert csak egy coaching időpontot foglalhat vele, így nem elég a termékre szűrni. meg kell vizsgálni, hogy hányszor vettemeg a terméket és hány foglalása van és ezeket is meg kell jeleníteni a GeneralScheduler.vue-ban. valamint amikor a coaching lezárult, már nem szabad, hogy módosítsa az időpontot. De mivel ez egy nagyobb feladat és nekem már nincs több időm, így majd estére marad.
+A Logikai Terv (Estére)
+1. Vásárlások számlálása: Meg kell nézni a purchases tömbben, hányszor szerepel az adott productId. Ez lesz a felhasználó "kerete".
+2. Foglalások számlálása: Le kell kérni az összes foglalást, ami ehhez a termékhez és felhasználóhoz tartozik.
+3. Különbségkezelés: * Ha vásárlások száma > foglalások száma, akkor a Scheduler engedjen új időpontot választani.
+4. Ha egyenlő, akkor csak a meglévők listázása és (ha még nem zajlott le) módosítása engedélyezett.
+5. Múltbéli időpontok védelme: A cancelSlot gombot egy extra feltétellel kell ellátni: if (new Date(slot.start) > new Date()). Ha az időpont már elmúlt, a lemondás/módosítás gomb tűnjön el.
+Amiben segíteni tudok, ha visszatérsz:
+- Egy olyan számított mező (computed property) megírása, ami összesíti a "szabad kreditjeit" a felhasználónak.
+- A GenericScheduler.vue sablonjának felkészítése arra, hogy ne csak egy, hanem több korábbi foglalást is szépen kilistázzon (pl. "1. alkalom - Lezárult", "2. alkalom - Közelgő").
+- A backend lekérdezés finomítása, hogy egyszerre kapjuk meg a vásárlási adatokat és a slotokat.

@@ -175,8 +175,6 @@ function confirmBooking(slot) {
 
 // booking
 async function executeBooking() {
-  // Debug: Ellenőrizzük, mi van a user objektumban
-  console.log("User adatok foglaláskor:", user.value)
   if (!selectedSlot.value || !user.value?._id) {
     alert("A foglaláshoz be kell jelentkezned!")
     return

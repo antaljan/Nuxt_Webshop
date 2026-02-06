@@ -9,9 +9,11 @@ export function useProducts() {
 
   // Global cart stored in cookie
   const cart = useCookie('cart', {
-    default: () => [],
-    watch: true
-  })
+  default: () => [],
+  watch: true,
+  sameSite: 'lax',
+  maxAge: 60 * 60 * 24 * 7
+})
 
   const { isOpen } = useCartDrawer()
 
@@ -45,13 +47,29 @@ export function useProducts() {
   // ADD TO CART
   // -----------------------------
   function addToCart(product: any) {
-    const current = cart.value || []
-    current.push(product)
-    cart.value = current
-
-    // Optional: open drawer automatically
-    // isOpen.value = true
+    // 1. Meglévő elemek másolása (hogy ne mutáció legyen)
+    const currentItems = cart.value ? [...cart.value] : []
+    
+    // 2. Új objektum összeállítása
+    const minimalProduct = {
+      _id: product._id,
+      title: product.title,
+      price: Number(product.price),
+      cover: product.cover // Ezt add hozzá, hogy a CartDrawer-ben látszódjon a kép!
+    }
+    
+    // 3. HOZZÁADÁS A LISTÁHOZ (ez hiányzott)
+    currentItems.push(minimalProduct)
+    
+    // 4. SÜTI FRISSÍTÉSE
+    cart.value = currentItems
+    
+    // 5. Opcionális: Kosár automatikus megnyitása
+    isOpen.value = true
+    
+    //console.log('Süti frissítve, elemek száma:', cart.value.length)
   }
+
 
   // -----------------------------
   // REMOVE FROM CART

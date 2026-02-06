@@ -82,7 +82,7 @@ User functions:
 - /pages/checkout/success.vue + cancel.vue + proxy + backend routes --> checkout process is correct ✔️
 - /pages/user/index.vue --> dashboard is done ✔️
 - /pages/user/products.vue --> User my products view is done  ✔️
-- /pages/register.vue --> registring new user ✔️
+- /pages/register.vue --> registering new user ✔️
 - /pages/admin/user/index.vue --> Admin user management (list with paginator, sort, filter, edit, delete + create button)  ✔️
 - /pages/admin/images/index.vue --> Admin images management (list in mosaic with name, delete button)  ✔️
 - /pages/user/profile.vue --> Settings Account settings: change billing adders ...  ✔️
@@ -99,17 +99,17 @@ User functions:
     - funnel  ✔️
     - pageviews  ✔️
     - newsletter + performance  ✔️
-- User dashboard (/pages/user/index.vue) is extended with list of booked coachings ✔️
-- /pages/admin/cibersecu.vue --> admin ciber security dashboard  ✔️
+- User dashboard (/pages/user/index.vue) is extended with list of booked coaching ✔️
+- /pages/admin/cibersecu.vue --> admin cyber security dashboard  ✔️
 
 Bugs:
     critical:
-        - by purchasing process booking 100 times more amount like the product costs
+        - none
     Warnings:
         → shared.mjs:8 [intlify] Not found '$vuetify.pagination.ariaLabel.root' key in 'hu' locale messages.
         → devtools-EWN81iOl.mjs:61  [Vue Router warn]: No match found for location with path "/coaching"
 
 Tasks are open:
-→ /pages/admin/products/create.vue --> add the language to product creatig or edit - product has to be language relevant
+→ /pages/admin/products/create.vue --> add the language to product creating or edit - product has to be language relevant
 → /pages/products/index.vue --> filter the product for language - product has to be language relevant
-→ admin has to be complet the booking slots, the front end is missing, but the backend has already an a endpoint for that: router.put('/complete/:id', verifyAdmin, bookingController.completeSlot);
+→ admin has to be complete the booking slots, the front end is missing, but the backend has already an a endpoint for that: router.put('/complete/:id', verifyAdmin, bookingController.completeSlot);

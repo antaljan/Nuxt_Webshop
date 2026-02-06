@@ -38,7 +38,7 @@
             <v-btn
               color="success"
               variant="tonal"
-              @click="addToCart(product)"
+              @click="handleAddToCart(product)"
             >
               {{ $t('products.buyFor') }} €{{ product.price }}
             </v-btn>
@@ -62,15 +62,23 @@ import { useProducts } from '~/composables/useProducts'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const { getProducts, addToCart } = useProducts()
+// Emeljük ki a cart-ot is, hogy lássuk a változást
+const { getProducts, addToCart, cart } = useProducts()
 
-// SSR-safe product loading
 const { data: products } = await useAsyncData('products', () => getProducts())
 
 function goToProduct(id) {
-  router.push(`/products/${id}`)
+  return navigateTo(`/products/${id}`)
+}
+
+// Opcionális: Logoljuk, ha valami bekerül
+const handleAddToCart = (product) => {
+  console.log('Adding to cart:', product.title)
+  addToCart(product)
+  //alert(`${product.title} a kosárba került!`)
 }
 </script>
+
 
 <style scoped>
 /* optional fine-tuning */

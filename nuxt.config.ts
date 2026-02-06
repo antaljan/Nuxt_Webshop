@@ -16,7 +16,14 @@ export default defineNuxtConfig({
 
   vuetify: {
     icons: { defaultSet: 'mdi' },
-    display: { mobileBreakpoint: 'md' }
+    display: { mobileBreakpoint: 'md' },
+    vuetifyOptions: {
+    locale: {
+      locale: 'hu',
+      fallback: 'en',
+      adapter: 'vue-i18n'
+    }
+  }
   },
 
   security: {
@@ -43,8 +50,8 @@ export default defineNuxtConfig({
     },
     // Request filter (to safe SQL/NoSQL injection)
     requestSizeLimiter: {
-      maxRequestSizeInBytes: 2000000, // 2MB
-      maxUploadFileRequestInBytes: 20000000, // 20MB a PDF-ekhez
+      maxRequestSizeInBytes: 2000000,
+      maxUploadFileRequestInBytes: 20000000,
     },
   },
 
@@ -86,7 +93,7 @@ export default defineNuxtConfig({
       meta: [
         {
           name: 'Antali Gyöngyi Edit',
-          content: 'Pscichology, Life- and Bussiness Coaching, Trasnversal skills development '
+          content: 'psychology, Life- and business Coaching, transversal skills development '
         }
       ]
     }

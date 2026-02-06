@@ -214,6 +214,7 @@ export default defineI18nLocale(async (locale) => {
     password: "Password",
     button: "login",
     noAccount: "I do not have account, i will register one.",
+    forgotenPsw: "Forgotten Password",
     errors: {
       invalid: "Failure by email or password",
       general: "Failure by login."

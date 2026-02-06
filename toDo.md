@@ -18,6 +18,7 @@ Frontend:
     }
 
 Tasks are done:
+
 Architect:
 - .env ✔️
 - .gitignore ✔️
@@ -64,6 +65,12 @@ Landing Page (public page):
 - /pages/blog/[id].vue --> Blog details view ✔️
 - SSR safe user status, stabilized duo to useRequestHeaders(['cookie']) ✔️
 - menu links are ssr safe fixed ✔️
+- backend: install stripe api + add order routes + webhook --> paying due to service provider stripe --> in sandbox running well ✔️
+- password forgoten --> backend user.controller and routes, frontend, link in pages/login.vue ✔️
+    - backend/controllers/user.controller.js: add forgoten-passwor and password-reset functions ✔️
+    - frontend/pages/forgot-password.vue ✔️
+    - frontend/pages/reset-password.vue ✔️
+
 Admin functions:
 - access control for admin dashboard and pages realized ✔️
 - /pages/admin/blog/index.vue --> admin blog post list with edit, delete + create ✔️
@@ -74,33 +81,33 @@ Admin functions:
 - backend checkout, with stripe module created  ✔️
 - /pages/admin/products/index.vue --> admin product overview (list with paginator, sort, filter, delete, edit) ✔️
 - /pages/admin/products/create.vue --> admin product create or edit ✔️
-User functions:
-- /pages/products/index.vue --> Product overview site with searching(picture, name, short description, price on v-card) ✔️
-- /pages/products/[id].vue --> Product site with details and buy ✔️
-- /components/CartDrawer.vue + add to default layout --> Shopping Cart (basket) ✔️
-- backend: install stripe api + add order routes + webhook --> paying due to service provider stripe --> in sandbox running well ✔️
-- /pages/checkout/success.vue + cancel.vue + proxy + backend routes --> checkout process is correct ✔️
-- /pages/user/index.vue --> dashboard is done ✔️
-- /pages/user/products.vue --> User my products view is done  ✔️
-- /pages/register.vue --> registering new user ✔️
 - /pages/admin/user/index.vue --> Admin user management (list with paginator, sort, filter, edit, delete + create button)  ✔️
 - /pages/admin/images/index.vue --> Admin images management (list in mosaic with name, delete button)  ✔️
-- /pages/user/profile.vue --> Settings Account settings: change billing adders ...  ✔️
 - /pages/admin/newsletter/index.vue --> admin newsletter management (list of newsletters with status and figures , paginator, filter, sort)  ✔️
 - /pages/admin/newsletter/create.vue --> admin newsletter template creator  ✔️
 - /pages/admin/newsletter/schedule.vue --> admin newsletter scheduler  ✔️
 - /pages/admin/coaching/index.vue --> overview of scheduled coaching sections in calender + create new slots button  ✔️
 - /pages/admin/coaching/create.vue --> crate new coaching slot in calendar  ✔️
-- /components/GenericScheduler.vue --> schedule coaching slot in calender according the availability  ✔️
-- /pages/user/product/[id].vue --> User product view: download pdf, scheduling multiple coaching section  ✔️
-- /pages/user/product/[id].vue --> integrate bunny video player in product view ✔️
 - /pages/admin/index.vue --> admin dashboard  ✔️
     - statistics  ✔️
     - funnel  ✔️
     - pageviews  ✔️
     - newsletter + performance  ✔️
-- User dashboard (/pages/user/index.vue) is extended with list of booked coaching ✔️
 - /pages/admin/cibersecu.vue --> admin cyber security dashboard  ✔️
+
+User functions:
+- /pages/products/index.vue --> Product overview site with searching(picture, name, short description, price on v-card) ✔️
+- /pages/products/[id].vue --> Product site with details and buy ✔️
+- /components/CartDrawer.vue + add to default layout --> Shopping Cart (basket) ✔️
+- /pages/checkout/success.vue + cancel.vue + proxy + backend routes --> checkout process is correct ✔️
+- /pages/user/index.vue --> dashboard is done ✔️
+- /pages/user/products.vue --> User my products view is done  ✔️
+- /pages/register.vue --> registering new user ✔️
+- /pages/user/profile.vue --> Settings Account settings: change billing adders ...  ✔️
+- /components/GenericScheduler.vue --> schedule coaching slot in calender according the availability  ✔️
+- /pages/user/product/[id].vue --> User product view: download pdf, scheduling multiple coaching section  ✔️
+- /pages/user/product/[id].vue --> integrate bunny video player in product view ✔️
+- User dashboard (/pages/user/index.vue) is extended with list of booked coaching ✔️
 
 Bugs:
     critical:
@@ -112,4 +119,10 @@ Bugs:
 Tasks are open:
 → /pages/admin/products/create.vue --> add the language to product creating or edit - product has to be language relevant
 → /pages/products/index.vue --> filter the product for language - product has to be language relevant
-→ admin has to be complete the booking slots, the front end is missing, but the backend has already an a endpoint for that: router.put('/complete/:id', verifyAdmin, bookingController.completeSlot);
+→ admin has to be complete the booking slots, the frontend is missing, but the backend has already an a endpoint for that PUT:booking/complete/:id (verifyAdmin)
+→→→→→→ GO LIVE:
+    - deploy frontend from github to VPS
+    - integrate the new frontend into pm2
+    - change nginx.config
+    - restrart server
+    - delete old static vue frontend

@@ -218,6 +218,7 @@ export default defineI18nLocale(async (locale) => {
     password: "Jelszó",
     button: "Belépés",
     noAccount: "Még nincs fiókom, regisztrálok",
+    forgotenPsw: "Elfelejtett jelszó",
     errors: {
       invalid: "Hibás email vagy jelszó.",
       general: "Hiba történt a bejelentkezés során."

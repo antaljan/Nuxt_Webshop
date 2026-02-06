@@ -33,6 +33,10 @@
         </NuxtLink>
       </div>
 
+      <NuxtLink to="/forgot-password" class="text-sm text-blue-600">
+        {{ $t('auth.login.forgotenPsw') }}
+      </NuxtLink>
+
       <v-alert
         v-if="error"
         type="error"

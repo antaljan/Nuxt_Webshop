@@ -92,32 +92,24 @@ User functions:
 - /pages/admin/coaching/index.vue --> overview of scheduled coaching sections in calender + create new slots button  ✔️
 - /pages/admin/coaching/create.vue --> crate new coaching slot in calendar  ✔️
 - /components/GenericScheduler.vue --> schedule coaching slot in calender according the availability  ✔️
-- /pages/user/product/[id].vue --> User product view: download pdf, scheduling coaching section or video view  ✔️
+- /pages/user/product/[id].vue --> User product view: download pdf, scheduling multiple coaching section  ✔️
+- /pages/user/product/[id].vue --> integrate bunny video player in product view ✔️
 - /pages/admin/index.vue --> admin dashboard  ✔️
     - statistics  ✔️
     - funnel  ✔️
     - pageviews  ✔️
     - newsletter + performance  ✔️
 - User dashboard (/pages/user/index.vue) is extended with list of booked coachings ✔️
+- /pages/admin/cibersecu.vue --> admin ciber security dashboard  ✔️
 
 Bugs:
     critical:
-        - none
+        - by purchasing process booking 100 times more amount like the product costs
     Warnings:
-        → [intlify] Not found '$vuetify.input.clear' key in 'hu' locale messages
+        → shared.mjs:8 [intlify] Not found '$vuetify.pagination.ariaLabel.root' key in 'hu' locale messages.
+        → devtools-EWN81iOl.mjs:61  [Vue Router warn]: No match found for location with path "/coaching"
 
 Tasks are open:
-→ /pages/admin/cibersecu.vue --> admin ciber security dashboard (feching potential risks from logs)
 → /pages/admin/products/create.vue --> add the language to product creatig or edit - product has to be language relevant
 → /pages/products/index.vue --> filter the product for language - product has to be language relevant
-
-→ /pages/user/product/[id].vue 
-    --> User product open:  integrate bunny video
-    --> A Coaching terméket töbször is megveheti a user, mert egy vásárlás csak egy alkalomra jogosítja fel, a vásárlás után lefoglalhatja az elérhető időpontok közül amelyik megfelő neki és a foglalás napjáig módosíthatja akár többször is. Nem szeretnék a user termék oldalán több kártyát listázni az azonos termékre, mert elveszti az átekinhetőséget, ha egy 20 alkalmas coaching sorozatot vásárol és 20 kártya lesz a listában. Összafoglalva, a coaching termék betöltésekor meg kell vizsgálni, hogy hányszor vettemeg a terméket és ezeket listázni. A listában fel kel tünteni, hogy van-e már időpont foglalva, ha van lehesen módosítani, ha nincs akkor jelenjen meg egy foglalás gomb (icon). Ha a lefoglalt coaching időpont teljesült akkor ez legyen felismerhető a listában a teljesülés dátumával és ne lessen többé módosítani. Ehhez a phurcase adarbáziba be kell rakni a foglalás számát és a foglalásba a státuszt. Továbbá a termék egyedi lapját (frontend/pages/user/product/[id].vue) ki kell egészíteni egy csak a coaching tipusu termékeknél megjelenő listával és a GenericScheduler.vue modult el kell rejteni és majs csak a foglalás vagy módosítás akciókra megjeleníteni.
-    A Logikai Terv:
-        1. Vásárlások számlálása: Meg kell nézni a purchases tömbben, hányszor szerepel az adott productId. Ezeket listázni kell.
-        2. Le kell kérni az összes foglalást, amelyet a purchase tömb az adot termékhez és userhez rendel.
-        3. Azoknál a vásárlásoknál ahol nincs foglalás, legyen egy a foglalást engedélyező gomb.
-        4. Azoknál a vásárlásoknál ahol van foglalás, de holnap vagy azutáni időpontra, legyen engedélyezve az átfoglalás és cancel.
-        5. A mai vagy múltbéli időpontok védelme: Ha az időpont már elmúlt vagy mai, a lemondás/módosítás gomb tűnjön el.
-        6. A teljesült időpontok esetében (melyeket a coach visszaigazol) jelenjen meg, hogy teljesült és mikor(dátum).
+→ admin has to be complet the booking slots, the front end is missing, but the backend has already an a endpoint for that: router.put('/complete/:id', verifyAdmin, bookingController.completeSlot);

@@ -21,10 +21,18 @@ export default defineNuxtConfig({
 
   security: {
     headers: {
+      referrerPolicy: 'no-referrer-when-downgrade',
       contentSecurityPolicy: {
         'img-src': ["'self'", "data:", "https://antaligyongyi.hu", "https://bunny.net"],
         'script-src': ["'self'", "'unsafe-inline'", "https://js.stripe.com"],
-        'frame-src': ["'self'", "https://js.stripe.com", "https://bunny.net"],
+        'frame-src': [
+          "'self'",
+          "https://js.stripe.com",
+          "https://iframe.mediadelivery.net",
+          "https://*.bunny.net",
+          "https://*.mediadelivery.net"
+        ],
+        'frame-ancestors': ["'self'"]
       },
       crossOriginEmbedderPolicy: 'unsafe-none',
     },

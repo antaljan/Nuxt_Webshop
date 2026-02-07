@@ -5,7 +5,6 @@ export default defineEventHandler(async (event) => {
   if (!token) return { user: null }
 
   try {
-    // Felhívunk a Node.js backendre a valódi adatokért
     const userData = await $fetch(`${config.public.backendBase}/user/me`, {
       headers: { Authorization: `Bearer ${token}` }
     })

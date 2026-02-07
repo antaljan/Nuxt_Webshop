@@ -78,6 +78,17 @@ export default defineI18nLocale(async (locale) => {
       cancel: "Abbrechen",
       menu: "Produkte verwalten"
     },
+    brand: {
+      menu: "Brand Einstellungen",
+      primary: "Haupt Farbe",
+      background: "Hintergrund Farbe",
+      text: "Text Farbe",
+      accent: "Aushebung Farbe",
+      font: "Font Type",
+      previewTitle: "Vorshau",
+      previewText: "so wird deine Webseite aussehen mit der aktuelle Einstellungen",
+      previewButton: "Muster Taste"
+    },
     images: "Bilder verwalten",
     adminSection: "Admin Section",
     users: {
@@ -145,7 +156,8 @@ export default defineI18nLocale(async (locale) => {
     search: "Suche",
     priceRange: "Preisbereich",
     save: "speichern",
-    delete: "löschen"
+    delete: "löschen",
+    reset:"zurücksetsen auf Grundeinstellungen"
   },
   feedback: {
     title: "Rückmeldungen unserer Kunden"

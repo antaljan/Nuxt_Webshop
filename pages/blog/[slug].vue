@@ -165,15 +165,15 @@ useHead(() => {
 
 /* Headings */
 .prose h1 {
-  @apply text-4xl font-extrabold text-primary-600 mb-6;
+  @apply text-4xl font-extrabold text-primary mb-6;
 }
 
 .prose h2 {
-  @apply text-3xl font-bold text-primary-600 mt-10 mb-4;
+  @apply text-3xl font-bold text-primary mt-10 mb-4;
 }
 
 .prose h3 {
-  @apply text-2xl font-semibold text-primary-500 mt-8 mb-3;
+  @apply text-2xl font-semibold text-primary mt-8 mb-3;
 }
 
 /* Paragraphs */
@@ -183,8 +183,8 @@ useHead(() => {
 
 /* Links */
 .prose a {
-  @apply text-primary-600 font-semibold underline decoration-2 underline-offset-4
-         transition-colors hover:text-primary-700;
+  @apply text-primary font-semibold underline decoration-2 underline-offset-4
+         transition-colors hover:text-primary;
 }
 
 /* Images */
@@ -194,7 +194,7 @@ useHead(() => {
 
 /* Blockquotes */
 .prose blockquote {
-  @apply border-l-4 border-primary-500 pl-6 italic my-6 text-gray-700 bg-gray-50 py-4 rounded-md;
+  @apply border-l-4 border-primary pl-6 italic my-6 text-gray-700 bg-gray-50 py-4 rounded-md;
 }
 
 /* Ordered & unordered lists */
@@ -214,6 +214,6 @@ useHead(() => {
 
 /* Inline code */
 .prose code {
-  @apply bg-gray-200 px-1.5 py-0.5 rounded text-primary-700;
+  @apply bg-gray-200 px-1.5 py-0.5 rounded text-primary;
 }
 </style>

@@ -13,23 +13,20 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: {
-          50: '#f4f0ff',
-          100: '#e0d9ff',
-          200: '#c1b3ff',
-          300: '#a38cff',
-          400: '#8566ff',
-          500: '#673fff',
-          600: '#5432cc',
-          700: '#402699',
-          800: '#2c1966',
-          900: '#180d33'
-        }
-      }
-    }
-  },
+        primary: "var(--primary)",
+        background: "var(--background)",
+        text: "var(--text)",
+        accent: "var(--accent)"
+      },
 
-  plugins: [
-    require('@tailwindcss/typography')
-  ]
+      fontFamily: {
+        sans: "var(--font-family)"
+      }
+    },
+
+    ontSize: {
+        base: ['0.95rem', { lineHeight: '1.35' }]
+    }
+  }
 }
+

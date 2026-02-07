@@ -82,6 +82,17 @@ export default defineI18nLocale(async (locale) => {
       cancel: "Mégse",
       menu: "Termékek kezelése"
     },
+    brand: {
+      menu: "Arculat beállítások",
+      primary: "Fő szín",
+      background: "Háttérszín",
+      text: "Szövegszín",
+      accent: "Kiemelő szín",
+      font: "Betűtípus",
+      previewTitle: "Előnézet",
+      previewText: "Így fog kinézni az oldal az aktuális beállításokkal.",
+      previewButton: "Példa gomb"
+    },
     images: "Képek kezelése",
     adminSection: "Admin menü",
     users: {
@@ -149,7 +160,8 @@ export default defineI18nLocale(async (locale) => {
     search: "Keresés",
     priceRange: "Ártartomány",
     save: "Mentés",
-    delete: "Törlés"
+    delete: "Törlés",
+    reset:"Alapértelmezés visszaállítása"
   },
   feedback: {
     title: "Visszajelzések"

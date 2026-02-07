@@ -1,111 +1,102 @@
 <template>
-  <section :id="sectionKey" class="py-16">
-    <div
-      class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center"
-      :class="reverse ? 'md:flex-row-reverse' : ''"
-    >
-      <!-- IMAGE -->
-      <div class="flex justify-center">
-        <img
-          :src="imageUrl"
-          alt="Section image"
-          class="rounded-xl shadow-lg max-w-full h-auto"
-        />
+<section :id="sectionKey" class="py-12">
+  <div
+    class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center"
+    :class="reverse ? 'md:flex-row-reverse' : ''"
+  >
 
-        <!-- ADMIN: IMAGE UPLOAD -->
-        <div v-if="isAdmin" class="mt-4">
-          <input type="file" @change="onImageSelected" />
-        </div>
-      </div>
+    <!-- IMAGE -->
+    <div class="flex justify-center md:justify-start">
+      <img
+        :src="imageUrl"
+        alt="Section image"
+        class="rounded-lg shadow max-w-sm w-full h-auto"
+      />
 
-      <!-- TEXT -->
-      <div>
-        <h2 class="text-3xl font-bold mb-4 text-center md:text-left">
-          {{ localContent.title }}
-        </h2>
-
-        <p class="text-xl opacity-80 mb-6 text-center md:text-left">
-          <em>{{ localContent.subtitle }}</em>
-        </p>
-
-        <div class="space-y-4">
-          <p
-            v-for="(p, index) in localContent.paragraphs"
-            :key="index"
-            class="text-lg leading-relaxed"
-          >
-            {{ p }}
-          </p>
-        </div>
-
-        <!--  CTA   -->
-        <div v-if="localContent.ctaText">
-          <a
-            :href="localContent.ctaLink"
-            class="inline-block bg-grey/20 hover:bg-white text-blue transition px-6 py-3 rounded-lg text-lg font-medium backdrop-blur-sm hover:!text-blue"
-          >
-            {{ localContent.ctaText }}
-          </a>
-        </div>
-
-        <!-- ADMIN: EDITOR TOGGLE -->
-        <div v-if="isAdmin" class="mt-6">
-          <v-btn color="primary" @click="showEditor = !showEditor">
-            {{ showEditor ? 'Close Editor' : 'Edit Section' }}
-          </v-btn>
-        </div>
-
-        <!-- ADMIN: EDITOR PANEL -->
-        <v-form
-          v-if="showEditor"
-          class="pa-4 mt-4 bg-white rounded-lg shadow"
-        >
-          <v-text-field v-model="localContent.title" label="Title" />
-          <v-text-field v-model="localContent.subtitle" label="Subtitle" />
-
-          <!-- Dynamic paragraphs -->
-          <div
-            v-for="(p, index) in localContent.paragraphs"
-            :key="index"
-            class="mb-4"
-          >
-            <v-textarea
-              v-model="localContent.paragraphs[index]"
-              :label="'Paragraph ' + (index + 1)"
-            />
-
-            <v-btn
-              color="error"
-              variant="text"
-              @click="removeParagraph(index)"
-            >
-              Delete paragraph
-            </v-btn>
-          </div>
-
-          <!-- CTA -->
-          <v-text-field v-model="localContent.ctaText" label="CTA Text" />
-          <v-text-field v-model="localContent.ctaLink" label="CTA Link" />
-
-          <v-btn
-            color="secondary"
-            class="mb-4"
-            @click="addParagraph"
-          >
-            + Add paragraph
-          </v-btn>
-
-          <v-btn
-            color="primary"
-            class="mt-4"
-            @click="saveContent"
-          >
-            Save Content
-          </v-btn>
-        </v-form>
+      <div v-if="isAdmin" class="mt-3">
+        <input type="file" @change="onImageSelected" />
       </div>
     </div>
-  </section>
+
+    <!-- TEXT -->
+    <div class="md:pl-4">
+
+      <!-- TITLE -->
+      <h2 class="text-2xl font-semibold text-center md:text-left mb-4">
+        {{ localContent.title }}
+      </h2>
+
+      <!-- SUBTITLE -->
+      <p class="text-base opacity-80 text-center md:text-left mb-4 leading-snug">
+        <em>{{ localContent.subtitle }}</em>
+      </p>
+
+      <!-- PARAGRAPHS -->
+      <div class="space-y-3">
+        <p
+          v-for="(p, index) in localContent.paragraphs"
+          :key="index"
+          class="text-base leading-snug"
+        >
+          {{ p }}
+        </p>
+      </div>
+
+      <!-- CTA -->
+      <div v-if="localContent.ctaText" class="mt-5 text-center md:text-left">
+        <a
+          :href="localContent.ctaLink"
+          class="inline-block bg-gray-100 hover:bg-white text-blue-700 transition px-5 py-2.5 rounded-md text-base font-medium shadow-sm"
+        >
+          {{ localContent.ctaText }}
+        </a>
+      </div>
+
+      <!-- ADMIN TOGGLE -->
+      <div v-if="isAdmin" class="mt-6">
+        <v-btn color="primary" @click="showEditor = !showEditor">
+          {{ showEditor ? 'Close Editor' : 'Edit Section' }}
+        </v-btn>
+      </div>
+
+      <!-- ADMIN EDITOR -->
+      <v-form
+        v-if="showEditor"
+        class="pa-4 mt-4 bg-white rounded-lg shadow"
+      >
+        <v-text-field v-model="localContent.title" label="Title" />
+        <v-text-field v-model="localContent.subtitle" label="Subtitle" />
+
+        <div
+          v-for="(p, index) in localContent.paragraphs"
+          :key="index"
+          class="mb-4"
+        >
+          <v-textarea
+            v-model="localContent.paragraphs[index]"
+            :label="'Paragraph ' + (index + 1)"
+          />
+          <v-btn color="error" variant="text" @click="removeParagraph(index)">
+            Delete paragraph
+          </v-btn>
+        </div>
+
+        <v-text-field v-model="localContent.ctaText" label="CTA Text" />
+        <v-text-field v-model="localContent.ctaLink" label="CTA Link" />
+
+        <v-btn color="secondary" class="mb-4" @click="addParagraph">
+          + Add paragraph
+        </v-btn>
+
+        <v-btn color="primary" class="mt-4" @click="saveContent">
+          Save Content
+        </v-btn>
+      </v-form>
+
+    </div>
+  </div>
+</section>
+
 </template>
 
 <script setup>

@@ -6,7 +6,8 @@ export default defineNuxtConfig({
     'vuetify-nuxt-module',
     '@nuxtjs/i18n',
     '@nuxtjs/tailwindcss',
-    'nuxt-security'
+    'nuxt-security',
+    '@nuxt/fonts'
   ],
 
   css: [
@@ -14,17 +15,17 @@ export default defineNuxtConfig({
     '@mdi/font/css/materialdesignicons.min.css'
   ],
 
+  fonts: { families: [ { name: 'Roboto', provider: 'google' } ] },
+
   vuetify: {
-    icons: { defaultSet: 'mdi' },
-    display: { mobileBreakpoint: 'md' },
-    vuetifyOptions: {
-    locale: {
-      locale: 'hu',
-      fallback: 'en',
-      adapter: 'vue-i18n'
-    }
+  icons: { defaultSet: 'mdi' },
+  display: { mobileBreakpoint: 'md' },
+  locale: {
+    locale: 'hu',
+    fallback: 'en',
+    adapter: 'vue-i18n'
   }
-  },
+},
 
   security: {
     headers: {

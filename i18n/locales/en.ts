@@ -78,6 +78,17 @@ export default defineI18nLocale(async (locale) => {
       cancel: "Cancel",
       menu: "Manage Products"
     },
+    brand: {
+      menu: "Brand Settings",
+      primary: "primary collor",
+      background: "background collor",
+      text: "text collor",
+      accent: "accent collor",
+      font: "Font type",
+      previewTitle: "preview",
+      previewText: "so will be looks like your Website witch the actual settings",
+      previewButton: "example button"
+    },
     images: "Manage Images",
     adminSection: "Admin Section",
     users: {
@@ -145,7 +156,8 @@ export default defineI18nLocale(async (locale) => {
     search: "Search",
     priceRange: "Price Range",
     save: "save",
-    delete: "delete"
+    delete: "delete",
+    reset:"reset"
   },
   feedback: {
     title: "Testimonials"

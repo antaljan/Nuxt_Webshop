@@ -3,12 +3,12 @@
     <div class="container mx-auto max-w-4xl">
 
       <!-- TITLE -->
-      <h2 class="text-3xl font-bold text-center mb-8">
+      <h2 class="text-2xl font-semibold text-center mb-6">
         {{ localContent.title }}
       </h2>
 
       <!-- PARAGRAPHS -->
-      <div class="space-y-6 text-lg leading-relaxed">
+      <div class="space-y-3 text-base leading-snug">
         <p
           v-for="(p, index) in localContent.paragraphs"
           :key="index"

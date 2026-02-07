@@ -312,6 +312,8 @@ Login Flow:
   npm install dompurify
   npm install -D @types/dompurify
   npm install v-calendar@next @popperjs/core
+  npm install -D @nuxt/fonts
+
 
 ## 🚀 Deployment (VPS)
 - NGINX reverse proxy

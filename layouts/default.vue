@@ -5,10 +5,16 @@ import MyFooter from '~/components/MyFooter.vue'
 import { useAuth } from '@/composables/useAuth'
 import { useI18n } from 'vue-i18n'
 import CartDrawer from '~/components/CartDrawer.vue'
+import { useBrand } from '@/composables/useBrand'
+import BrandCssVars from '@/components/BrandCssVars.vue'
 
 const menuOpen = ref(false)
 const { isAdmin, loggedIn } = useAuth()
 const { t } = useI18n()
+
+// brand settings
+const { settings, loadBrand } = useBrand();
+await loadBrand();
 
 /* -----------------------------------------
    MAIN MENU (hash + route keverve)
@@ -44,6 +50,7 @@ const adminMenu = [
   { to: '/admin/newsletter', label: 'admin.newsletter.title' },
   { to: '/admin/products', label: 'admin.products.menu' },
   { to: '/admin/coaching', label: 'admin.coaching.menu' },
+  { to: '/admin/brand', label: 'admin.brand.menu' },
   { to: '/admin/images', label: 'admin.images' }
 ]
 
@@ -52,7 +59,7 @@ const closeMenu = () => (menuOpen.value = false)
 
 <template>
   <v-app>
-
+    <BrandCssVars />
     <!-- HEADER -->
     <MyHeader @toggle-menu="menuOpen = !menuOpen" />
     <!-- CART DRAWER (MINDEN OLDALON ELÉRHETŐ) -->

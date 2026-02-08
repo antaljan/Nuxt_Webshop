@@ -10,7 +10,6 @@ export function useBrand() {
     loading.value = true;
     try {
       settings.value = await $fetch('/api/admin/brand');
-      console.log("API RESPONSE:", await $fetch('/api/admin/brand'))
     } catch (err) {
       console.error('Failed to load brand settings:', err);
       error.value = err;

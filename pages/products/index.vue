@@ -1,9 +1,17 @@
 <template>
   <v-container class="py-10">
+    <!--  back to home  -->
+    <NuxtLink
+      to="/"
+      class="inline-flex items-center text-sm text-blue-600 hover:underline mb-4"
+    >
+      {{ $t('common.backtohome') }}
+    </NuxtLink>
+    <!--  Title  -->
     <h1 class="text-3xl font-bold mb-6">
       {{ $t('products.title') }}
     </h1>
-
+    <!--  Product List  -->
     <v-row>
       <v-col
         v-for="product in products"
@@ -16,8 +24,9 @@
           <v-img
             :src="product.cover || '/placeholder.jpg'"
             height="200"
-            cover
-          />
+            contain
+            class="bg-gray-100 rounded-t"
+          ></v-img>
 
           <v-card-title class="font-semibold">
             {{ product.title }}

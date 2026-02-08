@@ -1,13 +1,21 @@
 <template>
   <v-container class="py-10">
+    <!-- back to product list -->
+    <NuxtLink
+      to="/products"
+      class="inline-flex items-center text-sm text-blue-600 hover:underline mb-4"
+    >
+      <v-icon size="18" class="mr-1">mdi-arrow-left</v-icon>
+      {{ $t('products.backToList') }}
+    </NuxtLink>
     <v-row>
       <!-- Product Image -->
       <v-col cols="12" md="6">
         <v-img
           :src="product.cover"
           height="400"
-          cover
-          class="rounded-lg"
+          contain
+          class="rounded-lg bg-gray-100"
         />
       </v-col>
 
@@ -32,14 +40,6 @@
           @click="addToCart(product)"
         >
           {{ $t('products.buyFor') }} €{{ product.price }}
-        </v-btn>
-
-        <v-btn
-          class="ml-4"
-          variant="tonal"
-          @click="goBack"
-        >
-          {{ $t('products.backToList') }}
         </v-btn>
       </v-col>
     </v-row>

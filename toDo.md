@@ -137,9 +137,6 @@ Tasks are open:
 → create General Terms and Conditions or therms of Services (including the usage of digital content)
 → create data privacy pollicie
 → Link Terms and Conditions and data privacy pollicie to registration (accept selector)
-→ broke dre billing address to country,post code, city, street + number
-→ add visibility button (eye icon) to passwords
-→ clean the password field by opening
 → admin has to be complete the booking slots, the frontend is missing, but the backend has already an a endpoint for that PUT:booking/complete/:id (verifyAdmin)
 → by one of the new registrations was changed the fistname and name however in user edit mode seems to be all right
 → back button by user dashboard

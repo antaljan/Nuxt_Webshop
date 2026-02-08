@@ -1,8 +1,6 @@
 <template>
-  <v-footer color="background" class="text-text py-10 mt-12" padless>
-
+  <v-footer class="bg-gray-50 text-text py-10 mt-12" padless>
     <v-container class="text-center">
-
       <!-- Newsletter button -->
       <v-btn
         color="primary"
@@ -12,14 +10,12 @@
       >
         {{ $t('newsletter.subscribeButton') }}
       </v-btn>
-
       <!-- Newsletter dialog -->
       <v-dialog v-model="dialog" max-width="500">
         <v-card>
           <v-card-title class="text-h6">
             {{ $t('newsletter.subscribeButton') }}
           </v-card-title>
-
           <v-card-text>
             <v-form ref="form" v-model="valid">
               <v-text-field
@@ -28,21 +24,18 @@
                 :rules="[v => !!v || $t('newsletter.errorName')]"
                 required
               />
-
               <v-text-field
                 v-model="name"
                 :label="$t('newsletter.lastname')"
                 :rules="[v => !!v || $t('newsletter.errorName')]"
                 required
               />
-
               <v-text-field
                 v-model="email"
                 :label="$t('newsletter.email')"
                 :rules="[v => /.+@.+\..+/.test(v) || $t('newsletter.errorEmail')]"
                 required
               />
-
               <v-checkbox
                 v-model="gdpr"
                 :rules="[v => !!v || $t('newsletter.errorGdpr')]"
@@ -57,7 +50,6 @@
               </v-checkbox>
             </v-form>
           </v-card-text>
-
           <v-card-actions>
             <v-spacer />
             <v-btn color="green" variant="text" @click="submit">
@@ -69,22 +61,22 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-
+      <!-- Divider -->
+        <div class="w-full h-[1px] bg-gray-400 my-6"></div>
       <!-- Social icons -->
-      <div class="my-6 flex justify-center gap-6 text-white">
-        <a href="https://www.facebook.com/profile.php?id=100064353450604" target="_blank" rel="noopener">
-          <v-icon size="32">mdi-facebook</v-icon>
+      <div class="flex justify-center gap-6 text-text">
+        <!--  facebook  -->
+        <a href="https://www.facebook.com/profile.php?id=100064353450604" target="_blank">
+           <v-icon size="28" class="text-primary">mdi-facebook</v-icon>
         </a>
-
-        <a href="https://www.instagram.com/antaligyongyiedit/" target="_blank" rel="noopener">
-          <v-icon size="32">mdi-instagram</v-icon>
+        <a href="https://www.instagram.com/antaligyongyiedit/" target="_blank">
+           <v-icon size="28" class="text-primary">mdi-instagram</v-icon>
         </a>
-
-        <a href="https://www.linkedin.com/in/gy%C3%B6ngyi-edit-antali-09a1aa174/" target="_blank" rel="noopener">
-          <v-icon size="32">mdi-linkedin</v-icon>
+        <a href="https://www.linkedin.com/in/gy%C3%B6ngyi-edit-antali-09a1aa174/" target="_blank">
+           <v-icon size="28" class="text-primary">mdi-linkedin</v-icon>
         </a>
       </div>
-
+      <!--  copy right  -->
       <p class="text-text/70 mt-4">
         © {{ new Date().getFullYear() }} Antali Gyöngyi Edit — All rights reserved.
       </p>

@@ -100,7 +100,7 @@
       <div class="text-center mt-10">
         <NuxtLink
           to="/blog"
-          class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          class="inline-flex items-center text-primary hover:underline text-base font-medium"
         >
           {{ t('blog.viewAll') }}
         </NuxtLink>
@@ -181,9 +181,12 @@ function formatDate(dateStr) {
 
 function getPreview(text) {
   if (!text) return ''
-  const plain = text.replace(/<[^>]+>/g, ' ')
-  const words = plain.split(/\s+/).filter(Boolean)
-  const snippet = words.slice(0, 30).join(' ')
-  return snippet + (words.length > 30 ? '...' : '')
+  const plain = text.replace(/<[^>]+>/g, ' ').trim()
+  const maxLength = 150
+  if (plain.length <= maxLength) {
+    return plain
+  }
+  return plain.slice(0, maxLength) + '...'
 }
+
 </script>

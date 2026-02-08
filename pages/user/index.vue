@@ -22,7 +22,7 @@
     <div class="mb-12">
       <div class="flex justify-between items-center mb-4">
         <h2 class="text-2xl font-semibold">📅 Foglalt időpontjaim</h2>
-        <v-btn to="/coaching" variant="text" color="primary" size="small">Új foglalás</v-btn>
+        <!--<v-btn to="/coaching" variant="text" color="primary" size="small">Új foglalás</v-btn>-->
       </div>
 
       <v-card variant="outlined" class="rounded-xl overflow-hidden">

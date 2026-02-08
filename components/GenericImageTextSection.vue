@@ -44,12 +44,13 @@
 
       <!-- CTA -->
       <div v-if="localContent.ctaText" class="mt-5 text-center md:text-left">
-        <a
-          :href="localContent.ctaLink"
-          class="inline-block bg-primary text-white hover:opacity-90 transition px-5 py-2.5 rounded-md text-base font-medium shadow-sm"
+        <NuxtLink
+          :to="localContent.ctaLink"
+          class="inline-flex items-center text-primary hover:underline text-base font-medium"
         >
           {{ localContent.ctaText }}
-        </a>
+          <v-icon size="18" class="ml-1">mdi-arrow-right</v-icon>
+        </NuxtLink>
       </div>
 
       <!-- ADMIN TOGGLE -->

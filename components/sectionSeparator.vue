@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-center justify-center my-16">
-    <div class="flex-1 h-[2px] bg-gray-400"></div>
+    <div class="flex-1 h-[1px] bg-gray-400"></div>
     <v-icon
       size="24"
       color="primary"
@@ -8,6 +8,6 @@
     >
       mdi-compass
     </v-icon>
-    <div class="flex-1 h-[2px] bg-gray-400"></div>
+    <div class="flex-1 h-[1px] bg-gray-400"></div>
   </div>
 </template>

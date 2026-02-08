@@ -20,7 +20,7 @@ export default {
       },
 
       fontFamily: {
-        sans: "var(--font-family)"
+        sans: ["var(--font-family)", "sans-serif"]
       }
     },
 

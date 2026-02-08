@@ -18,14 +18,36 @@ export default defineNuxtConfig({
   fonts: { families: [ { name: 'Roboto', provider: 'google' } ] },
 
   vuetify: {
-  icons: { defaultSet: 'mdi' },
-  display: { mobileBreakpoint: 'md' },
-  locale: {
-    locale: 'hu',
-    fallback: 'en',
-    adapter: 'vue-i18n'
+  moduleOptions: {},
+  vuetifyOptions: {
+    icons: { defaultSet: 'mdi' },
+    display: { mobileBreakpoint: 'md' },
+    locale: {
+      locale: 'hu',
+      fallback: 'en',
+      adapter: 'vue-i18n'
+    },
+    theme: {
+      defaultTheme: 'brandTheme',
+      themes: {
+        brandTheme: {
+          dark: false,
+          colors: {
+            primary: '#ce4040',
+            secondary: '#d4d651',
+            background: '#aed6f4',
+            surface: '#aed6f4',
+            info: '#d4d651',
+            success: '#d4d651',
+            warning: '#d4d651',
+            error: '#ce4040'
+          }
+        }
+      }
+    }
   }
-},
+}
+,
 
   security: {
     headers: {

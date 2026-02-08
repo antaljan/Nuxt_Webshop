@@ -1,5 +1,5 @@
 <template>
-  <section :id="sectionKey" class="py-20 bg-gray-50">
+  <section :id="sectionKey" class="py-20 bg-background text-text">
     <div class="container mx-auto">
 
       <!-- TITLE -->
@@ -55,7 +55,7 @@
         </v-carousel-item>
       </v-carousel>
       <template #fallback>
-        <div class="h-[360px] w-full bg-gray-100 animate-pulse flex items-center justify-center">
+        <div class="h-[360px] w-full bg-background animate-pulse flex items-center justify-center text-text">
           Loading content...
         </div>
       </template>

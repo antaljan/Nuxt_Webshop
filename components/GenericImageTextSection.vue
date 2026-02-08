@@ -46,7 +46,7 @@
       <div v-if="localContent.ctaText" class="mt-5 text-center md:text-left">
         <a
           :href="localContent.ctaLink"
-          class="inline-block bg-gray-100 hover:bg-white text-blue-700 transition px-5 py-2.5 rounded-md text-base font-medium shadow-sm"
+          class="inline-block bg-primary text-white hover:opacity-90 transition px-5 py-2.5 rounded-md text-base font-medium shadow-sm"
         >
           {{ localContent.ctaText }}
         </a>
@@ -62,7 +62,8 @@
       <!-- ADMIN EDITOR -->
       <v-form
         v-if="showEditor"
-        class="pa-4 mt-4 bg-white rounded-lg shadow"
+        class="pa-4 mt-4 rounded-lg shadow"
+        color="background"
       >
         <v-text-field v-model="localContent.title" label="Title" />
         <v-text-field v-model="localContent.subtitle" label="Subtitle" />

@@ -1,5 +1,5 @@
 <template>
-  <section :id="sectionKey" class="py-20 bg-gray-50">
+  <section :id="sectionKey" class="py-20 bg-background text-text">
     <div class="container mx-auto max-w-4xl">
 
       <!-- TITLES -->
@@ -54,7 +54,7 @@
 
         <button
           type="submit"
-          class="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition"
+          class="bg-primary text-white px-6 py-3 rounded-lg hover:opacity-90 transition"
         >
           {{ localContent.buttonText }}
         </button>
@@ -70,7 +70,8 @@
       <!-- ADMIN: EDITOR PANEL -->
       <v-form
         v-if="showEditor"
-        class="pa-4 mt-6 bg-white rounded-lg shadow"
+        class="pa-4 mt-6 rounded-lg shadow"
+        color="background"
       >
         <v-text-field v-model="localContent.title0" label="Title 0" />
         <v-text-field v-model="localContent.title1" label="Title 1" />

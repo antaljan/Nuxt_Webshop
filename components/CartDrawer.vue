@@ -41,7 +41,7 @@
               <v-btn
                 icon
                 variant="text"
-                color="red"
+                color="error"
                 @click="removeFromCart(index)"
               >
                 <v-icon>mdi-delete</v-icon>
@@ -59,7 +59,7 @@
 
           <v-btn
             block
-            color="green"
+            color="primary"
             size="large"
             @click="checkout"
           >

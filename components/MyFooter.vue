@@ -1,8 +1,6 @@
 <template>
-  <v-footer
-    class="bg-grey-darken-4 text-white py-10 mt-12"
-    padless
-  >
+  <v-footer color="background" class="text-text py-10 mt-12" padless>
+
     <v-container class="text-center">
 
       <!-- Newsletter button -->
@@ -87,7 +85,7 @@
         </a>
       </div>
 
-      <p class="text-grey-lighten-1 mt-4">
+      <p class="text-text/70 mt-4">
         © {{ new Date().getFullYear() }} Antali Gyöngyi Edit — All rights reserved.
       </p>
     </v-container>

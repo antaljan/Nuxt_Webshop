@@ -1,6 +1,6 @@
 <!-- components/GenericScheduler.vue -->
 <template>
-  <div class="scheduler-container p-4">
+  <div class="scheduler-container p-4 bg-background text-text">
     <v-row>
       <!-- BAL OLDAL: NAPTÁR -->
       <v-col cols="12" md="7">

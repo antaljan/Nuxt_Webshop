@@ -42,7 +42,7 @@
               cols="12"
               md="4"
             >
-              <v-card class="ma-4 rounded-xl shadow bg-gray-50" outlined>
+                <v-card class="ma-4 rounded-xl shadow bg-background text-text" outlined>
                 
                 <!-- IMAGE -->
                 <v-img
@@ -91,7 +91,7 @@
         </v-carousel-item>
       </v-carousel>
       <template #fallback>
-        <div class="h-[360px] w-full bg-gray-100 animate-pulse flex items-center justify-center">
+        <div class="h-[360px] w-full bg-background animate-pulse flex items-center justify-center text-text">
           Loading content...
         </div>
       </template>

@@ -27,7 +27,8 @@
       <!-- ADMIN: EDITOR PANEL -->
       <v-form
         v-if="showEditor"
-        class="pa-4 mt-6 bg-white rounded-lg shadow"
+        class="pa-4 mt-6 rounded-lg shadow"
+        color="background"
       >
         <v-text-field
           v-model="localContent.title"

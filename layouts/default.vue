@@ -1,20 +1,38 @@
 <script setup>
+// brand settings
+import { onMounted, watchEffect } from 'vue'
+import { useBrand } from '@/composables/useBrand'
+
+const { settings, loadBrand } = useBrand()
+
+await loadBrand()
+
+onMounted(() => {
+  watchEffect(() => {
+    if (!settings.value) return
+
+    const root = document.documentElement
+
+    root.style.setProperty('--primary', settings.value.primaryColor || '#673fff')
+    root.style.setProperty('--background', settings.value.backgroundColor || '#ffffff')
+    root.style.setProperty('--text', settings.value.textColor || '#222222')
+    root.style.setProperty('--accent', settings.value.accentColor || '#8566ff')
+    root.style.setProperty('--font-family', settings.value.fontFamily || 'Roboto')
+    
+  })
+})
+
 import { ref } from 'vue'
 import MyHeader from '~/components/MyHeader.vue'
 import MyFooter from '~/components/MyFooter.vue'
 import { useAuth } from '@/composables/useAuth'
 import { useI18n } from 'vue-i18n'
 import CartDrawer from '~/components/CartDrawer.vue'
-import { useBrand } from '@/composables/useBrand'
-import BrandCssVars from '@/components/BrandCssVars.vue'
+import BrandThemeUpdater  from  '~/components/BrandThemeUpdater.vue'
 
 const menuOpen = ref(false)
 const { isAdmin, loggedIn } = useAuth()
 const { t } = useI18n()
-
-// brand settings
-const { settings, loadBrand } = useBrand();
-await loadBrand();
 
 /* -----------------------------------------
    MAIN MENU (hash + route keverve)
@@ -58,8 +76,9 @@ const closeMenu = () => (menuOpen.value = false)
 </script>
 
 <template>
-  <v-app>
-    <BrandCssVars />
+<BrandThemeUpdater />
+
+<v-app class="bg-background text-text">
     <!-- HEADER -->
     <MyHeader @toggle-menu="menuOpen = !menuOpen" />
     <!-- CART DRAWER (MINDEN OLDALON ELÉRHETŐ) -->
@@ -71,7 +90,10 @@ const closeMenu = () => (menuOpen.value = false)
       location="start"
       mode="temporary"
       width="280"
+      color="background"
+      class="text-text"
     >
+
       <v-list>
 
         <!-- MAIN MENU -->
@@ -82,7 +104,7 @@ const closeMenu = () => (menuOpen.value = false)
         >
           <!-- ROUTE LINK -->
           <template v-if="item.type === 'route'">
-            <NuxtLink :to="item.to" class="flex items-center w-full py-2">
+            <NuxtLink :to="item.to" class="flex items-center w-full py-2 text-text hover:text-primary">
               <v-icon v-if="item.icon" class="mr-2">{{ item.icon }}</v-icon>
               {{ t(item.label) }}
             </NuxtLink>
@@ -98,7 +120,7 @@ const closeMenu = () => (menuOpen.value = false)
 
         <!-- User SECTION -->
         <template v-if="loggedIn">
-          <v-divider class="my-2" />
+          <v-divider class="my-2" color="primary" />
           <v-list-item
             v-for="item in userMenu"
             :key="item.to"
@@ -112,7 +134,7 @@ const closeMenu = () => (menuOpen.value = false)
 
         <!-- ADMIN SECTION -->
         <template v-if="isAdmin">
-          <v-divider class="my-2" />
+          <v-divider class="my-2" color="primary" />
           <p class="px-4 py-2 font-bold text-lg">{{ t('admin.adminSection') }}</p>
           <v-list-item
             v-for="item in adminMenu"
@@ -130,7 +152,7 @@ const closeMenu = () => (menuOpen.value = false)
     </client-only>
 
     <!-- MAIN CONTENT -->
-    <v-main>
+    <v-main class="bg-background text-text">
       <slot />
     </v-main>
 
@@ -143,5 +165,18 @@ const closeMenu = () => (menuOpen.value = false)
 <style>
 html {
   scroll-behavior: smooth;
+}
+html, body, .v-application, .v-application__wrap {
+  background-color: var(--background) !important;
+  color: var(--text) !important;
+  font-family: var(--font-family) !important;
+}
+
+:root {
+  --primary: #673fff;
+  --background: #ffffff;
+  --text: #222222;
+  --accent: #8566ff;
+  --font-family: Roboto;
 }
 </style>

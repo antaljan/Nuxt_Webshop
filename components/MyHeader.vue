@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar flat color="white" class="border-b">
+  <v-app-bar flat color="background" class="border-b border-text/15 text-text">
     <!-- ALWAYS VISIBLE HAMBURGER -->
     <v-app-bar-nav-icon @click="$emit('toggle-menu')" />
 
@@ -81,7 +81,5 @@ function openCart() {
 
 
 <style>
-.border-b {
-  border-bottom: 1px solid #ddd;
-}
+
 </style>

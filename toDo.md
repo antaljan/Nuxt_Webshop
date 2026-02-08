@@ -70,6 +70,19 @@ Landing Page (public page):
     - backend/controllers/user.controller.js: add forgoten-passwor and password-reset functions ✔️
     - frontend/pages/forgot-password.vue ✔️
     - frontend/pages/reset-password.vue ✔️
+- Branding design setup:
+    - all commponents cleaned from direct coloring, we use only: ✔️
+        - theme.themes.value.brandTheme.colors.primary = s.primaryColor
+        - theme.themes.value.brandTheme.colors.secondary = s.accentColor
+        - theme.themes.value.brandTheme.colors.background = s.backgroundColor
+        - theme.themes.value.brandTheme.colors.surface = s.backgroundColor
+        - theme.themes.value.brandTheme.colors.info = s.accentColor
+        - theme.themes.value.brandTheme.colors.success = s.accentColor
+        - theme.themes.value.brandTheme.colors.warning = s.accentColor
+        - theme.themes.value.brandTheme.colors.error = s.primaryColor
+    - /plugins/brand-theme-client.ts + define brandTheme in nuxt.config.ts ✔️
+    - /components/BrandThemeUpdater.vue + insert in layouts/default.vue ✔️
+    - /composable/useBrand + server/admin/brand.get.ts + server/admin/brand.put.ts✔️
 
 Admin functions:
 - access control for admin dashboard and pages realized ✔️
@@ -109,6 +122,8 @@ User functions:
 - /pages/user/product/[id].vue --> integrate bunny video player in product view ✔️
 - User dashboard (/pages/user/index.vue) is extended with list of booked coaching ✔️
 
+- pages/admim/brand/index.vue ✔️
+
 Bugs:
     critical:
         - none
@@ -119,7 +134,21 @@ Bugs:
 Tasks are open:
 → /pages/admin/products/create.vue --> add the language to product creating or edit - product has to be language relevant
 → /pages/products/index.vue --> filter the product for language - product has to be language relevant
+→ create General Terms and Conditions or therms of Services (including the usage of digital content)
+→ create data privacy pollicie
+→ Link Terms and Conditions and data privacy pollicie to registration (accept selector)
+→ broke dre billing address to country,post code, city, street + number
+→ add visibility button (eye icon) to passwords
+→ clean the password field by opening
 → admin has to be complete the booking slots, the frontend is missing, but the backend has already an a endpoint for that PUT:booking/complete/:id (verifyAdmin)
+→ by one of the new registrations was changed the fistname and name however in user edit mode seems to be all right
+→ back button by user dashboard
+→ user dashboard new schedule button (over the list of schedules) not working
+→ GenericScheduler.vue dont show the reserved slots
+→ Email sending for user and admin bei one slot reservation
+→ hu language by cancel of slot
+→ admin newsletter manager preview of scheduler or sended newsletter, the window closing button is on the middle distrupt the preview
+→ billing with stripe? acc eu billing roulles (billing from Germany to Hungary)
 →→→→→→ GO LIVE:
     - deploy frontend from github to VPS
     - integrate the new frontend into pm2

@@ -5,7 +5,7 @@ Modern MEVN + Nuxt 4 SSR based content and client management system
 This project is a complete webshop + content management + client portal designed for coaches, psychologists, and consultants operating as small businesses.
 The platform enables:
 - Selling digital products (PDFs, e‑books, videos, coaching time)
-- Managing blog content and newsletters
+- Managing blog content and newsletters inculiseve brand settings
 - Providing a multilingual, SEO‑optimized public website
 - Offering a secure user dashboard for purchased content
 - Running a scalable, modern architecture (Nuxt 4 SSR + Node + MongoDB)

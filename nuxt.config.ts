@@ -33,12 +33,12 @@ export default defineNuxtConfig({
         brandTheme: {
           dark: false,
           colors: {
-            primary: '#ce4040',
-            secondary: '#d4d651',
-            background: '#aed6f4',
-            surface: '#aed6f4',
-            info: '#d4d651',
-            success: '#d4d651',
+            primary: '#29459e',
+            secondary: '#6d96d4',
+            background: '#ffffff',
+            surface: '#fdfdfd',
+            info: '#ffffff',
+            success: '#59da4d',
             warning: '#d4d651',
             error: '#ce4040'
           }

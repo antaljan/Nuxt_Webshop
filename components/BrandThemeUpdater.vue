@@ -25,5 +25,5 @@ onMounted(async () => {
 </script>
 
 <template>
-  <!-- Láthatatlan komponens -->
+  <!-- this is an a invisible conponent -->
 </template>

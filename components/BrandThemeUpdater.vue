@@ -20,7 +20,7 @@ onMounted(async () => {
   theme.themes.value.brandTheme.colors.warning = s.accentColor
   theme.themes.value.brandTheme.colors.error = s.primaryColor
 
-  theme.global.name.value = 'brandTheme'
+  theme.change('brandTheme')
 })
 </script>
 

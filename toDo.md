@@ -107,6 +107,7 @@ Admin functions:
     - pageviews  ✔️
     - newsletter + performance  ✔️
 - /pages/admin/cibersecu.vue --> admin cyber security dashboard  ✔️
+- pages/admim/brand/index.vue ✔️
 
 User functions:
 - /pages/products/index.vue --> Product overview site with searching(picture, name, short description, price on v-card) ✔️
@@ -121,8 +122,6 @@ User functions:
 - /pages/user/product/[id].vue --> User product view: download pdf, scheduling multiple coaching section  ✔️
 - /pages/user/product/[id].vue --> integrate bunny video player in product view ✔️
 - User dashboard (/pages/user/index.vue) is extended with list of booked coaching ✔️
-
-- pages/admim/brand/index.vue ✔️
 
 Bugs:
     critical:

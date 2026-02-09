@@ -141,6 +141,7 @@ project/
 │  ├─ charts/
 │  │    ├─ BarChart.vue
 │  │    └─ LineChart.vue
+│  ├─ BrandThemeUpdater.vue
 │  ├─ ChartDrawer.vue
 │  ├─ GenericBlogSection.vue
 │  ├─ GenericContactSection.vue
@@ -154,6 +155,7 @@ project/
 ├─ composables/                     # useAuth, useUser, useProducts, etc.
 │  ├─ useAuth.ts
 │  ├─ useBlog.ts
+│  ├─ useBrand.ts
 │  ├─ useChartDrawer.ts
 │  ├─ useContent.ts
 │  ├─ useNewsletter.ts
@@ -167,6 +169,10 @@ project/
 │  ├─ admin/
 │  │    ├─ blog/
 │  │    │   ├─ create.vue
+│  │    │   └─ index.vue
+│  │    ├─ brand/
+│  │    │   └─ index.vue
+│  │    ├─ coaching/
 │  │    │   └─ index.vue
 │  │    ├─ content/
 │  │    │   └─ index.vue
@@ -183,6 +189,7 @@ project/
 │  │    │   └─ index.vue
 │  │    ├─ users/
 │  │    │   └─ index.vue
+│  │    ├─ cibersecu.vue
 │  │    └─ index.vue
 │  ├─ blog/
 │  │    ├─ [slug].vue
@@ -200,10 +207,15 @@ project/
 │  │    ├─ products.vue
 │  │    └─ profile.vue
 │  ├─ about.vue
+│  ├─ forgot-password.vue
 │  ├─ index.vue
 │  ├─ login.vue
 │  ├─ logout.vue
-│  └─ register.vue
+│  ├─ register.vue
+│  └─ reset-password.vue
+├─ plugin/                            # plugins
+│  ├─ brand-theme.client.ts
+│  └─ chartjs.client.ts
 ├─ public/                            # static files
 │  ├─ fabackImages.jpg
 │  ├─ favicon.ivo
@@ -215,6 +227,8 @@ project/
       │   ├─ users
       │   │     ├─ delete.post.ts
       │   │     └─ update.post.ts
+      │   ├─ brand.get.ts
+      │   ├─ brand.put.ts
       │   └─ user.get.ts
       ├─ auth/
       │   ├─ login.post.ts
@@ -228,10 +242,17 @@ project/
       │   ├─ create.post.ts
       │   └─ index.get.ts
       ├─ booking/
-      │   ├─ [date].get.ts
+      │   ├─ book/
+      │   │     └─ [id].put.ts
+      │   ├─ by-date/
+      │   │     └─ [date].get.ts
+      │   ├─ cancel/
+      │   │     └─ [id].put.ts
       │   ├─ [id].delete.ts
       │   ├─ [id].put.ts
       │   ├─ all.get.ts
+      │   ├─ available.get.ts
+      │   ├─ mybookings.get.ts
       │   └─ new.post.ts
       ├─ content/
       │   ├─ [section]/
@@ -313,7 +334,6 @@ Login Flow:
   npm install -D @types/dompurify
   npm install v-calendar@next @popperjs/core
   npm install -D @nuxt/fonts
-
 
 ## 🚀 Deployment (VPS)
 - NGINX reverse proxy

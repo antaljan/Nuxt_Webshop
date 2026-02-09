@@ -6,6 +6,7 @@ export default defineI18nLocale(async (locale) => {
   $vuetify: {
       input: {
         clear: 'Mező törlése',
+        appendAction: "Művelet"
       },
       noDataText: "Nem áll rendelkezésre adat",
       dataFooter: {
@@ -22,6 +23,11 @@ export default defineI18nLocale(async (locale) => {
         next: 'Következő',
         ariaLabel: {
           delimiter: 'Slide {0} / {1}'
+        }
+      },
+      pagination: {
+        ariaLabel: {
+          root: "Oldal navigáció"
         }
       }
   },

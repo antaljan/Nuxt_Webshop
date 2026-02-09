@@ -3,6 +3,7 @@ export default defineI18nLocale(async (locale) => {
     $vuetify: {
       input: {
         clear: 'Feld leeren',
+        appendAction: "Aktion"
       },
       noDataText: "keine Daten vorhanden",
       dataFooter: {
@@ -19,6 +20,11 @@ export default defineI18nLocale(async (locale) => {
         next: 'nächste',
         ariaLabel: {
           delimiter: 'Slide {0} / {1}'
+        }
+      },
+      pagination: {
+        ariaLabel: {
+          root: "Seitennavigation"
         }
       }
   },

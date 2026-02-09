@@ -167,7 +167,21 @@ export default defineI18nLocale(async (locale) => {
     delete: "delete",
     reset:"reset",
     gdpr:"General Data Protection Regulation (GDPR)",
-    agb:"Terms of Service (AGB)"
+    agb:"Terms of Service (AGB)",
+    user: "User",
+    bookings: "My Bookings",
+    noBookings: "No active bookings.",
+    canceling: "Canceling",
+    termin: "Time",
+    type: "Type",
+    command: "Command",
+    completed: "Completed",
+    noBooking: "No booking available.",
+    booking: "Book a time slot",
+    bookingClosed: "The time slot is closed",
+    video: "Video",
+    downloadableFiles: "Downloadable Files",
+    schedulerTitle: "Select Time Slot"
   },
   feedback: {
     title: "Testimonials"
@@ -191,7 +205,15 @@ export default defineI18nLocale(async (locale) => {
     description: "Description",
     downloadableFiles: "Downloadable Files",
     video: "Video",
-    backToList: "Back to List"
+    backToList: "Back to List",
+    yourproducts: "Your Products",
+    loading: "Loading...",
+    error: "Error loading products.",
+    open: "Open",
+    backToDashboard: "Back to Dashboard",
+    coachingSessions: "My Coaching Sessions",
+    purchaseDetails: "Purchase Details",
+    errorMissing: "You do not have permission to access this content or the product is not available."
   },
   cart: {
     title: "Shopping Cart",
@@ -211,7 +233,10 @@ export default defineI18nLocale(async (locale) => {
   user: {
     dashboard: "My Dashboard",
     profile: "My Profile",
-    products: "My Products"
+    products: "My Products",
+    productsDescription: "My purchased workshops, videos, and PDFs",
+    profileDescription: "Personal data and settings",
+    welcome: "Welcome back"
   },
   auth: {
   register: {

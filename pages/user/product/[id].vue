@@ -1,59 +1,63 @@
 <template>
   <section class="p-6 max-w-4xl mx-auto">
+    <!--  back to user dashboard  -->
+    <NuxtLink
+      to="/user"
+      class="inline-flex items-center text-sm text-blue-600 hover:underline mb-4"
+    >
+      {{ $t('products.backToDashboard') }}
+    </NuxtLink>
     <!-- 1. LOADING -->
     <div v-if="pending" class="text-gray-500 text-center py-10">
       <v-progress-circular indeterminate color="primary" />
-      <p class="mt-2">Betöltés...</p>
+      <p class="mt-2">{{ $t('products.loading') }}</p>
     </div>
-
     <!-- 2. ERROR -->
     <div v-else-if="error" class="text-red-600">
-      <v-alert type="error">Hiba történt az adatok lekérésekor.</v-alert>
+      <v-alert type="error">{{ $t('products.error') }}</v-alert>
     </div>
-
     <!-- 3. PRODUCT CONTENT (Minden ide tartozik) -->
     <div v-else-if="product && product.title">
       <!-- TERMÉK ALAPADATOK -->
       <h1 class="text-3xl font-bold mb-4">{{ product.title }}</h1>
       <v-img v-if="product.cover" :src="product.cover" class="w-full max-h-80 object-cover rounded mb-6" />
       <div class="prose max-w-none mb-8" v-html="product.description" />
-
       <!-- COACHING LOGIKA -->
       <div v-if="product.type === 'coaching'" class="mb-8 border-t pt-6">
         <h2 class="text-2xl font-bold mb-6 flex align-center">
           <v-icon color="primary" class="mr-2">mdi-calendar-clock</v-icon>
-          Coaching alkalmaim
+          {{ $t('products.coachingSessions') }}
         </h2>
         <v-card v-for="p in relevantPurchases" :key="p._id" class="mb-4 pa-4" outlined border elevation="1">
             <v-row align="center">
             <v-col cols="12" sm="7">
-              <div class="text-overline">Vásárlás: {{ formatDate(p.createdAt) }}</div>
+              <div class="text-overline">{{ $t('products.purchaseDetails') }}{{ formatDate(p.createdAt) }}</div>
               <div v-if="getBooking(p._id)" class="mt-2">
                 <v-chip :color="getBookingStatus(getBooking(p._id)).color" dark size="small">
                   <v-icon left size="small">{{ getBookingStatus(getBooking(p._id)).icon }}</v-icon>
                   {{ formatBookingDate(getBooking(p._id).start) }}
                 </v-chip>
                 <p v-if="getBooking(p._id).completed" class="text-caption text-success mt-1 ml-1">
-                  <v-icon size="x-small">mdi-check</v-icon> Teljesítve
+                  <v-icon size="x-small">mdi-check</v-icon> {{ $t('common.completed') }}
                 </p>
               </div>
               <v-chip v-else color="warning" variant="tonal" class="mt-2" size="small">
-                Még nincs időpont foglalva
+                {{ $t('common.noBooking') }}
               </v-chip>
             </v-col>
             <v-col cols="12" sm="5" class="text-right">
               <v-btn v-if="!getBooking(p._id)" color="primary" @click="openScheduler(p._id)">
-                Időpont foglalása
+                {{ $t('common.booking') }}
               </v-btn>
               <div v-else-if="canModify(getBooking(p._id))">
                 <v-btn variant="outlined" color="info" size="small" @click="openScheduler(p._id, getBooking(p._id))">
-                  <v-icon left size="small">mdi-calendar-edit</v-icon> Módosítás
+                  <v-icon left size="small">mdi-calendar-edit</v-icon> {{ $t('common.edit') }}
                 </v-btn>
               </div>
               <div v-else-if="getBooking(p._id).completed" class="text-success font-weight-bold">
-                <v-icon color="success">mdi-check-circle</v-icon> Teljesítve
+                <v-icon color="success">mdi-check-circle</v-icon> {{ $t('common.completed') }}
               </div>
-              <div v-else class="text-grey text-caption">Az időpont lezárult</div>
+              <div v-else class="text-grey text-caption">{{ $t('common.bookingClosed') }}</div>
             </v-col>
           </v-row>
         </v-card>
@@ -62,7 +66,7 @@
       <!-- VIDEO SZEKCIÓ -->
       <div v-if="videoUrl || loadingVideo" class="mb-8 border-t pt-6">
         <v-card class="mx-auto" max-width="900" elevation="10">
-          <v-card-title class="bg-primary text-white">Kurzus Videó</v-card-title>     
+          <v-card-title class="bg-primary text-white">{{ $t('common.video') }}</v-card-title>     
           <div style="position:relative;padding-top:56.25%;">
             <iframe
               v-if="videoUrl"
@@ -82,7 +86,7 @@
       <div v-if="product?.downloadableFiles?.length" class="mb-8 border-t pt-6">
         <h2 class="text-xl font-semibold mb-4 flex align-center">
           <v-icon color="primary" class="mr-2">mdi-file-download</v-icon>
-          Letölthető anyagok
+          {{ $t('common.downloadableFiles') }}
         </h2>
         <v-list variant="flat" border class="rounded-lg">
           <v-list-item
@@ -103,7 +107,7 @@
 
     <!-- 4. NOT FOUND -->
     <v-alert v-else type="warning" class="mt-10">
-      Nincs jogosultságod a tartalomhoz vagy a termék nem található.
+      {{ $t('products.errorMissing') }}
     </v-alert>
 
     <!-- SCHEDULER MODAL -->
@@ -111,7 +115,7 @@
       <v-card>
         <v-toolbar flat color="primary" dark>
           <v-btn icon @click="schedulerOpen = false"><v-icon>mdi-close</v-icon></v-btn>
-          <v-toolbar-title>Időpont választása</v-toolbar-title>
+          <v-toolbar-title>{{ $t('common.schedulerTitle') }}</v-toolbar-title>
         </v-toolbar>
         <v-card-text class="pa-0">
           <GenericScheduler
@@ -129,6 +133,8 @@
 
 
 <script setup>
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 const route = useRoute()
 const currentPurchaseId = route.params.id
 const loading = ref(true)

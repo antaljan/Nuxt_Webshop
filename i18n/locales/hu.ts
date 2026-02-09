@@ -172,7 +172,21 @@ export default defineI18nLocale(async (locale) => {
     delete: "Törlés",
     reset:"Alapértelmezés visszaállítása",
     gdpr:"Általános Adatvédelmi Rendelet (GDPR)",
-    agb:"Általános Szerződési Feltételek"
+    agb:"Általános Szerződési Feltételek",
+    user: "Felhasználó",
+    bookings: "Foglalt időpontjaim",
+    noBookings: "Nincs aktív foglalásod.",
+    canceling: "Lemondás",
+    termin: "Időpont",
+    type: "Típus",
+    command: "Művelet",
+    completed: "Teljesítve",
+    noBooking: "Még nincs időpont foglalva.",
+    booking: "Időpont foglalása",
+    bookingClosed: "Az időpont lezárult",
+    video: "Videó",
+    downloadableFiles: "Letölthető fájlok",
+    schedulerTitle: "Időpont választása"
   },
   feedback: {
     title: "Visszajelzések"
@@ -196,7 +210,15 @@ export default defineI18nLocale(async (locale) => {
     description: "Leírás",
     downloadableFiles: "Letölthető fájlok",
     video: "Videó",
-    backToList: "Vissza a terméklistához"
+    backToList: "Vissza a terméklistához",
+    yourproducts: "Saját termékek",
+    loading: "Betöltés...",
+    error: "Hiba történt a termékek betöltésekor.",
+    open: "Megnyitás",
+    backToDashboard: "Vissza a fiókomhoz",
+    coachingSessions: "Coaching alkalmaim",
+    purchaseDetails: "Vásárlási részletek",
+    errorMissing: "Nincs jogosultságod a tartalomhoz vagy a termék nem található."
   },
   cart: {
     title: "Bevásárló kosár",
@@ -216,7 +238,10 @@ export default defineI18nLocale(async (locale) => {
   user: {
     dashboard: "Saját fiók",
     profile: "Fiók beállítások",
-    products: "Saját termékek"
+    products: "Saját termékek",
+    productsDescription: "Megvásárolt workshopok, videók, PDF-ek",
+    profileDescription: "Személyes adatok, beállítások",
+    welcome: "Üdv újra"
   },
   auth: {
   register: {

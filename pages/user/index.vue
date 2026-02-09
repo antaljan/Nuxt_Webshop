@@ -1,39 +1,45 @@
 <template>
   <section class="p-8 max-w-4xl mx-auto">
-    <h1 class="text-3xl font-bold mb-6">Üdv újra, {{ user?.name || 'Felhasználó' }}!</h1>
-
+    <!--  back to home  -->
+    <NuxtLink
+      to="/"
+      class="inline-flex items-center text-sm text-blue-600 hover:underline mb-4"
+    >
+      {{ $t('common.backtohome') }}
+    </NuxtLink>
+    <!--  title  -->
+    <h1 class="text-3xl font-bold mb-6">{{ $t('user.welcome') }}, {{ user?.name || $t('common.user') }}!</h1>
+    <!-- my products  -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
       <NuxtLink to="/user/products" class="p-6 rounded-xl shadow bg-white hover:bg-gray-50 transition border border-gray-100">
-        <h2 class="text-xl font-semibold mb-2">📦 Termékeim</h2>
-        <p class="text-gray-600 text-sm">Megvásárolt workshopok, videók, PDF-ek</p>
+        <h2 class="text-xl font-semibold mb-2">📦 {{ $t('user.products') }}</h2>
+        <p class="text-gray-600 text-sm">{{ $t('user.productsDescription') }}</p>
       </NuxtLink>
-
+    <!-- my profile  -->
       <NuxtLink to="/user/profile" class="p-6 rounded-xl shadow bg-white hover:bg-gray-50 transition border border-gray-100">
-        <h2 class="text-xl font-semibold mb-2">👤 Profilom</h2>
-        <p class="text-gray-600 text-sm">Személyes adatok, beállítások</p>
+        <h2 class="text-xl font-semibold mb-2">👤 {{ $t('user.profile') }}</h2>
+        <p class="text-gray-600 text-sm">{{ $t('user.profileDescription') }}</p>
       </NuxtLink>
-
+    <!-- logout  -->
       <NuxtLink to="/logout" class="p-6 rounded-xl shadow bg-white hover:bg-gray-50 transition border border-gray-100">
-        <h2 class="text-xl font-semibold mb-2">🚪 Kijelentkezés</h2>
+        <h2 class="text-xl font-semibold mb-2">🚪 {{ $t('header.logout') }}</h2>
         <p class="text-gray-600 text-sm">Biztonságos kijelentkezés</p>
       </NuxtLink>
     </div>
-
+    <!-- list of bookings  -->
     <div class="mb-12">
       <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-semibold">📅 Foglalt időpontjaim</h2>
+        <h2 class="text-2xl font-semibold">📅 {{ $t('common.bookings') }}</h2>
         <!--<v-btn to="/coaching" variant="text" color="primary" size="small">Új foglalás</v-btn>-->
       </div>
-
       <v-card variant="outlined" class="rounded-xl overflow-hidden">
         <v-progress-linear v-if="bookingsPending" indeterminate color="primary" />
-        
         <v-table v-if="bookings?.length">
           <thead>
             <tr>
-              <th class="text-left">Időpont</th>
-              <th class="text-left">Típus</th>
-              <th class="text-right">Művelet</th>
+              <th class="text-left">{{ $t('common.termin') }}</th>
+              <th class="text-left">{{ $t('common.type') }}</th>
+              <th class="text-right">{{ $t('common.command') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -50,23 +56,25 @@
                   :loading="cancellingId === b._id"
                   @click="handleCancel(b._id)"
                 >
-                  Lemondás
+                  {{ $t('common.canceling') }}
                 </v-btn>
               </td>
             </tr>
           </tbody>
         </v-table>
-        
         <div v-else-if="!bookingsPending" class="p-8 text-center text-gray-500">
-          Nincs aktív foglalásod.
+          {{ $t('common.noBookings') }}
         </div>
       </v-card>
     </div>
-    
   </section>
 </template>
 
 <script setup>
+
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 const { user } = useAuth()
 const { getMyBookings, cancelSlot } = useCoaching()
 const cancellingId = ref(null)
@@ -75,31 +83,31 @@ definePageMeta({
   middleware: 'auth'
 })
 
-// Foglalások betöltése
+// Load bookings
 const { data: bookings, pending: bookingsPending, refresh: refreshBookings } = await useAsyncData(
   'user-bookings',
   () => getMyBookings()
 )
 
-// Vásárlások betöltése
+// Load purchases
 const { data: purchaseData, pending, error } = await useAsyncData(
   'dashboard-purchases',
   () => $fetch('/api/user/purchases', { headers: useRequestHeaders(['cookie']) })
 )
 const purchases = computed(() => purchaseData.value?.purchases || [])
 
-// Lemondás kezelése
+// Handle cancel booking
 async function handleCancel(id) {
   if (!confirm('Biztosan lemondod ezt az időpontot?')) return
-  
   cancellingId.value = id
   try {
     await cancelSlot(id)
-    await refreshBookings() // Lista frissítése
+    await refreshBookings()
   } catch (e) {
     alert('Hiba történt a lemondás során.')
   } finally {
     cancellingId.value = null
   }
 }
+
 </script>

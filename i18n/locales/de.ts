@@ -167,7 +167,21 @@ export default defineI18nLocale(async (locale) => {
     delete: "löschen",
     reset:"zurücksetsen auf Grundeinstellungen",
     gdpr:"General Data Protection Regulation (GDPR)",
-    agb:"Allgemeine Geschäftsbedingungen"
+    agb:"Allgemeine Geschäftsbedingungen",
+    user: "Benutzer",
+    bookings: "Meine Buchungen",
+    noBookings: "Keine aktiven Buchungen.",
+    canceling: "Buchung abbrechen",
+    termin: "Termin",
+    type: "Type",
+    command: "Kommando",
+    completed: "Abgeschlossen",
+    noBooking: "Keine Buchung verfügbar.",
+    booking: "Termin buchen",
+    bookingClosed: "Der Termin ist geschlossen",
+    video: "Video",
+    downloadableFiles: "Downloadbare Dateien",
+    schedulerTitle: "Zeitfenster auswählen"
   },
   feedback: {
     title: "Rückmeldungen unserer Kunden"
@@ -181,7 +195,7 @@ export default defineI18nLocale(async (locale) => {
     viewAll: "Alle Beiträge anzeigen",
     allPosts: "Alle Beiträge",
     backToList: "Zurück zur Liste"
-  },  
+  },
   products: {
     title: "Produkten",
     viewDetails: "Details",
@@ -191,7 +205,15 @@ export default defineI18nLocale(async (locale) => {
     description: "Beschreibung",
     downloadableFiles: "Downloadbare Dateien",
     video: "Video",
-    backToList: "Zurück zur Liste"
+    backToList: "Zurück zur Liste",
+    yourproducts: "Ihre Produkte",
+    loading: "Wird geladen...",
+    error: "Fehler beim Laden der Produkte.",
+    open: "Öffnen",
+    backToDashboard: "Zurück zum Dashboard",
+    coachingSessions: "Meine Coaching-Sessions",
+    purchaseDetails: "Kaufdetails",
+    errorMissing: "Sie haben keine Berechtigung, auf diesen Inhalt zuzugreifen oder das Produkt ist nicht verfügbar."
   },
   cart: {
     title: "Einkaufswagen",
@@ -211,7 +233,10 @@ export default defineI18nLocale(async (locale) => {
   user: {
     dashboard: "Mein Dashboard",
     profile: "Mein Profil",
-    products: "Meine Produkte"
+    products: "Meine Produkte",
+    productsDescription: "Meine gekauften Workshops, Videos und PDFs",
+    profileDescription: "Persönliche Daten und Einstellungen",
+    welcome: "Willkommen zurück"
   },
   auth: {
   register: {

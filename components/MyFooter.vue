@@ -1,15 +1,6 @@
 <template>
   <v-footer class="bg-gray-50 text-text py-10 mt-12" padless>
     <v-container class="text-center">
-      <!-- Newsletter button -->
-      <v-btn
-        color="primary"
-        class="mb-6"
-        rounded="xl"
-        @click="dialog = true"
-      >
-        {{ $t('newsletter.subscribeButton') }}
-      </v-btn>
       <!-- Newsletter dialog -->
       <v-dialog v-model="dialog" max-width="500">
         <v-card>
@@ -63,8 +54,18 @@
       </v-dialog>
       <!-- Divider -->
         <div class="w-full h-[1px] bg-gray-400 my-6"></div>
+      <!-- Newsletter button -->
+      <div class="flex justify-center mt-4">
+        <button
+          class="text-primary hover:underline text-sm flex items-center gap-2"
+          @click="dialog = true"
+        >
+          <v-icon size="18" class="text-primary">mdi-email-plus-outline</v-icon>
+          {{ $t('newsletter.subscribeButton') }}
+        </button>
+      </div>
       <!-- Social icons -->
-      <div class="flex justify-center gap-6 text-text">
+      <div class="flex justify-center gap-6 text-text mt-4">
         <!--  facebook  -->
         <a href="https://www.facebook.com/profile.php?id=100064353450604" target="_blank">
            <v-icon size="28" class="text-primary">mdi-facebook</v-icon>
@@ -77,9 +78,9 @@
         </a>
       </div>
       <!-- GDPR & Data Privacy -->
-      <div class="flex justify-center gap-6 text-text">
-        <NuxtLink to="/gdpr" class="text-primary hover:underline text-base font-medium font-semibold">{{ $t('common.gdpr') }}</NuxtLink>
-        <NuxtLink to="/agb" class="text-primary hover:underline text-base font-medium font-semibold">{{ $t('common.agb') }}</NuxtLink>
+      <div class="flex justify-center gap-6 text-text mt-4">
+        <NuxtLink to="/gdpr" class="text-primary hover:underline text-sm flex items-center gap-2">{{ $t('common.gdpr') }}</NuxtLink>
+        <NuxtLink to="/agb" class="text-primary hover:underline text-sm flex items-center gap-2">{{ $t('common.agb') }}</NuxtLink>
       </div>
       <!--  copy right  -->
       <p class="text-text/70 mt-4">

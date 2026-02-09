@@ -231,8 +231,14 @@ export default defineI18nLocale(async (locale) => {
     errors: {
       required: "Bitte alle pflicht Felde ausfüllen!",
       emailExists: "Die angegebene Email ist bereits registriert.",
-      general: "Eine Fehler ist beim Registrierung aufgeträten."
-    }
+      general: "Eine Fehler ist beim Registrierung aufgeträten.",
+      acceptTerms: "Um sich zu registrieren, müssen Sie die Allgemeinen Geschäftsbedingungen und die Datenschutzerklärung akzeptieren."
+    },
+    acceptAgb: "Ich akzeptiere die Allgemeinen Geschäftsbedingungen",
+    readAgb: "Allgemeine Geschäftsbedingungen anzeigen",
+    acceptGdpr: "Ich akzeptiere die Datenschutzerklärung",
+    readGdpr: "Datenschutzerklärung anzeigen",
+    acceptNewsletter: "Ich möchte den Newsletter abonnieren"
   },
   login: {
     title: "Einmelden",

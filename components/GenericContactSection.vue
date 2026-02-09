@@ -45,9 +45,9 @@
           <input type="checkbox" required class="mt-1" />
           <span>
             {{ localContent.gdpr1 }}
-            <a href="/gdpr" target="_blank" class="text-blue-600 underline">
-              {{ localContent.gdpr2 }}
-            </a>
+            <NuxtLink to="/gdpr" class="text-primary hover:underline text-base font-medium font-semibold">{{ $t('common.gdpr') }}</NuxtLink>
+            , 
+            <NuxtLink to="/agb" class="text-primary hover:underline text-base font-medium font-semibold">{{ $t('common.agb') }}</NuxtLink>
             {{ localContent.gdpr3 }}
           </span>
         </label>

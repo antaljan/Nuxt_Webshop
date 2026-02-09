@@ -52,6 +52,7 @@ Architect:
 - /components/MyFooter.vue ✔️
 - chart.js installed ✔️
 - /components/charts/LineChart.vue + BarChart.vue ✔️
+
 Landing Page (public page):
 - /components/GeneralHeroSection.vue ✔️
 - /components/sectionSeparator ✔️
@@ -70,20 +71,7 @@ Landing Page (public page):
     - backend/controllers/user.controller.js: add forgoten-passwor and password-reset functions ✔️
     - frontend/pages/forgot-password.vue ✔️
     - frontend/pages/reset-password.vue ✔️
-- Branding design setup:
-    - all commponents cleaned from direct coloring, we use only: ✔️
-        - theme.themes.value.brandTheme.colors.primary = s.primaryColor
-        - theme.themes.value.brandTheme.colors.secondary = s.accentColor
-        - theme.themes.value.brandTheme.colors.background = s.backgroundColor
-        - theme.themes.value.brandTheme.colors.surface = s.backgroundColor
-        - theme.themes.value.brandTheme.colors.info = s.accentColor
-        - theme.themes.value.brandTheme.colors.success = s.accentColor
-        - theme.themes.value.brandTheme.colors.warning = s.accentColor
-        - theme.themes.value.brandTheme.colors.error = s.primaryColor
-    - /plugins/brand-theme-client.ts + define brandTheme in nuxt.config.ts ✔️
-    - /components/BrandThemeUpdater.vue + insert in layouts/default.vue ✔️
-    - /composable/useBrand + server/admin/brand.get.ts + server/admin/brand.put.ts ✔️
-- create General Terms and Conditions or therms of Services (including the usage of digital content) ✔️
+- create General Terms and Conditions (inclusive therms of Services, with the usage of digital content) ✔️
 - create data privacy pollicie ✔️
 
 Admin functions:
@@ -109,6 +97,19 @@ Admin functions:
     - pageviews  ✔️
     - newsletter + performance  ✔️
 - /pages/admin/cibersecu.vue --> admin cyber security dashboard  ✔️
+- Branding design setup:
+    - all commponents cleaned from direct coloring, we use only: ✔️
+        - theme.themes.value.brandTheme.colors.primary = s.primaryColor
+        - theme.themes.value.brandTheme.colors.secondary = s.accentColor
+        - theme.themes.value.brandTheme.colors.background = s.backgroundColor
+        - theme.themes.value.brandTheme.colors.surface = s.backgroundColor
+        - theme.themes.value.brandTheme.colors.info = s.accentColor
+        - theme.themes.value.brandTheme.colors.success = s.accentColor
+        - theme.themes.value.brandTheme.colors.warning = s.accentColor
+        - theme.themes.value.brandTheme.colors.error = s.primaryColor
+    - /plugins/brand-theme-client.ts + define brandTheme in nuxt.config.ts ✔️
+    - /components/BrandThemeUpdater.vue + insert in layouts/default.vue ✔️
+    - /composable/useBrand + server/admin/brand.get.ts + server/admin/brand.put.ts ✔️
 - pages/admim/brand/index.vue ✔️
 
 User functions:
@@ -135,11 +136,9 @@ Tasks are open:
 → /pages/admin/products/create.vue --> add the language to product creating or edit - product has to be language relevant
 → /pages/products/index.vue --> filter the product for language - product has to be language relevant
 → create General Terms and Conditions or therms of Services (including the usage of digital content)
-→ Link Terms and Conditions and data privacy pollicie to registration (accept selector)
 → admin has to be complete the booking slots, the frontend is missing, but the backend has already an a endpoint for that PUT:booking/complete/:id (verifyAdmin)
 → by one of the new registrations was changed the fistname and name however in user edit mode seems to be all right
 → back button by user dashboard
-→ user dashboard new schedule button (over the list of schedules) not working
 → GenericScheduler.vue dont has to be show the reserved slots (just showing)
 → Email sending for user and admin bei one slot reservation
 → hu language by cancel of slot

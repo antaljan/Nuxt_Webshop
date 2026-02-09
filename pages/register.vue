@@ -67,6 +67,45 @@
         :label="$t('auth.register.phone')"
         variant="outlined"
       />
+      <!-- AGB -->
+      <v-checkbox
+        v-model="acceptAGB"
+        :label="`${$t('auth.register.acceptAgb')} `"
+      >
+        <template #label>
+          <span>
+            {{ $t('auth.register.acceptAgb') }}
+            <NuxtLink to="/agb" class="text-blue-600 underline ml-1" target="_blank">
+              {{ $t('auth.register.readAgb') }}
+            </NuxtLink>
+          </span>
+        </template>
+      </v-checkbox>
+      <!-- GDPR -->
+      <v-checkbox
+        v-model="acceptGDPR"
+        :label="`${$t('auth.register.acceptGdpr')} `"
+      >
+        <template #label>
+          <span>
+            {{ $t('auth.register.acceptGdpr') }}
+            <NuxtLink to="/gdpr" class="text-blue-600 underline ml-1" target="_blank">
+              {{ $t('auth.register.readGdpr') }}
+            </NuxtLink>
+          </span>
+        </template>
+      </v-checkbox>
+      <!-- Newsletter -->
+      <v-checkbox
+        v-model="acceptNewsletter"
+        :label="`${$t('auth.register.acceptNewsletter')} `"
+      >
+        <template #label>
+          <span>
+            {{ $t('auth.register.acceptNewsletter') }}
+          </span>
+        </template>
+      </v-checkbox>
       <!--  registring button -->
       <v-btn
         color="primary"
@@ -111,6 +150,10 @@
   const error = ref(null)
   const loading = ref(false)
   const { t } = useI18n()
+  const acceptAGB = ref(false)
+  const acceptGDPR = ref(false)
+  const acceptNewsletter = ref(false)
+
   // init
   onMounted(() => {
     firstname.value = ''
@@ -125,6 +168,7 @@
   })
   // registring
   async function doRegister() {
+    // check required fields
     if (
       !firstname.value ||
       !lastname.value ||
@@ -138,6 +182,25 @@
       error.value = t('auth.register.errors.required')
       return
     }
+    // check AGB & GDPR acceptance
+    if (!acceptAGB.value || !acceptGDPR.value) {
+      error.value = t('auth.register.errors.acceptTerms')
+      return
+    }
+    // subscribe to newsletter if accepted
+    if (acceptNewsletter.value) {
+      $fetch('/api/newsletter/subscribe', {
+        method: 'POST',
+        body: {
+          firstname: firstname.value,
+          lastname: lastname.value,
+          email: email.value
+        }
+      }).catch((err) => {
+        console.debug('Newsletter subscription failed:', err)
+      })
+    }
+    // proceed with registration
     loading.value = true
     error.value = null
     const fullAdress = `${country.value}, ${zip.value} ${city.value}, ${street.value}`

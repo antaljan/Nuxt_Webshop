@@ -46,7 +46,7 @@
       <div v-if="localContent.ctaText" class="mt-5 text-center md:text-left">
         <NuxtLink
           :to="localContent.ctaLink"
-          class="inline-flex items-center text-primary hover:underline text-base font-medium"
+          class="inline-flex items-center text-primary hover:underline text-base font-medium font-semibold"
         >
           {{ localContent.ctaText }}
           <v-icon size="18" class="ml-1">mdi-arrow-right</v-icon>

@@ -1,3 +1,4 @@
+import { read } from "@popperjs/core"
 import Products from "~/pages/user/products.vue"
 import Profile from "~/pages/user/profile.vue"
 
@@ -235,8 +236,14 @@ export default defineI18nLocale(async (locale) => {
     errors: {
       required: "Kérlek tölts ki minden kötelező mezőt!",
       emailExists: "Ez az email cím már regisztrálva van.",
-      general: "Hiba történt a regisztráció során."
-    }
+      general: "Hiba történt a regisztráció során.",
+      acceptTerms: "A regisztrációhoz el kell fogadnod az ÁSZF-et és az Adatkezelési tájékoztatót."
+    },
+    acceptAgb: "Elfogadom az Általános Szerződési Feltételeket",
+    readAgb: "ÁSZF megtekintése",
+    acceptGdpr: "Elfogadom az Adatkezelési tájékoztatót",
+    readGdpr: "GDPR megtekintése",
+    acceptNewsletter: "Szeretnék feliratkozni a hírlevélre"
   },
   login: {
     title: "Bejelentkezés",

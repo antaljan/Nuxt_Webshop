@@ -78,8 +78,8 @@
       </div>
       <!-- GDPR & Data Privacy -->
       <div class="flex justify-center gap-6 text-text">
-        <NuxtLink to="/gdpr">{{ $t('common.gdpr') }}</NuxtLink>
-        <NuxtLink to="/agb">{{ $t('common.agb') }}</NuxtLink>
+        <NuxtLink to="/gdpr" class="text-primary hover:underline text-base font-medium font-semibold">{{ $t('common.gdpr') }}</NuxtLink>
+        <NuxtLink to="/agb" class="text-primary hover:underline text-base font-medium font-semibold">{{ $t('common.agb') }}</NuxtLink>
       </div>
       <!--  copy right  -->
       <p class="text-text/70 mt-4">

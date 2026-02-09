@@ -231,8 +231,14 @@ export default defineI18nLocale(async (locale) => {
     errors: {
       required: "Please fill all mandantory fields!",
       emailExists: "The email is already registered.",
-      general: "Failure by registring."
-    }
+      general: "Failure by registring.",
+      acceptTerms: "To register, you must accept the Terms of Service and Privacy Policy."
+    },
+    acceptAgb: "I accept the Terms of Service",
+    readAgb: "Read Terms of Service",
+    acceptGdpr: "I accept the Privacy Policy",
+    readGdpr: "Read Privacy Policy",
+    acceptNewsletter: "I would like to subscribe to the newsletter"
   },
   login: {
     title: "Login",

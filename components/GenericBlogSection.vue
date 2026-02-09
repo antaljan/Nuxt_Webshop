@@ -99,7 +99,7 @@
       <div class="text-center mt-10">
         <NuxtLink
           to="/blog"
-          class="inline-flex items-center text-primary hover:underline text-base font-medium"
+          class="inline-flex items-center text-primary hover:underline text-base font-medium font-semibold"
         >
           {{ t('blog.viewAll') }}
         </NuxtLink>

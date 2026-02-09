@@ -76,6 +76,11 @@
            <v-icon size="28" class="text-primary">mdi-linkedin</v-icon>
         </a>
       </div>
+      <!-- GDPR & Data Privacy -->
+      <div class="flex justify-center gap-6 text-text">
+        <NuxtLink to="/gdpr">{{ $t('common.gdpr') }}</NuxtLink>
+        <NuxtLink to="/agb">{{ $t('common.agb') }}</NuxtLink>
+      </div>
       <!--  copy right  -->
       <p class="text-text/70 mt-4">
         © {{ new Date().getFullYear() }} Antali Gyöngyi Edit — All rights reserved.
@@ -86,7 +91,8 @@
 
 <script setup>
 import { ref } from 'vue'
-
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 const dialog = ref(false)
 const valid = ref(false)
 const firstname = ref('')
@@ -94,6 +100,7 @@ const name = ref('')
 const email = ref('')
 const gdpr = ref(false)
 const form = ref(null)
+
 
 async function submit() {
   if (form.value && await form.value.validate()) {

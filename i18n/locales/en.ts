@@ -149,6 +149,8 @@ export default defineI18nLocale(async (locale) => {
   common: {
     send: "Send",
     cancel: "Cancel",
+    edit:"Edit",
+    closeEditor: "Close Editor",
     backtohome: "← Back to Home",
     sortBy: "Sort By",
     titleAZ: "Title (A-Z)",
@@ -163,7 +165,9 @@ export default defineI18nLocale(async (locale) => {
     priceRange: "Price Range",
     save: "save",
     delete: "delete",
-    reset:"reset"
+    reset:"reset",
+    gdpr:"General Data Protection Regulation (GDPR)",
+    agb:"Terms of Service (AGB)"
   },
   feedback: {
     title: "Testimonials"

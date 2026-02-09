@@ -153,6 +153,8 @@ export default defineI18nLocale(async (locale) => {
   common: {
     send: "Elküldés",
     cancel: "Mégse",
+    edit:"Szerkesztés",
+    closeEditor: "Szerkesztő bezárása",
     backtohome: "← Vissza a kezdőlapra",
     sortBy: "Rendezés",
     titleAZ: "Cím (A-Z)",
@@ -167,7 +169,9 @@ export default defineI18nLocale(async (locale) => {
     priceRange: "Ártartomány",
     save: "Mentés",
     delete: "Törlés",
-    reset:"Alapértelmezés visszaállítása"
+    reset:"Alapértelmezés visszaállítása",
+    gdpr:"Általános Adatvédelmi Rendelet (GDPR)",
+    agb:"Általános Szerződési Feltételek"
   },
   feedback: {
     title: "Visszajelzések"

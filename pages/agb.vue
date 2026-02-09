@@ -6,5 +6,5 @@
   >
     {{ $t('common.backtohome') }}
   </NuxtLink>
-  <GenericHtmlTextSection section="gdpr" />
+  <GenericHtmlTextSection section="agb" />
 </template>

@@ -34,7 +34,7 @@
 
   <div v-if="isAdmin" class="p-4">
     <v-btn color="primary" @click="showEditor = !showEditor">
-      {{ showEditor ? 'Close Editor' : 'Edit Hero Section' }}
+      {{ showEditor ? t('common.closeEditor') :  t('common.edit')}}
     </v-btn>
   </div>
 
@@ -54,7 +54,7 @@
 import { ref, computed, watch } from 'vue'
 import { useAuth } from '@/composables/useAuth'
 import { useI18n } from 'vue-i18n'
-const { locale } = useI18n()
+const { t, locale } = useI18n()
 const config = useRuntimeConfig()
 const backendBase = config.public.backendBase
 

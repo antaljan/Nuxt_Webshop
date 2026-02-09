@@ -20,7 +20,7 @@
       <!-- ADMIN: EDITOR TOGGLE -->
       <div v-if="isAdmin" class="text-center mt-8">
         <v-btn color="primary" @click="showEditor = !showEditor">
-          {{ showEditor ? 'Close Editor' : 'Edit Section' }}
+          {{ showEditor ? t('common.closeEditor') :  t('common.edit') }}
         </v-btn>
       </div>
 
@@ -80,6 +80,8 @@
 import { ref, computed, watch } from 'vue'
 import { useAuth } from '@/composables/useAuth'
 import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
+
 
 /* ---------------------------
    PROPS

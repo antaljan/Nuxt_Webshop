@@ -56,7 +56,7 @@
       <!-- ADMIN TOGGLE -->
       <div v-if="isAdmin" class="mt-6">
         <v-btn color="primary" @click="showEditor = !showEditor">
-          {{ showEditor ? 'Close Editor' : 'Edit Section' }}
+          {{ showEditor ? t('common.closeEditor') :  t('common.edit')}}
         </v-btn>
       </div>
 
@@ -105,6 +105,7 @@
 import { ref, computed, watch } from 'vue'
 import { useAuth } from '@/composables/useAuth'
 import { useI18n } from 'vue-i18n'
+const { t, locale } = useI18n()
 
 /* ---------------------------
    PROPS
@@ -188,8 +189,6 @@ function removeParagraph(index) {
 /* ---------------------------
    SAVE CONTENT
 --------------------------- */
-const { locale } = useI18n()
-
 async function saveContent() {
   try {
     await $fetch(`/api/content/${props.sectionKey}/${locale.value}`, {

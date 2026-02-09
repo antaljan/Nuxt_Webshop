@@ -23,7 +23,6 @@
       </div>
 
       <!-- CAROUSEL -->
-      
       <v-carousel
         v-else
         height="480"

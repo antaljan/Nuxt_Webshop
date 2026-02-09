@@ -127,9 +127,8 @@ Bugs:
     critical:
         - none
     Warnings:
-        → shared.mjs:8 [intlify] Not found '$vuetify.pagination.ariaLabel.root' key in 'hu' locale messages.
-        → devtools-EWN81iOl.mjs:61  [Vue Router warn]: No match found for location with path "/coaching"
-
+        - none
+        
 Tasks are open:
 → /pages/admin/products/create.vue --> add the language to product creating or edit - product has to be language relevant
 → /pages/products/index.vue --> filter the product for language - product has to be language relevant

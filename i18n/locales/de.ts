@@ -246,6 +246,10 @@ export default defineI18nLocale(async (locale) => {
       general: "Ein Fehler beim Einmeldung aufgeträten."
     }
   }
+},
+cookie: {
+  message: "Diese Website verwendet technisch notwendige Cookies und localStorage.",
+  more: "Mehr erfahren",
+  accept: "Akzeptieren"
 }
-}
-})
+}})

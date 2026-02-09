@@ -82,7 +82,9 @@ Landing Page (public page):
         - theme.themes.value.brandTheme.colors.error = s.primaryColor
     - /plugins/brand-theme-client.ts + define brandTheme in nuxt.config.ts ✔️
     - /components/BrandThemeUpdater.vue + insert in layouts/default.vue ✔️
-    - /composable/useBrand + server/admin/brand.get.ts + server/admin/brand.put.ts✔️
+    - /composable/useBrand + server/admin/brand.get.ts + server/admin/brand.put.ts ✔️
+- create General Terms and Conditions or therms of Services (including the usage of digital content) ✔️
+- create data privacy pollicie ✔️
 
 Admin functions:
 - access control for admin dashboard and pages realized ✔️
@@ -128,18 +130,17 @@ Bugs:
         - none
     Warnings:
         - none
-        
+
 Tasks are open:
 → /pages/admin/products/create.vue --> add the language to product creating or edit - product has to be language relevant
 → /pages/products/index.vue --> filter the product for language - product has to be language relevant
 → create General Terms and Conditions or therms of Services (including the usage of digital content)
-→ create data privacy pollicie
 → Link Terms and Conditions and data privacy pollicie to registration (accept selector)
 → admin has to be complete the booking slots, the frontend is missing, but the backend has already an a endpoint for that PUT:booking/complete/:id (verifyAdmin)
 → by one of the new registrations was changed the fistname and name however in user edit mode seems to be all right
 → back button by user dashboard
 → user dashboard new schedule button (over the list of schedules) not working
-→ GenericScheduler.vue dont show the reserved slots
+→ GenericScheduler.vue dont has to be show the reserved slots (just showing)
 → Email sending for user and admin bei one slot reservation
 → hu language by cancel of slot
 → admin newsletter manager preview of scheduler or sended newsletter, the window closing button is on the middle distrupt the preview

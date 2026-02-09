@@ -250,5 +250,11 @@ export default defineI18nLocale(async (locale) => {
       general: "Hiba történt a bejelentkezés során."
     }
   }
+},
+cookie: {
+  message: "A weboldal technikai cookie-kat és localStorage-t használ a működéshez.",
+  more: "További információ",
+  accept: "Elfogadom"
 }
-}})
+}
+})

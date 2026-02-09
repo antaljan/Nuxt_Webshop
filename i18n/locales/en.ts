@@ -246,5 +246,10 @@ export default defineI18nLocale(async (locale) => {
       general: "Failure by login."
     }
   }
+},
+cookie: {
+  message: "This website uses essential cookies and localStorage for functionality.",
+  more: "Learn more",
+  accept: "Accept"
 }
 }})

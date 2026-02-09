@@ -156,6 +156,9 @@ const closeMenu = () => (menuOpen.value = false)
       <slot />
     </v-main>
 
+    <!-- Cookie Banner -->
+    <CookieBanner />
+
     <!-- FOOTER -->
     <MyFooter />
 

@@ -1,4 +1,3 @@
-<!-- components/GenericScheduler.vue -->
 <template>
   <div class="scheduler-container p-4 bg-background text-text">
     <v-row>
@@ -12,7 +11,7 @@
               :attributes="attributes"
               expanded
               borderless
-              :min-date="new Date()"
+              :min-date="minDate"
               @dayclick="handleDayClick"
             />
           </ClientOnly>
@@ -33,28 +32,28 @@
               <v-list-item
                 v-for="slot in dailySlots"
                 :key="slot._id"
-                :disabled="slot.slotClass === 'booked' && slot._id !== existingBooking?.slotId"
                 border
                 class="mb-2 rounded"
               >
-                <template v-slot:prepend>
-                  <v-icon :color="slot.slotClass === 'available' ? 'green' : 'grey'">
-                    mdi-clock-outline
-                  </v-icon>
+                <template #prepend>
+                  <v-icon color="green">mdi-clock-outline</v-icon>
                 </template>
 
                 <v-list-item-title class="font-weight-bold">
-                  {{ formatTime(slot.start) }} - {{ formatTime(slot.end) }}
+                  {{ formatTime(slot.start) }} – {{ formatTime(slot.end) }}
                 </v-list-item-title>
 
-                <template v-slot:append>
-                  <!-- Ha ez az aktuális foglalása, akkor jelezzük -->
-                  <v-chip v-if="existingBooking && slot._id === existingBooking.slotId" color="info" size="small">
+                <template #append>
+                  <v-chip
+                    v-if="existingBooking && slot._id === existingBooking.slotId"
+                    color="info"
+                    size="small"
+                  >
                     Jelenlegi
                   </v-chip>
-                  
+
                   <v-btn
-                    v-else-if="slot.slotClass === 'available'"
+                    v-else
                     color="primary"
                     variant="flat"
                     size="small"
@@ -62,13 +61,11 @@
                   >
                     {{ existingBooking ? 'Átfoglal' : 'Kiválaszt' }}
                   </v-btn>
-                  
-                  <v-chip v-else size="x-small" color="error" variant="tonal">Foglalt</v-chip>
                 </template>
               </v-list-item>
             </v-list>
           </div>
-          
+
           <v-alert v-else-if="!loading" type="info" variant="tonal" icon="mdi-calendar-blank">
             Erre a napra nincs meghirdetve szabad időpont.
           </v-alert>
@@ -79,14 +76,19 @@
     <!-- MEGERŐSÍTŐ DIALOG -->
     <v-dialog v-model="bookingDialog" max-width="450">
       <v-card v-if="selectedSlot">
-        <v-card-title class="headline">{{ existingBooking ? 'Időpont módosítása' : 'Foglalás megerősítése' }}</v-card-title>
+        <v-card-title class="headline">
+          {{ existingBooking ? 'Időpont módosítása' : 'Foglalás megerősítése' }}
+        </v-card-title>
+
         <v-card-text>
-          <p v-if="existingBooking" class="mb-4 text-warning">
-            Figyelem: A korábbi időpontod ({{ formatTime(existingBooking.start) }}) törlésre kerül és az új időpont kerül rögzítésre.
+          <p v-if="existingBooking?.start" class="mb-4 text-warning">
+            Figyelem: A korábbi időpontod ({{ formatTime(existingBooking.start) }}) törlésre kerül.
           </p>
-          Biztosan lefoglalod: <br>
-          <strong>{{ formattedDate }} {{ formatTime(selectedSlot.start) }}</strong>?
+
+          Biztosan lefoglalod?<br>
+          <strong>{{ formattedDate }} {{ formatTime(selectedSlot.start) }}</strong>
         </v-card-text>
+
         <v-card-actions>
           <v-spacer />
           <v-btn variant="text" @click="bookingDialog = false">Mégse</v-btn>
@@ -105,8 +107,8 @@ import 'v-calendar/dist/style.css'
 
 const props = defineProps({
   productId: { type: String, required: true },
-  purchaseId: { type: String, required: true }, // Ez köti a konkrét vásárláshoz
-  existingBooking: { type: Object, default: null } // Ha módosítás van, a régi foglalás adatai
+  purchaseId: { type: String, required: true },
+  existingBooking: { type: Object, default: null }
 })
 
 const emit = defineEmits(['booked'])
@@ -121,16 +123,31 @@ const bookingLoading = ref(false)
 const bookingDialog = ref(false)
 const selectedSlot = ref(null)
 
+const minDate = computed(() =>
+  new Date().toISOString().split('T')[0]
+)
+
 const attributes = computed(() => [
   { highlight: true, dates: selectedDate.value },
   ...allAvailableSlots.value.map(slot => ({
     dot: 'green',
-    dates: new Date(slot.start)
+    dates: new Date(slot.start.replace('Z', ''))
   }))
 ])
 
-const formattedDate = computed(() => selectedDate.value.toLocaleDateString('hu-HU', { year: 'numeric', month: 'long', day: 'numeric' }))
-const formatTime = (d) => new Date(d).toLocaleTimeString('hu-HU', { hour: '2-digit', minute: '2-digit' })
+const formattedDate = computed(() =>
+  selectedDate.value.toLocaleDateString('hu-HU', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })
+)
+
+const formatTime = d =>
+  new Date(d).toLocaleTimeString('hu-HU', {
+    hour: '2-digit',
+    minute: '2-digit'
+  })
 
 onMounted(async () => {
   await fetchAllAvailable()
@@ -147,9 +164,9 @@ async function fetchDailySlots(date) {
   loading.value = true
   try {
     const dateStr = date.toISOString().split('T')[0]
-    dailySlots.value = await getSlotsByDate(dateStr)
-  } catch (e) {
-    console.error("Hiba a slotok lekérésekor", e)
+    const slots = await getSlotsByDate(dateStr)
+
+    dailySlots.value = slots.filter(s => s.slotClass === 'available')
   } finally {
     loading.value = false
   }
@@ -167,22 +184,20 @@ function confirmBooking(slot) {
 
 async function executeBooking() {
   if (!user.value?._id) return
-  
+
   bookingLoading.value = true
   try {
     const payload = {
       userId: user.value._id,
       productId: props.productId,
-      purchaseId: props.purchaseId, // Küldjük a vásárlás ID-t a backendnek!
-      oldBookingId: props.existingBooking?._id // Ha van, a backend tudja, hogy módosítás történik
+      purchaseId: props.purchaseId,
+      oldBookingId: props.existingBooking?._id
     }
-    
+
     await bookSlot(selectedSlot.value._id, payload)
-    
+
     bookingDialog.value = false
-    emit('booked') // Szólunk a szülőnek, hogy zárja be a modalt és frissítsen
-  } catch (e) {
-    alert("Hiba történt a foglalás során.")
+    emit('booked')
   } finally {
     bookingLoading.value = false
   }

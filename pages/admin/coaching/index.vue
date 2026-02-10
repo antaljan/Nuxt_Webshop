@@ -81,7 +81,15 @@
                   }}
                 </v-chip>
               </td>
-            <td>{{ slot.userId ? 'Regisztrált ügyfél' : '-' }}</td>
+              <td>
+                <template v-if="slot.userId && userMap.get(slot.userId)">
+                  <strong>{{ userMap.get(slot.userId).firstname }} {{ userMap.get(slot.userId).name }}</strong>
+                  <div class="text-caption text-gray-500">
+                    {{ userMap.get(slot.userId).email }}
+                  </div>
+                </template>
+                <span v-else>-</span>
+              </td>
             <td class="text-right space-x-2">
               <v-btn
                 icon="mdi-check-circle"
@@ -167,8 +175,17 @@ const loading = ref(false)
 
 const form = ref({ id: null, title: '', date: '', time: '', duration: 60 })
 const bulk = ref({ startDate: '', endDate: '', startTime: '14:00', endTime: '18:00', duration: 45 })
+const users = ref([])
 
-onMounted(loadSlots)
+onMounted(async () => {
+  await loadUsers()
+  await loadSlots()
+})
+
+async function loadUsers() {
+  const res = await $fetch('/api/admin/users')
+  users.value = res.users || res || []
+}
 
 async function loadSlots() {
   slots.value = await getAllSlots()
@@ -262,5 +279,14 @@ async function completeSlotConfirm(slot) {
   await completeSlot(slot._id)
   await loadSlots()
 }
+
+const userMap = computed(() => {
+  const map = new Map()
+  for (const u of users.value) {
+    map.set(u._id, u)
+  }
+  return map
+})
+
 
 </script>

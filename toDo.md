@@ -76,6 +76,7 @@ Landing Page (public page):
 - create data privacy pollicie ✔️
 - /pages/products/index.vue --> filter the product for language - product has to be language relevant ✔️
 - Frontend/components/MyFooter.vue --> insta icon has to be recolored to insta color (i think R:215,G:96,B:183) ✔️
+- extra site for newsletter subscribe: frontend/pages/subscribe.vue (Gyöngyi will be distribute one subscribe link in social medien) ✔️
 
 Admin functions:
 - access control for admin dashboard and pages realized ✔️
@@ -131,6 +132,7 @@ User functions:
 - /pages/user/product/[id].vue --> integrate bunny video player in product view ✔️
 - User dashboard (/pages/user/index.vue) is extended with list of booked coaching ✔️
 - /pages/user/profile --> add cancel end profile delete function ✔️
+- GenericScheduler.vue dont has to be show the reserved slots, only the availables ✔️
 
 Bugs:
     critical:
@@ -139,9 +141,8 @@ Bugs:
         - none
 
 Tasks are open:
-→ extra site for newsletter subscribe: frontend/pages/subscribe.vue (Gyöngyi will be distribute one subscribe link in social medien)
-→ GenericScheduler.vue dont has to be show the reserved slots (just showing)
 → billing with stripe? acc eu billing roulles (billing from Germany to Hungary)
+→ create a new html element for newsletter template editor wicht can be edited with tiptap editor.
 → welcome newsletter package for newcommers: 5-6 newsletters scheduled in weekly (o rtwo per week) after registration with pre defined content acc. sales rolues
 →→→→→→ GO LIVE:
     - deploy frontend from github to VPS

@@ -58,14 +58,66 @@
               <v-btn
                 color="primary"
                 type="submit"
-                :loading="saving"
-                prepend-icon="mdi-check"
-              >
-                {{ $t('common.save') }}
-              </v-btn>
-            </div>
+                  :loading="saving"
+                  prepend-icon="mdi-check"
+                >
+                  {{ $t('common.save') }}
+                </v-btn>
+
+                <v-btn
+                  variant="outlined"
+                  color="secondary"
+                  prepend-icon="mdi-close"
+                  @click="handleCancel"
+                >
+                  {{ $t('common.cancel') }}
+                </v-btn>
+
+                <v-btn
+                  variant="text"
+                  color="error"
+                  prepend-icon="mdi-delete"
+                  @click="confirmDelete"
+                >
+                  {{ $t('user.deleteAccount') }}
+                </v-btn>
+              </div>
           </v-form>
         </v-card>
+
+        <!-- User profile delete dialog -->
+        <v-dialog v-model="deleteDialog" max-width="480">
+          <v-card>
+            <v-card-title class="text-h6">
+              {{ $t('user.deleteAccountConfirm') }}
+            </v-card-title>
+
+            <v-card-text>
+              {{ $t('user.deleteAccountConfirmText') }}
+
+              <p v-if="deleteError" class="text-red-600 mt-2 text-sm">
+                {{ deleteError }}
+              </p>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer />
+
+              <v-btn variant="text" @click="deleteDialog = false">
+                {{ $t('common.cancel') }}
+              </v-btn>
+
+              <v-btn
+                color="error"
+                :loading="deleting"
+                @click="handleDelete"
+              >
+                {{ $t('user.deleteAccountConfirmButton') }}
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
 
         <!-- Üzenet visszajelzés -->
         <v-snackbar v-model="snackbar.show" :color="snackbar.color" timeout="3000">
@@ -80,6 +132,8 @@
 const { user } = useAuth()
 const saving = ref(false)
 const snackbar = reactive({ show: false, text: '', color: '' })
+const router = useRouter()
+
 
 // Reaktív űrlap adatok
 const form = reactive({
@@ -99,15 +153,13 @@ const { data: profileData, pending, error } = await useAsyncData(
   }),
   {
     // Biztosítjuk, hogy ne csak cache-ből olvasson
-    initialCache: false 
+    initialCache: false
   }
 )
 
 // Segédfüggvény az adatok bemásolásához
 const syncForm = (data) => {
-  // A logod alapján az adat a data.user alatt van!
-  const userData = data?.user || data 
-  
+  const userData = data?.user || data
   if (userData) {
     form.id = userData._id || userData.id
     form.firstname = userData.firstname || ''
@@ -153,5 +205,47 @@ async function updateProfile() {
     saving.value = false
   }
 }
+
+// ÚJ: törlés dialógus + állapotok
+const deleteDialog = ref(false)
+const deleting = ref(false)
+const deleteError = ref('')
+
+// Cancel → vissza dashboardra
+const handleCancel = () => {
+  router.push('/user')
+}
+
+// Törlés megerősítés megnyitása
+const confirmDelete = () => {
+  deleteDialog.value = true
+}
+
+// Profil törlése
+const handleDelete = async () => {
+  deleting.value = true
+  deleteError.value = ''
+
+  try {
+    // meglévő proxy endpointod
+    await $fetch('/api/admin/user/delete', {
+      method: 'POST',
+      body: { id: form.id },
+      headers: useRequestHeaders(['cookie'])
+    })
+
+    // logout
+    await $fetch('/api/auth/logout', { method: 'POST' })
+    user.value = null
+
+    router.push('/')
+  } catch (err) {
+    deleteError.value = 'Hiba történt a profil törlésekor.'
+  } finally {
+    deleting.value = false
+    deleteDialog.value = false
+  }
+}
+
 </script>
 

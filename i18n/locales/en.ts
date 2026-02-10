@@ -45,6 +45,7 @@ export default defineI18nLocale(async (locale) => {
         title: "Blog editor",
         listTitle: "Blog posts",
         createTitle: "Create new blog post",
+        language:"Language",
         editTitle: "Edit blog post",
         form: {
           title: "title",
@@ -82,7 +83,8 @@ export default defineI18nLocale(async (locale) => {
       save: "Save",
       update: "Update",
       cancel: "Cancel",
-      menu: "Manage Products"
+      menu: "Manage Products",
+      language: 'Product Language'
     },
     brand: {
       menu: "Brand Settings",
@@ -181,7 +183,8 @@ export default defineI18nLocale(async (locale) => {
     bookingClosed: "The time slot is closed",
     video: "Video",
     downloadableFiles: "Downloadable Files",
-    schedulerTitle: "Select Time Slot"
+    schedulerTitle: "Select Time Slot",
+    all:"All"
   },
   feedback: {
     title: "Testimonials"
@@ -236,7 +239,11 @@ export default defineI18nLocale(async (locale) => {
     products: "My Products",
     productsDescription: "My purchased workshops, videos, and PDFs",
     profileDescription: "Personal data and settings",
-    welcome: "Welcome back"
+    welcome: "Welcome back",
+    deleteAccount: "Delete Account",
+    deleteAccountConfirm: "Are you sure you want to delete your account?",
+    deleteAccountConfirmText: 'The deletion is permanent, and all your data and access will be lost.',
+    deleteAccountConfirmButton:"Yes, delete my account"
   },
   auth: {
   register: {

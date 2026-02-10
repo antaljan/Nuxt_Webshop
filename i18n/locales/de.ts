@@ -40,6 +40,7 @@ export default defineI18nLocale(async (locale) => {
   admin: {
     dashboard: "Admin Dashboard",
     cibersecu: "Cibersecurity",
+    language:"Sprache",
     Posts: "Blogbeiträge bearbeiten",
     blog: {
         title: "Blog Editor",
@@ -82,7 +83,8 @@ export default defineI18nLocale(async (locale) => {
       save: "Speichern",
       update: "Aktualisieren",
       cancel: "Abbrechen",
-      menu: "Produkte verwalten"
+      menu: "Produkte verwalten",
+      language: 'Produkt Sprache'
     },
     brand: {
       menu: "Brand Einstellungen",
@@ -181,7 +183,8 @@ export default defineI18nLocale(async (locale) => {
     bookingClosed: "Der Termin ist geschlossen",
     video: "Video",
     downloadableFiles: "Downloadbare Dateien",
-    schedulerTitle: "Zeitfenster auswählen"
+    schedulerTitle: "Zeitfenster auswählen",
+    all:"Alle"
   },
   feedback: {
     title: "Rückmeldungen unserer Kunden"
@@ -236,7 +239,11 @@ export default defineI18nLocale(async (locale) => {
     products: "Meine Produkte",
     productsDescription: "Meine gekauften Workshops, Videos und PDFs",
     profileDescription: "Persönliche Daten und Einstellungen",
-    welcome: "Willkommen zurück"
+    welcome: "Willkommen zurück",
+    deleteAccount: "Konto löschen",
+    deleteAccountConfirm: "Sind Sie sicher, dass Sie Ihr Konto löschen möchten?",
+    deleteAccountConfirmText: 'Die Löschung ist dauerhaft, und alle Ihre Daten und Zugriffe werden verloren gehen.',
+    deleteAccountConfirmButton:"Ja, lösche mein Konto"
   },
   auth: {
   register: {

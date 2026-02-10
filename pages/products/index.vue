@@ -7,14 +7,16 @@
     >
       {{ $t('common.backtohome') }}
     </NuxtLink>
+
     <!--  Title  -->
     <h1 class="text-3xl font-bold mb-6">
       {{ $t('products.title') }}
     </h1>
+
     <!--  Product List  -->
     <v-row>
       <v-col
-        v-for="product in products"
+        v-for="product in filteredProducts"
         :key="product._id"
         cols="12"
         sm="6"
@@ -26,7 +28,7 @@
             height="200"
             contain
             class="bg-gray-100 rounded-t"
-          ></v-img>
+          />
 
           <v-card-title class="font-semibold">
             {{ product.title }}
@@ -57,7 +59,7 @@
     </v-row>
 
     <v-alert
-      v-if="products.length === 0"
+      v-if="filteredProducts.length === 0"
       type="info"
       class="mt-10"
     >
@@ -69,26 +71,27 @@
 <script setup>
 import { useProducts } from '~/composables/useProducts'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
 const router = useRouter()
-// Emeljük ki a cart-ot is, hogy lássuk a változást
-const { getProducts, addToCart, cart } = useProducts()
+const { locale } = useI18n()
 
+const { getProducts, addToCart } = useProducts()
+
+// SSR fetch
 const { data: products } = await useAsyncData('products', () => getProducts())
+
+// Nyelvi szűrés
+const filteredProducts = computed(() => {
+  if (!products.value) return []
+  return products.value.filter(p => p.language === locale.value)
+})
 
 function goToProduct(id) {
   return navigateTo(`/products/${id}`)
 }
 
-// Opcionális: Logoljuk, ha valami bekerül
 const handleAddToCart = (product) => {
-  console.log('Adding to cart:', product.title)
   addToCart(product)
-  //alert(`${product.title} a kosárba került!`)
 }
 </script>
-
-
-<style scoped>
-/* optional fine-tuning */
-</style>

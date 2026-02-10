@@ -46,6 +46,7 @@ export default defineI18nLocale(async (locale) => {
     dashboard: "Admin irányítópult",
     cibersecu: "Cibersecurity",
     Posts: "Blogok szerkesztése",
+    language:"Nyelv",
     blog: {
         title: "Blog kezelése",
         listTitle: "Blogbejegyzések",
@@ -87,7 +88,8 @@ export default defineI18nLocale(async (locale) => {
       save: "Mentés",
       update: "Frissítés",
       cancel: "Mégse",
-      menu: "Termékek kezelése"
+      menu: "Termékek kezelése",
+      language: 'Termék nyelve'
     },
     brand: {
       menu: "Arculat beállítások",
@@ -186,7 +188,8 @@ export default defineI18nLocale(async (locale) => {
     bookingClosed: "Az időpont lezárult",
     video: "Videó",
     downloadableFiles: "Letölthető fájlok",
-    schedulerTitle: "Időpont választása"
+    schedulerTitle: "Időpont választása",
+    all:"Összes"
   },
   feedback: {
     title: "Visszajelzések"
@@ -241,7 +244,11 @@ export default defineI18nLocale(async (locale) => {
     products: "Saját termékek",
     productsDescription: "Megvásárolt workshopok, videók, PDF-ek",
     profileDescription: "Személyes adatok, beállítások",
-    welcome: "Üdv újra"
+    welcome: "Üdv újra",
+    deleteAccount: "Fiók törlése",
+    deleteAccountConfirm: "Biztosan törlöd a fiókodat?",
+    deleteAccountConfirmText: 'A törlés végleges, minden adatod és hozzáférésed megszűnik.',
+    deleteAccountConfirmButton:"Igen, törlöm a fiókomat"
   },
   auth: {
   register: {

@@ -59,6 +59,19 @@
         </div>
       </div>
 
+      <!-- LANGUAGE FILTER -->
+      <div>
+        <label class="block text-sm font-semibold mb-1">
+          {{ t('admin.products.language') }}
+        </label>
+        <select v-model="languageFilter" class="border rounded px-3 py-2">
+          <option value="all">{{ t('common.all') }}</option>
+          <option value="hu">Magyar</option>
+          <option value="de">Deutsch</option>
+          <option value="en">English</option>
+        </select>
+      </div>
+
     </div>
 
     <!-- TABLE -->
@@ -67,6 +80,7 @@
         <tr>
           <th>{{ t('admin.products.listTitle') }}</th>
           <th>{{ t('admin.products.price') }}</th>
+          <th>{{ t('admin.products.language') }}</th>
           <th class="text-right">{{ t('admin.products.actions') }}</th>
         </tr>
       </thead>
@@ -75,6 +89,7 @@
         <tr v-for="p in paginated" :key="p._id">
           <td>{{ p.title }}</td>
           <td>€{{ p.price }}</td>
+          <td>{{ p.language }}</td>
 
           <td class="text-right space-x-4">
             <NuxtLink
@@ -131,6 +146,8 @@ const { loggedIn, isAdmin } = useAuth()
 if (!loggedIn.value || !isAdmin.value) navigateTo('/login')
 
 const admin = useProductsAdmin()
+const languageFilter = ref('all')
+
 
 /* ---------------------------
    AUTH GUARD
@@ -166,6 +183,10 @@ const maxPrice = ref(null)
 --------------------------- */
 const filtered = computed(() => {
   let list = [...products.value]
+  // LANGUAGE FILTER
+  if (languageFilter.value !== 'all') {
+    list = list.filter(p => p.language === languageFilter.value)
+  }
 
   // SEARCH
   if (search.value) {

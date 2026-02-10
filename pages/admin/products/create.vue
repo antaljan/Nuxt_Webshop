@@ -79,6 +79,23 @@
         />
       </div>
 
+      <!-- LANGUAGE SELECTOR -->
+      <div class="mb-6">
+        <label class="font-semibold block mb-2">
+          {{ t('admin.products.language') }}
+        </label>
+        <v-select
+          v-model="product.language"
+          :items="[
+            { title: 'Magyar', value: 'hu' },
+            { title: 'Deutsch', value: 'de' },
+            { title: 'English', value: 'en' }
+          ]"
+          variant="outlined"
+          density="comfortable"
+        />
+      </div>
+
       <!--  product type selector -->
       <div class="mb-6">
         <label class="font-semibold block mb-2">Termék típusa</label>
@@ -181,7 +198,8 @@ const product = reactive({
   price: '',
   downloadableFiles: [],
   videoUrl: '',
-  type: 'digital'
+  type: 'digital',
+  language: 'hu'
 })
 
 /* ---------------------------

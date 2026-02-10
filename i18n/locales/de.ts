@@ -146,7 +146,11 @@ export default defineI18nLocale(async (locale) => {
     gdpr: {
       before: "Ich akzeptiere die ",
       link: "Datenschutzerklärung."
-    }
+    },
+    subscribeTitle: "Newsletter Anmeldung",
+    subscribeDescription: "Praktische Selbstreflexions-Tools, Coaching-Methoden und Impulse für deine persönliche Entwicklung — genau dann, wenn sie echten Mehrwert bieten. In meinen Newslettern teile ich Erkenntnisse, Methoden und Orientierungshilfen, die dir helfen, bewusster zu leben, Herausforderungen klarer zu sehen und Entscheidungen mit mehr Sicherheit zu treffen. Ich verspreche keine unnötigen E-Mails oder leere Worte. Ich schreibe nur dann, wenn ich dir wirklich hilfreiche Inhalte geben kann — solche, die dich auf deinem Weg spürbar unterstützen.",
+    successMessage: "Erfolgreich angemeldet! Vielen Dank für dein Vertrauen.",
+    errorGeneral: "Bei der Anmeldung ist ein Fehler aufgetreten."
   },
   common: {
     send: "Senden",

@@ -11,6 +11,9 @@ export function useNewsletter() {
     method: 'POST',
     body: payload
   })
+  const deleteSubscriber = (email) =>
+  $fetch(`/api/newsletter/unsubscribe/${email}`)
+
 
   return {
     fetchSummary,
@@ -18,6 +21,7 @@ export function useNewsletter() {
     fetchSubscribers,
     saveNewsletterTemplate,
     scheduleNewsletter,
-    fetchTemplates: () => $fetch('/api/newsletter/gettemplates', { method: 'POST' })
+    fetchTemplates: () => $fetch('/api/newsletter/gettemplates', { method: 'POST' }),
+    deleteSubscriber
   }
 }

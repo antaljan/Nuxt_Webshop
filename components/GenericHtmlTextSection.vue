@@ -76,9 +76,13 @@ const { data: content } = await useAsyncData(
 
 localContent.value = content.value?.html || ''
 
-const sanitizedHtml = computed(() =>
-  DOMPurify.sanitize(localContent.value)
-)
+const sanitizedHtml = computed(() => {
+  if (process.server) {
+    return localContent.value
+  }
+  return DOMPurify.sanitize(localContent.value)
+})
+
 
 const saveContent = async () => {
   await updateSection(props.section, locale.value, { html: localContent.value })

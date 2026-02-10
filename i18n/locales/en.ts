@@ -146,7 +146,11 @@ export default defineI18nLocale(async (locale) => {
     gdpr: {
       before: "I accept the ",
       link: "privacy policy."
-    }
+    },
+    subscribeTitle: "Newsletter Subscription",
+    subscribeDescription: "Practical self-development tools, coaching techniques and insights to support your personal growth — shared only when they truly add value. My intention is to offer methods, reflections and guidance that help you live more consciously, navigate challenges with clarity and make decisions with greater confidence. I won’t send unnecessary emails or empty messages. I write only when I can offer something genuinely useful — something that supports you on your journey.",
+    successMessage: "Successful subscription! Thank you for your trust.",
+    errorGeneral: "An error occurred during subscription."
   },
   common: {
     send: "Send",

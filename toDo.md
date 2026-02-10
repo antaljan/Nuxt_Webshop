@@ -75,6 +75,7 @@ Landing Page (public page):
 - create General Terms and Conditions (inclusive therms of Services, with the usage of digital content) ✔️
 - create data privacy pollicie ✔️
 - /pages/products/index.vue --> filter the product for language - product has to be language relevant ✔️
+- Frontend/components/MyFooter.vue --> insta icon has to be recolored to insta color (i think R:215,G:96,B:183) ✔️
 
 Admin functions:
 - access control for admin dashboard and pages realized ✔️
@@ -138,8 +139,10 @@ Bugs:
         - none
 
 Tasks are open:
+→ extra site for newsletter subscribe: frontend/pages/subscribe.vue (Gyöngyi will be distribute one subscribe link in social medien)
 → GenericScheduler.vue dont has to be show the reserved slots (just showing)
 → billing with stripe? acc eu billing roulles (billing from Germany to Hungary)
+→ welcome newsletter package for newcommers: 5-6 newsletters scheduled in weekly (o rtwo per week) after registration with pre defined content acc. sales rolues
 →→→→→→ GO LIVE:
     - deploy frontend from github to VPS
     - integrate the new frontend into pm2

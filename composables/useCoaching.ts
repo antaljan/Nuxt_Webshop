@@ -71,10 +71,13 @@ export function useCoaching() {
 
   // Foglalás lemondása
   const cancelSlot = async (id: string) => {
-    return await $fetch(`/api/booking/cancel/${id}`, { method: 'PUT' })
+    return await $fetch(`/api/booking/cancel/${id}`, {
+      method: 'PUT',
+      headers: useRequestHeaders(['cookie'])
+    })
   }
 
-  // az adott user összes foglalásának lekérése 
+  // az adott user összes foglalásának lekérése
   const getMyBookings = async () => {
     return await $fetch('/api/booking/mybookings')
   }

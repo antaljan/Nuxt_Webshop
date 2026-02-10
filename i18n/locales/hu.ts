@@ -151,7 +151,11 @@ export default defineI18nLocale(async (locale) => {
     gdpr: {
       before: "Elfogadom az ",
       link: "adatvédelmi nyilatkozatot."
-    }
+    },
+    subscribeTitle: "Hírlevél feliratkozás",
+    subscribeDescription: "Gyakorlati önismereti eszközök, coaching-technikák és fejlődést támogató gondolatok — akkor, amikor valóban értéket adnak. A hírleveleim célja, hogy olyan módszereket, felismeréseket és útmutatásokat osszak meg veled, amelyek segítenek tudatosabban vezetni az életedet, jobban kezelni a kihívásokat és magabiztosabban meghozni a döntéseidet. Nem ígérek felesleges zajt vagy üres leveleket. Csak akkor írok, amikor valódi, használható tartalmat tudok adni — olyat, ami tényleg támogat a fejlődésedben.",
+    successMessage: "Sikeres feliratkozás! Köszönöm a bizalmadat.",
+    errorGeneral: "Hiba történt a feliratkozás során."
   },
   common: {
     send: "Elküldés",

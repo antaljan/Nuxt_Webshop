@@ -95,7 +95,7 @@
           >
             <template v-slot:[`item.actions`]="{ item }">
               <v-icon size="small" class="mr-2" color="blue" @click="editSubscriber(item)">mdi-pencil</v-icon>
-              <v-icon size="small" color="red" @click="confirmDelete(item._id)">mdi-delete</v-icon>
+              <v-icon size="small" color="red" @click="confirmDelete(item)">mdi-delete</v-icon>
             </template>
           </v-data-table>
         </v-window-item>
@@ -206,9 +206,9 @@ const subscriberHeaders = [
   { title: 'Műveletek', key: 'actions', sortable: false }
 ]
 
-async function confirmDelete(id) {
+async function confirmDelete(subscriber) {
   if (confirm("Biztosan törlöd a feliratkozót?")) {
-    await deleteSubscriber(id)
+    await deleteSubscriber(subscriber.email)
     refreshSubscribers()
   }
 }

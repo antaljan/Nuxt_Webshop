@@ -1,84 +1,33 @@
 <template>
   <v-footer class="bg-gray-50 text-text py-10 mt-12" padless>
     <v-container class="text-center">
-      <!-- Newsletter dialog -->
-      <v-dialog v-model="dialog" max-width="500">
-        <v-card>
-          <v-card-title class="text-h6">
-            {{ $t('newsletter.subscribeButton') }}
-          </v-card-title>
-          <v-card-text>
-            <v-form ref="form" v-model="valid">
-              <v-text-field
-                v-model="firstname"
-                :label="$t('newsletter.firstname')"
-                :rules="[v => !!v || $t('newsletter.errorName')]"
-                required
-              />
-              <v-text-field
-                v-model="name"
-                :label="$t('newsletter.lastname')"
-                :rules="[v => !!v || $t('newsletter.errorName')]"
-                required
-              />
-              <v-text-field
-                v-model="email"
-                :label="$t('newsletter.email')"
-                :rules="[v => /.+@.+\..+/.test(v) || $t('newsletter.errorEmail')]"
-                required
-              />
-              <v-checkbox
-                v-model="gdpr"
-                :rules="[v => !!v || $t('newsletter.errorGdpr')]"
-                required
-              >
-                <template #label>
-                  {{ $t('newsletter.gdpr.before') }}
-                  <NuxtLink to="/gdpr" target="_blank" class="text-primary">
-                    {{ $t('newsletter.gdpr.link') }}
-                  </NuxtLink>
-                </template>
-              </v-checkbox>
-            </v-form>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer />
-            <v-btn color="green" variant="text" @click="submit">
-              {{ $t('common.send') }}
-            </v-btn>
-            <v-btn color="grey" variant="text" @click="dialog = false">
-              {{ $t('common.cancel') }}
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
       <!-- Divider -->
         <div class="w-full h-[1px] bg-gray-400 my-6"></div>
       <!-- Newsletter button -->
       <div class="flex justify-center mt-4">
-        <button
+        <NuxtLink
+          to="/subscribe"
           class="text-primary hover:underline text-sm flex items-center gap-2"
-          @click="dialog = true"
         >
           <v-icon size="18" class="text-primary">mdi-email-plus-outline</v-icon>
           {{ $t('newsletter.subscribeButton') }}
-        </button>
+        </NuxtLink>
       </div>
       <!-- Social icons -->
-      <div class="flex justify-center gap-6 text-text mt-4">
+      <div class="flex justify-center gap-4 text-text mt-4">
         <!--  facebook  -->
         <a href="https://www.facebook.com/profile.php?id=100064353450604" target="_blank">
-           <v-icon size="28" class="text-primary">mdi-facebook</v-icon>
+          <v-icon size="28" style="color:#1877F2;">mdi-facebook</v-icon>
         </a>
         <a href="https://www.instagram.com/antaligyongyiedit/" target="_blank">
-           <v-icon size="28" class="text-primary">mdi-instagram</v-icon>
+          <v-icon size="28" style="color: #D760B7;">mdi-instagram</v-icon>
         </a>
         <a href="https://www.linkedin.com/in/gy%C3%B6ngyi-edit-antali-09a1aa174/" target="_blank">
-           <v-icon size="28" class="text-primary">mdi-linkedin</v-icon>
+          <v-icon size="28" style="color:#0A66C2;">mdi-linkedin</v-icon>
         </a>
       </div>
       <!-- GDPR & Data Privacy -->
-      <div class="flex justify-center gap-6 text-text mt-4">
+      <div class="flex justify-center gap-6 text-text mt-6">
         <NuxtLink to="/gdpr" class="text-primary hover:underline text-sm flex items-center gap-2">{{ $t('common.gdpr') }}</NuxtLink>
         <NuxtLink to="/agb" class="text-primary hover:underline text-sm flex items-center gap-2">{{ $t('common.agb') }}</NuxtLink>
       </div>

@@ -113,6 +113,7 @@ Admin functions:
     - /composable/useBrand + server/admin/brand.get.ts + server/admin/brand.put.ts ✔️
 - pages/admim/brand/index.vue ✔️
 - /pages/admin/products/create.vue --> add the language to product creating or edit - product has to be language relevant ✔️
+- admin has to be complete the booking slots, the frontend is missing, but the backend has already an a endpoint for that PUT:booking/complete/:id (verifyAdmin) ✔️
 
 User functions:
 - /pages/products/index.vue --> Product overview site with searching(picture, name, short description, price on v-card) ✔️
@@ -129,7 +130,6 @@ User functions:
 - User dashboard (/pages/user/index.vue) is extended with list of booked coaching ✔️
 - /pages/user/profile --> add cancel end profile delete function ✔️
 
-
 Bugs:
     critical:
         - none
@@ -137,7 +137,6 @@ Bugs:
         - none
 
 Tasks are open:
-→ admin has to be complete the booking slots, the frontend is missing, but the backend has already an a endpoint for that PUT:booking/complete/:id (verifyAdmin)
 → GenericScheduler.vue dont has to be show the reserved slots (just showing)
 → Email sending for user and admin bei one slot reservation
 → admin newsletter manager preview of scheduler or sended newsletter, the window closing button is on the middle distrupt the preview

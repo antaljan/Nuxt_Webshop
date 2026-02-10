@@ -62,12 +62,35 @@
             </td>
             <td>{{ slot.duration }} perc</td>
             <td>
-              <v-chip :color="slot.slotClass === 'available' ? 'green' : 'error'" size="small">
-                {{ slot.slotClass === 'available' ? 'Szabad' : 'Foglalt' }}
-              </v-chip>
-            </td>
+              <v-chip
+                  size="small"
+                  :color="
+                    slot.slotClass === 'available'
+                      ? 'green'
+                      : slot.completed
+                        ? 'blue'
+                        : 'error'
+                  "
+                >
+                  {{
+                    slot.slotClass === 'available'
+                      ? 'Szabad'
+                      : slot.completed
+                        ? 'Lezárt'
+                        : 'Foglalt'
+                  }}
+                </v-chip>
+              </td>
             <td>{{ slot.userId ? 'Regisztrált ügyfél' : '-' }}</td>
-            <td class="text-right">
+            <td class="text-right space-x-2">
+              <v-btn
+                icon="mdi-check-circle"
+                variant="text"
+                color="green"
+                size="small"
+                v-if="slot.slotClass !== 'completed'"
+                @click="completeSlotConfirm(slot)"
+              />
               <v-btn icon="mdi-pencil" variant="text" color="blue" size="small" @click="openEditDialog(slot)" />
               <v-btn icon="mdi-delete" variant="text" color="red" size="small" @click="deleteSlotConfirm(slot)" />
             </td>
@@ -134,7 +157,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useCoaching } from '~/composables/useCoaching'
 
-const { getAllSlots, createSlot, deleteSlot, updateSlot } = useCoaching()
+const { getAllSlots, createSlot, deleteSlot, updateSlot, completeSlot  } = useCoaching()
 
 const slots = ref([])
 const filterDate = ref('')
@@ -232,4 +255,12 @@ async function deleteSlotConfirm(slot) {
     await loadSlots()
   }
 }
+
+async function completeSlotConfirm(slot) {
+  if (!confirm('Biztosan lezárod ezt az időpontot?')) return
+
+  await completeSlot(slot._id)
+  await loadSlots()
+}
+
 </script>

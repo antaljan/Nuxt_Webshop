@@ -36,6 +36,12 @@ export function useCoaching() {
     })
   }
 
+  // Slot státuszának "complete"-re állítása (pl. coaching megtörtént)
+  const completeSlot = (id: string) => {
+  return $fetch(`/api/booking/complete/${id}`, {
+    method: 'PUT'
+  })
+}
 
   // --- USER (CUSTOMER) FUNKCIÓK ---
 
@@ -63,13 +69,12 @@ export function useCoaching() {
   })
 }
 
-
   // Foglalás lemondása
   const cancelSlot = async (id: string) => {
     return await $fetch(`/api/booking/cancel/${id}`, { method: 'PUT' })
   }
 
-  // composables/useCoaching.ts - add hozzá a visszatérési listához
+  // az adott user összes foglalásának lekérése 
   const getMyBookings = async () => {
     return await $fetch('/api/booking/mybookings')
   }
@@ -83,6 +88,7 @@ export function useCoaching() {
     deleteSlot,
     bookSlot,
     cancelSlot,
-    getMyBookings
+    getMyBookings,
+    completeSlot
   }
 }

@@ -46,11 +46,11 @@ export default defineI18nLocale(async (locale) => {
     dashboard: "Admin irányítópult",
     cibersecu: "Cibersecurity",
     Posts: "Blogok szerkesztése",
-    language:"Nyelv",
     blog: {
         title: "Blog kezelése",
         listTitle: "Blogbejegyzések",
         createTitle: "Új blogbejegyzés létrehozása",
+        language:"Nyelv",
         editTitle: "Blogbejegyzés szerkesztése",
         form: {
           title: "Cím",

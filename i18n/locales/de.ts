@@ -40,12 +40,12 @@ export default defineI18nLocale(async (locale) => {
   admin: {
     dashboard: "Admin Dashboard",
     cibersecu: "Cibersecurity",
-    language:"Sprache",
     Posts: "Blogbeiträge bearbeiten",
     blog: {
         title: "Blog Editor",
         listTitle: "Blog Posten",
         createTitle: "Neue Blogeintrag",
+        language:"Sprache",
         editTitle: "Edit Blogeintrag",
         form: {
           title: "Title",

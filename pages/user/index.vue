@@ -84,9 +84,12 @@ definePageMeta({
 })
 
 // Load bookings
-const { data: bookings, pending: bookingsPending, refresh: refreshBookings } = await useAsyncData(
+const { data: rawBookings, pending: bookingsPending, refresh: refreshBookings } = await useAsyncData(
   'user-bookings',
   () => getMyBookings()
+)
+const bookings = computed(() =>
+  (rawBookings.value || []).filter(b => !b.completed) 
 )
 
 // Load purchases

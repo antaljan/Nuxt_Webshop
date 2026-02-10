@@ -52,6 +52,7 @@ Architect:
 - /components/MyFooter.vue ✔️
 - chart.js installed ✔️
 - /components/charts/LineChart.vue + BarChart.vue ✔️
+- Email sending for user and admin bei one slot reservation ✔️
 
 Landing Page (public page):
 - /components/GeneralHeroSection.vue ✔️
@@ -138,8 +139,6 @@ Bugs:
 
 Tasks are open:
 → GenericScheduler.vue dont has to be show the reserved slots (just showing)
-→ Email sending for user and admin bei one slot reservation
-→ admin newsletter manager preview of scheduler or sended newsletter, the window closing button is on the middle distrupt the preview
 → billing with stripe? acc eu billing roulles (billing from Germany to Hungary)
 →→→→→→ GO LIVE:
     - deploy frontend from github to VPS

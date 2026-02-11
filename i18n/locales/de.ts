@@ -35,7 +35,7 @@ export default defineI18nLocale(async (locale) => {
     methode: "Methode",
     contact: "Kontakt",
     blog: "Blog",
-    products: "Produkte"
+    products: "Dienstleistungen",
   },
   admin: {
     dashboard: "Admin Dashboard",
@@ -274,7 +274,10 @@ export default defineI18nLocale(async (locale) => {
     readAgb: "Allgemeine Geschäftsbedingungen anzeigen",
     acceptGdpr: "Ich akzeptiere die Datenschutzerklärung",
     readGdpr: "Datenschutzerklärung anzeigen",
-    acceptNewsletter: "Ich möchte den Newsletter abonnieren"
+    acceptNewsletter: "Ich möchte den Newsletter abonnieren",
+    disabledTitle:"Registrierung ist derzeit nicht verfügbar",
+    disabledText:"Die Registrierung ist derzeit deaktiviert. Bitte versuchen Sie es später erneut.",
+    goToLogin : "Zum Login gehen"
   },
   login: {
     title: "Einmelden",

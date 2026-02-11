@@ -12,8 +12,10 @@ const local = ref({
   backgroundColor: '#ffffff',
   textColor: '#222222',
   accentColor: '#8566ff',
-  fontFamily: 'Roboto'
+  fontFamily: 'Roboto',
+  maintenanceMode: false
 })
+
 
 const fonts = [
   'Roboto',
@@ -29,7 +31,10 @@ const fonts = [
 onMounted(async () => {
   await loadBrand()
   if (settings.value) {
-    local.value = { ...settings.value }
+    local.value = {
+      ...settings.value,
+      maintenanceMode: settings.value.maintenanceMode ?? false
+    }
   }
 })
 
@@ -92,6 +97,24 @@ function resetDefaults() {
           <select v-model="local.fontFamily" class="border rounded px-3 py-2 ml-4">
             <option v-for="f in fonts" :key="f" :value="f">{{ f }}</option>
           </select>
+        </div>
+
+        <!-- MAINTENANCE MODE -->
+        <div class="mt-8 p-4 border rounded-lg bg-red-50">
+          <label class="font-semibold text-red-700 text-lg block mb-2">
+            Karbantartási mód (Coming Soon Page)
+          </label>
+          <p class="text-sm text-red-600 mb-4">
+            Ha ez be van kapcsolva, a weboldal látogatói egy karbantartási üzenetet fognak látni, amíg vissza nem kapcsolod.
+            Adminisztrátorként továbbra is hozzáfész a tartalomhoz, de a látogatók nem fogják látni a weboldal tartalmát.
+          </p>
+          <v-btn
+            :color="local.maintenanceMode ? 'red' : 'green'"
+            class="w-full py-4 text-lg font-bold"
+            @click="local.maintenanceMode = !local.maintenanceMode"
+          >
+            {{ local.maintenanceMode ? 'kikapcsolni a karbantartási módot' : 'Bekapcsolni karbantartási módot' }}
+          </v-btn>
         </div>
 
         <!-- BUTTONS -->

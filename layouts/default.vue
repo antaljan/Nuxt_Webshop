@@ -33,6 +33,17 @@ import BrandThemeUpdater  from  '~/components/BrandThemeUpdater.vue'
 const menuOpen = ref(false)
 const { isAdmin, loggedIn } = useAuth()
 const { t } = useI18n()
+const brandLoaded = ref(false)
+await loadBrand()
+brandLoaded.value = true
+
+
+const hideMenu = computed(() => {
+  if (!brandLoaded.value) return false   // amíg nincs brand, ne rejtsen el semmit
+  if (isAdmin.value) return false        // admin mindig látja
+  return settings.value?.maintenanceMode === true
+})
+
 
 /* -----------------------------------------
    MAIN MENU (hash + route keverve)
@@ -82,20 +93,19 @@ const closeMenu = () => (menuOpen.value = false)
     <!-- HEADER -->
     <MyHeader @toggle-menu="menuOpen = !menuOpen" />
     <!-- CART DRAWER (MINDEN OLDALON ELÉRHETŐ) -->
-    <CartDrawer />
+    <CartDrawer v-if="!hideMenu" />
     <!-- MOBILE DRAWER -->
     <client-only>
-    <v-navigation-drawer
-      v-model="menuOpen"
-      location="start"
-      mode="temporary"
-      width="280"
-      color="background"
-      class="text-text"
-    >
-
+      <v-navigation-drawer
+        v-if="!hideMenu"
+        v-model="menuOpen"
+        location="start"
+        mode="temporary"
+        width="280"
+        color="background"
+        class="text-text"
+      >
       <v-list>
-
         <!-- MAIN MENU -->
         <v-list-item
           v-for="item in mainMenu"

@@ -35,7 +35,7 @@ export default defineI18nLocale(async (locale) => {
     methode: "Method",
     contact: "Contact",
     blog: "Blog",
-    products: "Products"
+    products: "Services"
   },
   admin: {
     dashboard: "Admin Dashboard",
@@ -274,7 +274,10 @@ export default defineI18nLocale(async (locale) => {
     readAgb: "Read Terms of Service",
     acceptGdpr: "I accept the Privacy Policy",
     readGdpr: "Read Privacy Policy",
-    acceptNewsletter: "I would like to subscribe to the newsletter"
+    acceptNewsletter: "I would like to subscribe to the newsletter",
+    disabledTitle:"Registration is currently not available",
+    disabledText:"Registration is currently disabled. Please try again later.",
+    goToLogin : "Go to Login"
   },
   login: {
     title: "Login",

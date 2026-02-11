@@ -142,7 +142,7 @@ Bugs:
 
 Tasks are open:
 → billing with stripe? acc eu billing roulles (billing from Germany to Hungary)
-→ create a new html element for newsletter template editor wicht can be edited with tiptap editor.
+→ create a new html element template for newsletter template editor wicht can be edited with tiptap editor.
 → welcome newsletter package for newcommers: 5-6 newsletters scheduled in weekly (o rtwo per week) after registration with pre defined content acc. sales rolues
 →→→→→→ GO LIVE:
     - deploy frontend from github to VPS

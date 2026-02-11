@@ -6,46 +6,66 @@ import GenericTextSection from '~/components/GenericTextSection.vue'
 import GenericFeedbackSection from '~/components/GenericFeedbackSection.vue'
 import GenericContactSection from '~/components/GenericContactSection.vue'
 import GenericBlogSection from '~/components/GenericBlogSection.vue'
-import { watch } from 'vue'
+
+import { watch, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useAuth } from '@/composables/useAuth'
+import { useBrand } from '@/composables/useBrand'
 
 const { locale } = useI18n()
 
-// HERO
+/* ---------------------------
+   AUTH + BRAND
+--------------------------- */
+const { user } = useAuth()
+const isAdmin = computed(() => user.value?.role === 'admin')
+
+const { settings: brand, loadBrand } = useBrand()
+await loadBrand()
+
+/* ---------------------------
+   CONTENT LOADING
+--------------------------- */
+const commingSoon = await useAsyncData(
+  () => `content-commingSoon-${locale.value}`,
+  () => $fetch(`/api/content/commingSoon/${locale.value}`)
+)
+
 const hero = await useAsyncData(
   () => `content-hero-${locale.value}`,
   () => $fetch(`/api/content/hero/${locale.value}`)
 )
-// ABOUT (GenericImageTextSection)
+
 const about = await useAsyncData(
   () => `content-about-${locale.value}`,
   () => $fetch(`/api/content/about/${locale.value}`)
 )
-// Story (GenericTextSection)
+
 const story = await useAsyncData(
   () => `content-story-${locale.value}`,
   () => $fetch(`/api/content/story/${locale.value}`)
 )
-// Methode (GenericTextSection)
+
 const methode = await useAsyncData(
   () => `content-methode-${locale.value}`,
   () => $fetch(`/api/content/methode/${locale.value}`)
 )
-// Feedback (GenericFeedbackSection) - nincs dinamikus tartalom
-const feedback = null
-// Contact (GenericContactSection) 
+
 const contact = await useAsyncData(
   () => `content-contact-${locale.value}`,
   () => $fetch(`/api/content/contact/${locale.value}`)
 )
-// CONTACT HERO – külön kulcs, külön endpoint
+
 const contactHero = await useAsyncData(
   () => `content-contact-hero-${locale.value}`,
   () => $fetch(`/api/content/contact-hero/${locale.value}`)
 )
 
-// Nyelvváltás figyelése
+/* ---------------------------
+   LANGUAGE WATCHER
+--------------------------- */
 watch(locale, () => {
+  commingSoon.refresh()
   hero.refresh()
   about.refresh()
   story.refresh()
@@ -53,58 +73,67 @@ watch(locale, () => {
   contact.refresh()
   contactHero.refresh()
 })
-
 </script>
 
 <template>
+
+  <!-- MAINTENANCE MODE -->
   <GenericHeroSection
-    v-if="hero?.data?.value"
-    :content="hero.data.value"
-    sectionKey="hero"
+    v-if="brand?.maintenanceMode && !isAdmin"
+    :content="commingSoon?.data?.value"
+    sectionKey="commingSoon"
   />
 
-  <GenericImageTextSection
-    v-if="about?.data?.value"
-    :content="about.data.value"
-    sectionKey="about"
-    :reverse="false"
-  />
+  <!-- NORMAL LANDING PAGE -->
+  <template v-else>
 
-  <section-separator />
+    <GenericHeroSection
+      v-if="hero?.data?.value"
+      :content="hero.data.value"
+      sectionKey="hero"
+    />
 
-  <GenericTextSection
-    v-if="story?.data?.value"
-    :content="story.data.value"
-    sectionKey="story"
-  />
+    <GenericImageTextSection
+      v-if="about?.data?.value"
+      :content="about.data.value"
+      sectionKey="about"
+      :reverse="false"
+    />
 
-  <section-separator />
+    <section-separator />
 
-  <GenericTextSection
-    v-if="methode?.data?.value"
-    :content="methode.data.value"
-    sectionKey="methode"
-  />
+    <GenericTextSection
+      v-if="story?.data?.value"
+      :content="story.data.value"
+      sectionKey="story"
+    />
 
-  <section-separator />
+    <section-separator />
 
-  <GenericFeedbackSection
-    sectionKey="feedback"
-  />
+    <GenericTextSection
+      v-if="methode?.data?.value"
+      :content="methode.data.value"
+      sectionKey="methode"
+    />
 
-  <GenericHeroSection
-    v-if="contactHero?.data?.value"
-    :content="contactHero.data.value"
-    sectionKey="contact-hero"
-  />
+    <section-separator />
 
-  <GenericContactSection
-    v-if="contact?.data?.value"
-    :content="contact.data.value"
-    sectionKey="contact"
-  />
+    <GenericFeedbackSection sectionKey="feedback" />
 
-  <GenericBlogSection
-    sectionKey="blog"
-  />
+    <GenericHeroSection
+      v-if="contactHero?.data?.value"
+      :content="contactHero.data.value"
+      sectionKey="contact-hero"
+    />
+
+    <GenericContactSection
+      v-if="contact?.data?.value"
+      :content="contact.data.value"
+      sectionKey="contact"
+    />
+
+    <GenericBlogSection sectionKey="blog" />
+
+  </template>
+
 </template>

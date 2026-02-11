@@ -2,6 +2,7 @@
   <v-container class="py-10" max-width="400">
     <v-card class="pa-6">
       <h2 class="text-h5 mb-4">{{ $t('auth.login.title') }}</h2>
+
       <!-- email -->
       <v-text-field
         v-model="email"
@@ -9,6 +10,7 @@
         type="email"
         variant="outlined"
       />
+
       <!-- password -->
       <v-text-field
         v-model="psw"
@@ -21,7 +23,8 @@
         autocapitalize="off"
         spellcheck="false"
       />
-      <!--  login button  -->
+
+      <!-- login button -->
       <v-btn
         color="primary"
         block
@@ -31,16 +34,38 @@
       >
         {{ $t('auth.login.button') }}
       </v-btn>
-      <!--  no account & forgotten password link -->
+
+      <!-- no account & forgotten password link -->
       <div class="mt-4 flex flex-col items-center gap-2">
-        <NuxtLink to="/register" class="text-sm text-blue-600 hover:underline">
+
+        <!-- REGISTRATION LINK ONLY IF MAINTENANCE OFF -->
+        <NuxtLink
+          v-if="!settings?.maintenanceMode"
+          to="/register"
+          class="text-sm text-blue-600 hover:underline"
+        >
           {{ $t('auth.login.noAccount') }}
         </NuxtLink>
-        <NuxtLink to="/forgot-password" class="text-sm text-blue-600 hover:underline">
+
+        <NuxtLink
+          to="/forgot-password"
+          class="text-sm text-blue-600 hover:underline"
+        >
           {{ $t('auth.login.forgotenPsw') }}
         </NuxtLink>
       </div>
-      <!--  error message -->
+
+      <!-- CANCEL BUTTON -->
+      <div class="mt-4 flex justify-center">
+        <NuxtLink
+          to="/"
+          class="text-sm text-gray-600 hover:underline"
+        >
+          {{ $t('common.cancel') }}
+        </NuxtLink>
+      </div>
+
+      <!-- error message -->
       <v-alert
         v-if="error"
         type="error"
@@ -55,32 +80,42 @@
 </template>
 
 <script setup>
-  const email = ref('')
-  const psw = ref('')
-  const showPassword = ref(false)
-  const error = ref(null)
-  const loading = ref(false)
-  const { t } = useI18n()
-  const { login } = useAuth()
-  // init
-  onMounted(() => {
-    email.value = ''
-    psw.value = ''
-    showPassword.value = false
-  })
-  // loding
-  async function doLogin() {
-    loading.value = true
-    error.value = null
-    try {
-      const route = useRoute()
-      const redirect = route.query.redirect || '/'
-      await login(email.value, psw.value)
-      navigateTo(redirect)
-    } catch (e) {
-      error.value = t('auth.login.errors.invalid')
-    } finally {
-      loading.value = false
-    }
+import { ref, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useAuth } from '@/composables/useAuth'
+import { useBrand } from '@/composables/useBrand'
+
+const email = ref('')
+const psw = ref('')
+const showPassword = ref(false)
+const error = ref(null)
+const loading = ref(false)
+
+const { t } = useI18n()
+const { login } = useAuth()
+
+// BRAND SETTINGS FOR MAINTENANCE MODE
+const { settings, loadBrand } = useBrand()
+await loadBrand()
+
+onMounted(() => {
+  email.value = ''
+  psw.value = ''
+  showPassword.value = false
+})
+
+async function doLogin() {
+  loading.value = true
+  error.value = null
+  try {
+    const route = useRoute()
+    const redirect = route.query.redirect || '/'
+    await login(email.value, psw.value)
+    navigateTo(redirect)
+  } catch (e) {
+    error.value = t('auth.login.errors.invalid')
+  } finally {
+    loading.value = false
   }
+}
 </script>

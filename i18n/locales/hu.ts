@@ -39,7 +39,7 @@ export default defineI18nLocale(async (locale) => {
     methode: "Módszer",
     contact: "Kapcsolat",
     blog: "Blog",
-    products: "Termékek",
+    products: "Szolgáltatások",
     adminSection: "Admin szekció"
   },
   admin: {
@@ -279,7 +279,10 @@ export default defineI18nLocale(async (locale) => {
     readAgb: "ÁSZF megtekintése",
     acceptGdpr: "Elfogadom az Adatkezelési tájékoztatót",
     readGdpr: "GDPR megtekintése",
-    acceptNewsletter: "Szeretnék feliratkozni a hírlevélre"
+    acceptNewsletter: "Szeretnék feliratkozni a hírlevélre",
+    disabledTitle:"Regisztráció jelenleg nem elérhető",
+    disabledText:"A regisztráció jelenleg le van tiltva. Kérlek, próbáld meg később.",
+    goToLogin : "Tovább a bejelentkezéshez"
   },
   login: {
     title: "Bejelentkezés",

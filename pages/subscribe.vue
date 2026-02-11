@@ -13,9 +13,9 @@
       {{ $t('newsletter.subscribeTitle') }}
     </h1>
 
-    <p class="text-center text-gray-600 mb-8">
+    <!--p class="text-center text-gray-600 mb-8">
       {{ $t('newsletter.subscribeDescription') }}
-    </p>
+    </p-->
 
     <!-- Form -->
     <v-card class="p-6 rounded-xl shadow bg-white">

@@ -36,7 +36,7 @@
     <!-- MAIN CHART -->
     <v-row>
       <v-col cols="12" md="8">
-        <v-card height="420" variant="outlined" class="d-flex flex-column">
+        <v-card height="440" variant="outlined" class="d-flex flex-column">
           <v-card-title class="d-flex align-center">
             <v-icon start color="primary">mdi-chart-bar</v-icon>
             Napi API aktivitás
@@ -56,21 +56,21 @@
       <v-col cols="12" md="4">
         <v-card title="Gyanús Bot Tevékenység" color="error" theme="dark">
           <v-card-text>
-            <div class="text-h2">{{ data?.totals?.suspicious || 0 }}</div>
+            <div class="text-h4">{{ data?.totals?.suspicious || 0 }}</div>
             <div class="text-subtitle-1">Gyanús kérések</div>
           </v-card-text>
         </v-card>
 
         <v-card title="Honeypot találatok" class="mt-4" color="warning">
           <v-card-text>
-            <div class="text-h2">{{ data?.honeypotHits || 0 }}</div>
+            <div class="text-h4">{{ data?.honeypotHits || 0 }}</div>
             <div class="text-subtitle-1">Csapdába esett botok</div>
           </v-card-text>
         </v-card>
 
         <v-card title="Ismeretlen országok" class="mt-4" color="warning">
           <v-card-text>
-            <div class="text-h2">{{ unknownCountries }}</div>
+            <div class="text-h4">{{ unknownCountries }}</div>
             <div class="text-subtitle-1">GeoIP nélkül</div>
           </v-card-text>
         </v-card>
@@ -85,7 +85,7 @@
       <v-col cols="12" md="6">
         <v-card title="Gyanús aktivitás térképe (GeoIP)">
           <ClientOnly>
-            <div style="height: 450px;">
+            <div style="height: 460px;">
               <GeoIpMap v-if="geoFiltered" :data="geoFiltered" />
             </div>
           </ClientOnly>

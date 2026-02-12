@@ -53,6 +53,8 @@ Architect:
 - chart.js installed ✔️
 - /components/charts/LineChart.vue + BarChart.vue ✔️
 - Email sending for user and admin bei one slot reservation ✔️
+- GO LIVE (nuxt app deployed on server and running under pm2) ✔️
+- favicon recolor to green ✔️
 
 Landing Page (public page):
 - /components/GeneralHeroSection.vue ✔️
@@ -117,6 +119,7 @@ Admin functions:
 - pages/admim/brand/index.vue ✔️
 - /pages/admin/products/create.vue --> add the language to product creating or edit - product has to be language relevant ✔️
 - admin has to be complete the booking slots, the frontend is missing, but the backend has already an a endpoint for that PUT:booking/complete/:id (verifyAdmin) ✔️
+- new function on pages/admin/brand: maintanance modus, if ist on than only a commong soon section available on the landing page and only admin  can log in (she can see and edit everything) ✔️
 
 User functions:
 - /pages/products/index.vue --> Product overview site with searching(picture, name, short description, price on v-card) ✔️
@@ -141,12 +144,8 @@ Bugs:
         - none
 
 Tasks are open:
+→ add info@antaligyongyi.hu mail service to backend, this has to be the standard for system messages.
+→ create mail account choice on frontend by newsletter
 → billing with stripe? acc eu billing roulles (billing from Germany to Hungary)
 → create a new html element template for newsletter template editor wicht can be edited with tiptap editor.
 → welcome newsletter package for newcommers: 5-6 newsletters scheduled in weekly (o rtwo per week) after registration with pre defined content acc. sales rolues
-→→→→→→ GO LIVE:
-    - deploy frontend from github to VPS
-    - integrate the new frontend into pm2
-    - change nginx.config
-    - restrart server
-    - delete old static vue frontend

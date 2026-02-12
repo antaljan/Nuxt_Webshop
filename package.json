@@ -18,6 +18,8 @@
     "@tiptap/vue-3": "^3.16.0",
     "chart.js": "^4.5.1",
     "dompurify": "^3.3.1",
+    "echarts": "^6.0.0",
+    "echarts-maps": "^1.1.0",
     "jsonwebtoken": "^9.0.3",
     "nuxt": "^4.2.2",
     "nuxt-security": "^2.5.1",

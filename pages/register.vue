@@ -228,7 +228,8 @@ async function doRegister() {
       body: {
         firstname: firstname.value,
         lastname: lastname.value,
-        email: email.value
+        email: email.value,
+        language: $i18n.locale || 'en'
       }
     }).catch(() => {})
   }
@@ -248,7 +249,8 @@ async function doRegister() {
         psw: psw.value,
         adress: fullAdress,
         phone: phone.value || '',
-        rolle: 'user'
+        rolle: 'user',
+        language: $i18n.locale || 'en'
       }
     })
     navigateTo('/')

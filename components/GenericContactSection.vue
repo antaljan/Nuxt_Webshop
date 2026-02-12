@@ -148,7 +148,6 @@ async function handleSendEmail() {
     await $fetch('/api/email/send', {
       method: 'POST',
       body: {
-        email: 'antali.gyongyi@gmail.com',
         subject: `Kapcsolatfelvétel a honlapról: ${subject.value}`,
         message: `Feladó: ${email.value}\nÜzenet: ${message.value}`
       }

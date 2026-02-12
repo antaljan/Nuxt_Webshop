@@ -144,7 +144,8 @@ async function submit() {
       body: {
         firstname: firstname.value,
         name: name.value,
-        email: email.value
+        email: email.value,
+        language: $i18n.locale
       }
     })
 

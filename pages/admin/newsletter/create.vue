@@ -1,98 +1,154 @@
 <template>
   <section class="p-4 bg-gray-50 min-h-screen">
     <v-container fluid>
-      <!-- HEADER & SUBJECT -->
-      <v-row class="align-center mb-6">
-        <v-col cols="12" md="8">
-          <v-textarea
-            v-model="subject"
-            :label="$t('admin.newsletter.form.subject')"
-            rows="1"
-            variant="outlined"
-            bg-color="white"
-            auto-grow
-            :rules="[v => !!v || 'Title is required']"
-          />
-        </v-col>
-        <v-col cols="12" md="4" class="text-right">
-          <v-btn color="secondary" prepend-icon="mdi-folder-open" size="large" @click="templateDialogVisible = true">
-            {{ $t('admin.newsletter.templates') }}
+
+      <!-- BACK BUTTON -->
+      <v-btn
+        color="primary"
+        variant="text"
+        prepend-icon="mdi-arrow-left"
+        to="/admin/newsletter"
+        class="mb-4"
+      >
+        Vissza a hírlevelekhez
+      </v-btn>
+
+      <!-- TEMPLATE LIST -->
+      <v-card class="mb-6 rounded-xl shadow-sm">
+        <v-card-title class="flex justify-between items-center">
+          <span class="text-lg font-bold">Mentett sablonok</span>
+
+          <v-btn
+            color="success"
+            prepend-icon="mdi-plus"
+            @click="startNewTemplate"
+          >
+            Új sablon
           </v-btn>
-        </v-col>
-      </v-row>
+        </v-card-title>
 
-      <v-row>
-        <!-- LEFT COLUMN: TOOLBAR & PREVIEW -->
-        <v-col cols="12" md="9">
-          <!-- BLOCK TOOLBAR -->
-          <v-card class="mb-6 rounded-xl shadow-sm">
-            <v-card-title class="bg-blue-darken-3 text-white text-subtitle-1 py-2">
-              <v-icon start size="small">mdi-view-grid-plus</v-icon> Sablon-elemek
-            </v-card-title>
-            <v-card-text class="p-4 flex flex-wrap gap-2">
-              <v-btn
-                v-for="(item, index) in templateBlocks"
-                :key="index"
-                @click="insertBlock(item)"
-                variant="tonal"
-                color="blue-darken-2"
-                size="small"
-                rounded="lg"
-              >
-                {{ item.label }}
+        <v-data-table
+          :headers="templateHeaders"
+          :items="templates"
+          :items-per-page="5"
+          class="border-t"
+        >
+          <template #item.actions="{ item }">
+            <v-btn
+              icon="mdi-pencil"
+              variant="text"
+              color="blue"
+              @click="loadSelectedTemplate(item)"
+            />
+            <v-btn
+              icon="mdi-delete"
+              variant="text"
+              color="red"
+              @click="deleteTemplate(item._id)"
+            />
+          </template>
+        </v-data-table>
+      </v-card>
+
+      <!-- EDITOR (HIDEABLE) -->
+      <v-expand-transition>
+        <div v-if="showEditor">
+
+          <!-- ======= A TE EREDETI SZERKESZTŐD ======= -->
+
+          <!-- HEADER & SUBJECT -->
+          <v-row class="align-center mb-6">
+            <v-col cols="12" md="8">
+              <v-textarea
+                v-model="subject"
+                :label="$t('admin.newsletter.form.subject')"
+                rows="1"
+                variant="outlined"
+                bg-color="white"
+                auto-grow
+                :rules="[v => !!v || 'Title is required']"
+              />
+            </v-col>
+            <v-col cols="12" md="4" class="text-right">
+              <v-btn color="secondary" prepend-icon="mdi-folder-open" size="large" @click="templateDialogVisible = true">
+                {{ $t('admin.newsletter.templates') }}
               </v-btn>
-            </v-card-text>
-          </v-card>
+            </v-col>
+          </v-row>
 
-          <!-- PREVIEW INTERFACE -->
-          <v-card class="rounded-xl shadow-md overflow-hidden">
-            <v-card-title class="bg-grey-darken-3 text-white flex justify-between align-center">
-              <span>📬 Előnézet</span>
-              <div class="flex gap-2">
-                <v-btn color="success" size="small" @click="saveNewsletter" :disabled="!subject">
-                  Mentés
-                </v-btn>
-                <v-btn color="error" variant="text" size="small" @click="clearNewsletter">
-                  Törlés
-                </v-btn>
-              </div>
-            </v-card-title>
-            <v-card-text class="p-0 bg-white min-h-[600px] border-x">
-              <!-- Rendered HTML content -->
-              <div v-html="sanitizedHtml" class="newsletter-preview-container" />
-            </v-card-text>
-          </v-card>
-        </v-col>
+          <v-row>
+            <!-- LEFT COLUMN -->
+            <v-col cols="12" md="9">
 
-        <!-- RIGHT COLUMN: STRUCTURE TIMELINE -->
-        <v-col cols="12" md="3">
-          <v-card class="rounded-xl shadow-sm sticky top-4">
-            <v-card-title class="text-subtitle-1 border-b">Sablon szerkezete</v-card-title>
-            <v-card-text class="p-4">
-              <div v-if="structure.length === 0" class="text-center py-8 text-gray-400 italic">
-                Nincs még blokk hozzáadva
-              </div>
-              <v-timeline side="end" align="start" density="compact" class="structure-timeline">
-                <v-timeline-item
-                  v-for="(block, index) in structure"
-                  :key="index"
-                  size="x-small"
-                  dot-color="blue"
-                >
-                  <div class="flex justify-between items-center w-full">
-                    <span class="text-xs font-bold truncate pr-2">{{ block.label }}</span>
-                    <div class="flex">
-                      <v-btn icon="mdi-pencil" variant="text" size="x-small" @click="editBlock(index)" />
-                      <v-btn icon="mdi-delete" variant="text" size="x-small" color="red" @click="removeBlock(index)" />
-                    </div>
+              <!-- BLOCK TOOLBAR -->
+              <v-card class="mb-6 rounded-xl shadow-sm">
+                <v-card-title class="bg-blue-darken-3 text-white text-subtitle-1 py-2">
+                  <v-icon start size="small">mdi-view-grid-plus</v-icon> Sablon-elemek
+                </v-card-title>
+                <v-card-text class="p-4 flex flex-wrap gap-2">
+                  <v-btn
+                    v-for="(item, index) in templateBlocks"
+                    :key="index"
+                    @click="insertBlock(item)"
+                    variant="tonal"
+                    color="blue-darken-2"
+                    size="small"
+                    rounded="lg"
+                  >
+                    {{ item.label }}
+                  </v-btn>
+                </v-card-text>
+              </v-card>
+
+              <!-- PREVIEW -->
+              <v-card class="rounded-xl shadow-md overflow-hidden">
+                <v-card-title class="bg-grey-darken-3 text-white flex justify-between align-center">
+                  <span>📬 Előnézet</span>
+                  <div class="flex gap-2">
+                    <v-btn color="success" size="small" @click="saveNewsletter" :disabled="!subject">
+                      Mentés
+                    </v-btn>
+                    <v-btn color="error" variant="text" size="small" @click="clearNewsletter">
+                      Törlés
+                    </v-btn>
                   </div>
-                </v-timeline-item>
-              </v-timeline>
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
+                </v-card-title>
+                <v-card-text class="p-0 bg-white min-h-[600px] border-x">
+                  <div v-html="sanitizedHtml" class="newsletter-preview-container" />
+                </v-card-text>
+              </v-card>
+
+            </v-col>
+
+            <!-- RIGHT COLUMN -->
+            <v-col cols="12" md="3">
+              <v-card class="rounded-xl shadow-sm sticky top-4">
+                <v-card-title class="text-subtitle-1 border-b">Sablon szerkezete</v-card-title>
+                <v-card-text class="p-4">
+                  <div v-if="structure.length === 0" class="text-center py-8 text-gray-400 italic">
+                    Nincs még blokk hozzáadva
+                  </div>
+
+                  <v-timeline side="end" align="start" density="compact" class="structure-timeline">
+                    <v-timeline-item
+                      v-for="(block, index) in structure"
+                      :key="index"
+                      size="x-small"
+                      dot-color="blue"
+                    >
+                      <div class="flex justify-between items-center w-full">
+                        <span class="text-xs font-bold truncate pr-2">{{ block.label }}</span>
+                        <div class="flex">
+                          <v-btn icon="mdi-pencil" variant="text" size="x-small" @click="editBlock(index)" />
+                          <v-btn icon="mdi-delete" variant="text" size="x-small" color="red" @click="removeBlock(index)" />
+                        </div>
+                      </div>
+                    </v-timeline-item>
+                  </v-timeline>
+                </v-card-text>
+              </v-card>
+            </v-col>
+          </v-row>
 
     <!-- DIALOG: BLOCK EDITOR -->
     <v-dialog v-model="dialogVisible" max-width="600px" persistent>
@@ -149,11 +205,33 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+        </div>
+      </v-expand-transition>
+
+    </v-container>
   </section>
 </template>
-
 <script setup>
 import DOMPurify from 'dompurify'
+
+// === ÚJ: szerkesztő elrejtése/megjelenítése ===
+const showEditor = ref(false)
+
+// === ÚJ: sablonlista táblázat fejlécei ===
+const templateHeaders = [
+  { title: 'Cím', key: 'subject', sortable: true },
+  { title: 'Létrehozva', key: 'createdAt', sortable: true },
+  { title: 'Műveletek', key: 'actions', sortable: false }
+]
+
+// === ÚJ: új sablon indítása ===
+function startNewTemplate() {
+  subject.value = ''
+  structure.value = []
+  showEditor.value = true
+}
+
 
 // Import of templates
 import { bodyImgL } from '~/utils/newsletter/TemplateBodyImgL'
@@ -324,6 +402,7 @@ onMounted(() => {
     SABLON BETÖLTÉSE
 --------------------------- */
 async function loadSelectedTemplate(template) {
+  showEditor.value = true
   try {
     subject.value = template.subject;
     if (template.structure) {

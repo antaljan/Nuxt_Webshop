@@ -122,6 +122,8 @@ Admin functions:
 - /pages/admin/products/create.vue --> add the language to product creating or edit - product has to be language relevant ✔️
 - admin has to be complete the booking slots, the frontend is missing, but the backend has already an a endpoint for that PUT:booking/complete/:id (verifyAdmin) ✔️
 - new function on pages/admin/brand: maintanance modus, if ist on than only a commong soon section available on the landing page and only admin  can log in (she can see and edit everything) ✔️
+- frontend/pages/admin/users/index.vue --> add language settings option to users on admin user management ✔️
+- frontend/pages/admin/newsletter/index.vue --> add language settings option to subscribers on admin newsletter management ✔️
 
 User functions:
 - /pages/products/index.vue --> Product overview site with searching(picture, name, short description, price on v-card) ✔️
@@ -138,6 +140,7 @@ User functions:
 - User dashboard (/pages/user/index.vue) is extended with list of booked coaching ✔️
 - /pages/user/profile --> add cancel end profile delete function ✔️
 - GenericScheduler.vue dont has to be show the reserved slots, only the availables ✔️
+- frontend/pages/user/profile --> add language settings option to user profile settings ✔️
 
 Bugs:
     critical:
@@ -146,8 +149,6 @@ Bugs:
         - none
 
 Tasks are open:
-→ frontend/pages/user/profile --> add language settings option to user profile settings
-→ frontend/pages/admin/users/index.vue --> add language settings option to users on admin user management
-→ billing with stripe? acc eu billing roulles (billing from Germany to Hungary)
 → create a new html element template for newsletter template editor wicht can be edited with tiptap editor.
 → welcome newsletter package for newcommers: 5-6 newsletters scheduled in weekly (o rtwo per week) after registration with pre defined content acc. sales rolues
+→ billing with stripe? acc eu billing roulles (billing from Germany to Hungary)

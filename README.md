@@ -138,6 +138,15 @@ project/
 │  ├─ css/
 │  └─ images/
 ├─ components/                      # UI, blog, products, admin, newsletter
+components/
+├─ admin/
+│  ├─ newsletter/
+│  │    ├─ NewsletterStats.vue
+│  │    ├─ NewsletterSwitcher.vue
+│  │    ├─ NewsletterCampaigns.vue
+│  │    ├─ NewsletterSubscribers.vue
+│  │    ├─ NewsletterPreviewDialog.vue
+│  │    └─ NewsletterSubscriberDialog.vue
 │  ├─ charts/
 │  │    ├─ BarChart.vue
 │  │    └─ LineChart.vue

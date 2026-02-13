@@ -131,12 +131,22 @@
           <v-text-field v-model="editingSubscriber.name" label="Vezetéknév" variant="outlined" density="compact" />
           <v-text-field v-model="editingSubscriber.firstname" label="Keresztnév" variant="outlined" density="compact" />
           <v-text-field v-model="editingSubscriber.email" label="Email cím" variant="outlined" density="compact" :disabled="isEditMode" />
-          <v-select 
-            v-model="editingSubscriber.group" 
-            :items="['ujjonc', 'torzsvasarlo', 'coach']" 
-            label="Csoport" 
-            variant="outlined" 
-            density="compact" 
+          <v-select
+            v-model="editingSubscriber.group"
+            :items="['ujjonc', 'torzsvasarlo', 'coach']"
+            label="Csoport"
+            variant="outlined"
+            density="compact"
+          />
+          <v-select
+            v-model="editingSubscriber.language"
+            :items="languages"
+            density="compact"
+            hide-details
+            class="mx-4"
+            style="max-width: 100px"
+            item-title="title"
+            item-value="value"
           />
         </v-card-text>
         <v-card-actions class="pa-4 bg-gray-50">
@@ -153,6 +163,16 @@
 </template>
 
 <script setup>
+
+// A nyelvek importálása a locales alapján, hogy a select-ben megjelenjenek
+const { locales } = useI18n()
+const languages = computed(() => 
+  locales.value.map(l => ({
+    title: l.code.toUpperCase(),
+    value: l.code
+  }))
+)
+
 const { fetchSummary, fetchCampaigns, fetchSubscribers, deleteSubscriber } = useNewsletter()
 
 const showList = ref(false) // false = Hírlevelek, true = Feliratkozók
@@ -203,6 +223,7 @@ const subscriberHeaders = [
   { title: 'Vezetéknév', key: 'name' },
   { title: 'Keresztnév', key: 'firstname' },
   { title: 'Email', key: 'email' },
+  { title: 'Nyelv', key: 'language' },
   { title: 'Műveletek', key: 'actions', sortable: false }
 ]
 
@@ -302,12 +323,13 @@ const editingSubscriber = ref({
   firstname: '',
   name: '',
   email: '',
-  group: 'ujjonc'
+  group: 'ujjonc',
+  language: ''
 })
 // open new subscriber dialog
 function newSubscriber() {
   isEditMode.value = false
-  editingSubscriber.value = { _id: null, firstname: '', name: '', email: '', group: 'ujjonc' }
+  editingSubscriber.value = { _id: null, firstname: '', name: '', email: '', group: 'ujjonc', language: '' }
   editDialog.value = true
 }
 // open edit subscriber dialog

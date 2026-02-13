@@ -193,7 +193,8 @@ export default defineI18nLocale(async (locale) => {
     video: "Videó",
     downloadableFiles: "Letölthető fájlok",
     schedulerTitle: "Időpont választása",
-    all:"Összes"
+    all:"Összes",
+    language:"nyelv"
   },
   feedback: {
     title: "Visszajelzések"

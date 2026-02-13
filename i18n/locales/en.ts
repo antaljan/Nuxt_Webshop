@@ -188,7 +188,8 @@ export default defineI18nLocale(async (locale) => {
     video: "Video",
     downloadableFiles: "Downloadable Files",
     schedulerTitle: "Select Time Slot",
-    all:"All"
+    all:"All",
+    language:"language"
   },
   feedback: {
     title: "Testimonials"

@@ -52,6 +52,17 @@
               prepend-inner-icon="mdi-map-marker"
             />
 
+            <v-select
+              v-model="form.language"
+              :items="languages"
+              density="compact"
+              hide-details
+              class="mx-4"
+              style="max-width: 100px"
+              item-title="title"
+              item-value="value"
+            />
+
             <v-divider class="my-6" />
 
             <div class="d-flex justify-end gap-2">
@@ -133,7 +144,15 @@ const { user } = useAuth()
 const saving = ref(false)
 const snackbar = reactive({ show: false, text: '', color: '' })
 const router = useRouter()
+const { locales } = useI18n()
 
+// A nyelvek importálása a locales alapján, hogy a select-ben megjelenjenek
+const languages = computed(() => 
+  locales.value.map(l => ({
+    title: l.code.toUpperCase(),
+    value: l.code
+  }))
+)
 
 // Reaktív űrlap adatok
 const form = reactive({
@@ -142,7 +161,8 @@ const form = reactive({
   name: '',
   email: '',
   phone: '',
-  adress: ''
+  adress: '',
+  language: ''
 })
 
 // Adatok lekérése kényszerített frissítéssel
@@ -167,6 +187,7 @@ const syncForm = (data) => {
     form.email = userData.email || ''
     form.phone = userData.phone || ''
     form.adress = userData.adress || ''
+    form.language = userData.language || ''
   }
 }
 
@@ -206,7 +227,7 @@ async function updateProfile() {
   }
 }
 
-// ÚJ: törlés dialógus + állapotok
+// törlés dialógus + állapotok
 const deleteDialog = ref(false)
 const deleting = ref(false)
 const deleteError = ref('')

@@ -52,6 +52,13 @@
             :items="roles"
             :label="$t('admin.users.role')"
           />
+          <v-select
+            v-model="form.language"
+            :items="languages"
+            item-title="title"
+            item-value="value"
+            :label="$t('common.language')"
+          />
         </v-card-text>
 
         <v-card-actions>
@@ -78,7 +85,14 @@
 
 <script setup>
 // set language futures
-const { t } = useI18n()
+const { t, locales } = useI18n()
+// A nyelvek importálása a locales alapján, hogy a select-ben megjelenjenek
+const languages = computed(() => 
+  locales.value.map(l => ({
+    title: l.code.toUpperCase(),
+    value: l.code
+  }))
+)
 
 // SSR-safe user loading
 const { data: users, refresh } = await useFetch('/api/admin/users', {
@@ -101,7 +115,8 @@ const form = reactive({
   email: '',
   phone: '',
   adress: '',
-  rolle: 'user'
+  rolle: 'user',
+  language: ''
 })
 
 const headers = [
@@ -109,6 +124,7 @@ const headers = [
   { title: t('auth.register.lastname'), key: 'name' },
   { title: t('auth.register.email'), key: 'email' },
   { title: t('auth.register.phone'), key: 'phone' },
+  { title: t('common.language'), key: 'language' },
   { title: t('admin.users.role'), key: 'rolle' },
   { title: t('admin.products.actions'), key: 'actions', sortable: false }
 ]
@@ -125,7 +141,8 @@ function openCreateModal() {
     email: '',
     phone: '',
     adress: '',
-    rolle: 'user'
+    rolle: 'user',
+    language: ''
   })
   editDialog.value = true
 }
@@ -139,7 +156,8 @@ function openEditModal(user) {
     email: user.email,
     phone: user.phone,
     adress: user.adress,
-    rolle: user.rolle
+    rolle: user.rolle,
+    language: user.language
   })
   editDialog.value = true
 }

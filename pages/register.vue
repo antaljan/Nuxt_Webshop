@@ -176,7 +176,7 @@ const acceptAGB = ref(false)
 const acceptGDPR = ref(false)
 const acceptNewsletter = ref(false)
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 // BRAND SETTINGS FOR MAINTENANCE MODE
 const { settings, loadBrand } = useBrand()
@@ -229,7 +229,7 @@ async function doRegister() {
         firstname: firstname.value,
         lastname: lastname.value,
         email: email.value,
-        language: $i18n.locale || 'en'
+        language: locale.value
       }
     }).catch(() => {})
   }
@@ -250,7 +250,7 @@ async function doRegister() {
         adress: fullAdress,
         phone: phone.value || '',
         rolle: 'user',
-        language: $i18n.locale || 'en'
+        language: i18n.locale.value
       }
     })
     navigateTo('/')

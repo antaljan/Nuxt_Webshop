@@ -19,11 +19,13 @@
 
     <!-- Form -->
     <v-card class="p-6 rounded-xl shadow bg-white">
-      <v-form ref="form" v-model="valid">
+      <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="submit">
         <v-text-field
           v-model="firstname"
           :label="$t('newsletter.firstname')"
-          :rules="[v => !!v || $t('newsletter.errorName')]"
+          :rules="[
+            v => !!v || $t('newsletter.errorFirstname')
+          ]"
           required
         />
 
@@ -56,10 +58,10 @@
 
         <div class="flex justify-end mt-4">
           <v-btn
+            type="submit"
             color="primary"
             variant="flat"
             :loading="loading"
-            @click="submit"
           >
             {{ $t('newsletter.subscribeButton') }}
           </v-btn>
@@ -120,7 +122,7 @@ useHead({
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const form = ref(null)
 const valid = ref(false)
@@ -132,10 +134,14 @@ const loading = ref(false)
 const success = ref(false)
 
 async function submit() {
+
   if (!form.value) return
 
-  const ok = await form.value.validate()
-  if (!ok) return
+  const { valid } = await form.value.validate()
+  if (!valid) {
+    alert(t('newsletter.errorGeneral'))
+    return
+  }
 
   loading.value = true
   try {
@@ -145,7 +151,7 @@ async function submit() {
         firstname: firstname.value,
         name: name.value,
         email: email.value,
-        language: $i18n.locale
+        language: locale.value
       }
     })
 
@@ -156,11 +162,12 @@ async function submit() {
     gdpr.value = false
     form.value.resetValidation()
   } catch (err) {
-    alert(t('newsletter.errorGeneral'))
+    alert(t('newsletter.errorGeneral') + ': ' + err.message)
   } finally {
     loading.value = false
   }
 }
+
 </script>
 
 <style scoped>

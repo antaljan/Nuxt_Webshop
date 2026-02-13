@@ -55,6 +55,8 @@ Architect:
 - Email sending for user and admin bei one slot reservation ✔️
 - GO LIVE (nuxt app deployed on server and running under pm2) ✔️
 - favicon recolor to green ✔️
+- add info@antaligyongyi.hu mail service to backend ✔️
+- create user language depending mail service: hu - info@antaligyongyi.hu , de,en - info@yowayoli.com ✔️
 
 Landing Page (public page):
 - /components/GeneralHeroSection.vue ✔️
@@ -144,8 +146,8 @@ Bugs:
         - none
 
 Tasks are open:
-→ add info@antaligyongyi.hu mail service to backend, this has to be the standard for system messages.
-→ create mail account choice on frontend by newsletter
+→ frontend/pages/user/profile --> add language settings option to user profile settings
+→ frontend/pages/admin/users/index.vue --> add language settings option to users on admin user management
 → billing with stripe? acc eu billing roulles (billing from Germany to Hungary)
 → create a new html element template for newsletter template editor wicht can be edited with tiptap editor.
 → welcome newsletter package for newcommers: 5-6 newsletters scheduled in weekly (o rtwo per week) after registration with pre defined content acc. sales rolues

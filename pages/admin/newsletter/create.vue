@@ -218,11 +218,12 @@
 import DOMPurify from 'dompurify'
 import { renderNewsletterHtml } from '~/utils/newsletter/render'
 import ParagraphEditor from '~/components/newsletter/ParagraphEditor.vue'
+import { useNewsletter } from '~/composables/useNewsletter'
 
 // === ÚJ: szerkesztő elrejtése/megjelenítése ===
 const showEditor = ref(false)
 const editedBlock = ref(null)
-
+const editingId = ref(null)
 
 // === ÚJ: sablonlista táblázat fejlécei ===
 const templateHeaders = [
@@ -318,26 +319,32 @@ async function uploadBlockImage(event, index) {
 }
 
 //  save newsletter template
-const { saveNewsletterTemplate } = useNewsletter() // Emeld be a composable-ből
+const { saveNewsletterTemplate, updateNewsletterTemplate } = useNewsletter()
 async function saveNewsletter() {
   const payload = {
+    _id: editingId.value,
     subject: subject.value,
-    language: "hu", // vagy választható
-    blocks: JSON.parse(JSON.stringify(structure.value))
+    language: "hu",
+    blocks: structure.value
   }
+
   try {
-    const res = await saveNewsletterTemplate(payload)
-    alert("✅ Mentve!")
-    await clearNewsletter()
-    await loadTemplates()
+    if (editingId.value) {
+      // UPDATE
+      await updateNewsletterTemplate(payload)
+    } else {
+      // CREATE
+      await saveNewsletterTemplate(payload)
+    }
+
+    alert("Sikeres mentés!")
+    loadTemplates()
+
   } catch (err) {
     console.error("Mentési hiba:", err)
-        if (err.data) {
-      console.log("Backend hiba részletei:", err.data)
-    }
-    alert("❌ Mentési hiba! Ellenőrizd a konzolt.")
   }
 }
+
 
 async function loadTemplates() {
   const res = await $fetch('/api/newsletter/gettemplates', { method: 'POST' })
@@ -350,13 +357,12 @@ onMounted(() => {
 /* ---------------------------
     SABLON BETÖLTÉSE
 --------------------------- */
-async function loadSelectedTemplate(template) {
+function loadSelectedTemplate(item) {
+  editingId.value = item._id
+  subject.value = item.subject
+  structure.value = JSON.parse(JSON.stringify(item.blocks))
   showEditor.value = true
-  subject.value = template.subject
-  structure.value = JSON.parse(JSON.stringify(template.blocks))
-  templateDialogVisible.value = false
 }
-
 
 /* ---------------------------
     SABLON TÖRLÉSE

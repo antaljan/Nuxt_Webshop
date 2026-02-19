@@ -2,8 +2,7 @@
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   const token = getCookie(event, 'jwt')
-  
-  // A readBody-t try-catch-be tesszük, hogy lássuk, ha ott akad el
+
   let body
   try {
     body = await readBody(event)
@@ -12,20 +11,26 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, message: "A küldött adat nem érvényes JSON" })
   }
 
-  // Ha ide eljut, látni fogod a terminálban!
-  console.log("Kérés érkezett, subject:", body?.subject)
+  console.log("Kérés érkezett (JSON sablon):", body)
+
+  // ÚJ VALIDÁCIÓ – JSON alapú sablon
+  if (!body.subject || !body.blocks) {
+    throw createError({
+      statusCode: 400,
+      data: { error: "Missing fields (subject, blocks)" }
+    })
+  }
 
   try {
     return await $fetch(`${config.public.backendBase}/newsletter/save`, {
       method: 'POST',
       body: {
         subject: body.subject,
-        rawcontent: body.fullHtml,
-        sendDate: body.sendDate,
-        structure: body.structure
+        language: body.language || "hu",
+        blocks: body.blocks
       },
-      headers: { 
-        Authorization: `Bearer ${token}` 
+      headers: {
+        Authorization: `Bearer ${token}`
       }
     })
   } catch (error: any) {

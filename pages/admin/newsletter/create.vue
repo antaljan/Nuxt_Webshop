@@ -114,7 +114,7 @@
                   </div>
                 </v-card-title>
                 <v-card-text class="p-0 bg-white min-h-[600px] border-x">
-                  <div v-html="sanitizedHtml" class="newsletter-preview-container" />
+                  <div v-html="renderedHtml" class="newsletter-preview-container" />
                 </v-card-text>
               </v-card>
 
@@ -155,22 +155,24 @@
       <v-card rounded="xl">
         <v-card-title class="bg-blue-darken-3 text-white">Blokk szerkesztése</v-card-title>
         <v-card-text class="py-6">
-          <div v-if="editableTexts.length > 0">
-            <p class="font-bold mb-2">✏️ Szövegek</p>
-            <v-text-field
-              v-for="(text, i) in editableTexts"
-              :key="'text-'+i"
-              v-model="editableTexts[i]"
-              variant="outlined"
-              density="compact"
-              class="mb-2"
-            />
-          </div>
-          <div v-if="editableLinks.length > 0" class="mt-4">
-            <p class="font-bold mb-2">🔗 Linkek & Képek</p>
-            <div v-for="(link, i) in editableLinks" :key="'link-'+i" class="mb-4 p-3 border rounded-lg bg-gray-50">
-              <v-text-field v-model="editableLinks[i]" label="URL / Link" variant="outlined" density="compact" />
-              <input type="file" @change="e => uploadBlockImage(e, i)" class="text-xs" />
+          <!-- TipTap editor csak paragraph esetén -->
+          <ParagraphEditor
+            v-if="editedBlock?.type === 'paragraph'"
+            v-model="editedBlock.props.text"
+          />
+          <!-- Minden más blokk: egyszerű input mezők -->
+          <div v-else>
+            <div
+              v-for="(value, key) in editedBlock.props"
+              :key="key"
+              class="mb-4"
+            >
+              <v-text-field
+                v-model="editedBlock.props[key]"
+                :label="key"
+                variant="outlined"
+                density="compact"
+              />
             </div>
           </div>
         </v-card-text>
@@ -214,9 +216,13 @@
 </template>
 <script setup>
 import DOMPurify from 'dompurify'
+import { renderNewsletterHtml } from '~/utils/newsletter/render'
+import ParagraphEditor from '~/components/newsletter/ParagraphEditor.vue'
 
 // === ÚJ: szerkesztő elrejtése/megjelenítése ===
 const showEditor = ref(false)
+const editedBlock = ref(null)
+
 
 // === ÚJ: sablonlista táblázat fejlécei ===
 const templateHeaders = [
@@ -232,22 +238,6 @@ function startNewTemplate() {
   showEditor.value = true
 }
 
-
-// Import of templates
-import { bodyImgL } from '~/utils/newsletter/TemplateBodyImgL'
-import { bodyImgC } from '~/utils/newsletter/TemplateBodyImgC'
-import { bodyTextImgL } from '~/utils/newsletter/TemplateBodyTextImgL'
-import { bodyTextImgR } from '~/utils/newsletter/TemplateBodyTextImgR'
-import { headerHTML } from '~/utils/newsletter/TemplateHeader'
-import { heroHTML } from '~/utils/newsletter/TemplateHero'
-import { BodyTextL } from '~/utils/newsletter/TemplateBodyTextL'
-import { BodyTextC } from '~/utils/newsletter/TemplateBodyTextC'
-import { BodyTextBL } from '~/utils/newsletter/TemplateBodyTextBL'
-import { BodyTextBC } from '~/utils/newsletter/TemplateBodyTextBC'
-import { BodyCtaC } from '~/utils/newsletter/TemplateCtaC'
-import { BodyCtaL } from '~/utils/newsletter/TemplateCtaL'
-import { footerHTML } from '~/utils/newsletter/TemplateFooter'
-
 const subject = ref('')
 const structure = ref([])
 const templates = ref([])
@@ -259,36 +249,32 @@ const editableLinks = ref([])
 
 // Mocked sablon items
 const templateBlocks = [
-  { label: 'Fejléc', HTML: headerHTML },
-  { label: 'Lábléc', HTML: footerHTML },
-  { label: 'Hero', HTML: heroHTML },
-  { label: 'cím közép', HTML: BodyTextBC },
-  { label: 'cím ball', HTML: BodyTextBL },
-  { label: 'szöveg közép', HTML: BodyTextC },
-  { label: 'szöveg ball', HTML: BodyTextL },
-  { label: 'kép közép', HTML: bodyImgC },
-  { label: 'kép ball', HTML: bodyImgL },
-  { label: 'kép&szöveg ball', HTML: bodyTextImgL },
-  { label: 'kép&szöveg jobb', HTML: bodyTextImgR },
-  { label: 'gomb közép', HTML: BodyCtaC },
-  { label: 'gomb ball', HTML: BodyCtaL },
+  { label: "Fejléc", type: "header", defaultProps: { title: "", subtitle: "", logo: "" }},
+  { label: "Hero", type: "hero", defaultProps: { title: "", subtitle: "", image: "" }},
+  { label: "Cím", type: "title", defaultProps: { text: "" }},
+  { label: "Bekezdés", type: "paragraph", defaultProps: { text: "" }},
+  { label: "Kép", type: "image", defaultProps: { url: "", alt: "" }},
+  { label: "Kép bal", type: "imageLeft", defaultProps: { url: "", alt: "", text: "" }},
+  { label: "Kép jobb", type: "imageRight", defaultProps: { url: "", alt: "", text: "" }},
+  { label: "Gomb", type: "button", defaultProps: { label: "", url: "" }},
+  { label: "Elválasztó", type: "divider", defaultProps: {}},
+  { label: "Lábléc", type: "footer", defaultProps: { text: "" }}
 ]
 
 // Dinamikusan felépített HTML az előnézethez
-const sanitizedHtml = computed(() => {
-  const fullHtml = structure.value.map(block => block.HTML).join('')
-  if (import.meta.client) {
-    return DOMPurify.sanitize(fullHtml)
-  }
-  return fullHtml
+const renderedHtml = computed(() => {
+  const html = renderNewsletterHtml(structure.value)
+  return import.meta.client ? DOMPurify.sanitize(html) : html
 })
-
 
 /* ---------------------------
     LOGIKA
 --------------------------- */
 function insertBlock(item) {
-  structure.value.push({ ...item })
+  structure.value.push({
+    type: item.type,
+    props: JSON.parse(JSON.stringify(item.defaultProps))
+  })
 }
 
 function removeBlock(index) {
@@ -297,53 +283,17 @@ function removeBlock(index) {
 
 function editBlock(index) {
   editedIndex.value = index
-  const block = structure.value[index]
-  
-  // 1. Szövegek kinyerése (Minden, ami > és < között van, de nem csak whitespace)
-  const textRegex = />([^<>\n]+)</g
-  editableTexts.value = []
-  let match
-  while ((match = textRegex.exec(block.HTML)) !== null) {
-    const text = match[1].trim()
-    if (text) editableTexts.value.push(text)
-  }
-
-  // 2. Linkek/Képek kinyerése (href és src attribútumok)
-  const linkRegex = /(?:href|src)="([^"]+)"/g
-  editableLinks.value = []
-  while ((match = linkRegex.exec(block.HTML)) !== null) {
-    editableLinks.value.push(match[1])
-  }
-  
+  editedBlock.value = JSON.parse(JSON.stringify(structure.value[index]))
   dialogVisible.value = true
 }
 
+
 function saveEditedBlock() {
   if (editedIndex.value === -1) return
-    let newHTML = structure.value[editedIndex.value].HTML
-  // Szövegek visszacserélése
-  const textRegex = />([^<>\n]+)</g
-  let textIdx = 0
-  newHTML = newHTML.replace(textRegex, (match, p1) => {
-    const originalTrimmed = p1.trim()
-    if (originalTrimmed && editableTexts.value[textIdx] !== undefined) {
-      return `>${editableTexts.value[textIdx++]}<`
-    }
-    return match
-  })
-  // Linkek visszacserélése
-  const linkRegex = /(?:href|src)="([^"]+)"/g
-  let linkIdx = 0
-  newHTML = newHTML.replace(linkRegex, (match) => {
-    const attr = match.startsWith('href') ? 'href' : 'src'
-    if (editableLinks.value[linkIdx] !== undefined) {
-      return `${attr}="${editableLinks.value[linkIdx++]}"`
-    }
-    return match
-  })
-  structure.value[editedIndex.value].HTML = newHTML
+  structure.value[editedIndex.value] = JSON.parse(JSON.stringify(editedBlock.value))
   dialogVisible.value = false
 }
+
 
 async function uploadBlockImage(event, index) {
   const file = event.target.files[0]
@@ -372,9 +322,8 @@ const { saveNewsletterTemplate } = useNewsletter() // Emeld be a composable-ből
 async function saveNewsletter() {
   const payload = {
     subject: subject.value,
-    fullHtml: sanitizedHtml.value,
-    structure: JSON.parse(JSON.stringify(structure.value)),
-    sendDate: new Date().toISOString()
+    language: "hu", // vagy választható
+    blocks: JSON.parse(JSON.stringify(structure.value))
   }
   try {
     const res = await saveNewsletterTemplate(payload)
@@ -403,16 +352,11 @@ onMounted(() => {
 --------------------------- */
 async function loadSelectedTemplate(template) {
   showEditor.value = true
-  try {
-    subject.value = template.subject;
-    if (template.structure) {
-      structure.value = JSON.parse(JSON.stringify(template.structure));
-    }
-    templateDialogVisible.value = false;
-  } catch (err) {
-    console.error("Hiba a sablon betöltésekor:", err);
-  }
+  subject.value = template.subject
+  structure.value = JSON.parse(JSON.stringify(template.blocks))
+  templateDialogVisible.value = false
 }
+
 
 /* ---------------------------
     SABLON TÖRLÉSE

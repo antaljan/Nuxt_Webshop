@@ -51,7 +51,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useAuth } from '@/composables/useAuth'
 import { useI18n } from 'vue-i18n'
 const { t, locale } = useI18n()
@@ -115,12 +115,14 @@ async function onImageSelected(event) {
 
   const formData = new FormData()
   formData.append('image', file)
+  const backendBase = config.public.backendBase
 
   try {
-    const response = await $fetch('/api/content/upload', {
-      method: 'POST',
-      body: formData
-    })
+  const response = await $fetch(`${backendBase}/upload`, {
+    method: 'POST',
+    body: formData,
+    credentials: 'include'
+  })
 
   localContent.value.image = `${response.path}?t=${Date.now()}`
   } catch (err) {

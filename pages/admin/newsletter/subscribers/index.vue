@@ -1,6 +1,17 @@
 <template>
   <section class="p-6 space-y-8">
 
+      <!-- BACK BUTTON -->
+      <v-btn
+        color="primary"
+        variant="text"
+        prepend-icon="mdi-arrow-left"
+        to="/admin/newsletter"
+        class="mb-4"
+      >
+        Vissza a hírlevelekhez
+      </v-btn>
+      
     <!-- HEADER -->
     <div class="flex justify-between items-center">
       <h1 class="text-2xl font-bold">Feliratkozók kezelése</h1>

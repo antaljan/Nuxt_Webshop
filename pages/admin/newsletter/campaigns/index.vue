@@ -1,6 +1,17 @@
 <template>
   <section class="p-6 space-y-6">
 
+      <!-- BACK BUTTON -->
+      <v-btn
+        color="primary"
+        variant="text"
+        prepend-icon="mdi-arrow-left"
+        to="/admin/newsletter"
+        class="mb-4"
+      >
+        Vissza a hírlevelekhez
+      </v-btn>
+      
     <!-- HEADER -->
     <div class="flex justify-between items-center">
       <h1 class="text-2xl font-bold">Kampányok</h1>
@@ -141,21 +152,27 @@ const selectedCampaign = ref({})
 const selectedTemplate = ref({})
 
 async function openPreview(item) {
-  selectedCampaign.value = item
+  // 1) Kampány + scheduled elemek lekérése
+  const res = await $fetch(`/api/campaigns/${item._id}`, { method: 'GET' })
 
-  const raw = await $fetch('/api/newsletter/getscheduled', { method: 'POST' })
-  const match = raw.scheduledNewsletters.find(c => c.campaignId === item._id)
+  const scheduled = res.scheduled
+  if (!scheduled.length) {
+    return alert('Ehhez a kampányhoz nincs ütemezett hírlevél')
+  }
 
-  if (!match) return alert('Ehhez a kampányhoz nincs sablon')
+  // 2) Az első scheduled elem template-je
+  const templateId = scheduled[0].templateId
 
-  const res = await $fetch('/api/newsletter/getonetemplate', {
+  const tpl = await $fetch('/api/newsletter/getonetemplate', {
     method: 'POST',
-    body: { _id: match.templateId }
+    body: { _id: templateId }
   })
 
-  selectedTemplate.value = res.oneNewsletter
+  selectedCampaign.value = res.campaign
+  selectedTemplate.value = tpl.oneNewsletter
   previewDialog.value = true
 }
+
 
 /* ACTIONS */
 async function pauseCampaign(item) {

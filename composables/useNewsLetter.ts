@@ -1,6 +1,7 @@
 export function useNewsletter() {
   const fetchSummary = () => $fetch('/api/dashboard/summary')
-  const fetchCampaigns = () => $fetch('/api/dashboard/campaigns')
+  const fetchCampaigns = () => $fetch('/api/campaigns')
+
   const fetchSubscribers = () => $fetch('/api/newsletter/subscribers', { method: 'POST' })
 
   const saveNewsletterTemplate = (payload) =>

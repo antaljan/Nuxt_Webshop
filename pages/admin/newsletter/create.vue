@@ -215,111 +215,136 @@
   </section>
 </template>
 <script setup>
+import { ref, reactive, computed, watch, onMounted } from 'vue'
 import DOMPurify from 'dompurify'
-import { renderNewsletterHtml } from '~/utils/newsletter/render'
 import ParagraphEditor from '~/components/newsletter/ParagraphEditor.vue'
 import { useNewsletter } from '~/composables/useNewsletter'
 
-// === ÚJ: szerkesztő elrejtése/megjelenítése ===
+/* ---------------------------------------------
+   API HOOKS
+--------------------------------------------- */
+const {
+  fetchTemplates,
+  saveTemplate,
+  updateTemplate,
+  deleteTemplateById,
+  renderPreview
+} = useNewsletter()
+
+/* ---------------------------------------------
+   STATE
+--------------------------------------------- */
 const showEditor = ref(false)
+const subject = ref('')
+const structure = ref([]) // JSON blocks
+const templates = ref([])
+
+const dialogVisible = ref(false)
+const templateDialogVisible = ref(false)
+
 const editedBlock = ref(null)
+const editedBlockIndex = ref(null)
 const editingId = ref(null)
 
-// === ÚJ: sablonlista táblázat fejlécei ===
+/* ---------------------------------------------
+   TEMPLATE LIST HEADERS
+--------------------------------------------- */
 const templateHeaders = [
   { title: 'Cím', key: 'subject', sortable: true },
   { title: 'Létrehozva', key: 'createdAt', sortable: true },
   { title: 'Műveletek', key: 'actions', sortable: false }
 ]
 
-// === ÚJ: új sablon indítása ===
+/* ---------------------------------------------
+   BLOCK TYPES
+--------------------------------------------- */
+const templateBlocks = [
+  { label: "Fejléc", type: "header", props: { title: "", subtitle: "", logo: "" }},
+  { label: "Hero", type: "hero", props: { title: "", subtitle: "", image: "" }},
+  { label: "Cím", type: "title", props: { text: "" }},
+  { label: "Bekezdés", type: "paragraph", props: { text: "" }},
+  { label: "Kép", type: "image", props: { url: "", alt: "" }},
+  { label: "Kép bal", type: "imageLeft", props: { url: "", alt: "", text: "" }},
+  { label: "Kép jobb", type: "imageRight", props: { url: "", alt: "", text: "" }},
+  { label: "Gomb", type: "button", props: { label: "", url: "" }},
+  { label: "Elválasztó", type: "divider", props: {}},
+  { label: "Lábléc", type: "footer", props: { text: "" }}
+]
+
+/* ---------------------------------------------
+   LOAD TEMPLATES
+--------------------------------------------- */
+async function loadTemplates() {
+  const res = await fetchTemplates()
+  templates.value = res.allNewsletters || []
+}
+onMounted(loadTemplates)
+
+/* ---------------------------------------------
+   START NEW TEMPLATE
+--------------------------------------------- */
 function startNewTemplate() {
+  editingId.value = null
   subject.value = ''
   structure.value = []
   showEditor.value = true
 }
 
-const subject = ref('')
-const structure = ref([])
-const templates = ref([])
-const dialogVisible = ref(false)
-const templateDialogVisible = ref(false)
-const editedIndex = ref(-1)
-const editableTexts = ref([])
-const editableLinks = ref([])
+/* ---------------------------------------------
+   LOAD SELECTED TEMPLATE
+--------------------------------------------- */
+function loadSelectedTemplate(item) {
+  editingId.value = item._id
+  subject.value = item.subject
+  structure.value = JSON.parse(JSON.stringify(item.blocks))
+  showEditor.value = true
+  templateDialogVisible.value = false
+}
 
-// Mocked sablon items
-const templateBlocks = [
-  { label: "Fejléc", type: "header", defaultProps: { title: "", subtitle: "", logo: "" }},
-  { label: "Hero", type: "hero", defaultProps: { title: "", subtitle: "", image: "" }},
-  { label: "Cím", type: "title", defaultProps: { text: "" }},
-  { label: "Bekezdés", type: "paragraph", defaultProps: { text: "" }},
-  { label: "Kép", type: "image", defaultProps: { url: "", alt: "" }},
-  { label: "Kép bal", type: "imageLeft", defaultProps: { url: "", alt: "", text: "" }},
-  { label: "Kép jobb", type: "imageRight", defaultProps: { url: "", alt: "", text: "" }},
-  { label: "Gomb", type: "button", defaultProps: { label: "", url: "" }},
-  { label: "Elválasztó", type: "divider", defaultProps: {}},
-  { label: "Lábléc", type: "footer", defaultProps: { text: "" }}
-]
-
-// Dinamikusan felépített HTML az előnézethez
-const renderedHtml = computed(() => {
-  const html = renderNewsletterHtml(structure.value)
-  return import.meta.client ? DOMPurify.sanitize(html) : html
-})
-
-/* ---------------------------
-    LOGIKA
---------------------------- */
+/* ---------------------------------------------
+   INSERT BLOCK
+--------------------------------------------- */
 function insertBlock(item) {
   structure.value.push({
     type: item.type,
-    props: JSON.parse(JSON.stringify(item.defaultProps))
+    props: JSON.parse(JSON.stringify(item.props))
   })
 }
 
-function removeBlock(index) {
-  structure.value.splice(index, 1)
-}
-
+/* ---------------------------------------------
+   EDIT BLOCK
+--------------------------------------------- */
 function editBlock(index) {
-  editedIndex.value = index
+  editedBlockIndex.value = index
   editedBlock.value = JSON.parse(JSON.stringify(structure.value[index]))
   dialogVisible.value = true
 }
 
-
 function saveEditedBlock() {
-  if (editedIndex.value === -1) return
-  structure.value[editedIndex.value] = JSON.parse(JSON.stringify(editedBlock.value))
+  structure.value[editedBlockIndex.value] = JSON.parse(JSON.stringify(editedBlock.value))
   dialogVisible.value = false
 }
 
+/* ---------------------------------------------
+   REMOVE BLOCK
+--------------------------------------------- */
+function removeBlock(index) {
+  structure.value.splice(index, 1)
+}
 
-async function uploadBlockImage(event, index) {
-  const file = event.target.files[0]
-  if (!file) return
-  const formData = new FormData()
-  formData.append('image', file)
-  
-  try {
-    const config = useRuntimeConfig()
-    const res = await $fetch(`${config.public.backendBase}/upload`, {
-      method: 'POST',
-      body: formData
-    })
-    
-    // Biztosítsuk a reaktivitást: a splice kényszeríti a Vue-t a frissítésre
-    editableLinks.value.splice(index, 1, res.url) 
-    
-  } catch (err) {
-    console.error("Képfeltöltés hiba:", err)
-    alert("Hiba a kép feltöltésekor!")
+/* ---------------------------------------------
+   CLEAR TEMPLATE
+--------------------------------------------- */
+function clearNewsletter() {
+  if (confirm("Biztosan törlöd a jelenlegi munkádat?")) {
+    subject.value = ""
+    structure.value = []
   }
 }
 
-//  save newsletter template
-const { saveNewsletterTemplate, updateNewsletterTemplate } = useNewsletter()
+/* ---------------------------------------------
+   SAVE TEMPLATE (CREATE OR UPDATE)
+--------------------------------------------- */
 async function saveNewsletter() {
   const payload = {
     _id: editingId.value,
@@ -330,78 +355,50 @@ async function saveNewsletter() {
 
   try {
     if (editingId.value) {
-      // UPDATE
-      await updateNewsletterTemplate(payload)
+      await updateTemplate(payload)
     } else {
-      // CREATE
-      await saveNewsletterTemplate(payload)
+      await saveTemplate(payload)
     }
 
     alert("Sikeres mentés!")
-    loadTemplates()
+    await loadTemplates()
 
   } catch (err) {
     console.error("Mentési hiba:", err)
+    alert("Nem sikerült menteni!")
   }
 }
 
-
-async function loadTemplates() {
-  const res = await $fetch('/api/newsletter/gettemplates', { method: 'POST' })
-  templates.value = res.allNewsletters
-}
-onMounted(() => {
-  loadTemplates()
-})
-
-/* ---------------------------
-    SABLON BETÖLTÉSE
---------------------------- */
-function loadSelectedTemplate(item) {
-  editingId.value = item._id
-  subject.value = item.subject
-  structure.value = JSON.parse(JSON.stringify(item.blocks))
-  showEditor.value = true
-}
-
-/* ---------------------------
-    SABLON TÖRLÉSE
---------------------------- */
+/* ---------------------------------------------
+   DELETE TEMPLATE
+--------------------------------------------- */
 async function deleteTemplate(id) {
-  if (!confirm("Biztosan törölni szeretnéd ezt a sablont?")) return
-  try {
-    await $fetch('/api/newsletter/deletetemplate', {
-      method: 'POST',
-      body: { _id: id }
-    })
-    // Ha ide eljut, a kérés sikeres volt
-    templates.value = templates.value.filter(t => t._id !== id)
-    await loadTemplates()
-    alert("Sablon törölve!")
-  } catch (err) {
-    console.error("Hiba a törlés során:", err)
-    alert("Nem sikerült a törlés!")
-  }
+  if (!confirm("Biztosan törlöd a sablont?")) return
+
+  await deleteTemplateById(id)
+  await loadTemplates()
 }
 
+/* ---------------------------------------------
+   LIVE PREVIEW (BACKEND RENDERER)
+--------------------------------------------- */
+const renderedHtml = ref('')
 
-/* ---------------------------
-    SZERKESZTŐ KIÜRÍTÉSE
---------------------------- */
-function clearNewsletter() {
-  if (confirm("Biztosan törlöd a jelenlegi munkádat?")) {
-    subject.value = ""
-    structure.value = []
+watch([subject, structure], async () => {
+  if (!subject.value && structure.value.length === 0) {
+    renderedHtml.value = ''
+    return
   }
-}
+
+  const html = await renderPreview({
+    blocks: structure.value,
+    subscriber: {
+      firstname: 'Teszt',
+      name: 'Felhasználó',
+      email: 'test@example.com'
+    }
+  })
+
+  renderedHtml.value = DOMPurify.sanitize(html)
+}, { deep: true })
 </script>
-
-<style scoped>
-.newsletter-preview-container {
-  zoom: 0.8; /* Kicsinyítés az átláthatóságért */
-  margin: 0 auto;
-}
-.structure-timeline :deep(.v-timeline-item__body) {
-  width: 100%;
-}
-</style>

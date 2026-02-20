@@ -1,75 +1,79 @@
 <template>
-  <section class="p-6">
+  <section class="p-6 space-y-8">
 
-    <!-- STATS + GRAPH -->
-    <NewsletterStats
-      :stats-map="statsMap"
-      :chart-data="chartData"
-      :chart-options="chartOptions"
-    />
+    <!-- DASHBOARD HEADER -->
+    <div class="flex justify-between items-center">
+      <h1 class="text-3xl font-bold">Hírlevél Dashboard</h1>
 
-    <!-- SWITCHER -->
-    <NewsletterSwitcher
-      v-model="showList"
-    />
+      <v-btn
+        color="primary"
+        prepend-icon="mdi-plus"
+        to="/admin/newsletter/campaigns/create"
+      >
+        Új kampány
+      </v-btn>
+    </div>
 
-    <!-- ACTION BAR -->
-    <v-card-actions class="p-4 flex flex-wrap gap-2">
-      <template v-if="!showList">
-        <v-btn 
-          color="primary" 
-          variant="elevated" 
-          to="/admin/newsletter/schedule" 
-          prepend-icon="mdi-clock-send"
-        >
-          {{ $t('admin.newsletter.sendNow') }}
-        </v-btn>
+    <!-- TOP STATS -->
+    <NewsletterStats :stats-map="statsMap" />
 
-        <v-btn 
-          color="secondary" 
-          variant="outlined" 
-          to="/admin/newsletter/create" 
-          prepend-icon="mdi-email-newsletter"
-        >
-          {{ $t('admin.newsletter.templates') }}
-        </v-btn>
-      </template>
+    <!-- QUICK ACTIONS -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
 
-      <template v-else>
-        <v-btn 
-          color="success" 
-          variant="elevated" 
-          @click="openNewSubscriber" 
+      <v-card class="p-4 hover:shadow-lg cursor-pointer" to="/admin/newsletter/subscribers">
+        <h3 class="text-lg font-semibold">Feliratkozók</h3>
+        <p class="text-2xl font-bold">{{ statsMap.totalSubscribers }}</p>
+      </v-card>
+
+      <v-card class="p-4 hover:shadow-lg cursor-pointer" to="/admin/newsletter/campaigns">
+        <h3 class="text-lg font-semibold">Kampányok</h3>
+        <p class="text-2xl font-bold">{{ campaigns?.length || 0 }}</p>
+      </v-card>
+
+      <v-card class="p-4 hover:shadow-lg cursor-pointer" to="/admin/newsletter/templates">
+        <h3 class="text-lg font-semibold">Sablonok</h3>
+        <p class="text-2xl font-bold">{{ summary?.totalNewsletters || 0 }}</p>
+      </v-card>
+
+      <v-card class="p-4 hover:shadow-lg cursor-pointer" to="/admin/newsletter/delivery-log">
+        <h3 class="text-lg font-semibold">Kézbesítési napló</h3>
+        <p class="text-2xl font-bold">Megnyitások: {{ statsMap.totalOpened }}</p>
+      </v-card>
+
+    </div>
+
+    <!-- CAMPAIGN OVERVIEW -->
+    <v-card class="p-4">
+      <h2 class="text-xl font-semibold mb-4">Aktív kampányok</h2>
+
+      <NewsletterCampaigns
+        :campaigns="campaigns || []"
+        :loading="pendingCampaigns"
+        @preview="openPreview"
+      />
+    </v-card>
+
+    <!-- RECENT SUBSCRIBERS -->
+    <v-card class="p-4">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-semibold">Legutóbbi feliratkozók</h2>
+
+        <v-btn
+          color="success"
           prepend-icon="mdi-account-plus"
+          @click="openNewSubscriber"
         >
-          {{ $t('admin.newsletter.newSubscriber') }}
+          Új feliratkozó
         </v-btn>
-      </template>
-    </v-card-actions>
+      </div>
 
-    <!-- CONTENT -->
-    <v-window v-model="showListValue">
-
-      <!-- CAMPAIGNS -->
-      <v-window-item :value="0">
-        <NewsletterCampaigns
-          :campaigns="campaigns || []"
-          :loading="pendingCampaigns"
-          @preview="openPreview"
-        />
-      </v-window-item>
-
-      <!-- SUBSCRIBERS -->
-      <v-window-item :value="1">
-        <NewsletterSubscribers
-          :subscribers="subscribers?.subscribers || []"
-          :loading="pendingSubscribers"
-          @edit="openEditSubscriber"
-          @delete="confirmDelete"
-        />
-      </v-window-item>
-
-    </v-window>
+      <NewsletterSubscribers
+        :subscribers="subscribers?.subscribers?.slice(0, 5) || []"
+        :loading="pendingSubscribers"
+        @edit="openEditSubscriber"
+        @delete="confirmDelete"
+      />
+    </v-card>
 
     <!-- PREVIEW DIALOG -->
     <NewsletterPreviewDialog
@@ -91,8 +95,8 @@
 </template>
 
 <script setup>
+/* IMPORTS */
 import NewsletterStats from '~/components/admin/newsletter/NewsletterStats.vue'
-import NewsletterSwitcher from '~/components/admin/newsletter/NewsletterSwitcher.vue'
 import NewsletterCampaigns from '~/components/admin/newsletter/NewsletterCampaigns.vue'
 import NewsletterSubscribers from '~/components/admin/newsletter/NewsletterSubscribers.vue'
 import NewsletterPreviewDialog from '~/components/admin/newsletter/NewsletterPreviewDialog.vue'
@@ -101,77 +105,31 @@ import NewsletterSubscriberDialog from '~/components/admin/newsletter/Newsletter
 const { locales } = useI18n()
 const { fetchSummary, fetchCampaigns, fetchSubscribers, deleteSubscriber } = useNewsletter()
 
-/* LANGUAGE LIST */
+/* LANGUAGES */
 const languages = computed(() =>
-  locales.value.map(l => ({
-    title: l.code.toUpperCase(),
-    value: l.code
-  }))
+  locales.value.map(l => ({ title: l.code.toUpperCase(), value: l.code }))
 )
 
-/* SWITCHER */
-const showList = ref(false)
-const showListValue = computed(() => showList.value ? 1 : 0)
-
-/* FETCH DATA */
-
-// SUMMARY
+/* FETCH SUMMARY */
 const { data: summary } = await useAsyncData('newsletter-summary', () => fetchSummary())
 
-// CAMPAIGNS – régi, működő transzformáció visszahozva
+/* FETCH CAMPAIGNS */
 const { data: campaigns, pending: pendingCampaigns } = await useAsyncData(
   'campaigns',
-  async () => {
-    const res = await fetchCampaigns()
-    return res.map(c => ({
-      ...c,
-      openRate: c.recipients > 0 ? ((c.opens / c.recipients) * 100).toFixed(1) : 0,
-      clickRate: c.recipients > 0 ? ((c.clicks / c.recipients) * 100).toFixed(1) : 0,
-      sendDate: c.sentAt
-    }))
-  },
-  { watch: [showList] }
+  () => fetchCampaigns()
 )
 
-// SUBSCRIBERS
+/* FETCH SUBSCRIBERS */
 const { data: subscribers, pending: pendingSubscribers, refresh: refreshSubscribers } =
   await useAsyncData('subscribers', () => fetchSubscribers())
 
-
-/* STATS */
+/* STATS MAP */
 const statsMap = computed(() => ({
   totalNewsletters: summary.value?.totalNewsletters || 0,
   totalSubscribers: summary.value?.totalSubscribers || 0,
   totalOpened: summary.value?.totalOpened || 0,
   totalClicks: summary.value?.totalClicks || 0
 }))
-
-/* GRAPH OPTIONS */
-const chartOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: { legend: { display: true, position: 'top', labels: { color: '#fff' } } },
-  scales: {
-    y: { beginAtZero: true, max: 100, ticks: { color: '#fff' }, grid: { color: 'rgba(255,255,255,0.1)' } },
-    x: { ticks: { color: '#fff' }, grid: { display: false } }
-  }
-}
-
-const chartData = computed(() => {
-  if (!campaigns.value?.length) return null
-  const lastFive = [...campaigns.value]
-    .sort((a, b) => new Date(b.sendDate) - new Date(a.sendDate))
-    .slice(0, 5)
-    .reverse()
-
-  return {
-    labels: lastFive.map(c => c.subject.substring(0, 15) + '...'),
-    datasets: [
-      { label: 'Megnyitás %', backgroundColor: '#4CAF50', data: lastFive.map(c => parseFloat(c.openRate) || 0) },
-      { label: 'Kattintás %', backgroundColor: '#2196F3', data: lastFive.map(c => parseFloat(c.clickRate) || 0) }
-    ]
-  }
-})
 
 /* PREVIEW LOGIC */
 const previewDialog = ref(false)

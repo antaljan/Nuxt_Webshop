@@ -219,16 +219,16 @@ import { ref, reactive, computed, watch, onMounted } from 'vue'
 import DOMPurify from 'dompurify'
 import ParagraphEditor from '~/components/newsletter/ParagraphEditor.vue'
 import { useNewsletter } from '~/composables/useNewsletter'
+import { renderNewsletterPreview } from '~/utils/newsletter/render'
 
 /* ---------------------------------------------
    API HOOKS
 --------------------------------------------- */
 const {
   fetchTemplates,
-  saveTemplate,
-  updateTemplate,
-  deleteTemplateById,
-  renderPreview
+  saveNewsletterTemplate,
+  updateNewsletterTemplate,
+  deleteTemplateById
 } = useNewsletter()
 
 /* ---------------------------------------------
@@ -245,6 +245,7 @@ const templateDialogVisible = ref(false)
 const editedBlock = ref(null)
 const editedBlockIndex = ref(null)
 const editingId = ref(null)
+const isLoadingTemplate = ref(false)
 
 /* ---------------------------------------------
    TEMPLATE LIST HEADERS
@@ -293,13 +294,18 @@ function startNewTemplate() {
 /* ---------------------------------------------
    LOAD SELECTED TEMPLATE
 --------------------------------------------- */
-function loadSelectedTemplate(item) {
+async function loadSelectedTemplate(item) {
+  isLoadingTemplate.value = true
   editingId.value = item._id
   subject.value = item.subject
-  structure.value = JSON.parse(JSON.stringify(item.blocks))
+  structure.value = Array.isArray(item.blocks)
+    ? JSON.parse(JSON.stringify(item.blocks))
+    : []
   showEditor.value = true
   templateDialogVisible.value = false
+  isLoadingTemplate.value = false
 }
+
 
 /* ---------------------------------------------
    INSERT BLOCK
@@ -355,9 +361,9 @@ async function saveNewsletter() {
 
   try {
     if (editingId.value) {
-      await updateTemplate(payload)
+      await updateNewsletterTemplate(payload)
     } else {
-      await saveTemplate(payload)
+      await saveNewsletterTemplate(payload)
     }
 
     alert("Sikeres mentés!")
@@ -385,20 +391,29 @@ async function deleteTemplate(id) {
 const renderedHtml = ref('')
 
 watch([subject, structure], async () => {
+  if (isLoadingTemplate.value) return
+  if (!Array.isArray(structure.value)) {
+    renderedHtml.value = ''
+    return
+  }
+
   if (!subject.value && structure.value.length === 0) {
     renderedHtml.value = ''
     return
   }
 
-  const html = await renderPreview({
-    blocks: structure.value,
-    subscriber: {
-      firstname: 'Teszt',
-      name: 'Felhasználó',
-      email: 'test@example.com'
-    }
-  })
+const html = await renderNewsletterPreview({
+  blocks: structure.value,
+  subscriber: {
+    firstname: 'Teszt',
+    name: 'Felhasználó',
+    email: 'test@example.com'
+  }
+})
+
 
   renderedHtml.value = DOMPurify.sanitize(html)
 }, { deep: true })
+
+
 </script>

@@ -159,7 +159,7 @@ const selectedItemActivity = ref(null)
 /* FETCH SCHEDULED NEWSLETTERS */
 const { data, pending, refresh } = await useAsyncData(
   "delivery-log",
-  () => $fetch("/api/newsletter/getsceduled", { method: "POST" })
+  () => $fetch("/api/newsletter/getscheduled", { method: "POST" })
 )
 
 const list = computed(() => data.value?.scheduledNewsletters || [])

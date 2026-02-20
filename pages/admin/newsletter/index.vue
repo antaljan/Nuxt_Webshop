@@ -30,7 +30,7 @@
         <p class="text-2xl font-bold">{{ campaigns?.length || 0 }}</p>
       </v-card>
 
-      <v-card class="p-4 hover:shadow-lg cursor-pointer" to="/admin/newsletter/templates">
+      <v-card class="p-4 hover:shadow-lg cursor-pointer" to="/admin/newsletter/create">
         <h3 class="text-lg font-semibold">Sablonok</h3>
         <p class="text-2xl font-bold">{{ summary?.totalNewsletters || 0 }}</p>
       </v-card>

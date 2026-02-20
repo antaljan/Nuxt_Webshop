@@ -27,6 +27,14 @@ export function useNewsletter() {
   const fetchTemplates = () =>
     $fetch('/api/newsletter/gettemplates', { method: 'POST' })
 
+ const deleteTemplateById = (_id) =>
+  $fetch('/api/newsletter/deletetemplate', {
+    method: 'POST',
+    body: { _id }
+  })
+
+
+
   return {
     fetchSummary,
     fetchCampaigns,
@@ -35,6 +43,7 @@ export function useNewsletter() {
     updateNewsletterTemplate,
     scheduleNewsletter,
     fetchTemplates,
-    deleteSubscriber
+    deleteSubscriber,
+    deleteTemplateById
   }
 }

@@ -3,7 +3,6 @@
 
 export function renderNewsletterHtml(blocks, subscriber = {}) {
   let html = "";
-
   for (const block of blocks) {
     switch (block.type) {
       case "header":
@@ -273,3 +272,7 @@ function wrapHtmlDocument(content) {
   </body>
   </html>`;
 }
+export function renderNewsletterPreview({ blocks, subscriber }) {
+  return renderNewsletterHtml(blocks, subscriber)
+}
+

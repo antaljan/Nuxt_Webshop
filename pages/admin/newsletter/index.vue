@@ -1,188 +1,144 @@
 <template>
-  <section class="p-6 space-y-8">
+  <section class="p-6 space-y-10">
 
-    <!-- DASHBOARD HEADER -->
+    <!-- HEADER -->
     <div class="flex justify-between items-center">
-      <h1 class="text-3xl font-bold">Hírlevél Dashboard</h1>
+      <h1 class="text-3xl font-bold">Hírlevél kampány Dashboard</h1>
 
       <v-btn
         color="primary"
         prepend-icon="mdi-plus"
-        to="/admin/newsletter/campaigns/create"
+        to="/admin/newsletter/campaigns"
       >
-        Új kampány
+        Kampányok
       </v-btn>
     </div>
 
-    <!-- TOP STATS -->
-    <NewsletterStats :stats-map="statsMap" />
-
-    <!-- QUICK ACTIONS -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-
-      <v-card class="p-4 hover:shadow-lg cursor-pointer" to="/admin/newsletter/subscribers">
+    <!-- KPI CARDS -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <v-card
+        class="p-6 text-center cursor-pointer"
+        to="/admin/newsletter/subscribers"
+      >
         <h3 class="text-lg font-semibold">Feliratkozók</h3>
-        <p class="text-2xl font-bold">{{ statsMap.totalSubscribers }}</p>
+        <p class="text-3xl font-bold">{{ stats.totalSubscribers }}</p>
       </v-card>
 
-      <v-card class="p-4 hover:shadow-lg cursor-pointer" to="/admin/newsletter/campaigns">
-        <h3 class="text-lg font-semibold">Kampányok</h3>
-        <p class="text-2xl font-bold">{{ campaigns?.length || 0 }}</p>
+      <v-card
+        class="p-6 text-center"
+        to="/admin/newsletter/delivery-log"
+      >
+        <h3 class="text-lg font-semibold">Elküldött hírlevelek</h3>
+        <p class="text-3xl font-bold">{{ stats.totalNewsletters }}</p>
       </v-card>
 
-      <v-card class="p-4 hover:shadow-lg cursor-pointer" to="/admin/newsletter/create">
-        <h3 class="text-lg font-semibold">Sablonok</h3>
-        <p class="text-2xl font-bold">{{ summary?.totalNewsletters || 0 }}</p>
+      <v-card class="p-6 text-center">
+        <h3 class="text-lg font-semibold">Megnyitások</h3>
+        <p class="text-3xl font-bold">{{ stats.totalOpened }}</p>
       </v-card>
 
-      <v-card class="p-4 hover:shadow-lg cursor-pointer" to="/admin/newsletter/delivery-log">
-        <h3 class="text-lg font-semibold">Kézbesítési napló</h3>
-        <p class="text-2xl font-bold">Megnyitások: {{ statsMap.totalOpened }}</p>
+      <v-card class="p-6 text-center">
+        <h3 class="text-lg font-semibold">Kattintások</h3>
+        <p class="text-3xl font-bold">{{ stats.totalClicks }}</p>
       </v-card>
-
     </div>
 
-    <!-- CAMPAIGN OVERVIEW -->
-    <v-card class="p-4">
-      <h2 class="text-xl font-semibold mb-4">Aktív kampányok</h2>
-
-      <NewsletterCampaigns
-        :campaigns="campaigns || []"
-        :loading="pendingCampaigns"
-        @preview="openPreview"
-      />
+    <!-- TEMPLATE COUNT -->
+    <v-card 
+      class="p-6 text-center"
+      to="/admin/newsletter/create"
+    >
+      <h3 class="text-lg font-semibold">Elérhető sablonok</h3>
+      <p class="text-3xl font-bold">{{ templateCount }}</p>
     </v-card>
 
-    <!-- RECENT SUBSCRIBERS -->
-    <v-card class="p-4">
-      <div class="flex justify-between items-center mb-4">
-        <h2 class="text-xl font-semibold">Legutóbbi feliratkozók</h2>
+    <!-- PERFORMANCE + STACKED -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <v-card class="p-6">
+        <h2 class="text-xl font-semibold mb-4">Hírlevél teljesítmény (utolsó 10)</h2>
+        <NewsletterPerformanceChart :stats="campaignStats || []" />
+      </v-card>
 
-        <v-btn
-          color="success"
-          prepend-icon="mdi-account-plus"
-          @click="openNewSubscriber"
-        >
-          Új feliratkozó
-        </v-btn>
-      </div>
+      <v-card class="p-6">
+        <h2 class="text-xl font-semibold mb-4">Megnyitások / kattintások / címzettek</h2>
+        <NewsletterStackedChart :stats="campaignStats || []" />
+      </v-card>
+    </div>
 
-      <NewsletterSubscribers
-        :subscribers="subscribers?.subscribers?.slice(0, 5) || []"
-        :loading="pendingSubscribers"
-        @edit="openEditSubscriber"
-        @delete="confirmDelete"
-      />
+    <!-- TREND + TOP TEMPLATES -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <v-card class="p-6">
+        <h2 class="text-xl font-semibold mb-4">6 hónapos trend</h2>
+        <NewsletterTrendChart :trend="trend || []" />
+      </v-card>
+
+      <v-card class="p-6">
+        <h2 class="text-xl font-semibold mb-4">Legjobban teljesítő sablonok</h2>
+        <NewsletterTopTemplates :templates="topTemplates || []" />
+      </v-card>
+    </div>
+
+    <!-- HEATMAP -->
+    <v-card class="p-6">
+      <h2 class="text-xl font-semibold mb-4">Megnyitások időbeli eloszlása</h2>
+      <NewsletterHeatmap :heatmap="heatmap || []" />
     </v-card>
-
-    <!-- PREVIEW DIALOG -->
-    <NewsletterPreviewDialog
-      v-model="previewDialog"
-      :campaign="selectedCampaign"
-      :template="selectedTemplate"
-    />
-
-    <!-- SUBSCRIBER EDIT DIALOG -->
-    <NewsletterSubscriberDialog
-      v-model="editDialog"
-      :is-edit="isEditMode"
-      :subscriber="editingSubscriber"
-      :languages="languages"
-      @save="saveSubscriber"
-    />
 
   </section>
 </template>
 
 <script setup>
-/* IMPORTS */
-import NewsletterStats from '~/components/admin/newsletter/NewsletterStats.vue'
-import NewsletterCampaigns from '~/components/admin/newsletter/NewsletterCampaigns.vue'
-import NewsletterSubscribers from '~/components/admin/newsletter/NewsletterSubscribers.vue'
-import NewsletterPreviewDialog from '~/components/admin/newsletter/NewsletterPreviewDialog.vue'
-import NewsletterSubscriberDialog from '~/components/admin/newsletter/NewsletterSubscriberDialog.vue'
+import NewsletterPerformanceChart from '~/components/admin/newsletter/NewsletterPerformanceChart.vue'
+import NewsletterStackedChart from '~/components/admin/newsletter/NewsletterStackedChart.vue'
+import NewsletterTrendChart from '~/components/admin/newsletter/NewsletterTrendChart.vue'
+import NewsletterTopTemplates from '~/components/admin/newsletter/NewsletterTopTemplates.vue'
+import NewsletterHeatmap from '~/components/admin/newsletter/NewsletterHeatmap.vue'
 
-const { locales } = useI18n()
-const { fetchSummary, fetchCampaigns, fetchSubscribers, deleteSubscriber } = useNewsletter()
+const { fetchSummary, fetchCampaignStats, fetchTrend, fetchTopTemplates, fetchHeatmap, fetchTemplates } = useNewsletter()
 
-/* LANGUAGES */
-const languages = computed(() =>
-  locales.value.map(l => ({ title: l.code.toUpperCase(), value: l.code }))
+/* SUMMARY */
+const { data: summary } = await useAsyncData(
+  'newsletter-summary',
+  () => fetchSummary()
 )
 
-/* FETCH SUMMARY */
-const { data: summary } = await useAsyncData('newsletter-summary', () => fetchSummary())
-
-/* FETCH CAMPAIGNS */
-const { data: campaigns, pending: pendingCampaigns } = await useAsyncData(
-  'campaigns',
-  () => fetchCampaigns()
+/* CAMPAIGN PERFORMANCE (utolsó 10) */
+const { data: campaignStats } = await useAsyncData(
+  'newsletter-campaign-stats',
+  () => fetchCampaignStats()
 )
 
-/* FETCH SUBSCRIBERS */
-const { data: subscribers, pending: pendingSubscribers, refresh: refreshSubscribers } =
-  await useAsyncData('subscribers', () => fetchSubscribers())
+/* TREND (6 hónap) */
+const { data: trend } = await useAsyncData(
+  'newsletter-trend',
+  () => fetchTrend()
+)
 
-/* STATS MAP */
-const statsMap = computed(() => ({
-  totalNewsletters: summary.value?.totalNewsletters || 0,
+/* TOP TEMPLATES */
+const { data: topTemplates } = await useAsyncData(
+  'newsletter-top-templates',
+  () => fetchTopTemplates()
+)
+
+/* HEATMAP */
+const { data: heatmap } = await useAsyncData(
+  'newsletter-heatmap',
+  () => fetchHeatmap()
+)
+
+/* TEMPLATE COUNT */
+const { data: templates } = await useAsyncData(
+  'newsletter-templates',
+  () => fetchTemplates()
+)
+
+const templateCount = computed(() => templates.value?.allNewsletters?.length || 0)
+
+/* KPI MAP */
+const stats = computed(() => ({
   totalSubscribers: summary.value?.totalSubscribers || 0,
+  totalNewsletters: summary.value?.totalNewsletters || 0,
   totalOpened: summary.value?.totalOpened || 0,
   totalClicks: summary.value?.totalClicks || 0
 }))
-
-/* PREVIEW LOGIC */
-const previewDialog = ref(false)
-const selectedCampaign = ref({})
-const selectedTemplate = ref({})
-
-async function openPreview(item) {
-  selectedCampaign.value = item
-
-  const raw = await $fetch('/api/newsletter/getscheduled', { method: 'POST' })
-  const match = raw.scheduledNewsletters.find(c => c.subject === item.subject)
-
-  if (!match) return alert('Nem található sablon')
-
-  const res = await $fetch('/api/newsletter/getonetemplate', {
-    method: 'POST',
-    body: { _id: match.templateId }
-  })
-
-  selectedTemplate.value = res.oneNewsletter
-  previewDialog.value = true
-}
-
-/* SUBSCRIBER CRUD */
-const editDialog = ref(false)
-const isEditMode = ref(false)
-const editingSubscriber = ref({})
-
-function openNewSubscriber() {
-  isEditMode.value = false
-  editingSubscriber.value = { firstname: '', name: '', email: '', group: 'ujjonc', language: 'hu' }
-  editDialog.value = true
-}
-
-function openEditSubscriber(item) {
-  isEditMode.value = true
-  editingSubscriber.value = { ...item }
-  editDialog.value = true
-}
-
-async function saveSubscriber(subscriber) {
-  const url = isEditMode.value ? '/api/newsletter/subscriber' : '/api/newsletter/subscribe'
-  const method = isEditMode.value ? 'PUT' : 'POST'
-
-  await $fetch(url, { method, body: subscriber })
-  editDialog.value = false
-  await refreshSubscribers()
-}
-
-async function confirmDelete(item) {
-  if (confirm('Biztosan törlöd?')) {
-    await deleteSubscriber(item.email)
-    await refreshSubscribers()
-  }
-}
 </script>

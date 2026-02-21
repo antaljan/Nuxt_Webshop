@@ -17,6 +17,7 @@
     "@tiptap/starter-kit": "^3.16.0",
     "@tiptap/vue-3": "^3.16.0",
     "chart.js": "^4.5.1",
+    "chartjs-chart-matrix": "^3.0.0",
     "dompurify": "^3.3.1",
     "echarts": "^6.0.0",
     "echarts-maps": "^1.1.0",

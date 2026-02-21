@@ -52,6 +52,13 @@ export function useNewsletter() {
       body: payload
     })
 
+  const fetchCampaignStats = () => $fetch('/api/dashboard/campaigns')
+  const fetchTrend = () => $fetch('/api/dashboard/trend')
+  const fetchTopTemplates = () => $fetch('/api/dashboard/top-templates')
+  const fetchHeatmap = () => $fetch('/api/dashboard/heatmap')
+
+
+
   return {
     fetchSummary,
 
@@ -71,6 +78,12 @@ export function useNewsletter() {
     deleteTemplateById,
 
     // Scheduling
-    scheduleNewsletter
+    scheduleNewsletter,
+
+    fetchCampaignStats,
+    fetchTrend,
+    fetchTopTemplates,
+    fetchHeatmap,
+
   }
 }

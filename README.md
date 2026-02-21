@@ -21,10 +21,11 @@ Capabilities:
 - Browse blog posts
 - Subscribe to newsletter
 - View products
-- Add to cart & purchase (guest checkout or registration)
+- Add to cart --> with purchase will be a Customer due to registration
 Technical Notes:
 - All public pages rendered via SSR
 - Full SEO, i18n, and fast performance
+- Modern vuetify elements and Tailwind design
 - Nuxt SSR ensures optimal indexing and speed
 2) Customer (Authenticated User)
 Capabilities:
@@ -48,24 +49,23 @@ Capabilities:
 - Manage products
 - View purchases
 - User management
-- Newsletter management:
-  - WYSIWYG/Markdown editor
-  - templates
+- Campaigns and Newsletter management:
+  - JSON Template structure and WYSIWYG editor for paragraph
+  - templates, with items: Header, Footer, Hero, Title, Paragraph, Image, Button, Image&Text (left&Right oriented)
   - audience segmentation
   - scheduled sending
   - open/click statistics
 Technical Notes:
-- Dedicated admin layout (/admin)
 - SSR + auth middleware + role checks
 - Newsletter scheduler via backend cron
-- External email provider recommended (ionos SMTP Server or Mailgun / SendGrid)
+- External email provider recommended (SMTP Server like ionos)
 
 ## 🌍 Multilingual Support & Design
 - Clean, modern UI (Vuetify + MDI + Tailwind)
 - Supported languages: English, German, Hungarian
 - Automatic language detection via browser settings
 - Default language: English
-- Multi‑domain support
+- Multi‑domain support (for email communication as well)
 
 ## 🎬 Video Streaming
 Recommended provider:
@@ -109,216 +109,22 @@ Newsletter Management:
 - editor
 - scheduler
 - sending via nodemailer
+Campaigns Management:
+- create news campaigns
+- modify campaigns
+- delete campaigns
+- statistic over campaigns
 Webshop:
 - products
 - cart
 - payment with Stripe
 - digital product access
-Statistics:
+Statistics (only for admin):
 - page views
 - newsletter opens
 - purchase funnel
 - admin dashboard charts
 
-## 📁 Project Structure (Nuxt 4 Recommended)
-project/
-├─ app.vue                          # Nuxt 4 application
-├─ nuxt.config.json                 # Nuxt config
-├─ package-lock.json                # package lock
-├─ package.json                     # package config
-├─ tailwind.config.js               # Tailwind config
-├─ tsconfig.json
-├─ .env                             # JWT_SECRET, BACKEND_BASE_URL
-├─ i18n/                            # i18n config
-│  └─ locales/
-│       ├─ de.ts                    # német szöveg
-│       ├─ en.ts                    # angol szöveg
-│       └─ hu.ts                    # magyar szöveg
-├─ assets/                          # built assets
-│  ├─ css/
-│  └─ images/
-├─ components/                      # UI, blog, products, admin, newsletter
-components/
-├─ admin/
-│  ├─ newsletter/
-│  │    ├─ NewsletterStats.vue
-│  │    ├─ NewsletterSwitcher.vue
-│  │    ├─ NewsletterCampaigns.vue
-│  │    ├─ NewsletterSubscribers.vue
-│  │    ├─ NewsletterPreviewDialog.vue
-│  │    └─ NewsletterSubscriberDialog.vue
-│  ├─ charts/
-│  │    ├─ BarChart.vue
-│  │    └─ LineChart.vue
-│  ├─ BrandThemeUpdater.vue
-│  ├─ ChartDrawer.vue
-│  ├─ GenericBlogSection.vue
-│  ├─ GenericContactSection.vue
-│  ├─ GenericFeedbackSection.vue
-│  ├─ GenericHeroSection.vue
-│  ├─ GenericImageTextSection.vue
-│  ├─ GenericTextSection.vue
-│  ├─ sectionSeparator.vue
-│  ├─ MyFooter.vue
-│  └─ MyHeadder.vue
-├─ composables/                     # useAuth, useUser, useProducts, etc.
-│  ├─ useAuth.ts
-│  ├─ useBlog.ts
-│  ├─ useBrand.ts
-│  ├─ useChartDrawer.ts
-│  ├─ useContent.ts
-│  ├─ useNewsletter.ts
-│  ├─ useProducts.ts
-│  └─ useProductsAdmin.ts
-├─ layouts/                         # default, user, admin
-│  └─ default.vue
-├─ middleware/                      # middleware
-│  └─ auth.ts
-├─ pages/                           # pages
-│  ├─ admin/
-│  │    ├─ blog/
-│  │    │   ├─ create.vue
-│  │    │   └─ index.vue
-│  │    ├─ brand/
-│  │    │   └─ index.vue
-│  │    ├─ coaching/
-│  │    │   └─ index.vue
-│  │    ├─ content/
-│  │    │   └─ index.vue
-│  │    ├─ images/
-│  │    │   └─ index.vue
-│  │    ├─ newsletter/
-│  │    │   ├─ create.vue
-│  │    │   ├─ index.vue
-│  │    │   └─ schedule.vue
-│  │    ├─ products/
-│  │    │   ├─ create.vue
-│  │    │   └─ index.vue
-│  │    ├─ stat/
-│  │    │   └─ index.vue
-│  │    ├─ users/
-│  │    │   └─ index.vue
-│  │    ├─ cibersecu.vue
-│  │    └─ index.vue
-│  ├─ blog/
-│  │    ├─ [slug].vue
-│  │    └─ index.vue
-│  ├─ checkout/
-│  │    ├─ cancel.vue
-│  │    └─ sucess.vue
-│  ├─ products/
-│  │    ├─ [id].vue
-│  │    └─ index.vue
-│  ├─ user/
-│  │    ├─ product.vue
-│  │    │   └─ [id].vue
-│  │    ├─ index.vue
-│  │    ├─ products.vue
-│  │    └─ profile.vue
-│  ├─ about.vue
-│  ├─ forgot-password.vue
-│  ├─ index.vue
-│  ├─ login.vue
-│  ├─ logout.vue
-│  ├─ register.vue
-│  └─ reset-password.vue
-├─ plugin/                            # plugins
-│  ├─ brand-theme.client.ts
-│  └─ chartjs.client.ts
-├─ public/                            # static files
-│  ├─ fabackImages.jpg
-│  ├─ favicon.ivo
-│  └─ robots.txt
-└─ server/                            # SSR backend layer
-   └─ api/
-      ├─ checkout.post.ts
-      ├─ admin/
-      │   ├─ users
-      │   │     ├─ delete.post.ts
-      │   │     └─ update.post.ts
-      │   ├─ brand.get.ts
-      │   ├─ brand.put.ts
-      │   └─ user.get.ts
-      ├─ auth/
-      │   ├─ login.post.ts
-      │   ├─ logout.post.ts
-      │   ├─ me.get.ts
-      │   └─ register.post.ts
-      ├─ blog/
-      │   ├─ [id].delete.ts
-      │   ├─ [id].get.ts
-      │   ├─ [id].put.ts
-      │   ├─ create.post.ts
-      │   └─ index.get.ts
-      ├─ booking/
-      │   ├─ book/
-      │   │     └─ [id].put.ts
-      │   ├─ by-date/
-      │   │     └─ [date].get.ts
-      │   ├─ cancel/
-      │   │     └─ [id].put.ts
-      │   ├─ [id].delete.ts
-      │   ├─ [id].put.ts
-      │   ├─ all.get.ts
-      │   ├─ available.get.ts
-      │   ├─ mybookings.get.ts
-      │   └─ new.post.ts
-      ├─ content/
-      │   ├─ [section]/
-      │   │     ├─ language.get.ts
-      │   │     └─ language.put.ts
-      │   └─ upload.post.ts
-      ├─ content-upload/
-      │   └─ index.post.ts
-      ├─ dashboard/
-      │   ├─ campaigns.get.ts
-      │   └─ summary.get.ts
-      ├─ emial/
-      │   └─ send.post.ts
-      ├─ feedbacks/
-      │   ├─ [id].delete.ts
-      │   ├─ [id].get.ts
-      │   ├─ [id].put.ts
-      │   ├─ index.get.ts
-      │   └─ new.post.ts
-      ├─ images/
-      │   ├─ [filename].delete.ts
-      │   └─ index.get.ts
-      ├─ logs/
-      │   └─ stats.get.ts
-      ├─ newsletter/
-      │   ├─ create/
-      │   │     └─ save.post.ts
-      │   ├─ unsubscribe/
-      │   │     └─ [email].get.ts
-      │   ├─ deletetemplate.post.ts
-      │   ├─ getonetemplate.post.ts
-      │   ├─ getscheduled.post.ts
-      │   ├─ gettemplates.post.ts
-      │   ├─ schedule.post.ts
-      │   ├─ send.post.ts
-      │   ├─ subscribe.post.ts
-      │   ├─ subscriber.put.ts
-      │   └─ subscribers.post.ts
-      ├─ track/
-      │   ├─ click/
-      │   │     └─ [emailid].get.ts
-      │   └─ open/
-      │         └─ [emailid].get.ts
-      ├─ upload/
-      │   └─ index.post.ts
-      └─ user/
-      │   ├─ product
-      │   │     └─ [id].get.ts
-      │   ├─ pdf-token.get.ts
-      │   ├─ purchases.get.ts
-      │   └─ video-token.get.ts
-      └─ users/
-          ├─ create.post.ts
-          ├─ delete.post.ts
-          ├─ index.post.ts
-          └─ update.post.ts
-   
 ## 🔐 Authentication & Authorization
 Login Flow:
   1. Nuxt → backend: email + password

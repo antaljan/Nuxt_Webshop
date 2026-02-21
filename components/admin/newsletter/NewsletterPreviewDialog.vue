@@ -6,11 +6,11 @@
   >
     <v-card rounded="xl">
       <v-card-title class="bg-blue-darken-3 text-white py-4 px-6">
-        {{ campaign?.subject }}
+        {{ template?.subject || campaign?.name }}
       </v-card-title>
 
       <v-card-text class="pa-0 bg-white min-h-[400px]">
-        <div v-html="template?.rawcontent" class="p-4"></div>
+        <div class="p-4" v-html="renderedHtml"></div>
       </v-card-text>
 
       <v-card-actions class="bg-gray-50 pa-4">
@@ -24,11 +24,21 @@
 </template>
 
 <script setup>
-defineProps({
+import { renderNewsletterPreview } from '~/utils/newsletter/render'
+
+const props = defineProps({
   modelValue: Boolean,
   campaign: Object,
   template: Object
 })
 
 defineEmits(['update:modelValue'])
+
+const renderedHtml = computed(() => {
+  if (!props.template?.blocks) return "<p>Nincs megjeleníthető tartalom</p>"
+  return renderNewsletterPreview({
+    blocks: props.template.blocks,
+    subscriber: { firstname: "Barátom" }
+  })
+})
 </script>

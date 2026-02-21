@@ -8,7 +8,7 @@
       <v-btn
         color="grey"
         variant="text"
-        to="/admin/newsletter"
+        to="/admin/newsletter/campaigns"
         prepend-icon="mdi-arrow-left"
       >
         Vissza
@@ -84,6 +84,12 @@
             </div>
 
             <!-- TEMPLATE SELECT -->
+            <v-btn
+              icon="mdi-eye"
+              variant="text"
+              @click="openPreview(email)"
+            />
+
             <v-select
               v-model="email.templateId"
               :items="templateOptions"
@@ -103,31 +109,15 @@
               required
             />
 
-            <!-- FILTERS -->
-            <h4 class="text-md font-semibold mt-4">Célcsoport szűrők</h4>
+            <!-- SUBSCRIBER LIST -->
+            <v-btn
+              variant="text"
+              prepend-icon="mdi-account-multiple"
+              @click="openSubscriberSelector(index)"
+            >
+              Címzettek ({{ email.subscribers.length }})
+            </v-btn>
 
-            <v-select
-              v-model="email.filters.language"
-              :items="languages"
-              label="Nyelv"
-              multiple
-              variant="outlined"
-            />
-
-            <v-select
-              v-model="email.filters.group"
-              :items="groups"
-              label="Csoport"
-              multiple
-              variant="outlined"
-            />
-
-            <v-textarea
-              v-model="email.filters.customSubscribers"
-              label="Egyedi e-mail címek (soronként egy)"
-              variant="outlined"
-              rows="3"
-            />
           </v-card>
         </div>
       </v-card>
@@ -146,15 +136,39 @@
 
     </template>
 
+    <NewsletterPreviewDialog
+      v-model="previewDialog"
+      :template="selectedTemplate"
+    />
+
+    <SubscriberSelector
+      v-model="subscriberDialog"
+      :selected="subscriberTempList"
+      @update:selected="applySubscribers"
+    />
+
   </section>
 </template>
 
 <script setup>
 /* IMPORTS */
+import NewsletterPreviewDialog from '~/components/admin/newsletter/NewsletterPreviewDialog.vue'
+import { renderNewsletterPreview } from '~/utils/newsletter/render'
+import SubscriberSelector from '~/components/admin/newsletter/SubscriberSelector.vue'
+
+
+const previewDialog = ref(false)
+const selectedTemplate = ref(null)
+
 const route = useRoute()
 const campaignId = route.params.id
 
 const { fetchTemplates, fetchCampaign } = useNewsletter()
+
+const subscriberDialog = ref(false)
+const subscriberTargetIndex = ref(null)
+const subscriberTempList = ref([])
+
 
 /* STATE */
 const campaign = reactive({
@@ -166,15 +180,18 @@ const campaign = reactive({
 
 /* FETCH CAMPAIGN */
 const { data: campaignData, pending } = await useAsyncData(
-  `campaign-${campaignId}`,
-  () => fetchCampaign(campaignId)
+  () => `campaign-${route.params.id}`,
+  () => fetchCampaign(route.params.id),
+  { watch: [() => route.params.id] }
 )
+
 
 /* APPLY LOADED DATA */
 watchEffect(() => {
+  
   if (!campaignData.value) return
 
-  const c = campaignData.value.campaign
+const c = campaignData.value.campaign || campaignData.value
 
   campaign.name = c.name
   campaign.description = c.description
@@ -182,11 +199,7 @@ watchEffect(() => {
   campaign.newsletters = c.newsletters.map(n => ({
     templateId: n.templateId,
     sendDate: n.sendDate ? n.sendDate.substring(0, 16) : "",
-    filters: {
-      language: n.filters?.language || [],
-      group: n.filters?.group || [],
-      customSubscribers: (n.filters?.customSubscribers || []).join("\n")
-    }
+    subscribers: n.subscribers || []   // <-- EZ A LÉNYEG
   }))
 })
 
@@ -198,28 +211,12 @@ const { data: templates } = await useAsyncData(
 
 const templateOptions = computed(() => templates.value?.allNewsletters || [])
 
-/* LANGUAGES + GROUPS */
-const languages = [
-  { title: "HU", value: "hu" },
-  { title: "EN", value: "en" }
-]
-
-const groups = [
-  { title: "Újonc", value: "ujjonc" },
-  { title: "VIP", value: "vip" },
-  { title: "Coaching", value: "coaching" }
-]
-
 /* ADD EMAIL */
 function addEmail() {
   campaign.newsletters.push({
     templateId: "",
     sendDate: "",
-    filters: {
-      language: [],
-      group: [],
-      customSubscribers: ""
-    }
+    subscribers: []
   })
 }
 
@@ -233,13 +230,9 @@ async function saveCampaign() {
   const payload = {
     ...campaign,
     newsletters: campaign.newsletters.map(n => ({
-      ...n,
-      filters: {
-        ...n.filters,
-        customSubscribers: n.filters.customSubscribers
-          ? n.filters.customSubscribers.split("\n").map(e => e.trim())
-          : []
-      }
+      templateId: n.templateId,
+      sendDate: n.sendDate,
+      subscribers: n.subscribers
     }))
   }
 
@@ -250,4 +243,33 @@ async function saveCampaign() {
 
   navigateTo("/admin/newsletter")
 }
+
+/* PREVIEW DIALOG */
+async function openPreview(email) {
+  if (!email.templateId) {
+    return alert("Ehhez az e-mailhez nincs kiválasztott sablon.")
+  }
+
+  const tpl = await $fetch('/api/newsletter/getonetemplate', {
+    method: 'POST',
+    body: { _id: email.templateId }
+  })
+
+  selectedTemplate.value = tpl.oneNewsletter
+  previewDialog.value = true
+}
+
+/* SUBSCRIBER SELECTOR DIALOG */
+function openSubscriberSelector(index) {
+  subscriberTargetIndex.value = index
+  subscriberTempList.value = [...campaign.newsletters[index].subscribers]
+  subscriberDialog.value = true
+}
+
+/* APPLY SELECTED SUBSCRIBERS */
+function applySubscribers(list) {
+  campaign.newsletters[subscriberTargetIndex.value].subscribers = list
+}
+
+
 </script>

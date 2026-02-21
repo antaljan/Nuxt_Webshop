@@ -1,17 +1,17 @@
 <template>
   <section class="p-6 space-y-6">
 
-      <!-- BACK BUTTON -->
-      <v-btn
-        color="primary"
-        variant="text"
-        prepend-icon="mdi-arrow-left"
-        to="/admin/newsletter"
-        class="mb-4"
-      >
-        Vissza a hírlevelekhez
-      </v-btn>
-      
+    <!-- BACK BUTTON -->
+    <v-btn
+      color="primary"
+      variant="text"
+      prepend-icon="mdi-arrow-left"
+      to="/admin/newsletter"
+      class="mb-4"
+    >
+      Vissza a hírlevelekhez
+    </v-btn>
+
     <!-- HEADER -->
     <div class="flex justify-between items-center">
       <h1 class="text-2xl font-bold">Kampányok</h1>
@@ -52,12 +52,6 @@
         <!-- ACTIONS -->
         <template #item.actions="{ item }">
           <v-btn
-            icon="mdi-eye"
-            variant="text"
-            @click="openPreview(item)"
-          />
-
-          <v-btn
             icon="mdi-pencil"
             variant="text"
             :to="`/admin/newsletter/campaigns/${item._id}`"
@@ -94,20 +88,10 @@
 
       </v-data-table>
     </v-card>
-
-    <!-- PREVIEW DIALOG -->
-    <NewsletterPreviewDialog
-      v-model="previewDialog"
-      :campaign="selectedCampaign"
-      :template="selectedTemplate"
-    />
-
   </section>
 </template>
 
 <script setup>
-import NewsletterPreviewDialog from '~/components/admin/newsletter/NewsletterPreviewDialog.vue'
-
 /* FETCH CAMPAIGNS */
 const { fetchCampaigns } = useNewsletter()
 
@@ -121,9 +105,6 @@ const headers = [
   { title: 'Név', key: 'name' },
   { title: 'Leírás', key: 'description' },
   { title: 'Státusz', key: 'status' },
-  { title: 'Következő küldés', key: 'nextSend' },
-  { title: 'Megnyitás %', key: 'openRate' },
-  { title: 'Kattintás %', key: 'clickRate' },
   { title: 'Műveletek', key: 'actions', sortable: false }
 ]
 
@@ -145,34 +126,6 @@ function statusColor(status) {
     draft: 'grey'
   }[status] || 'grey'
 }
-
-/* PREVIEW */
-const previewDialog = ref(false)
-const selectedCampaign = ref({})
-const selectedTemplate = ref({})
-
-async function openPreview(item) {
-  // 1) Kampány + scheduled elemek lekérése
-  const res = await $fetch(`/api/campaigns/${item._id}`, { method: 'GET' })
-
-  const scheduled = res.scheduled
-  if (!scheduled.length) {
-    return alert('Ehhez a kampányhoz nincs ütemezett hírlevél')
-  }
-
-  // 2) Az első scheduled elem template-je
-  const templateId = scheduled[0].templateId
-
-  const tpl = await $fetch('/api/newsletter/getonetemplate', {
-    method: 'POST',
-    body: { _id: templateId }
-  })
-
-  selectedCampaign.value = res.campaign
-  selectedTemplate.value = tpl.oneNewsletter
-  previewDialog.value = true
-}
-
 
 /* ACTIONS */
 async function pauseCampaign(item) {

@@ -8,7 +8,7 @@
       <v-btn
         color="grey"
         variant="text"
-        to="/admin/newsletter"
+        to="/admin/newsletter/campaigns"
         prepend-icon="mdi-arrow-left"
       >
         Vissza
@@ -72,6 +72,13 @@
             />
           </div>
 
+          <!-- TEMPLATE PREVIEW -->
+          <v-btn
+            icon="mdi-eye"
+            variant="text"
+            @click="openPreview(email)"
+          />
+
           <!-- TEMPLATE SELECT -->
           <v-select
             v-model="email.templateId"
@@ -92,32 +99,15 @@
             required
           />
 
-          <!-- FILTERS -->
-          <h4 class="text-md font-semibold mt-4">Célcsoport szűrők</h4>
+          <!-- SUBSCRIBER LIST -->
+          <v-btn
+            variant="text"
+            prepend-icon="mdi-account-multiple"
+            @click="openSubscriberSelector(index)"
+          >
+            Címzettek ({{ email.subscribers.length }})
+          </v-btn>
 
-          <v-select
-            v-model="email.filters.language"
-            :items="languages"
-            label="Nyelv"
-            multiple
-            variant="outlined"
-          />
-
-          <v-select
-            v-model="email.filters.group"
-            :items="groups"
-            label="Csoport"
-            multiple
-            variant="outlined"
-          />
-
-          <v-textarea
-            v-model="email.filters.customSubscribers"
-            label="Egyedi e-mail címek (soronként egy)"
-            variant="outlined"
-            rows="3"
-            hint="Ha kitöltöd, csak ezekre az e-mail címekre megy"
-          />
         </v-card>
       </div>
     </v-card>
@@ -134,11 +124,26 @@
       </v-btn>
     </div>
 
+    <!-- PREVIEW DIALOG -->
+    <NewsletterPreviewDialog
+      v-model="previewDialog"
+      :template="selectedTemplate"
+    />
+
+    <!-- SUBSCRIBER SELECTOR -->
+    <SubscriberSelector
+      v-model="subscriberDialog"
+      :selected="subscriberTempList"
+      @update:selected="applySubscribers"
+    />
+
   </section>
 </template>
 
 <script setup>
-/* IMPORTS */
+import NewsletterPreviewDialog from '~/components/admin/newsletter/NewsletterPreviewDialog.vue'
+import SubscriberSelector from '~/components/admin/newsletter/SubscriberSelector.vue'
+
 const { fetchTemplates } = useNewsletter()
 
 /* STATE */
@@ -157,28 +162,12 @@ const { data: templates } = await useAsyncData(
 
 const templateOptions = computed(() => templates.value?.allNewsletters || [])
 
-/* LANGUAGES + GROUPS */
-const languages = [
-  { title: "HU", value: "hu" },
-  { title: "EN", value: "en" }
-]
-
-const groups = [
-  { title: "Újonc", value: "ujjonc" },
-  { title: "VIP", value: "vip" },
-  { title: "Coaching", value: "coaching" }
-]
-
 /* ADD EMAIL */
 function addEmail() {
   campaign.newsletters.push({
     templateId: "",
     sendDate: "",
-    filters: {
-      language: [],
-      group: [],
-      customSubscribers: ""
-    }
+    subscribers: []
   })
 }
 
@@ -192,13 +181,9 @@ async function saveCampaign() {
   const payload = {
     ...campaign,
     newsletters: campaign.newsletters.map(n => ({
-      ...n,
-      filters: {
-        ...n.filters,
-        customSubscribers: n.filters.customSubscribers
-          ? n.filters.customSubscribers.split("\n").map(e => e.trim())
-          : []
-      }
+      templateId: n.templateId,
+      sendDate: n.sendDate,
+      subscribers: n.subscribers
     }))
   }
 
@@ -207,6 +192,39 @@ async function saveCampaign() {
     body: payload
   })
 
-  navigateTo("/admin/newsletter")
+  navigateTo("/admin/newsletter/campaigns")
+}
+
+/* PREVIEW */
+const previewDialog = ref(false)
+const selectedTemplate = ref(null)
+
+async function openPreview(email) {
+  if (!email.templateId) {
+    return alert("Ehhez az e-mailhez nincs kiválasztott sablon.")
+  }
+
+  const tpl = await $fetch('/api/newsletter/getonetemplate', {
+    method: 'POST',
+    body: { _id: email.templateId }
+  })
+
+  selectedTemplate.value = tpl.oneNewsletter
+  previewDialog.value = true
+}
+
+/* SUBSCRIBER SELECTOR */
+const subscriberDialog = ref(false)
+const subscriberTargetIndex = ref(null)
+const subscriberTempList = ref([])
+
+function openSubscriberSelector(index) {
+  subscriberTargetIndex.value = index
+  subscriberTempList.value = [...campaign.newsletters[index].subscribers]
+  subscriberDialog.value = true
+}
+
+function applySubscribers(list) {
+  campaign.newsletters[subscriberTargetIndex.value].subscribers = list
 }
 </script>

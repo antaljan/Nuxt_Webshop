@@ -1,8 +1,31 @@
 export function useNewsletter() {
-  const fetchSummary = () => $fetch('/api/dashboard/summary')
-  const fetchCampaigns = () => $fetch('/api/campaigns')
+  /* DASHBOARD */
+  const fetchSummary = () =>
+    $fetch('/api/dashboard/summary')
 
-  const fetchSubscribers = () => $fetch('/api/newsletter/subscribers', { method: 'POST' })
+  /* CAMPAIGNS */
+  const fetchCampaigns = () =>
+    $fetch('/api/campaigns')
+
+  const fetchCampaign = (id) =>
+    $fetch(`/api/campaigns/${id}`, { method: 'GET' })
+
+  const updateCampaign = (id, payload) =>
+    $fetch(`/api/campaigns/${id}`, {
+      method: 'PUT',
+      body: payload
+    })
+
+  /* SUBSCRIBERS */
+  const fetchSubscribers = () =>
+    $fetch('/api/newsletter/subscribers', { method: 'POST' })
+
+  const deleteSubscriber = (email) =>
+    $fetch(`/api/newsletter/unsubscribe/${email}`)
+
+  /* TEMPLATES */
+  const fetchTemplates = () =>
+    $fetch('/api/newsletter/gettemplates', { method: 'POST' })
 
   const saveNewsletterTemplate = (payload) =>
     $fetch('/api/newsletter/create/save', {
@@ -16,35 +39,38 @@ export function useNewsletter() {
       body: payload
     })
 
+  const deleteTemplateById = (_id) =>
+    $fetch('/api/newsletter/deletetemplate', {
+      method: 'POST',
+      body: { _id }
+    })
+
+  /* SCHEDULING */
   const scheduleNewsletter = (payload) =>
     $fetch('/api/newsletter/schedule', {
       method: 'POST',
       body: payload
     })
 
-  const deleteSubscriber = (email) =>
-    $fetch(`/api/newsletter/unsubscribe/${email}`)
-
-  const fetchTemplates = () =>
-    $fetch('/api/newsletter/gettemplates', { method: 'POST' })
-
- const deleteTemplateById = (_id) =>
-  $fetch('/api/newsletter/deletetemplate', {
-    method: 'POST',
-    body: { _id }
-  })
-
-
-
   return {
     fetchSummary,
+
+    // Campaigns
     fetchCampaigns,
+    fetchCampaign,
+    updateCampaign,
+
+    // Subscribers
     fetchSubscribers,
+    deleteSubscriber,
+
+    // Templates
+    fetchTemplates,
     saveNewsletterTemplate,
     updateNewsletterTemplate,
-    scheduleNewsletter,
-    fetchTemplates,
-    deleteSubscriber,
-    deleteTemplateById
+    deleteTemplateById,
+
+    // Scheduling
+    scheduleNewsletter
   }
 }

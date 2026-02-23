@@ -59,6 +59,16 @@
           <!-- HEADER & SUBJECT -->
           <v-row class="align-center mb-6">
             <v-col cols="12" md="8">
+              <v-text-field
+                v-model="title"
+                label="Sablon neve"
+                variant="outlined"
+                bg-color="white"
+                class="mb-4"
+                :rules="[v => !!v || 'A sablon neve kötelező']"
+              />
+            </v-col>
+            <v-col cols="12" md="8">
               <v-textarea
                 v-model="subject"
                 :label="$t('admin.newsletter.form.subject')"
@@ -66,7 +76,7 @@
                 variant="outlined"
                 bg-color="white"
                 auto-grow
-                :rules="[v => !!v || 'Title is required']"
+                :rules="[v => !!v || 'Tárgy megadása kötelező']"
               />
             </v-col>
             <v-col cols="12" md="4" class="text-right">
@@ -193,7 +203,9 @@
             <template v-slot:prepend>
               <v-icon icon="mdi-email-outline" />
             </template>
-            <v-list-item-title class="font-bold">{{ template.subject }}</v-list-item-title>
+            <v-list-item-title class="font-bold">
+              {{ template.title || template.subject }}
+            </v-list-item-title>
             <v-list-item-subtitle>{{ new Date(template.createdAt).toLocaleDateString() }}</v-list-item-subtitle>
             <template v-slot:append>
               <v-btn icon="mdi-download" variant="text" color="blue" @click="loadSelectedTemplate(template)" />
@@ -235,8 +247,9 @@ const {
    STATE
 --------------------------------------------- */
 const showEditor = ref(false)
-const subject = ref('')
-const structure = ref([]) // JSON blocks
+const title = ref('')        // ÚJ: sablon neve
+const subject = ref('')      // email tárgya
+const structure = ref([])    // JSON blocks
 const templates = ref([])
 
 const dialogVisible = ref(false)
@@ -251,7 +264,8 @@ const isLoadingTemplate = ref(false)
    TEMPLATE LIST HEADERS
 --------------------------------------------- */
 const templateHeaders = [
-  { title: 'Cím', key: 'subject', sortable: true },
+  { title: 'Név', key: 'title', sortable: true },
+  { title: 'Tárgy', key: 'subject', sortable: true },
   { title: 'Létrehozva', key: 'createdAt', sortable: true },
   { title: 'Műveletek', key: 'actions', sortable: false }
 ]
@@ -286,6 +300,7 @@ onMounted(loadTemplates)
 --------------------------------------------- */
 function startNewTemplate() {
   editingId.value = null
+  title.value = ''
   subject.value = ''
   structure.value = []
   showEditor.value = true
@@ -297,15 +312,17 @@ function startNewTemplate() {
 async function loadSelectedTemplate(item) {
   isLoadingTemplate.value = true
   editingId.value = item._id
-  subject.value = item.subject
+
+  title.value = item.title || ''     // ÚJ
+  subject.value = item.subject || ''
   structure.value = Array.isArray(item.blocks)
     ? JSON.parse(JSON.stringify(item.blocks))
     : []
+
   showEditor.value = true
   templateDialogVisible.value = false
   isLoadingTemplate.value = false
 }
-
 
 /* ---------------------------------------------
    INSERT BLOCK
@@ -343,6 +360,7 @@ function removeBlock(index) {
 --------------------------------------------- */
 function clearNewsletter() {
   if (confirm("Biztosan törlöd a jelenlegi munkádat?")) {
+    title.value = ""
     subject.value = ""
     structure.value = []
   }
@@ -354,6 +372,7 @@ function clearNewsletter() {
 async function saveNewsletter() {
   const payload = {
     _id: editingId.value,
+    title: title.value,        // ÚJ
     subject: subject.value,
     language: "hu",
     blocks: structure.value
@@ -386,7 +405,7 @@ async function deleteTemplate(id) {
 }
 
 /* ---------------------------------------------
-   LIVE PREVIEW (BACKEND RENDERER)
+   LIVE PREVIEW
 --------------------------------------------- */
 const renderedHtml = ref('')
 
@@ -402,18 +421,15 @@ watch([subject, structure], async () => {
     return
   }
 
-const html = await renderNewsletterPreview({
-  blocks: structure.value,
-  subscriber: {
-    firstname: 'Teszt',
-    name: 'Felhasználó',
-    email: 'test@example.com'
-  }
-})
-
+  const html = await renderNewsletterPreview({
+    blocks: structure.value,
+    subscriber: {
+      firstname: 'Teszt',
+      name: 'Felhasználó',
+      email: 'test@example.com'
+    }
+  })
 
   renderedHtml.value = DOMPurify.sanitize(html)
 }, { deep: true })
-
-
 </script>

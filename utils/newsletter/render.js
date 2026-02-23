@@ -51,9 +51,9 @@ export function renderNewsletterHtml(blocks, subscriber = {}) {
   }
 
   // 🔄 Változók behelyettesítése
-  html = html.replace(/{{firstname}}/g, subscriber.firstname || "");
-  html = html.replace(/{{name}}/g, subscriber.name || "");
-  html = html.replace(/{{email}}/g, subscriber.email || "");
+  html = html.replace(/{{firstname}}/g, subscriber.firstname || "John");
+  html = html.replace(/{{name}}/g, subscriber.name || "Doe");
+  html = html.replace(/{{email}}/g, subscriber.email || "john.doe@example.com");
 
   return wrapHtmlDocument(html);
 }
@@ -232,8 +232,8 @@ function renderFooter({ text = "" }) {
 
     <p style="margin:0 0 15px 0;">
       Antali Gyöngyi • 
-      <a href="mailto:info@yowayoli.com" style="color:#0077cc;text-decoration:none;">
-        info@yowayoli.com
+      <a href="mailto:info@antaligyongyi.com" style="color:#0077cc;text-decoration:none;">
+        info@antaligyongyi.com
       </a>
     </p>
 

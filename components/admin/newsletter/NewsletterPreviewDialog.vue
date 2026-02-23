@@ -38,7 +38,6 @@ const renderedHtml = computed(() => {
   if (!props.template?.blocks) return "<p>Nincs megjeleníthető tartalom</p>"
   return renderNewsletterPreview({
     blocks: props.template.blocks,
-    subscriber: { firstname: "Barátom" }
   })
 })
 </script>

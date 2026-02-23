@@ -56,11 +56,18 @@
           :headers="headers"
           :items="pagedSubscribers"
           :items-per-page="itemsPerPage"
-          :page.sync="page"
+          v-model:page="page"
           item-key="email"
-          show-select
-          v-model:selected="selectedEmails"
         >
+          <!-- EGYEDI CHECKBOX OSZLOP -->
+          <template #item.selected="{ item }">
+            <v-checkbox
+              v-model="item.selected"
+              density="compact"
+              hide-details
+            />
+          </template>
+
           <template #item.name="{ item }">
             {{ item.firstname }} {{ item.name }}
           </template>
@@ -73,7 +80,8 @@
       <!-- FOOTER -->
       <v-card-actions>
         <div class="text-grey-darken-1">
-          Kiválasztott címzettek: <strong>{{ selectedEmails.length }}</strong>
+          Kiválasztott címzettek:
+          <strong>{{ selectedCount }}</strong>
         </div>
 
         <v-spacer />
@@ -92,17 +100,20 @@
 </template>
 
 <script setup>
-/* PROPS */
 const props = defineProps({
   modelValue: Boolean,
-  selected: Array // email címek listája
+  // email címek listája, amit a szülő átad
+  selected: {
+    type: Array,
+    default: () => []
+  }
 })
 
 const emit = defineEmits(['update:modelValue', 'update:selected'])
 
 /* STATE */
-const subscribers = ref([]) // teljes subscriber lista backendből
-const selectedEmails = ref([...props.selected])
+const subscribers = ref([])        // backendből jövő nyers lista
+const selectorList = ref([])       // subscribers + selected flag
 
 const search = ref("")
 const filterLanguage = ref(null)
@@ -113,6 +124,7 @@ const itemsPerPage = 10
 
 /* TABLE HEADERS */
 const headers = [
+  { title: "", key: "selected", width: 60 },
   { title: "Név", key: "name" },
   { title: "Email", key: "email" },
   { title: "Csoport", key: "group" },
@@ -127,11 +139,17 @@ const groups = ["ujjonc", "vip", "coaching"]
 onMounted(async () => {
   const res = await $fetch('/api/newsletter/subscribers', { method: 'POST' })
   subscribers.value = res.subscribers || []
+
+  // selectorList: minden sor + selected flag
+  selectorList.value = subscribers.value.map(s => ({
+    ...s,
+    selected: props.selected.includes(s.email)
+  }))
 })
 
-/* FILTERED LIST */
+/* FILTERED LIST (selectorList-en) */
 const filteredSubscribers = computed(() => {
-  let list = [...subscribers.value]
+  let list = [...selectorList.value]
 
   if (filterLanguage.value) {
     list = list.filter(s => s.language === filterLanguage.value)
@@ -144,9 +162,9 @@ const filteredSubscribers = computed(() => {
   if (search.value) {
     const q = search.value.toLowerCase()
     list = list.filter(s =>
-      s.firstname.toLowerCase().includes(q) ||
-      s.name.toLowerCase().includes(q) ||
-      s.email.toLowerCase().includes(q)
+      (s.firstname || "").toLowerCase().includes(q) ||
+      (s.name || "").toLowerCase().includes(q) ||
+      (s.email || "").toLowerCase().includes(q)
     )
   }
 
@@ -159,17 +177,31 @@ const pagedSubscribers = computed(() => {
   return filteredSubscribers.value.slice(start, start + itemsPerPage)
 })
 
+/* SELECTED COUNT */
+const selectedCount = computed(() =>
+  selectorList.value.filter(s => s.selected).length
+)
+
 /* ACTIONS */
 function selectAll() {
-  selectedEmails.value = filteredSubscribers.value.map(s => s.email)
+  // az aktuális SZŰRT listát jelöljük ki
+  filteredSubscribers.value.forEach(s => {
+    s.selected = true
+  })
 }
 
 function selectNone() {
-  selectedEmails.value = []
+  filteredSubscribers.value.forEach(s => {
+    s.selected = false
+  })
 }
 
 function save() {
-  emit('update:selected', selectedEmails.value)
+  const emails = selectorList.value
+    .filter(s => s.selected)
+    .map(s => s.email)
+
+  emit('update:selected', emails)
   emit('update:modelValue', false)
 }
 </script>

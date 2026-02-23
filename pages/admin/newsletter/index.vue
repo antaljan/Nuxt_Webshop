@@ -3,15 +3,7 @@
 
     <!-- HEADER -->
     <div class="flex justify-between items-center">
-      <h1 class="text-3xl font-bold">Hírlevél kampány Dashboard</h1>
-
-      <v-btn
-        color="primary"
-        prepend-icon="mdi-plus"
-        to="/admin/newsletter/campaigns"
-      >
-        Kampányok
-      </v-btn>
+      <h1 class="text-3xl font-bold">Hírlevél/Kampány Dashboard</h1>
     </div>
 
     <!-- KPI CARDS -->
@@ -41,27 +33,34 @@
         <h3 class="text-lg font-semibold">Kattintások</h3>
         <p class="text-3xl font-bold">{{ stats.totalClicks }}</p>
       </v-card>
-    </div>
 
-    <!-- TEMPLATE COUNT -->
-    <v-card 
-      class="p-6 text-center"
-      to="/admin/newsletter/create"
-    >
-      <h3 class="text-lg font-semibold">Elérhető sablonok</h3>
-      <p class="text-3xl font-bold">{{ templateCount }}</p>
-    </v-card>
+      <v-card 
+        class="p-6 text-center"
+        to="/admin/newsletter/campaigns"
+      >
+        <h3 class="text-lg font-semibold">Kampányok</h3>
+        <p class="text-3xl font-bold">{{ totalCampaigns }}</p>
+      </v-card>
+
+      <v-card 
+        class="p-6 text-center"
+        to="/admin/newsletter/create"
+      >
+        <h3 class="text-lg font-semibold">Elérhető sablonok</h3>
+        <p class="text-3xl font-bold">{{ templateCount }}</p>
+      </v-card>
+    </div>
 
     <!-- PERFORMANCE + STACKED -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <v-card class="p-6">
         <h2 class="text-xl font-semibold mb-4">Hírlevél teljesítmény (utolsó 10)</h2>
-        <NewsletterPerformanceChart :stats="campaignStats || []" />
+        <NewsletterPerformanceChart :stats="campaignStatsArray || []" />
       </v-card>
 
       <v-card class="p-6">
         <h2 class="text-xl font-semibold mb-4">Megnyitások / kattintások / címzettek</h2>
-        <NewsletterStackedChart :stats="campaignStats || []" />
+        <NewsletterStackedChart :stats="campaignStatsArray || []" />
       </v-card>
     </div>
 
@@ -107,6 +106,9 @@ const { data: campaignStats } = await useAsyncData(
   'newsletter-campaign-stats',
   () => fetchCampaignStats()
 )
+
+const totalCampaigns = computed(() => campaignStats.value?.totalCampaigns || 0)
+const campaignStatsArray = computed(() => campaignStats.value?.stats || [])
 
 /* TREND (6 hónap) */
 const { data: trend } = await useAsyncData(

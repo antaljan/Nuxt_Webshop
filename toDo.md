@@ -124,6 +124,8 @@ Admin functions:
 - new function on pages/admin/brand: maintanance modus, if ist on than only a commong soon section available on the landing page and only admin  can log in (she can see and edit everything) ✔️
 - frontend/pages/admin/users/index.vue --> add language settings option to users on admin user management ✔️
 - frontend/pages/admin/newsletter/index.vue --> add language settings option to subscribers on admin newsletter management ✔️
+- New newsletter template with json amd tiptap editor for paragraph ✔️
+- Campaigns with campaigns manager based on newsletter, campaign is a scheduled row of newsletters ✔️
 
 User functions:
 - /pages/products/index.vue --> Product overview site with searching(picture, name, short description, price on v-card) ✔️
@@ -149,6 +151,5 @@ Bugs:
         - none
 
 Tasks are open:
-→ create a new html element template for newsletter template editor wicht can be edited with tiptap editor.
 → welcome newsletter package for newcommers: 5-6 newsletters scheduled in weekly (o rtwo per week) after registration with pre defined content acc. sales rolues
 → billing with stripe? acc eu billing roulles (billing from Germany to Hungary)

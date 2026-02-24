@@ -202,6 +202,7 @@ function generateSlug() {
 
 async function uploadImage(event) {
   const file = event.target.files[0]
+  
   if (!file) return
 
   const formData = new FormData()
@@ -212,7 +213,8 @@ async function uploadImage(event) {
       method: 'POST',
       body: formData
     })
-    post.image = res.url
+    post.image = config.public.backendBase + res.path
+    //console.log(post.image)
   } catch (err) {
     console.error("Image upload failed", err)
   }

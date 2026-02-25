@@ -7,8 +7,13 @@
 
     <!-- KPI cards -->
     <v-row class="mb-6">
-      <v-col cols="12" sm="6" md="3">
-        <v-card border elevation="1" class="rounded-xl">
+      <v-col cols="12" sm="6" md="4">
+        <v-card
+          border
+          elevation="1"
+          class="p-6 text-center rounded-xl cursor-pointer"
+          to="/admin/purchases"
+        >
           <v-card-text>
             <div class="d-flex justify-space-between align-center">
               <div>
@@ -25,9 +30,14 @@
         </v-card>
       </v-col>
 
-      <v-col cols="12" sm="6" md="3">
-        <v-card border elevation="1" class="rounded-xl">
-          <v-card-text>
+      <v-col cols="12" sm="6" md="2">
+        <v-card
+          border
+          elevation="1"
+          class="p-6 text-center rounded-xl cursor-pointer"
+          to="/admin/coaching"
+        >
+        <v-card-text>
             <div class="d-flex justify-space-between align-center">
               <div>
                 <div class="text-overline mb-1">Új foglalások</div>
@@ -43,9 +53,14 @@
         </v-card>
       </v-col>
 
-      <v-col cols="12" sm="6" md="3">
-        <v-card border elevation="1" class="rounded-xl">
-          <v-card-text>
+      <v-col cols="12" sm="6" md="2">
+        <v-card
+          border
+          elevation="1"
+          class="p-6 text-center rounded-xl cursor-pointer"
+          to="/admin/newsletter/subscribers"
+        >
+        <v-card-text>
             <div class="d-flex justify-space-between align-center">
               <div>
                 <div class="text-overline mb-1">Feliratkozók</div>
@@ -61,8 +76,36 @@
         </v-card>
       </v-col>
 
-      <v-col cols="12" sm="6" md="3">
-        <v-card border elevation="1" class="rounded-xl">
+      <v-col cols="12" sm="6" md="2">
+        <v-card
+          border
+          elevation="1"
+          class="p-6 text-center rounded-xl cursor-pointer"
+          to="/admin/users"
+        >
+          <v-card-text>
+            <div class="d-flex justify-space-between align-center">
+              <div>
+                <div class="text-overline mb-1">Felhasználók</div>
+                <div class="text-h5 font-weight-black text-purple-darken-2">
+                  {{ users?.length || 0 }} fő
+                </div>
+              </div>
+              <v-avatar color="purple-lighten-4" size="large">
+                <v-icon color="purple-darken-2">mdi-account-multiple</v-icon>
+              </v-avatar>
+            </div>
+          </v-card-text>
+        </v-card>
+      </v-col>
+
+      <v-col cols="12" sm="6" md="2">
+        <v-card
+          border
+          elevation="1"
+          class="p-6 text-center rounded-xl cursor-pointer"
+          to="/admin/cibersecu"
+        >
           <v-card-text>
             <div class="d-flex justify-space-between align-center">
               <div>
@@ -134,6 +177,7 @@
 <script setup>
 const { user } = useAuth()
 const { data: summary } = await useFetch('/api/dashboard/summary')
+const { data: users } = await useFetch('/api/admin/users')
 
 const upcomingSessions = computed(() => {
   return summary.value?.upcomingSessions || []

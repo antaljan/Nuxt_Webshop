@@ -1,5 +1,16 @@
 <template>
   <v-container fluid>
+    
+    <!-- BACK BUTTON -->
+    <v-btn
+      color="primary"
+      variant="text"
+      prepend-icon="mdi-arrow-left"
+      to="/admin"
+      class="mb-4"
+    >
+      Vissza az Admin Dashboardra
+    </v-btn>
 
     <!-- SIMPLE DATE RANGE -->
     <v-card flat class="pa-4 mb-4" color="grey-lighten-4">

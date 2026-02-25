@@ -6,7 +6,7 @@ backend (NODE Express)
     hosted with nginx, nginx controlled the /api tag.
 Nuxt-Backend (Nuxt server routes):
     Auth, blog, products, newsletter, stats, users ect... endpoints are structured and done.
-    At the future (if the frontend finished and deployed on vps) the backend and frontend will be running on same VPS in productive system, frontend on port:3000 backend on port:4000 within the NODE backend will be not any more visible for others, only for frontend.
+    The backend and frontend running on same VPS in productive system, frontend on port:3000 backend on port:4000.
 Frontend:
     Nuxt 4 SSR, Vuetify, n18n, Tailwind and component based design ✔️
     The composables useAuth, useContent are integrated, the others (blog, product, newsletter, user) not yet.
@@ -151,5 +151,7 @@ Bugs:
         - none
 
 Tasks are open:
+→ details view page for purchases: list with filters
+→ rework newsletter/campaigns admin dashboard: daily email send and scheduling diagramm for actual month, but with filter possibility for from-to dates. Time Line campaigns with opening and click rate
 → welcome newsletter package for newcommers: 5-6 newsletters scheduled in weekly (o rtwo per week) after registration with pre defined content acc. sales rolues
 → billing with stripe? acc eu billing roulles (billing from Germany to Hungary)

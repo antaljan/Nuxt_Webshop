@@ -2,6 +2,17 @@
   <v-container class="py-10">
     <h1 class="text-h5 mb-6">{{ $t('admin.users.title') }}</h1>
 
+      <!-- BACK BUTTON -->
+      <v-btn
+        color="primary"
+        variant="text"
+        prepend-icon="mdi-arrow-left"
+        to="/admin"
+        class="mb-4"
+      >
+        Vissza az Admin Dashboardra
+      </v-btn>
+
     <v-card>
       <v-card-title>
         <v-text-field

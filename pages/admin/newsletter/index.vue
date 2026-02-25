@@ -7,49 +7,77 @@
     </div>
 
     <!-- KPI CARDS -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+    <v-row class="mb-6">
+      <v-col cols="12" sm="6" md="2">
       <v-card
-        class="p-6 text-center cursor-pointer"
+        border
+        elevation="1"
+        class="p-6 text-center rounded-xl cursor-pointer"
         to="/admin/newsletter/subscribers"
       >
         <h3 class="text-lg font-semibold">Feliratkozók</h3>
         <p class="text-3xl font-bold">{{ stats.totalSubscribers }}</p>
       </v-card>
+      </v-col>
 
+      <v-col cols="12" sm="6" md="2">
       <v-card
-        class="p-6 text-center"
+        border
+        elevation="1"
+        class="p-6 text-center rounded-xl cursor-pointer"
         to="/admin/newsletter/delivery-log"
       >
         <h3 class="text-lg font-semibold">Elküldött hírlevelek</h3>
         <p class="text-3xl font-bold">{{ stats.totalNewsletters }}</p>
       </v-card>
+      </v-col>
 
-      <v-card class="p-6 text-center">
+      <v-col cols="12" sm="6" md="2">
+      <v-card
+        border
+        elevation="1"
+        class="p-6 text-center rounded-xl cursor-pointer"
+      >
         <h3 class="text-lg font-semibold">Megnyitások</h3>
         <p class="text-3xl font-bold">{{ stats.totalOpened }}</p>
       </v-card>
+      </v-col>
 
-      <v-card class="p-6 text-center">
+      <v-col cols="12" sm="6" md="2">
+      <v-card
+        border
+        elevation="1"
+        class="p-6 text-center rounded-xl cursor-pointer"
+      >
         <h3 class="text-lg font-semibold">Kattintások</h3>
         <p class="text-3xl font-bold">{{ stats.totalClicks }}</p>
       </v-card>
+      </v-col>
 
+      <v-col cols="12" sm="6" md="2">
       <v-card 
-        class="p-6 text-center"
+        border
+        elevation="1"
+        class="p-6 text-center rounded-xl cursor-pointer"
         to="/admin/newsletter/campaigns"
       >
         <h3 class="text-lg font-semibold">Kampányok</h3>
         <p class="text-3xl font-bold">{{ totalCampaigns }}</p>
       </v-card>
+      </v-col>
 
+      <v-col cols="12" sm="6" md="2">
       <v-card 
-        class="p-6 text-center"
+        border
+        elevation="1"
+        class="p-6 text-center rounded-xl cursor-pointer"
         to="/admin/newsletter/create"
       >
         <h3 class="text-lg font-semibold">Elérhető sablonok</h3>
         <p class="text-3xl font-bold">{{ templateCount }}</p>
       </v-card>
-    </div>
+      </v-col>
+    </v-row>
 
     <!-- PERFORMANCE + STACKED -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">

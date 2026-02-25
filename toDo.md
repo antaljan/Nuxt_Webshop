@@ -154,4 +154,38 @@ Tasks are open:
 → details view page for purchases: list with filters
 → rework newsletter/campaigns admin dashboard: daily email send and scheduling diagramm for actual month, but with filter possibility for from-to dates. Time Line campaigns with opening and click rate
 → welcome newsletter package for newcommers: 5-6 newsletters scheduled in weekly (o rtwo per week) after registration with pre defined content acc. sales rolues
-→ billing with stripe? acc eu billing roulles (billing from Germany to Hungary)
+→ billing with backend acc EN16
+A invoiceNumber.js + a purchase.model.js módosítás + a webhook frissítése együtt már teljesen működő számlaszám‑generálást ad:
+/ CREATE purchase
+async function createPurchase(data) {
+  const db = getDb();
+  const purchase = {
+    userId: new ObjectId(data.userId),
+    items: data.items,
+    amount: data.amount,
+    currency: data.currency,
+    stripeSessionId: data.stripeSessionId,
+    createdAt: new Date(),
+    invoiceNumber: data.invoiceNumber
+  };
+  const result = await db.collection(COLLECTION).insertOne(purchase);
+  return { ...purchase, _id: result.insertedId };
+}
+Következő lépés (ha szeretnéd):
+Most, hogy a számlaszám a helyére került, jöhet a következő finomítás:
+👉 1) Seller adatok beépítése (német előírás szerint kötelező)
+cégnév
+cím
+Steuernummer vagy USt-IdNr
+email
+bankszámla (ha kell)
+👉 2) Payment Means beépítése a ZUGFeRD XML-be
+Stripe
+kártya
+PaymentIntent ID
+👉 3) PDF/A‑3 metaadatok finomítása
+XMP metadata
+ZUGFeRD profil jelölése
+👉 4) Admin UI-ban a számlaszám megjelenítése
+purchases listában
+purchase detail nézetben

@@ -4,16 +4,18 @@
     <!-- HEADER -->
     <div class="flex justify-between items-center">
       <h1 class="text-2xl font-bold">Kézbesítési napló</h1>
-
-      <v-btn
-        color="grey"
-        variant="text"
-        to="/admin/newsletter"
-        prepend-icon="mdi-arrow-left"
-      >
-        Vissza a dashboardra
-      </v-btn>
     </div>
+
+      <!-- BACK BUTTON -->
+      <v-btn
+        color="primary"
+        variant="text"
+        prepend-icon="mdi-arrow-left"
+        to="/admin/newsletter"
+        class="mb-4"
+      >
+        Vissza a hírlevelekhez
+      </v-btn>
 
     <!-- FILTERS -->
     <v-card class="p-4 space-y-4">

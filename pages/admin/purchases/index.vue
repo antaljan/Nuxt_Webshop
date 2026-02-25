@@ -23,6 +23,7 @@ const purchases = computed(() => data.value?.purchases || [])
           { title: 'Termékek', key: 'itemsCount' },
           { title: 'Összeg', key: 'amount' },
           { title: 'Pénznem', key: 'currency' },
+          { title: 'Refund', key: 'refund' },
           { title: 'Művelet', key: 'actions', sortable: false }
         ]"
       >
@@ -37,6 +38,26 @@ const purchases = computed(() => data.value?.purchases || [])
         <template #item.amount="{ item }">
           {{ (item.amount / 100).toFixed(2) }} €
         </template>
+
+        <template #item.refund="{ item }">
+          <v-chip
+            v-if="item.refund?.refunded"
+            color="red"
+            variant="flat"
+            size="small"
+          >
+            visszatérítve
+          </v-chip>
+          <v-chip
+            v-else
+            color="green"
+            variant="tonal"
+            size="small"
+          >
+            Fizetve
+          </v-chip>
+        </template>
+
 
         <template #item.actions="{ item }">
           <v-btn

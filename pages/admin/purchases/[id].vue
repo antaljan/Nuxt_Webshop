@@ -8,6 +8,33 @@ const { data, pending, error } = await useFetch(
 const purchase = computed(() => data.value?.purchase)
 const user = computed(() => data.value?.user)
 const items = computed(() => data.value?.items || [])
+
+
+async function refundPurchase() {
+  try {
+    await $fetch(`/api/admin/purchases/${purchase.value._id}/refund`, {
+      method: 'POST'
+    })
+    alert('Refund sikeres!')
+  } catch (err) {
+    alert('Refund sikertelen!')
+  }
+}
+
+async function downloadPdf() {
+  const response = await fetch(`/api/admin/purchases/${purchase.value._id}/pdf`)
+  const blob = await response.blob()
+
+  const url = window.URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `invoice-${purchase.value._id}.pdf`
+  a.click()
+  window.URL.revokeObjectURL(url)
+}
+
+
+
 </script>
 
 <template>
@@ -48,25 +75,39 @@ const items = computed(() => data.value?.items || [])
       <v-table>
         <thead>
           <tr>
-            <th class="text-left">#</th>
-            <th class="text-left">Termék neve</th>
-            <th class="text-left">Termék ID</th>
-            <th class="text-left">Mennyiség</th>
-            <th class="text-left">Egységár (EUR)</th>
-            <th class="text-left">Összeg (EUR)</th>
+            <th>#</th>
+            <th>Termék neve</th>
+            <th>Termék ID</th>
+            <th>Mennyiség</th>
+            <th>Nettó ár (EUR)</th>
+            <th>ÁFA %</th>
+            <th>ÁFA összeg (EUR)</th>
+            <th>Bruttó ár (EUR)</th>
           </tr>
         </thead>
+
         <tbody>
           <tr v-for="(item, index) in items" :key="item._id">
             <td>{{ index + 1 }}</td>
             <td>{{ item.title }}</td>
             <td>{{ item._id }}</td>
             <td>1</td>
-            <td>{{ (item.price).toFixed(2) }}</td>
-            <td>{{ (item.price).toFixed(2) }}</td>
+
+            <!-- Nettó ár -->
+            <td>{{ item.price.toFixed(2) }}</td>
+
+            <!-- ÁFA % -->
+            <td>0%</td>
+
+            <!-- ÁFA összeg -->
+            <td>0.00</td>
+
+            <!-- Bruttó ár -->
+            <td>{{ item.price.toFixed(2) }}</td>
           </tr>
         </tbody>
       </v-table>
+
       <!-- Összesítő blokk -->
       <v-divider class="my-4"></v-divider>
       <div class="text-right">
@@ -75,7 +116,31 @@ const items = computed(() => data.value?.items || [])
           {{ (purchase?.amount / 100).toFixed(2) }} €
         </p>
       </div>
+      <p v-if="purchase?.refund?.refunded">
+        <strong>Refund státusz:</strong>
+        Visszatérítve ({{ new Date(purchase.refund.refundedAt).toLocaleString() }})
+      </p>
     </v-card>
+
+    <!-- PDF download button-->
+    <v-divider class="my-4"></v-divider>
+    <v-btn
+      color="primary"
+      variant="tonal"
+      @click="downloadPdf"
+    >
+      PDF letöltése
+    </v-btn>
+    <v-divider class="my-4"></v-divider>
+    <!--  Refund button -->
+    <v-btn
+      v-if="!purchase?.refund?.refunded"
+      color="error"
+      variant="tonal"
+      @click="refundPurchase"
+    >
+      Visszatérítés (elállás esetén)
+    </v-btn>
 
   </v-container>
 </template>

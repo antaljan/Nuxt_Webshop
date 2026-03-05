@@ -36,11 +36,13 @@
           <p class="text-xs text-gray-400 mt-1">
             Purchased: {{ new Date(p.purchasedAt).toLocaleDateString() }}
           </p>
+          <div v-if="p.type === 'coaching'" class="mt-2">
+            <v-chip color="primary" size="small" variant="tonal">
+              {{ p.sessionCount }} {{ $t('products.sessions') }}
+            </v-chip>
+          </div>
 
-          <NuxtLink
-            :to="`/user/product/${p.purchaseId}`"
-            class="inline-block mt-3 text-blue-600 hover:underline"
-          >
+          <NuxtLink :to="`/user/product/${p.productId}`">
             {{ $t('products.open') }}
           </NuxtLink>
         </div>
@@ -66,7 +68,7 @@ const { data, pending, error } = await useAsyncData(
 const purchases = computed(() => {
   const rawList = data.value?.purchases || []
 
-  // 1) Flatten: minden item külön kártya
+  // Flatten: minden item külön objektum
   const flattened = rawList.flatMap(purchase =>
     purchase.items.map(item => ({
       ...item,
@@ -75,23 +77,29 @@ const purchases = computed(() => {
     }))
   )
 
-  // 2) Coaching deduplikálása
-  const coaching = []
-  const seenCoaching = new Set()
+  // Coaching termékek összevonása productId alapján
+  const coachingMap = new Map()
 
   flattened.forEach(item => {
     if (item.type === 'coaching') {
-      if (!seenCoaching.has(item._id)) {
-        seenCoaching.add(item._id)
-        coaching.push(item)
+      if (!coachingMap.has(item.productId)) {
+        coachingMap.set(item.productId, {
+          ...item,
+          sessionCount: 1
+        })
+      } else {
+        coachingMap.get(item.productId).sessionCount++
       }
     }
   })
 
-  // 3) Digitális termékek (NINCS deduplikálás!)
+  const coaching = Array.from(coachingMap.values())
+
+  // Digitális termékek (nem összevonva)
   const digital = flattened.filter(item => item.type !== 'coaching')
 
-  // 4) Végső lista
   return [...coaching, ...digital]
 })
+
+
 </script>

@@ -187,31 +187,36 @@
   </section>
 </template>
 
-
 <script setup>
 import { useI18n } from 'vue-i18n'
+import { useProducts } from '~/composables/useProducts'
 const { t } = useI18n()
-const route = useRoute()
-const currentPurchaseId = route.params.id
+const { getProduct } = useProducts()
 
 definePageMeta({ middleware: 'auth' })
 
 // -----------------------------
-// 1) ADATOK LEKÉRÉSE
+// 1) ROUTE PARAM → productId
+// -----------------------------
+const route = useRoute()
+const productId = route.params.id   // <-- MOSTANTÓL TERMÉK ID
+
+// -----------------------------
+// 2) ADATOK LEKÉRÉSE
 // -----------------------------
 const { data, pending, error, refresh } = await useAsyncData(
-  `user-product-combined-${currentPurchaseId}`,
+  `user-product-${productId}`,
   async () => {
     const headers = useRequestHeaders(['cookie'])
 
-    const [specificProduct, bookings, allPurchases] = await Promise.allSettled([
-      $fetch(`/api/user/product/${currentPurchaseId}`, { headers }),
-      $fetch('/api/booking/mybookings', { headers }),
-      $fetch('/api/user/purchases', { headers })
-    ])
+const [product, bookings, allPurchases] = await Promise.allSettled([
+  getProduct(productId),
+  $fetch('/api/booking/mybookings', { headers }),
+  $fetch('/api/user/purchases', { headers })
+])
 
     return {
-      purchase: specificProduct.status === 'fulfilled' ? specificProduct.value : null,
+      product: product.status === 'fulfilled' ? product.value : null,
       bookings: bookings.status === 'fulfilled' ? bookings.value : [],
       allPurchases: allPurchases.status === 'fulfilled' ? allPurchases.value : []
     }
@@ -221,18 +226,14 @@ const { data, pending, error, refresh } = await useAsyncData(
 const getArray = (val) => Array.isArray(val) ? val : []
 
 // -----------------------------
-// 2) TERMÉK ADATOK
+// 3) TERMÉK ADATOK
 // -----------------------------
-const product = computed(() => data.value?.purchase?.product || {})
-const currentPurchase = computed(() => data.value?.purchase?.purchase || null)
+const product = computed(() => data.value?.product || {})
 
 // -----------------------------
-// 3) ITEM-SZINTŰ COACHING LISTA
+// 4) ITEM-SZINTŰ LISTA (csak ehhez a termékhez)
 // -----------------------------
 const relevantItems = computed(() => {
-  const targetTitle = product.value?.title
-  if (!targetTitle) return []
-
   const allPurchases = getArray(data.value?.allPurchases?.purchases)
 
   // Flatten: minden item külön elem
@@ -244,21 +245,22 @@ const relevantItems = computed(() => {
     }))
   )
 
-  // Csak az adott termékhez tartozó coaching itemek
-  return flattened.filter(item => item.title === targetTitle)
+  // Csak az adott termékhez tartozó itemek
+  return flattened.filter(item =>
+    String(item.productId) === String(productId)
+  )
 })
 
 // -----------------------------
-// 4) BOOKING ITEM-SZINTEN
+// 5) BOOKING ITEM-SZINTEN
 // -----------------------------
 const getBookingForItem = (item) => {
   const bList = getArray(data.value?.bookings)
   return bList.find(b =>
     String(b.purchaseId) === String(item.purchaseId) &&
-    String(b.itemId) === String(item._id)   // <-- EZ A LÉNYEG
+    String(b.itemId) === String(item._id)
   )
 }
-
 
 const canModify = (booking) => {
   if (!booking || booking.completed) return false
@@ -284,7 +286,7 @@ const formatBookingDate = (d) =>
     : ''
 
 // -----------------------------
-// 5) SCHEDULER MODAL
+// 6) SCHEDULER MODAL
 // -----------------------------
 const schedulerOpen = ref(false)
 const activePurchaseId = ref(null)
@@ -304,7 +306,7 @@ const onBookingSuccess = () => {
 }
 
 // -----------------------------
-// 6) VIDEO TOKEN
+// 7) VIDEO TOKEN
 // -----------------------------
 const videoUrl = ref(null)
 const loadingVideo = ref(false)
@@ -315,9 +317,14 @@ watch(
     if (newProd?.videoUrl && !videoUrl.value) {
       loadingVideo.value = true
       try {
-        const res = await $fetch('/api/user/video-token', {
-          query: { purchaseId: currentPurchaseId }
-        })
+        const firstItem = relevantItems.value[0]
+          if (!firstItem) return
+          const res = await $fetch('/api/user/video-token', {
+            query: {
+            purchaseId: firstItem.purchaseId,
+            itemId: firstItem._id
+            }
+          })
         videoUrl.value = res.url
       } catch (e) {
         console.error('Video token error', e)
@@ -330,14 +337,14 @@ watch(
 )
 
 // -----------------------------
-// 7) PDF LETÖLTÉS
+// 8) PDF LETÖLTÉS
 // -----------------------------
 async function downloadPdf(file) {
   try {
     const config = useRuntimeConfig()
 
     const res = await $fetch('/api/user/pdf-token', {
-      params: { purchaseId: currentPurchaseId, file }
+      params: { productId, file }   // <-- purchaseId helyett productId
     })
 
     const downloadUrl = `${config.public.backendBase}${res.url.replace('/api', '')}`

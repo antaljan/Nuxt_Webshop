@@ -226,7 +226,8 @@ export default defineI18nLocale(async (locale) => {
     backToDashboard: "Vissza a fiókomhoz",
     coachingSessions: "Coaching alkalmaim",
     purchaseDetails: "Vásárlási részletek",
-    errorMissing: "Nincs jogosultságod a tartalomhoz vagy a termék nem található."
+    errorMissing: "Nincs jogosultságod a tartalomhoz vagy a termék nem található.",
+    sessions: "Coaching alkalmak száma"
   },
   cart: {
     title: "Bevásárló kosár",

@@ -221,7 +221,8 @@ export default defineI18nLocale(async (locale) => {
     backToDashboard: "Zurück zum Dashboard",
     coachingSessions: "Meine Coaching-Sessions",
     purchaseDetails: "Kaufdetails",
-    errorMissing: "Sie haben keine Berechtigung, auf diesen Inhalt zuzugreifen oder das Produkt ist nicht verfügbar."
+    errorMissing: "Sie haben keine Berechtigung, auf diesen Inhalt zuzugreifen oder das Produkt ist nicht verfügbar.",
+    sessions: "Coaching-Sessions"
   },
   cart: {
     title: "Einkaufswagen",

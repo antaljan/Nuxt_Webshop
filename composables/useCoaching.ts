@@ -57,17 +57,19 @@ export function useCoaching() {
   }
 
   // Időpont lefoglalása (Customer által)
-  const bookSlot = async (id: string, payload: {
-    userId: string,
-    productId: string,
-    purchaseId: string,
-    oldBookingId?: string
-  }) => {
-    return await $fetch(`/api/booking/book/${id}`, {
+const bookSlot = async (id: string, payload: {
+  userId: string,
+  productId: string,
+  purchaseId: string,
+  itemId: string,
+  oldBookingId?: string
+}) => {
+  return await $fetch(`/api/booking/book/${id}`, {
     method: 'PUT',
     body: payload
   })
 }
+
 
   // Foglalás lemondása
   const cancelSlot = async (id: string) => {

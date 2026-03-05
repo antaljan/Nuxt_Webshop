@@ -21,9 +21,7 @@
       <!-- JOBB OLDAL: IDŐPONTOK -->
       <v-col cols="12" md="5">
         <v-card elevation="2" class="pa-4 d-flex flex-column" min-height="450">
-          <h3 class="text-h6 mb-4">
-            {{ formattedDate }}
-          </h3>
+          <h3 class="text-h6 mb-4">{{ formattedDate }}</h3>
 
           <v-progress-linear v-if="loading" indeterminate color="primary" class="mb-4" />
 
@@ -44,14 +42,16 @@
                 </v-list-item-title>
 
                 <template #append>
+                  <!-- Jelenlegi foglalás -->
                   <v-chip
-                    v-if="existingBooking && slot._id === existingBooking.slotId"
+                    v-if="existingBooking && slot._id === existingBooking._id"
                     color="info"
                     size="small"
                   >
                     Jelenlegi
                   </v-chip>
 
+                  <!-- Foglalható / Átfoglalható -->
                   <v-btn
                     v-else
                     color="primary"
@@ -67,7 +67,7 @@
           </div>
 
           <v-alert v-else-if="!loading" type="info" variant="tonal" icon="mdi-calendar-blank">
-            Erre a napra nincs meghirdetve szabad időpont.
+            Erre a napra nincs meghirdetve időpont.
           </v-alert>
         </v-card>
       </v-col>
@@ -82,7 +82,7 @@
 
         <v-card-text>
           <p v-if="existingBooking?.start" class="mb-4 text-warning">
-            Figyelem: A korábbi időpontod ({{ formatTime(existingBooking.start) }}) törlésre kerül.
+            A korábbi időpontod ({{ formatTime(existingBooking.start) }}) törlésre kerül.
           </p>
 
           Biztosan lefoglalod?<br>
@@ -108,6 +108,7 @@ import 'v-calendar/dist/style.css'
 const props = defineProps({
   productId: { type: String, required: true },
   purchaseId: { type: String, required: true },
+  itemId: { type: String, required: true },
   existingBooking: { type: Object, default: null }
 })
 
@@ -123,9 +124,7 @@ const bookingLoading = ref(false)
 const bookingDialog = ref(false)
 const selectedSlot = ref(null)
 
-const minDate = computed(() =>
-  new Date().toISOString().split('T')[0]
-)
+const minDate = computed(() => new Date().toISOString().split('T')[0])
 
 const attributes = computed(() => [
   { highlight: true, dates: selectedDate.value },
@@ -165,8 +164,7 @@ async function fetchDailySlots(date) {
   try {
     const dateStr = date.toISOString().split('T')[0]
     const slots = await getSlotsByDate(dateStr)
-
-    dailySlots.value = slots.filter(s => s.slotClass === 'available')
+    dailySlots.value = slots        // <-- booked slotokat is mutatjuk
   } finally {
     loading.value = false
   }
@@ -191,6 +189,7 @@ async function executeBooking() {
       userId: user.value._id,
       productId: props.productId,
       purchaseId: props.purchaseId,
+      itemId: props.itemId,                         // <-- KÜLDJÜK A BACKENDNEK
       oldBookingId: props.existingBooking?._id
     }
 

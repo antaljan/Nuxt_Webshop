@@ -57,6 +57,7 @@ Architect:
 - favicon recolor to green ✔️
 - add info@antaligyongyi.hu mail service to backend ✔️
 - create user language depending mail service: hu - info@antaligyongyi.hu , de,en - info@yowayoli.com ✔️
+- billing with backend acc EN16 (PDF/A‑3 metaadatok, ZUGFeRD, send invoice automatic per email after succsesfull checkout) invoiceNumber.js + a purchase.model.js  + rework stripeWebhook.routes.js + pdf.services.js + zugferd.services.js✔️
 
 Landing Page (public page):
 - /components/GeneralHeroSection.vue ✔️
@@ -126,6 +127,7 @@ Admin functions:
 - frontend/pages/admin/newsletter/index.vue --> add language settings option to subscribers on admin newsletter management ✔️
 - New newsletter template with json amd tiptap editor for paragraph ✔️
 - Campaigns with campaigns manager based on newsletter, campaign is a scheduled row of newsletters ✔️
+- details view page for purchases: list with filters ✔️
 
 User functions:
 - /pages/products/index.vue --> Product overview site with searching(picture, name, short description, price on v-card) ✔️
@@ -151,41 +153,6 @@ Bugs:
         - none
 
 Tasks are open:
-→ details view page for purchases: list with filters
-→ rework newsletter/campaigns admin dashboard: daily email send and scheduling diagramm for actual month, but with filter possibility for from-to dates. Time Line campaigns with opening and click rate
-→ welcome newsletter package for newcommers: 5-6 newsletters scheduled in weekly (o rtwo per week) after registration with pre defined content acc. sales rolues
-→ billing with backend acc EN16
-A invoiceNumber.js + a purchase.model.js módosítás + a webhook frissítése együtt már teljesen működő számlaszám‑generálást ad:
-/ CREATE purchase
-async function createPurchase(data) {
-  const db = getDb();
-  const purchase = {
-    userId: new ObjectId(data.userId),
-    items: data.items,
-    amount: data.amount,
-    currency: data.currency,
-    stripeSessionId: data.stripeSessionId,
-    createdAt: new Date(),
-    invoiceNumber: data.invoiceNumber
-  };
-  const result = await db.collection(COLLECTION).insertOne(purchase);
-  return { ...purchase, _id: result.insertedId };
-}
-Következő lépés (ha szeretnéd):
-Most, hogy a számlaszám a helyére került, jöhet a következő finomítás:
-👉 1) Seller adatok beépítése (német előírás szerint kötelező)
-cégnév
-cím
-Steuernummer vagy USt-IdNr
-email
-bankszámla (ha kell)
-👉 2) Payment Means beépítése a ZUGFeRD XML-be
-Stripe
-kártya
-PaymentIntent ID
-👉 3) PDF/A‑3 metaadatok finomítása
-XMP metadata
-ZUGFeRD profil jelölése
-👉 4) Admin UI-ban a számlaszám megjelenítése
-purchases listában
-purchase detail nézetben
+→ nead an a dummy product for 0€ (honeypot) for newsletter subscribers, this dosent can be an a standard product becauese buying can only registrated users (because invoicing), product (an a pdf ebook) is done, but missing the logic
+→ welcome newsletter package for newcommers: 5-6 newsletters scheduled automaticaly after subscribe (scheduling due to over campaignmanager, welcom is a speciel campaign) , the first 6 templates already in the system, missing the logic
+→ rework newsletter/campaigns admin dashboard: daily email send and scheduling diagramm for actual month, but with filter possibility for from-to dates. Time Line campaigns with opening and click rate, ther are many diamrams, but not wrily speeking

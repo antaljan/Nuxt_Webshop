@@ -148,7 +148,13 @@ User functions:
 
 Bugs:
     critical:
-        - none
+        - after an a date structure change on purchases table the frontend/pages/user/products/[id].vue not load the vidoes. 
+        Failure code:"Failed to load resource: the server responded with a status of 400 (Server Error)
+[id].vue:330  Video token error FetchError: [GET] "/api/user/video-token?purchaseId=69a98f6c6307ac7fb5ca10bb&itemId=69a98f6c6307ac7fb5ca10b9": 400 Server Error
+    at async $fetch2 (ofetch.CWycOUEr.mjs:332:15)
+    at async watch.immediate ([id].vue:322:23)
+watch.immediate @ [id].vue:330
+"
     Warnings:
         - none
 
@@ -156,3 +162,6 @@ Tasks are open:
 → nead an a dummy product for 0€ (honeypot) for newsletter subscribers, this dosent can be an a standard product becauese buying can only registrated users (because invoicing), product (an a pdf ebook) is done, but missing the logic
 → welcome newsletter package for newcommers: 5-6 newsletters scheduled automaticaly after subscribe (scheduling due to over campaignmanager, welcom is a speciel campaign) , the first 6 templates already in the system, missing the logic
 → rework newsletter/campaigns admin dashboard: daily email send and scheduling diagramm for actual month, but with filter possibility for from-to dates. Time Line campaigns with opening and click rate, ther are many diamrams, but not wrily speeking
+→ build video chat modul (with websocket) for coaching sections
+→ build questionary modul
+→ build social media modul - WebHook for meta (like mini ManyChat)

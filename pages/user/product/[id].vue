@@ -312,28 +312,33 @@ const videoUrl = ref(null)
 const loadingVideo = ref(false)
 
 watch(
-  product,
-  async (newProd) => {
-    if (newProd?.videoUrl && !videoUrl.value) {
+  [product, relevantItems],
+  async ([newProd, newItems]) => {
+    // Csak akkor futunk le, ha van videó URL a termékleírásban és vannak megvett példányok
+    if (newProd?.videoUrl && newItems?.length > 0 && !videoUrl.value) {
       loadingVideo.value = true
       try {
-        const firstItem = relevantItems.value[0]
-          if (!firstItem) return
-          const res = await $fetch('/api/user/video-token', {
-            query: {
-            purchaseId: firstItem.purchaseId,
-            itemId: firstItem._id
-            }
-          })
-        videoUrl.value = res.url
+        // Keressük meg azt a konkrét vásárolt itemet, amihez tartozik videó URL
+        const videoItem = newItems.find(item => item.videoUrl !== null) || newItems[0]
+
+        const res = await $fetch('/api/user/video-token', {
+          query: {
+            purchaseId: String(videoItem.purchaseId),
+            itemId: String(videoItem._id)
+          }
+        })
+        
+        if (res.url) {
+          videoUrl.value = res.url
+        }
       } catch (e) {
-        console.error('Video token error', e)
+        console.error('Video token error:', e)
       } finally {
         loadingVideo.value = false
       }
     }
   },
-  { immediate: true }
+  { immediate: true, deep: true }
 )
 
 // -----------------------------

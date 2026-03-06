@@ -7,7 +7,9 @@
 
     <!-- KPI cards -->
     <v-row class="mb-6">
-      <v-col cols="12" sm="6" md="4">
+
+      <!-- revenue -->
+      <v-col cols="12" sm="6" md="2">
         <v-card
           border
           elevation="1"
@@ -30,6 +32,7 @@
         </v-card>
       </v-col>
 
+      <!-- bookings -->
       <v-col cols="12" sm="6" md="2">
         <v-card
           border
@@ -53,6 +56,7 @@
         </v-card>
       </v-col>
 
+      <!-- subscribers -->
       <v-col cols="12" sm="6" md="2">
         <v-card
           border
@@ -76,6 +80,7 @@
         </v-card>
       </v-col>
 
+      <!-- Users -->
       <v-col cols="12" sm="6" md="2">
         <v-card
           border
@@ -99,6 +104,7 @@
         </v-card>
       </v-col>
 
+      <!-- pages views -->
       <v-col cols="12" sm="6" md="2">
         <v-card
           border
@@ -119,6 +125,22 @@
               </v-avatar>
             </div>
           </v-card-text>
+        </v-card>
+      </v-col>
+
+      <!-- freebie -->
+      <v-col cols="12" sm="6" md="2">
+        <v-card
+          border
+          elevation="1"
+          class="p-6 text-center rounded-xl cursor-pointer"
+          to="/admin/freebies"
+        >
+          <v-card-item title="Ingyenes anyagok">
+            <template v-slot:subtitle>Utolsó 30 nap</template>
+            <div class="text-h5 font-weight-black text-orange-darken-2">{{ summary.freebieDownloads }} letöltés</div>
+            <div class="text-caption">{{ summary.freebieUniqueUsers }} egyedi érdeklődő</div>
+          </v-card-item>
         </v-card>
       </v-col>
     </v-row>

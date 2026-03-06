@@ -46,6 +46,7 @@ export default defineI18nLocale(async (locale) => {
     dashboard: "Admin irányítópult",
     cibersecu: "Cibersecurity",
     Posts: "Blogok szerkesztése",
+    meta:"META Dashboard",
     blog: {
         title: "Blog kezelése",
         listTitle: "Blogbejegyzések",

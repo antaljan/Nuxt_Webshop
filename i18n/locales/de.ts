@@ -41,6 +41,7 @@ export default defineI18nLocale(async (locale) => {
     dashboard: "Admin Dashboard",
     cibersecu: "Cibersecurity",
     Posts: "Blogbeiträge bearbeiten",
+    meta:"META Dashboard",
     blog: {
         title: "Blog Editor",
         listTitle: "Blog Posten",

@@ -78,6 +78,7 @@ const adminMenu = [
   { to: '/admin/products', label: 'admin.products.menu' },
   { to: '/admin/coaching', label: 'admin.coaching.menu' },
   { to: '/admin/brand', label: 'admin.brand.menu' },
+  { to: '/admin/meta', label: 'admin.meta' },
   { to: '/admin/images', label: 'admin.images' }
 ]
 

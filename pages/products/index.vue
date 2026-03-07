@@ -22,7 +22,10 @@
         sm="6"
         md="4"
       >
-        <v-card class="h-100 d-flex flex-column">
+        <v-card
+          class="h-100 d-flex flex-column clickable-card"
+          @click="goToProduct(product._id)"
+        >
           <v-img
             :src="product.cover || '/placeholder.jpg'"
             height="200"
@@ -49,7 +52,7 @@
             <v-btn
               color="success"
               variant="tonal"
-              @click="handleAddToCart(product)"
+              @click.stop="handleAddToCart(product)"
             >
               {{ $t('products.buyFor') }} €{{ product.price }}
             </v-btn>
@@ -95,3 +98,14 @@ const handleAddToCart = (product) => {
   addToCart(product)
 }
 </script>
+<style scoped>
+.clickable-card {
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.clickable-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+}
+</style>

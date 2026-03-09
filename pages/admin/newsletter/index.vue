@@ -8,6 +8,8 @@
 
     <!-- KPI CARDS -->
     <v-row class="mb-6">
+
+      <!-- Number of subscribers -->
       <v-col cols="12" sm="6" md="2">
       <v-card
         border
@@ -20,6 +22,7 @@
       </v-card>
       </v-col>
 
+      <!-- Number of newsletters -->
       <v-col cols="12" sm="6" md="2">
       <v-card
         border
@@ -32,28 +35,7 @@
       </v-card>
       </v-col>
 
-      <v-col cols="12" sm="6" md="2">
-      <v-card
-        border
-        elevation="1"
-        class="p-6 text-center rounded-xl cursor-pointer"
-      >
-        <h3 class="text-lg font-semibold">Megnyitások</h3>
-        <p class="text-3xl font-bold">{{ stats.totalOpened }}</p>
-      </v-card>
-      </v-col>
-
-      <v-col cols="12" sm="6" md="2">
-      <v-card
-        border
-        elevation="1"
-        class="p-6 text-center rounded-xl cursor-pointer"
-      >
-        <h3 class="text-lg font-semibold">Kattintások</h3>
-        <p class="text-3xl font-bold">{{ stats.totalClicks }}</p>
-      </v-card>
-      </v-col>
-
+      <!-- Number of campaigns -->
       <v-col cols="12" sm="6" md="2">
       <v-card 
         border
@@ -66,6 +48,7 @@
       </v-card>
       </v-col>
 
+      <!-- Number of templates -->
       <v-col cols="12" sm="6" md="2">
       <v-card 
         border
@@ -79,49 +62,54 @@
       </v-col>
     </v-row>
 
-    <!-- PERFORMANCE + STACKED -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <v-card class="p-6">
-        <h2 class="text-xl font-semibold mb-4">Hírlevél teljesítmény (utolsó 10)</h2>
-        <NewsletterPerformanceChart :stats="campaignStatsArray || []" />
-      </v-card>
+    <!-- MONTHLY SUBSCRIBERS -->
+    <v-card class="p-6" style="height: 350px;">
+      <h2 class="text-xl font-semibold mb-4">Havi feliratkozók</h2>
+      <div class="h-[250px]">
+        <NewsletterMonthlySubscribersChart :data="monthlySubscribers" />
+      </div>
+    </v-card>
 
-      <v-card class="p-6">
-        <h2 class="text-xl font-semibold mb-4">Megnyitások / kattintások / címzettek</h2>
-        <NewsletterStackedChart :stats="campaignStatsArray || []" />
-      </v-card>
-    </div>
+    <!-- SENDING CAPACITY -->
+    <v-card class="p-6" style="height: 350px;">
+      <h2 class="text-xl font-semibold mb-4">Küldési kapacitás</h2>
+      <div class="h-[250px]">
+        <NewsletterSendingCapacityChart :data="sendingCapacity" />
+      </div>
+    </v-card>
 
-    <!-- TREND + TOP TEMPLATES -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <v-card class="p-6">
-        <h2 class="text-xl font-semibold mb-4">6 hónapos trend</h2>
-        <NewsletterTrendChart :trend="trend || []" />
-      </v-card>
+    <!-- CAMPAIGN PARETO -->
+    <v-card class="p-6" style="height: 350px;">
+      <h2 class="text-xl font-semibold mb-4">Kampányok teljesítménye (Pareto)</h2>
+      <div class="h-[250px]">
+        <NewsletterParetoChart :data="campaignPareto" />
+      </div>
+    </v-card>
 
-      <v-card class="p-6">
-        <h2 class="text-xl font-semibold mb-4">Legjobban teljesítő sablonok</h2>
-        <NewsletterTopTemplates :templates="topTemplates || []" />
-      </v-card>
-    </div>
-
-    <!-- HEATMAP -->
-    <v-card class="p-6">
-      <h2 class="text-xl font-semibold mb-4">Megnyitások időbeli eloszlása</h2>
-      <NewsletterHeatmap :heatmap="heatmap || []" />
+    <!-- DEEP DRILL CTA -->
+    <v-card class="p-6 text-center">
+      <v-btn color="primary" to="/admin/newsletter/campaigns">
+        Kampányok részletes elemzése
+      </v-btn>
     </v-card>
 
   </section>
 </template>
 
 <script setup>
-import NewsletterPerformanceChart from '~/components/admin/newsletter/NewsletterPerformanceChart.vue'
-import NewsletterStackedChart from '~/components/admin/newsletter/NewsletterStackedChart.vue'
-import NewsletterTrendChart from '~/components/admin/newsletter/NewsletterTrendChart.vue'
-import NewsletterTopTemplates from '~/components/admin/newsletter/NewsletterTopTemplates.vue'
-import NewsletterHeatmap from '~/components/admin/newsletter/NewsletterHeatmap.vue'
+import { computed } from 'vue'
+import NewsletterMonthlySubscribersChart from '@/components/admin/newsletter/NewsletterMonthlySubscribersChart.vue'
+import NewsletterSendingCapacityChart from '@/components/admin/newsletter/NewsletterSendingCapacityChart.vue'
+import NewsletterParetoChart from '@/components/admin/newsletter/NewsletterCampaignParetoChart.vue'
 
-const { fetchSummary, fetchCampaignStats, fetchTrend, fetchTopTemplates, fetchHeatmap, fetchTemplates } = useNewsletter()
+const {
+  fetchSummary,
+  fetchCampaignStats,
+  fetchTemplates,
+  fetchMonthlySubscribers,
+  fetchSendingCapacity,
+  fetchCampaignPareto
+} = useNewsletter()
 
 /* SUMMARY */
 const { data: summary } = await useAsyncData(
@@ -134,41 +122,40 @@ const { data: campaignStats } = await useAsyncData(
   'newsletter-campaign-stats',
   () => fetchCampaignStats()
 )
-
 const totalCampaigns = computed(() => campaignStats.value?.totalCampaigns || 0)
-const campaignStatsArray = computed(() => campaignStats.value?.stats || [])
-
-/* TREND (6 hónap) */
-const { data: trend } = await useAsyncData(
-  'newsletter-trend',
-  () => fetchTrend()
-)
-
-/* TOP TEMPLATES */
-const { data: topTemplates } = await useAsyncData(
-  'newsletter-top-templates',
-  () => fetchTopTemplates()
-)
-
-/* HEATMAP */
-const { data: heatmap } = await useAsyncData(
-  'newsletter-heatmap',
-  () => fetchHeatmap()
-)
 
 /* TEMPLATE COUNT */
 const { data: templates } = await useAsyncData(
   'newsletter-templates',
   () => fetchTemplates()
 )
-
 const templateCount = computed(() => templates.value?.allNewsletters?.length || 0)
 
 /* KPI MAP */
 const stats = computed(() => ({
   totalSubscribers: summary.value?.totalSubscribers || 0,
-  totalNewsletters: summary.value?.totalNewsletters || 0,
-  totalOpened: summary.value?.totalOpened || 0,
-  totalClicks: summary.value?.totalClicks || 0
+  totalNewsletters: summary.value?.totalNewsletters || 0
 }))
+
+/* MONTHLY SUBSCRIBERS */
+const { data: monthlySubscribersRaw } = await useAsyncData(
+  'newsletter-monthly-subscribers',
+  () => fetchMonthlySubscribers()
+)
+const monthlySubscribers = computed(() => monthlySubscribersRaw.value || [])
+
+/* SENDING CAPACITY */
+const { data: sendingCapacityRaw } = await useAsyncData(
+  'newsletter-sending-capacity',
+  () => fetchSendingCapacity()
+)
+const sendingCapacity = computed(() => sendingCapacityRaw.value || [])
+
+/* CAMPAIGN PARETO */
+const { data: campaignParetoRaw } = await useAsyncData(
+  'newsletter-campaign-pareto',
+  () => fetchCampaignPareto()
+)
+const campaignPareto = computed(() => campaignParetoRaw.value || [])
 </script>
+

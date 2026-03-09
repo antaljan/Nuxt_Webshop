@@ -1,5 +1,6 @@
 export function useNewsletter() {
-  /* DASHBOARD */
+
+  /* DASHBOARD SUMMARY */
   const fetchSummary = () =>
     $fetch('/api/dashboard/summary')
 
@@ -52,12 +53,21 @@ export function useNewsletter() {
       body: payload
     })
 
-  const fetchCampaignStats = () => $fetch('/api/dashboard/campaigns')
-  const fetchTrend = () => $fetch('/api/dashboard/trend')
-  const fetchTopTemplates = () => $fetch('/api/dashboard/top-templates')
-  const fetchHeatmap = () => $fetch('/api/dashboard/heatmap')
+  /* EXISTING DASHBOARD ENDPOINTS */
+  const fetchCampaignStats = () =>
+    $fetch('/api/dashboard/campaigns')
 
+  /* ÚJ — Havi feliratkozók */
+  const fetchMonthlySubscribers = () =>
+    $fetch('/api/newsletter/stats/monthly-subscribers')
 
+  /* ÚJ — Küldési kapacitás (48h vissza / 48h előre) */
+  const fetchSendingCapacity = () =>
+    $fetch('/api/newsletter/stats/sending-capacity')
+
+  /* ÚJ — Kampány Pareto diagram */
+  const fetchCampaignPareto = () =>
+    $fetch('/api/newsletter/stats/campaign-pareto')
 
   return {
     fetchSummary,
@@ -80,10 +90,10 @@ export function useNewsletter() {
     // Scheduling
     scheduleNewsletter,
 
+    // Dashboard stats
     fetchCampaignStats,
-    fetchTrend,
-    fetchTopTemplates,
-    fetchHeatmap,
-
+    fetchMonthlySubscribers,
+    fetchSendingCapacity,
+    fetchCampaignPareto,
   }
 }

@@ -128,6 +128,8 @@ Admin functions:
 - New newsletter template with json amd tiptap editor for paragraph ✔️
 - Campaigns with campaigns manager based on newsletter, campaign is a scheduled row of newsletters ✔️
 - details view page for purchases: list with filters ✔️
+- pages/admin/freebie/index.vue and create.vue --> dummy product for 0€ (honeypot) for newsletter subscribers, this is not a standard product becauese buying can only registrated users (because invoicing). ✔️
+
 
 User functions:
 - /pages/products/index.vue --> Product overview site with searching(picture, name, short description, price on v-card) ✔️
@@ -148,20 +150,21 @@ User functions:
 
 Bugs:
     critical:
-        - after an a date structure change on purchases table the frontend/pages/user/products/[id].vue not load the vidoes. 
-        Failure code:"Failed to load resource: the server responded with a status of 400 (Server Error)
-[id].vue:330  Video token error FetchError: [GET] "/api/user/video-token?purchaseId=69a98f6c6307ac7fb5ca10bb&itemId=69a98f6c6307ac7fb5ca10b9": 400 Server Error
-    at async $fetch2 (ofetch.CWycOUEr.mjs:332:15)
-    at async watch.immediate ([id].vue:322:23)
-watch.immediate @ [id].vue:330
-"
+        - none
     Warnings:
         - none
 
 Tasks are open:
-→ nead an a dummy product for 0€ (honeypot) for newsletter subscribers, this dosent can be an a standard product becauese buying can only registrated users (because invoicing), product (an a pdf ebook) is done, but missing the logic
-→ welcome newsletter package for newcommers: 5-6 newsletters scheduled automaticaly after subscribe (scheduling due to over campaignmanager, welcom is a speciel campaign) , the first 6 templates already in the system, missing the logic
-→ rework newsletter/campaigns admin dashboard: daily email send and scheduling diagramm for actual month, but with filter possibility for from-to dates. Time Line campaigns with opening and click rate, ther are many diamrams, but not wrily speeking
-→ build video chat modul (with websocket) for coaching sections
-→ build questionary modul
-→ build social media modul - WebHook for meta (like mini ManyChat)
+→ build social media modul like mini ManyChat, to react for DM for example send freebie to answer with a speciel word: registered to meta developper platform, create backend moduls (GET:meta/webhook, POST:meta/webhook, GET:meta/stats ), and build pages/admin/meta/index.vue , just wating for 48 hours facebook caranten after registration, with the account of Gyöngyi
+→ welcome newsletter package for newcommers: 5-6 newsletters scheduled automaticaly after subscribe (scheduling due to over campaignmanager, welcom is a speciel campaign) , the first 6 templates already in the system, but waiting the adjusment from Gyöngyi, missing the logic from backend/user/subscribe
+→ rework newsletter/campaigns admin dashboard: there is a complex dashboard, but to complex, ther are many diamrams, but not wrily speeking. 
+    What i or Gyöngyi wrily nead:
+        - KPI: nuber of subscribers, number of sended/scheduled newsletters, number of Templates, number of campaigns
+        - diagramms:
+            - montly number of subscribers
+            - hourly sending rate for last 48 hours and next 48 hours, because our SMTP server is limited (300 mail/hour) and we has to be recognise, when we nead to switch to other mailing service (eg. mailgun)
+            - pareto diagramm - result of campaigns: actual delivery rate, actual open and click rate
+        - deep drill:
+            - click on campaign to open the list of newsletters --> click on newsletter to see (analyse), who is openes and after how many time and clicked on CTA or not
+→ build in a video chat modul (with websocket or plug in) for coaching sections
+→ build questionary modul to exams after online training or researching in dif. topics or to promote products with the evaulation result (eg. stress level test and with the evaultion promote relaxation techniks)

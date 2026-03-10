@@ -42,6 +42,7 @@ Technical Notes:
 - User state available during SSR
 - Dashboard protected via route middleware
 - Backend authorization for digital product access
+- Online Paying via Stripe
 3) Admin (Coach / Business Owner)
 Capabilities:
 - Manage blog posts
@@ -55,17 +56,19 @@ Capabilities:
   - audience segmentation
   - scheduled sending
   - open/click statistics
+- Create Freebie
+- Manage Meta DM's, send back automaticaly the link for Freebie
 Technical Notes:
 - SSR + auth middleware + role checks
 - Newsletter scheduler via backend cron
-- External email provider recommended (SMTP Server like ionos)
+- Backend HTML-Email Services with external email provider (SMTP Server like ionos)
 
 ## 🌍 Multilingual Support & Design
 - Clean, modern UI (Vuetify + MDI + Tailwind)
 - Supported languages: English, German, Hungarian
 - Automatic language detection via browser settings
 - Default language: English
-- Multi‑domain support (for email communication as well)
+- Multi‑domain support (.hu, .com), language dependent email communication
 
 ## 🎬 Video Streaming
 Recommended provider:

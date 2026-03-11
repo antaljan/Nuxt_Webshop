@@ -76,6 +76,7 @@ const adminMenu = [
   { to: '/admin/blog', label: 'admin.Posts' },
   { to: '/admin/newsletter', label: 'admin.newsletter.title' },
   { to: '/admin/products', label: 'admin.products.menu' },
+  { to: '/admin/leadmagnet', label: 'admin.leadmagnet.menu' },
   { to: '/admin/coaching', label: 'admin.coaching.menu' },
   { to: '/admin/brand', label: 'admin.brand.menu' },
   { to: '/admin/meta', label: 'admin.meta' },

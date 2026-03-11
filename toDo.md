@@ -157,14 +157,14 @@ Bugs:
 Tasks are open:
 → build social media modul like mini ManyChat, to react for DM for example send freebie to answer with a speciel word: registered to meta developper platform, create backend moduls (GET:meta/webhook, POST:meta/webhook, GET:meta/stats ), and build pages/admin/meta/index.vue , just wating for 48 hours facebook caranten after registration, with the account of Gyöngyi
 → welcome newsletter package for newcommers: 5-6 newsletters scheduled automaticaly after subscribe (scheduling due to over campaignmanager, welcom is a speciel campaign) , the first 6 templates already in the system, but waiting the adjusment from Gyöngyi, missing the logic from backend/user/subscribe
-→ rework newsletter/campaigns admin dashboard: there is a complex dashboard, but to complex, ther are many diamrams, but not wrily speeking. 
-    What i or Gyöngyi wrily nead:
-        - KPI: nuber of subscribers, number of sended/scheduled newsletters, number of Templates, number of campaigns
+→ rework newsletter/campaigns admin dashboard: 
+        - KPI: nuber of subscribers, number of sended/scheduled newsletters, number of Templates, number of campaigns ✔️
         - diagramms:
             - montly number of subscribers
-            - hourly sending rate for last 48 hours and next 48 hours, because our SMTP server is limited (300 mail/hour) and we has to be recognise, when we nead to switch to other mailing service (eg. mailgun)
-            - pareto diagramm - result of campaigns: actual delivery rate, actual open and click rate
+            - hourly sending rate for last 48 hours and next 48 hours, because our SMTP server is limited (300 mail/hour) and we has to be recognise, when we nead to switch to other mailing service (eg. mailgun) ✔️
+            - pareto diagramm - result of campaigns: actual delivery rate, actual open and click rate ✔️
         - deep drill:
             - click on campaign to open the list of newsletters --> click on newsletter to see (analyse), who is openes and after how many time and clicked on CTA or not
 → build in a video chat modul (with websocket or plug in) for coaching sections
 → build questionary modul to exams after online training or researching in dif. topics or to promote products with the evaulation result (eg. stress level test and with the evaultion promote relaxation techniks)
+→ create (develop) Leadmagnet site

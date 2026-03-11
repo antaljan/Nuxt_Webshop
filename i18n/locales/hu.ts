@@ -47,6 +47,9 @@ export default defineI18nLocale(async (locale) => {
     cibersecu: "Cibersecurity",
     Posts: "Blogok szerkesztése",
     meta:"META Dashboard",
+    leadmagnet: {
+      menu:"Csali oldalak"
+    },
     blog: {
         title: "Blog kezelése",
         listTitle: "Blogbejegyzések",

@@ -42,6 +42,9 @@ export default defineI18nLocale(async (locale) => {
     cibersecu: "Cibersecurity",
     Posts: "Edit Blog Posts",
     meta:"META Dashboard",
+    leadmagnet: {
+      menu:"Lead Magnet Sites"
+    },
     blog: {
         title: "Blog editor",
         listTitle: "Blog posts",

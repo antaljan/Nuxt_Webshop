@@ -165,6 +165,6 @@ Tasks are open:
             - pareto diagramm - result of campaigns: actual delivery rate, actual open and click rate ✔️
         - deep drill:
             - click on campaign to open the list of newsletters --> click on newsletter to see (analyse), who is openes and after how many time and clicked on CTA or not
-→ build in a video chat modul (with websocket or plug in) for coaching sections
+→ build in a video chat modul (with websocket or plug in: Daily.co vagy Jitsi Meet API-t) for coaching sections
 → build questionary modul to exams after online training or researching in dif. topics or to promote products with the evaulation result (eg. stress level test and with the evaultion promote relaxation techniks)
-→ create (develop) Leadmagnet site
+→ create (develop) Leadmagnet site: the lead magnet sites has to be use the generick items from components (hero,HTML Text, Text&mage...) witch are maintaned vie contentmanagement, the structure and SEO content of site stored in separeted data table

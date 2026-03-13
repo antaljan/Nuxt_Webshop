@@ -1,5 +1,6 @@
 <template>
-<section :id="sectionKey" class="relative w-full h-[60vh] md:h-[75vh] overflow-hidden">
+<section v-if="content && Object.keys(content).length > 0" :id="sectionKey" class="relative w-full h-[60vh] md:h-[75vh] overflow-hidden">
+
   <div
     class="absolute inset-0 bg-cover bg-center will-change-transform parallax-bg"
     :style="{ backgroundImage: `url(${backgroundUrl})` }"
@@ -62,9 +63,10 @@ const backendBase = config.public.backendBase
    PROPS
 --------------------------- */
 const props = defineProps({
-  content: { type: Object, required: true },
+  content: { type: Object, default: () => ({}) },
   sectionKey: { type: String, required: true }
 })
+
 
 
 /* ---------------------------
@@ -97,7 +99,7 @@ watch(
 --------------------------- */
 const backgroundUrl = computed(() => {
   const img = localContent.value.image
-  if (!img) return '/fallbackImages.jpg'
+  if (!img) return '/placeholder.jpg'
 
   // Ha teljes URL → hagyjuk
   if (img.startsWith('http')) return img
@@ -155,7 +157,7 @@ const showEditor = ref(false)
 /* ---------------------------
    Parallax Effect
 --------------------------- */
-const parallax = ref(null) 
+const parallax = ref(null)
 onMounted(() => {
   const handler = () => {
     if (!parallax.value) return
@@ -185,8 +187,8 @@ onMounted(() => {
 .parallax-bg {
   transform: scale(1.1);
   transform-origin: center;
-  background-size: cover; 
-  background-position: center; 
+  background-size: cover;
+  background-position: center;
   will-change: transform;
 }
 

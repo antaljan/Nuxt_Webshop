@@ -48,25 +48,26 @@ export default defineNuxtConfig({
   }
 }
 ,
-
   security: {
-    headers: {
-      referrerPolicy: 'no-referrer-when-downgrade',
-      contentSecurityPolicy: {
-        'img-src': ["'self'", "data:", "https://antaligyongyi.hu", "https://bunny.net"],
-        'script-src': ["'self'", "'unsafe-inline'", "https://js.stripe.com"],
-        'frame-src': [
-          "'self'",
-          "https://js.stripe.com",
-          "https://iframe.mediadelivery.net",
-          "https://*.bunny.net",
-          "https://*.mediadelivery.net"
-        ],
-        'frame-ancestors': ["'self'"]
-      },
-      crossOriginEmbedderPolicy: 'unsafe-none',
-    },
-    // Rate limiting (DDoS)
+    // Itt kapcsoljuk ki a hibás fejléc-kezelést
+    headers: false, 
+    // Itt adjuk meg az alapvető CSP-t a modul újabb logikája szerint
+    contentSecurityPolicy: {
+      'img-src': ["'self'", "data:", "https://antaligyongyi.hu", "https://*.bunny.net"],
+      'script-src': ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://js.stripe.com"],
+      'connect-src': ["'self'", "https:", "wss:", "ws:", "http://localhost:*"],
+      'frame-src': [
+        "'self'",
+        "https://js.stripe.com",
+        "https://iframe.mediadelivery.net",
+        "https://*.bunny.net",
+        "https://*.mediadelivery.net"
+      ],
+      'frame-ancestors': ["'self'"]
+    }
+  },
+  
+  // Rate limiting (DDoS)
     rateLimiter: {
       tokensPerInterval: 350,
       interval: 'hour',
@@ -76,7 +77,7 @@ export default defineNuxtConfig({
       maxRequestSizeInBytes: 2000000,
       maxUploadFileRequestInBytes: 20000000,
     },
-  },
+  
 
   routeRules: {
     '/api/newsletter/create/save': { security: {xssValidator: false} },

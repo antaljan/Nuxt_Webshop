@@ -2,57 +2,84 @@
 const route = useRoute()
 const { locale } = useI18n()
 
-// 1. Adatbetöltés (Slug alapján)
+// 1. Struktúra és Tartalom betöltése
 const slug = route.params.slug
 
-const { data: response, error } = await useAsyncData(
-  `lp-data-${slug}`,
-  () => $fetch(`/api/leadmagnet/by-slug/${slug}`)
-)
-const page = computed(() => response.value?.item)
+const { data: lpResponse, refresh } = await useAsyncData(
+  `lp-full-${slug}-${locale.value}`,
+  async () => {
+    // Először lekapjuk a struktúrát
+    const lm = await $fetch(`/api/leadmagnet/by-slug/${slug}`)
+    if (!lm?.item) return null
 
-// 2. SEO Beállítások (Dinamikusan az adatbázisból)
+    // Kigyűjtjük az ID-kat/Kulcsokat a tartalom lekéréshez
+    const sectionKeys = lm.item.sections.map(s => s.key)
+
+    // Lekérjük a hozzájuk tartozó konkrét tartalmakat (szövegek, képek)
+    // Megjegyzés: Ez az endpoint a backend-en egy $in: sectionKeys query-t futtat
+    const contents = await $fetch(`/api/content/bulk-load`, {
+      method: 'POST',
+      body: {
+        keys: sectionKeys,
+        lang: locale.value
+      }
+    })
+
+    // Indexeljük a tartalmat a könnyű eléréshez: { "key-123": { title: '...', html: '...' } }
+    const contentMap = contents.reduce((acc, curr) => {
+      acc[curr.section] = curr
+      return acc
+    }, {})
+
+    return {
+      page: lm.item,
+      contentMap
+    }
+  }
+)
+
+const page = computed(() => lpResponse.value?.page)
+const contentMap = computed(() => lpResponse.value?.contentMap || {})
+
+// 2. Nyelvváltás figyelése (mint az index.vue-nál)
+watch(locale, () => refresh())
+
+// 3. SEO (Dinamikusan)
 watchEffect(() => {
   if (page.value?.seo) {
-    const seo = page.value.seo[locale.value] || page.value.seo['en'] // Fallback nyelvre
+    const seo = page.value.seo[locale.value] || page.value.seo['en']
     useSeoMeta({
       title: seo.title,
-      ogTitle: seo.title,
       description: seo.description,
+      ogTitle: seo.title,
       ogDescription: seo.description,
-      ogImage: seo.image || '/default-share.jpg',
-      twitterCard: 'summary_large_image',
     })
   }
 })
 
-// 3. Komponens Térkép
+// 4. Komponens regisztráció
 const componentMap = {
   Hero: resolveComponent('GenericHeroSection'),
-  HtmlText: resolveComponent('GenericHtmlTextSection'),
+  HtmlText: resolveComponent('GenericHtmlTextSection'), // Ezt átnevezheted GenericTextSection-re ha az az
   ImageText: resolveComponent('GenericImageTextSection'),
   Separator: resolveComponent('SectionSeparator'),
   Contact: resolveComponent('GenericContactSection')
-}
-
-// Konverzió követés (ha pl. feliratkozik)
-const trackConversion = async () => {
-  await $fetch(`/api/leadmagnet/${route.params.slug}/convert`, { method: 'POST' })
 }
 </script>
 
 <template>
   <div v-if="page">
-    <div v-for="(sec, index) in page.sections" :key="index">
-      <component 
-        :is="componentMap[sec.type]" 
-        :section="sec.key"
+    <div v-for="(sec, index) in page.sections" :key="sec.key">
+      <component
+        :is="componentMap[sec.type]"
+        v-if="contentMap[sec.key]"
+        :content="contentMap[sec.key]"
+        :sectionKey="sec.key"
         v-bind="sec.props"
-        @success="trackConversion"
       />
     </div>
   </div>
-  <v-container v-else class="text-center py-10">
+  <v-container v-else class="text-center py-16">
     <v-progress-circular indeterminate color="primary" />
   </v-container>
 </template>

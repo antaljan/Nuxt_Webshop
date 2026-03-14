@@ -28,6 +28,7 @@
       </div>
       <!-- GDPR & Data Privacy -->
       <div class="flex justify-center gap-6 text-text mt-6">
+        <NuxtLink to="/impressum" class="text-primary hover:underline text-sm flex items-center gap-2">{{ $t('common.impressum') }}</NuxtLink>
         <NuxtLink to="/gdpr" class="text-primary hover:underline text-sm flex items-center gap-2">{{ $t('common.gdpr') }}</NuxtLink>
         <NuxtLink to="/agb" class="text-primary hover:underline text-sm flex items-center gap-2">{{ $t('common.agb') }}</NuxtLink>
       </div>

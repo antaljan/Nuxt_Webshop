@@ -178,6 +178,7 @@ export default defineI18nLocale(async (locale) => {
     reset:"zurücksetsen auf Grundeinstellungen",
     gdpr:"General Data Protection Regulation (GDPR)",
     agb:"Allgemeine Geschäftsbedingungen",
+    impressum:"Impressum",
     user: "Benutzer",
     bookings: "Meine Buchungen",
     noBookings: "Keine aktiven Buchungen.",

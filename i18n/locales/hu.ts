@@ -183,6 +183,7 @@ export default defineI18nLocale(async (locale) => {
     reset:"Alapértelmezés visszaállítása",
     gdpr:"Általános Adatvédelmi Rendelet (GDPR)",
     agb:"Általános Szerződési Feltételek",
+    impressum:"Impresszum",
     user: "Felhasználó",
     bookings: "Foglalt időpontjaim",
     noBookings: "Nincs aktív foglalásod.",

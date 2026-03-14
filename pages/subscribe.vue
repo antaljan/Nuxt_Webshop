@@ -134,15 +134,12 @@ const loading = ref(false)
 const success = ref(false)
 
 async function submit() {
-
   if (!form.value) return
-
-  const { valid } = await form.value.validate()
-  if (!valid) {
+  const { valid: isFormValid } = await form.value.validate()
+  if (!isFormValid) {
     alert(t('newsletter.errorGeneral'))
     return
   }
-
   loading.value = true
   try {
     await $fetch('/api/newsletter/subscribe', {
@@ -151,10 +148,11 @@ async function submit() {
         firstname: firstname.value,
         name: name.value,
         email: email.value,
-        language: locale.value
+        language: locale.value,
+        campaignSlug: 'welcome',
+        source: 'organic-subscribe-page'
       }
     })
-
     success.value = true
     firstname.value = ''
     name.value = ''

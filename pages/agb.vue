@@ -6,5 +6,5 @@
   >
     {{ $t('common.backtohome') }}
   </NuxtLink>
-  <GenericHtmlTextSection section="agb" />
+  <GenericHtmlTextSection sectionKey="agb" />
 </template>

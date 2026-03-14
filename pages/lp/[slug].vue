@@ -60,10 +60,27 @@ watchEffect(() => {
 // 4. Komponens regisztráció
 const componentMap = {
   Hero: resolveComponent('GenericHeroSection'),
-  HtmlText: resolveComponent('GenericHtmlTextSection'), // Ezt átnevezheted GenericTextSection-re ha az az
+  HtmlText: resolveComponent('GenericHtmlTextSection'),
   ImageText: resolveComponent('GenericImageTextSection'),
   Separator: resolveComponent('SectionSeparator'),
-  Contact: resolveComponent('GenericContactSection')
+  Contact: resolveComponent('GenericContactSection'),
+  Subscribe: resolveComponent('GenericLeadMagnetSubscribe')
+}
+
+const getSectionProps = (sec, content) => {
+  if (sec.type === 'Subscribe') {
+    return {
+      title: content.title,
+      buttonText: content.buttonText,
+      leadMagnetSlug: content.leadMagnetSlug
+    }
+  }
+  // A többi szekciónál marad a megszokott 'content'
+  return {
+    content: content,
+    sectionKey: sec.key,
+    ...sec.props
+  }
 }
 </script>
 
@@ -73,9 +90,7 @@ const componentMap = {
       <component
         :is="componentMap[sec.type]"
         v-if="contentMap[sec.key]"
-        :content="contentMap[sec.key]"
-        :sectionKey="sec.key"
-        v-bind="sec.props"
+        v-bind="getSectionProps(sec, contentMap[sec.key])"
       />
     </div>
   </div>

@@ -17,31 +17,31 @@
 
     <!-- CAMPAIGN INFO -->
     <v-card class="p-6 space-y-4">
-      <h2 class="text-xl font-semibold">Kampány adatai</h2>
-
-      <v-text-field
-        v-model="campaign.name"
-        label="Kampány neve"
-        variant="outlined"
-        required
-      />
-
-      <v-textarea
-        v-model="campaign.description"
-        label="Leírás"
-        variant="outlined"
-        rows="3"
-      />
-
-      <v-select
-        v-model="campaign.status"
-        :items="[
-          { title: 'Piszkozat', value: 'draft' },
-          { title: 'Aktív', value: 'active' }
-        ]"
-        label="Státusz"
-        variant="outlined"
-      />
+      <h2 class="text-xl font-semibold">Kampány adatai</h2>  
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <v-text-field v-model="campaign.name" label="Kampány neve" variant="outlined" />
+        <v-text-field v-model="campaign.slug" label="Kampány URL Slug (pl. stressz-ebook)" variant="outlined" />
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <v-select
+          v-model="campaign.type"
+          :items="[
+            { title: 'Egyszeri (Broadcast)', value: 'broadcast' },
+            { title: 'Automatizált (Welcome/Lead Magnet)', value: 'automated' }
+          ]"
+          label="Kampány típusa"
+          variant="outlined"
+        />
+        <v-select
+          v-model="campaign.status"
+          :items="[
+            { title: 'Piszkozat', value: 'draft' },
+            { title: 'Aktív', value: 'active' }
+          ]"
+          label="Státusz"
+          variant="outlined"
+        />
+      </div>
     </v-card>
 
     <!-- EMAIL STEPS -->
@@ -57,58 +57,81 @@
           Új e-mail hozzáadása
         </v-btn>
       </div>
-
       <div v-for="(email, index) in campaign.newsletters" :key="index">
-        <v-card class="p-4 mb-4">
+<v-card class="p-6 space-y-6">
+  <div class="flex justify-between items-center">
+    <h2 class="text-xl font-semibold">Kampány e-mailek</h2>
+    <v-btn color="primary" prepend-icon="mdi-plus" @click="addEmail">
+      Új e-mail hozzáadása
+    </v-btn>
+  </div>
 
-          <div class="flex justify-between items-center mb-4">
-            <h3 class="text-lg font-semibold">E-mail #{{ index + 1 }}</h3>
+  <div v-for="(email, index) in campaign.newsletters" :key="index">
+    <v-card class="p-4 mb-4 border-l-4" :class="campaign.type === 'automated' ? 'border-primary' : 'border-success'">
+      
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-semibold">E-mail #{{ index + 1 }}</h3>
+        <v-btn icon="mdi-delete" color="red" variant="text" @click="removeEmail(index)" />
+      </div>
 
-            <v-btn
-              icon="mdi-delete"
-              color="red"
-              variant="text"
-              @click="removeEmail(index)"
-            />
-          </div>
+      <div class="flex items-center gap-2 mb-4">
+        <v-btn
+          icon="mdi-eye"
+          variant="text"
+          color="blue"
+          title="Előnézet"
+          @click="openPreview(email)"
+        />
+        <v-select
+          v-model="email.templateId"
+          :items="templateOptions"
+          item-title="subject"
+          item-value="_id"
+          label="Hírlevél sablon kiválasztása"
+          variant="outlined"
+          class="flex-grow"
+          hide-details
+          required
+        />
+      </div>
+      <v-divider class="mb-4" />
 
-          <!-- TEMPLATE PREVIEW -->
-          <v-btn
-            icon="mdi-eye"
-            variant="text"
-            @click="openPreview(email)"
-          />
+      <div v-if="campaign.type === 'broadcast'">
+        <v-text-field
+          v-model="email.sendDate"
+          type="datetime-local"
+          label="Küldési időpont"
+          variant="outlined"
+        />
+        <v-btn variant="text" prepend-icon="mdi-account-multiple" @click="openSubscriberSelector(index)">
+          Címzettek ({{ email.subscribers.length }})
+        </v-btn>
+      </div>
 
-          <!-- TEMPLATE SELECT -->
-          <v-select
-            v-model="email.templateId"
-            :items="templateOptions"
-            item-title="subject"
-            item-value="_id"
-            label="Hírlevél sablon"
-            variant="outlined"
-            required
-          />
-
-          <!-- SEND DATE -->
-          <v-text-field
-            v-model="email.sendDate"
-            type="datetime-local"
-            label="Küldési időpont"
-            variant="outlined"
-            required
-          />
-
-          <!-- SUBSCRIBER LIST -->
-          <v-btn
-            variant="text"
-            prepend-icon="mdi-account-multiple"
-            @click="openSubscriberSelector(index)"
-          >
-            Címzettek ({{ email.subscribers.length }})
-          </v-btn>
-
-        </v-card>
+      <div v-else class="flex gap-4 items-center">
+        <v-text-field
+          v-model.number="email.offset"
+          type="number"
+          label="Eltolás mértéke"
+          variant="outlined"
+        />
+        <v-select
+          v-model="email.unit"
+          :items="[
+            { title: 'Perc', value: 'minutes' },
+            { title: 'Óra', value: 'hours' },
+            { title: 'Nap', value: 'days' }
+          ]"
+          label="Időegység"
+          variant="outlined"
+        />
+        <div class="text-caption text-grey">
+          (A feliratkozástól számítva. A 0 = azonnali.)
+        </div>
+      </div>
+    </v-card>
+  </div>
+</v-card>
       </div>
     </v-card>
 
@@ -149,8 +172,10 @@ const { fetchTemplates } = useNewsletter()
 /* STATE */
 const campaign = reactive({
   name: "",
+  slug: "", // Szükséges az azonosításhoz (pl. 'welcome' vagy 'stressz-ebook')
   description: "",
   status: "draft",
+  type: "broadcast", // Alapértelmezett típus
   newsletters: []
 })
 
@@ -166,7 +191,9 @@ const templateOptions = computed(() => templates.value?.allNewsletters || [])
 function addEmail() {
   campaign.newsletters.push({
     templateId: "",
-    sendDate: "",
+    sendDate: "", // Broadcast esetén
+    offset: 0,    // Automated esetén
+    unit: "minutes", // Automated esetén
     subscribers: []
   })
 }
@@ -178,21 +205,59 @@ function removeEmail(index) {
 
 /* SAVE CAMPAIGN */
 async function saveCampaign() {
+  // Validáció (opcionális, de ajánlott)
+  if (!campaign.name) return alert("A kampány neve kötelező!");
+
   const payload = {
     ...campaign,
-    newsletters: campaign.newsletters.map(n => ({
-      templateId: n.templateId,
-      sendDate: n.sendDate,
-      subscribers: n.subscribers
-    }))
+    // Automatikus slug generálás, ha nincs megadva (kisbetűs, ékezetmentes, kötőjeles)
+    slug: campaign.slug || campaign.name
+      .toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Ékezetek eltávolítása
+      .replace(/\s+/g, '-')
+      .replace(/[^\w-]+/g, ''),
+
+    newsletters: campaign.newsletters.map(n => {
+      // Percre váltás logikája
+      let calculatedOffset = 0;
+      if (campaign.type === 'automated') {
+        const offsetVal = parseInt(n.offset) || 0;
+        if (n.unit === 'days') {
+          calculatedOffset = offsetVal * 1440; // 24 * 60
+        } else if (n.unit === 'hours') {
+          calculatedOffset = offsetVal * 60;
+        } else {
+          calculatedOffset = offsetVal; // alapból minutes
+        }
+      }
+
+      return {
+        templateId: n.templateId,
+        // Ha broadcast, visszük a kiválasztott listát, ha automated, üres marad
+        subscribers: campaign.type === 'broadcast' ? n.subscribers : [],
+        // Ha broadcast, visszük a fix dátumot, ha automated, null
+        sendDate: campaign.type === 'broadcast' ? n.sendDate : null,
+        // Az automated mezők
+        offset: campaign.type === 'automated' ? calculatedOffset : null,
+        // Eredeti értékeket is elmenthetjük, ha később szerkeszteni akarjuk a UI-on
+        displayOffset: n.offset,
+        displayUnit: n.unit
+      };
+    })
+  };
+
+  try {
+    await $fetch("/api/campaigns/create", {
+      method: "POST",
+      body: payload
+    });
+    
+    // Sikeres mentés után visszairányítás
+    navigateTo("/admin/newsletter/campaigns");
+  } catch (err) {
+    console.error("Hiba a mentés során:", err);
+    alert("Nem sikerült elmenteni a kampányt.");
   }
-
-  await $fetch("/api/campaigns/create", {
-    method: "POST",
-    body: payload
-  })
-
-  navigateTo("/admin/newsletter/campaigns")
 }
 
 /* PREVIEW */

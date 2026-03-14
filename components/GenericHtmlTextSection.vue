@@ -1,6 +1,5 @@
 <template>
   <section class="max-w-4xl mx-auto py-10 px-4">
-    <!-- Admin mód: TipTap editor -->
     <div v-if="isAdmin && editMode">
         <div class="editor-wrapper border rounded-lg p-2 bg-white min-h-[300px]">
             <EditorContent :editor="editor" />
@@ -16,14 +15,12 @@
       </div>
     </div>
 
-    <!-- Publikus mód: HTML render -->
     <div
       v-else
       class="prose max-w-none"
       v-html="sanitizedHtml"
     />
 
-    <!-- Admin: Edit gomb -->
     <div v-if="isAdmin && !editMode" class="mt-6">
       <v-btn color="primary" @click="editMode = true">
         {{ t('common.edit') }}
@@ -33,16 +30,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import DOMPurify from 'dompurify'
 import { useI18n } from 'vue-i18n'
 import { useAuth } from '~/composables/useAuth'
 import { useContent } from '~/composables/useContent'
 import { Editor, EditorContent } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
+
 const { t, locale } = useI18n()
+
+// EGYSÉGESÍTÉS: section -> sectionKey, és opcionális content prop
 const props = defineProps<{
-  section: string
+  sectionKey: string,
+  content?: any
 }>()
 
 const { user } = useAuth()
@@ -52,7 +53,24 @@ const isAdmin = computed(() => user.value?.role === 'admin')
 const editMode = ref(false)
 const localContent = ref<string>('')
 
-const editor = ref(null)
+const editor = ref<Editor | null>(null)
+
+// Tartalom betöltése: ha nincs propban kapott tartalom, lekérjük
+const { data: fetchedContent } = await useAsyncData(
+  `content-${props.sectionKey}-${locale.value}`,
+  () => props.content ? Promise.resolve(props.content) : getSection(props.sectionKey, locale.value),
+  { watch: [locale] }
+)
+
+// Reaktív tartalomkezelés
+const activeContent = computed(() => props.content || fetchedContent.value)
+
+watch(activeContent, (newVal) => {
+  if (newVal?.html) {
+    localContent.value = newVal.html
+    editor.value?.commands.setContent(newVal.html)
+  }
+}, { immediate: true })
 
 onMounted(() => {
   editor.value = new Editor({
@@ -68,29 +86,20 @@ onBeforeUnmount(() => {
   editor.value?.destroy()
 })
 
-// SSR content load
-const { data: content } = await useAsyncData(
-  `content-${props.section}-${locale.value}`,
-  () => getSection(props.section, locale.value)
-)
-
-localContent.value = content.value?.html || ''
-
 const sanitizedHtml = computed(() => {
-  if (process.server) {
-    return localContent.value
-  }
+  if (process.server) return localContent.value
   return DOMPurify.sanitize(localContent.value)
 })
 
-
 const saveContent = async () => {
-  await updateSection(props.section, locale.value, { html: localContent.value })
+  // A backend updateSection-nek is a sectionKey-t adjuk át
+  await updateSection(props.sectionKey, locale.value, { html: localContent.value })
   editMode.value = false
 }
 
 const cancelEdit = () => {
-  localContent.value = content.value?.html || ''
+  localContent.value = activeContent.value?.html || ''
+  editor.value?.commands.setContent(localContent.value)
   editMode.value = false
 }
 </script>

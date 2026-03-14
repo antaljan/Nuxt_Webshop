@@ -161,17 +161,25 @@ async function onImageSelected(event) {
   if (!file) return
 
   const formData = new FormData()
-  formData.append('image', file)
+  // A backend 'image' kulcsot vár az uploadMiddleware miatt
+  formData.append('image', file) 
 
   try {
-    const response = await $fetch('/api/content/upload', {
+    // Közvetlenül a backendet hívjuk, ahogy a blogban is működik
+    const response = await $fetch(`${config.public.backendBase}/upload`, {
       method: 'POST',
       body: formData
     })
 
-    localContent.value.image = response.path + '?t=' + Date.now()
+    if (response && response.path) {
+      // Frissítjük a lokális adatot a visszakapott útvonallal
+      localContent.value.image = response.path
+      // Opcionális: Azonnali mentés, hogy a kép ne vesszen el frissítéskor
+      await saveContent()
+    }
   } catch (err) {
     console.error('Image upload failed:', err)
+    alert("Képfeltöltési hiba a backend felé!")
   }
 }
 

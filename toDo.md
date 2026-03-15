@@ -129,7 +129,8 @@ Admin functions:
 - Campaigns with campaigns manager based on newsletter, campaign is a scheduled row of newsletters ✔️
 - details view page for purchases: list with filters ✔️
 - pages/admin/freebie/index.vue and create.vue --> dummy product for 0€ (honeypot) for newsletter subscribers, this is not a standard product becauese buying can only registrated users (because invoicing). ✔️
-
+- welcome newsletter automation. package for newcommers: 5-6 newsletters scheduled automaticaly after subscribe (scheduling due to over campaignmanager, welcom is a speciel campaign) ✔️
+- create (develop) Leadmagnet site: the lead magnet sites has to be use the generick items from components (hero,HTML Text, Text&mage...) witch are maintaned vie contentmanagement, the structure and SEO content of site stored in separeted data table ✔️
 
 User functions:
 - /pages/products/index.vue --> Product overview site with searching(picture, name, short description, price on v-card) ✔️
@@ -150,13 +151,15 @@ User functions:
 
 Bugs:
     critical:
-        - none
+        - Appointment booking - you can book an appointment in the past.
+        - Appointment booking - if I book 2 appointments at the same time and try to book for the same time, when I book the second one, I just press the button and nothing happens. For idiot buyers, it would be nice to have a feedback that dude you already booked that appointment.
+        - Appointment booking - every appointment sends the wrong date (one day earlier) in both the user and admin email
+        - The ebook cannot be downloaded
     Warnings:
-        - none
+        - Meditation video can be purchased multiple times - if it works, I bought it once, the purchase button should change to open or watch or something
 
 Tasks are open:
 → build social media modul like mini ManyChat, to react for DM for example send freebie to answer with a speciel word: registered to meta developper platform, create backend moduls (GET:meta/webhook, POST:meta/webhook, GET:meta/stats ), and build pages/admin/meta/index.vue , just wating for 48 hours facebook caranten after registration, with the account of Gyöngyi
-→ welcome newsletter package for newcommers: 5-6 newsletters scheduled automaticaly after subscribe (scheduling due to over campaignmanager, welcom is a speciel campaign) , the first 6 templates already in the system, but waiting the adjusment from Gyöngyi, missing the logic from backend/user/subscribe
 → rework newsletter/campaigns admin dashboard: 
         - KPI: nuber of subscribers, number of sended/scheduled newsletters, number of Templates, number of campaigns ✔️
         - diagramms:
@@ -167,4 +170,3 @@ Tasks are open:
             - click on campaign to open the list of newsletters --> click on newsletter to see (analyse), who is openes and after how many time and clicked on CTA or not
 → build in a video chat modul (with websocket or plug in: Daily.co vagy Jitsi Meet API-t) for coaching sections
 → build questionary modul to exams after online training or researching in dif. topics or to promote products with the evaulation result (eg. stress level test and with the evaultion promote relaxation techniks)
-→ create (develop) Leadmagnet site: the lead magnet sites has to be use the generick items from components (hero,HTML Text, Text&mage...) witch are maintaned vie contentmanagement, the structure and SEO content of site stored in separeted data table

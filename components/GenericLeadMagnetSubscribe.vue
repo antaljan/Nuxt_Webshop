@@ -26,7 +26,7 @@ async function handleSubscribe() {
         email: email.value,
         language: locale.value,
         // FONTOS: Összehangolva a Controller campaignSlug változójával
-        campaignSlug: props.leadMagnetSlug 
+        campaignSlug: props.leadMagnetSlug
       }
     })
     success.value = true
@@ -60,7 +60,12 @@ async function handleSubscribe() {
       <v-text-field v-model="email" :label="t('newsletter.email')" :rules="[v => /.+@.+\..+/.test(v) || '']" variant="outlined" density="comfortable" />
       
       <v-checkbox v-model="gdpr" :rules="[v => !!v || '']" density="compact" hide-details class="mb-4">
-        <template #label><span class="text-caption">{{ t('newsletter.gdpr.link') }}</span></template>
+          <template #label>
+            {{ $t('newsletter.gdpr.before') }}
+            <NuxtLink to="/gdpr" target="_blank" class="text-primary">
+              {{ $t('newsletter.gdpr.link') }}
+            </NuxtLink>
+          </template>
       </v-checkbox>
 
       <v-btn type="submit" color="primary" block size="x-large" :loading="loading" :disabled="!valid">

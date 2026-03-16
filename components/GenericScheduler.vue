@@ -124,18 +124,26 @@ const bookingLoading = ref(false)
 const bookingDialog = ref(false)
 const selectedSlot = ref(null)
 
-const minDate = computed(() => new Date().toISOString().split('T')[0])
+const minDate = computed(() => {
+  const now = new Date();
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+});
 
-const attributes = computed(() => [
-  { highlight: true, dates: selectedDate.value },
-  ...allAvailableSlots.value.map(slot => ({
-    dot: 'green',
-    dates: new Date(slot.start.replace('Z', ''))
-  }))
-])
+const attributes = computed(() => {
+  const now = new Date()
+  return [
+    { highlight: true, dates: selectedDate.value },
+    ...allAvailableSlots.value
+      .filter(slot => new Date(slot.start) > now)
+      .map(slot => ({
+        dot: 'green',
+        dates: new Date(slot.start) 
+      }))
+  ]
+})
 
 const formattedDate = computed(() =>
-  selectedDate.value.toLocaleDateString('hu-HU', {
+  selectedDate.value.toLocaleDateString(undefined, {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
@@ -143,7 +151,7 @@ const formattedDate = computed(() =>
 )
 
 const formatTime = d =>
-  new Date(d).toLocaleTimeString('hu-HU', {
+  new Date(d).toLocaleTimeString([], {
     hour: '2-digit',
     minute: '2-digit'
   })
@@ -162,9 +170,32 @@ async function fetchDailySlots(date) {
   if (!date) return
   loading.value = true
   try {
-    const dateStr = date.toISOString().split('T')[0]
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    const dateStr = `${y}-${m}-${d}`;
+    
     const slots = await getSlotsByDate(dateStr)
-    dailySlots.value = slots        // <-- booked slotokat is mutatjuk
+    
+    // Frissítsük a 'now'-t minden híváskor
+    const now = new Date()
+
+    // Szűrés szigorúbb ellenőrzéssel
+    dailySlots.value = slots.filter(slot => {
+      const slotStart = new Date(slot.start).getTime();
+      const currentTime = now.getTime();
+      
+      // Csak azokat mutatjuk, amik legalább 10 perccel a jövőben vannak 
+      // (hogy legyen ideje befejezni a foglalást)
+      return slotStart > (currentTime + 10 * 60 * 1000);
+    })
+    
+    // Debug: Ha még mindig látod a 10 órait, nézd meg a konzolt!
+    console.log("Aktuális idő:", now.toISOString());
+    console.log("Szűrt slotok száma:", dailySlots.value.length);
+    
+  } catch (error) {
+    console.error("Hiba a slotok betöltésekor:", error);
   } finally {
     loading.value = false
   }
@@ -189,7 +220,7 @@ async function executeBooking() {
       userId: user.value._id,
       productId: props.productId,
       purchaseId: props.purchaseId,
-      itemId: props.itemId,                         // <-- KÜLDJÜK A BACKENDNEK
+      itemId: props.itemId,
       oldBookingId: props.existingBooking?._id
     }
 

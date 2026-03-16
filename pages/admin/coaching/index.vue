@@ -130,6 +130,7 @@
             </v-col>
             <v-col cols="12">
               <v-slider v-model="bulk.duration" label="Hossz (perc)" min="15" max="120" step="5" thumb-label="always" color="secondary" />
+              <v-slider v-model="bulk.break" label="Szünet (perc)" min="0" max="60" step="5" thumb-label="always" color="primary" class="mt-4"/>
             </v-col>
           </v-row>
         </v-card-text>
@@ -174,7 +175,7 @@ const bulkDialog = ref(false)
 const loading = ref(false)
 
 const form = ref({ id: null, title: '', date: '', time: '', duration: 60 })
-const bulk = ref({ startDate: '', endDate: '', startTime: '14:00', endTime: '18:00', duration: 45 })
+const bulk = ref({ startDate: '', endDate: '', startTime: '14:00', endTime: '18:00', duration: 45, break: 10})
 const users = ref([])
 
 onMounted(async () => {
@@ -193,7 +194,13 @@ async function loadSlots() {
 
 // Formázók
 const formatDay = (d) => new Date(d).toLocaleDateString('hu-HU', { weekday: 'short', month: 'short', day: 'numeric' })
-const formatTime = (d) => new Date(d).toLocaleTimeString('hu-HU', { hour: '2-digit', minute: '2-digit' })
+const formatTime = (d) => {
+  return new Date(d).toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit'
+    // Itt NEM adunk meg timeZone-t, így a böngésző a felhasználó sajátját használja!
+  })
+}
 
 const filteredSlots = computed(() => {
   if (!filterDate.value) return slots.value
@@ -206,12 +213,19 @@ function openCreateDialog() {
   createDialog.value = true
 }
 
+// EGYEDI MENTÉS
 async function saveSlot() {
   loading.value = true
+  // A dátumválasztó (date) és időválasztó (time) stringjéből csinálunk egy helyi Date objektumot
   const start = new Date(`${form.value.date}T${form.value.time}`)
   const end = new Date(start.getTime() + form.value.duration * 60000)
   
-  const payload = { title: form.value.title, start: start.toISOString(), end: end.toISOString(), duration: form.value.duration }
+  const payload = {
+    title: form.value.title,
+    start: start.toISOString(), // Ez automatikusan UTC-re (GMT) rakja (Z-vel a végén)
+    end: end.toISOString(),
+    duration: form.value.duration
+  }
   
   if (form.value.id) await updateSlot(form.value.id, payload)
   else await createSlot(payload)
@@ -221,34 +235,44 @@ async function saveSlot() {
   await loadSlots()
 }
 
-// TÖMEGES GENERÁLÁS LOGIKA
+// TÖMEGES GENERÁLÁS DIALOG MEGNYITÁSA
 function openBulkDialog() { bulkDialog.value = true }
 
+// TÖMEGES GENERÁLÁS LOGIKA
 async function generateBulkSlots() {
   loading.value = true
+  
   const startDay = new Date(bulk.value.startDate)
   const endDay = new Date(bulk.value.endDate)
-  
-  for (let d = new Date(startDay); d <= endDay; d.setDate(d.getDate() + 1)) {
-    // Hétvége kihagyása (opcionális)
-    if (d.getDay() === 0 || d.getDay() === 6) continue 
+  let d = new Date(startDay)
 
-    let current = new Date(`${d.toISOString().split('T')[0]}T${bulk.value.startTime}`)
-    const dayEnd = new Date(`${d.toISOString().split('T')[0]}T${bulk.value.endTime}`)
+  while (d <= endDay) {
+    const dayOfWeek = d.getDay()
+    if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+      
+      const dateStr = d.toLocaleDateString('en-CA')
+      let current = new Date(`${dateStr}T${bulk.value.startTime}`)
+      const dayEnd = new Date(`${dateStr}T${bulk.value.endTime}`)
 
-    while (new Date(current.getTime() + bulk.value.duration * 60000) <= dayEnd) {
-      const slotEnd = new Date(current.getTime() + bulk.value.duration * 60000)
-      await createSlot({
-        title: 'Coaching',
-        start: current.toISOString(),
-        end: slotEnd.toISOString(),
-        duration: bulk.value.duration,
-        slotClass: 'available'
-      })
-      // 15 perc szünet a slotok között (opcionális, beállíthatóra is vehetjük)
-      current = new Date(slotEnd.getTime() + 5 * 60000) 
+      // Amíg a következő slot (időtartam) belefér a napba
+      while (new Date(current.getTime() + bulk.value.duration * 60000) <= dayEnd) {
+        const slotEnd = new Date(current.getTime() + bulk.value.duration * 60000)
+        
+        await createSlot({
+          title: 'Coaching',
+          start: current.toISOString(),
+          end: slotEnd.toISOString(),
+          duration: bulk.value.duration,
+          slotClass: 'available'
+        })
+
+        // Itt adjuk hozzá a csúszkán beállított szünetet a következő kezdéshez
+        current = new Date(slotEnd.getTime() + bulk.value.break * 60000)
+      }
     }
+    d.setDate(d.getDate() + 1)
   }
+
   bulkDialog.value = false
   loading.value = false
   await loadSlots()

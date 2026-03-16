@@ -1,140 +1,194 @@
 <template>
   <section class="p-6 space-y-8">
 
-    <!-- HEADER -->
     <div class="flex justify-between items-center">
-      <h1 class="text-2xl font-bold">Kézbesítési napló</h1>
-    </div>
-
-      <!-- BACK BUTTON -->
+      <h1 class="text-2xl font-bold">Kézbesítési napló & Analízis</h1>
       <v-btn
         color="primary"
-        variant="text"
-        prepend-icon="mdi-arrow-left"
-        to="/admin/newsletter"
-        class="mb-4"
+        variant="tonal"
+        prepend-icon="mdi-refresh"
+        :loading="pending"
+        @click="refresh"
       >
-        Vissza a hírlevelekhez
+        Frissítés
       </v-btn>
+    </div>
 
-    <!-- FILTERS -->
-    <v-card class="p-4 space-y-4">
+    <v-btn
+      color="primary"
+      variant="text"
+      prepend-icon="mdi-arrow-left"
+      to="/admin/newsletter"
+      class="mb-4"
+    >
+      Vissza a hírlevelekhez
+    </v-btn>
 
+    <v-card class="p-4 border rounded-xl shadow-sm">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-
-        <!-- SEARCH -->
         <v-text-field
           v-model="search"
-          label="Keresés tárgy vagy email alapján"
-          prepend-icon="mdi-magnify"
+          label="Keresés (Tárgy / Email)"
+          prepend-inner-icon="mdi-magnify"
           variant="outlined"
+          density="compact"
           clearable
+          hide-details
         />
 
-        <!-- STATUS FILTER -->
         <v-select
           v-model="filterStatus"
           :items="statusOptions"
           label="Státusz"
           variant="outlined"
+          density="compact"
           clearable
+          hide-details
         />
 
-        <!-- DATE FILTER -->
         <v-text-field
           v-model="filterDate"
           type="date"
           label="Dátum"
           variant="outlined"
+          density="compact"
           clearable
+          hide-details
         />
 
-        <!-- CAMPAIGN FILTER -->
         <v-select
           v-model="filterCampaign"
           :items="campaignOptions"
           item-title="name"
           item-value="_id"
-          label="Kampány"
+          label="Kampány szűrés"
           variant="outlined"
+          density="compact"
           clearable
+          hide-details
         />
       </div>
-
     </v-card>
 
-    <!-- DELIVERY TABLE -->
-    <v-card>
+    <v-card class="border rounded-xl shadow-sm">
       <v-data-table
         :items="filteredList"
         :headers="headers"
         :loading="pending"
-        class="elevation-1"
+        hover
       >
+        <template #item.subject="{ item }">
+          <div class="flex flex-col">
+            <span class="font-bold text-blue-darken-4">{{ item.subject }}</span>
+          </div>
+        </template>
 
-        <!-- STATUS -->
+        <template #item.campaignId="{ item }">
+          <span class="text-caption font-weight-medium">
+            {{ getCampaignName(item.campaignId) }}
+          </span>
+        </template>
+
+        <template #item.sendDate="{ item }">
+          {{ new Date(item.sendDate).toLocaleString('hu-HU', { dateStyle: 'short', timeStyle: 'short' }) }}
+        </template>
+
+        <template #item.opens="{ item }">
+          <div class="d-flex align-center">
+            <v-progress-circular
+              :model-value="calculateRate(item.opens?.length, item.subscribers?.length)"
+              color="green"
+              size="24"
+              width="3"
+              class="mr-2"
+            />
+            <span>{{ item.opens?.length || 0 }} ({{ calculateRate(item.opens?.length, item.subscribers?.length) }}%)</span>
+          </div>
+        </template>
+
+        <template #item.clicks="{ item }">
+          <span :class="item.clicks?.length > 0 ? 'text-blue-darken-2 font-weight-bold' : 'text-grey'">
+            <v-icon size="small" class="mr-1">mdi-cursor-default-click</v-icon>
+            {{ item.clicks?.length || 0 }}
+          </span>
+        </template>
+
         <template #item.sent="{ item }">
           <v-chip
-            :color="item.sent ? 'green' : 'orange'"
-            text-color="white"
-            size="small"
+            :color="item.sent ? 'green-lighten-4' : 'orange-lighten-4'"
+            :text-color="item.sent ? 'green-darken-3' : 'orange-darken-3'"
+            size="x-small"
+            class="font-weight-bold"
           >
-            {{ item.sent ? 'Elküldve' : 'Függőben' }}
+            {{ item.sent ? 'KIKÜLDVE' : 'IDŐZÍTVE' }}
           </v-chip>
         </template>
 
-        <!-- ACTIONS -->
         <template #item.actions="{ item }">
-          <v-btn
-            icon="mdi-eye"
-            variant="text"
-            @click="openPreview(item)"
-          />
+          <div class="d-flex">
+            <v-tooltip text="Sablon előnézete" location="top">
+              <template #activator="{ props }">
+                <v-btn v-bind="props" icon="mdi-eye-outline" variant="text" size="small" color="grey-darken-1" @click="openPreview(item)" />
+              </template>
+            </v-tooltip>
 
-          <v-btn
-            icon="mdi-account-search"
-            variant="text"
-            @click="openActivity(item)"
-          />
+            <v-tooltip text="Részletes aktivitás (Deep Drill)" location="top">
+              <template #activator="{ props }">
+                <v-btn v-bind="props" icon="mdi-account-search-outline" variant="text" size="small" color="primary" @click="openActivity(item)" />
+              </template>
+            </v-tooltip>
+          </div>
         </template>
-
       </v-data-table>
     </v-card>
 
-    <!-- PREVIEW DIALOG -->
     <NewsletterPreviewDialog
       v-model="previewDialog"
       :campaign="selectedItem"
       :template="selectedTemplate"
     />
 
-    <!-- ACTIVITY DIALOG -->
-    <v-dialog v-model="activityDialog" max-width="600px">
-      <v-card class="p-6">
-        <h2 class="text-xl font-semibold mb-4">Feliratkozói aktivitás</h2>
+    <v-dialog v-model="activityDialog" max-width="700px" scrollable>
+      <v-card class="rounded-xl">
+        <v-card-title class="d-flex justify-between align-center pa-4 bg-grey-lighten-4">
+          <div>
+            <div class="text-h6 font-weight-bold">Címzettek aktivitása</div>
+            <div class="text-caption text-grey-darken-1">{{ selectedItem?.subject }}</div>
+          </div>
+          <v-btn icon="mdi-close" variant="text" @click="activityDialog = false" />
+        </v-card-title>
+        
+        <v-divider />
 
-        <div v-if="!selectedItemActivity">
-          Nincs aktivitás adat.
-        </div>
+        <v-card-text class="pa-0">
+          <v-table density="comfortable" fixed-header height="450px">
+            <thead>
+              <tr class="bg-grey-lighten-5">
+                <th>Email cím</th>
+                <th class="text-center">Státusz</th>
+                <th class="text-center">Utolsó interakció</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="user in selectedItemActivity" :key="user.email">
+                <td class="text-body-2">{{ user.email }}</td>
+                <td class="text-center">
+                  <v-chip v-if="user.clicked" color="blue" size="x-small" prepend-icon="mdi-cursor-default-click">Kattintott</v-chip>
+                  <v-chip v-else-if="user.opened" color="green" size="x-small" prepend-icon="mdi-email-open-outline">Megnyitotta</v-chip>
+                  <v-chip v-else color="grey" variant="outline" size="x-small">Nem látta</v-chip>
+                </td>
+                <td class="text-center text-caption text-grey">
+                  {{ user.clicked ? user.clickedAt : (user.opened ? user.openedAt : '–') }}
+                </td>
+              </tr>
+            </tbody>
+          </v-table>
+        </v-card-text>
 
-        <div v-else>
-          <p><strong>Megnyitások:</strong> {{ selectedItemActivity.opens.length }}</p>
-          <ul class="list-disc ml-6">
-            <li v-for="o in selectedItemActivity.opens" :key="o.email">
-              {{ o.email }} – {{ o.date }}
-            </li>
-          </ul>
-
-          <p class="mt-4"><strong>Kattintások:</strong> {{ selectedItemActivity.clicks.length }}</p>
-          <ul class="list-disc ml-6">
-            <li v-for="c in selectedItemActivity.clicks" :key="c.email">
-              {{ c.email }} – {{ c.date }}
-            </li>
-          </ul>
-        </div>
-
-        <v-card-actions class="justify-end mt-4">
-          <v-btn color="primary" @click="activityDialog = false">Bezárás</v-btn>
+        <v-divider />
+        <v-card-actions class="pa-4 bg-grey-lighten-4">
+          <v-spacer />
+          <v-btn variant="flat" color="primary" @click="activityDialog = false">Bezárás</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -143,50 +197,60 @@
 </template>
 
 <script setup>
+import { useRoute } from 'vue-router'
 import NewsletterPreviewDialog from '~/components/admin/newsletter/NewsletterPreviewDialog.vue'
+
+const route = useRoute()
 
 /* STATE */
 const search = ref("")
 const filterStatus = ref(null)
 const filterDate = ref(null)
-const filterCampaign = ref(null)
+const filterCampaign = ref(route.query.campaignId || null)
 
 const previewDialog = ref(false)
 const activityDialog = ref(false)
 
-const selectedItem = ref({})
+const selectedItem = ref(null)
 const selectedTemplate = ref({})
-const selectedItemActivity = ref(null)
+const selectedItemActivity = ref([])
 
-/* FETCH SCHEDULED NEWSLETTERS */
+/* FETCH DATA */
 const { data, pending, refresh } = await useAsyncData(
   "delivery-log",
   () => $fetch("/api/newsletter/getscheduled", { method: "POST" })
 )
 
-const list = computed(() => data.value?.scheduledNewsletters || [])
-
-/* FETCH CAMPAIGNS FOR FILTER */
 const { data: campaigns } = await useAsyncData(
   "campaigns-for-filter",
   () => $fetch("/api/campaigns")
 )
 
+const list = computed(() => data.value?.scheduledNewsletters || [])
 const campaignOptions = computed(() => campaigns.value || [])
+
+/* HELPERS */
+const getCampaignName = (id) => {
+  const c = campaignOptions.value.find(curr => curr._id === id)
+  return c ? c.name : 'Manuális küldés'
+}
+
+const calculateRate = (part, total) => {
+  if (!part || !total) return 0
+  return Math.round((part / total) * 100)
+}
 
 /* TABLE HEADERS */
 const headers = [
-  { title: "Tárgy", key: "subject" },
+  { title: "Hírlevél neve / Tárgy", key: "subject", width: '35%' },
   { title: "Kampány", key: "campaignId" },
   { title: "Küldési idő", key: "sendDate" },
-  { title: "Címzettek", key: "subscribers.length" },
-  { title: "Megnyitások", key: "opens" },
-  { title: "Kattintások", key: "clicks" },
-  { title: "Státusz", key: "sent" },
-  { title: "Műveletek", key: "actions", sortable: false }
+  { title: "Megnyitás", key: "opens", align: 'center' },
+  { title: "Kattintás", key: "clicks", align: 'center' },
+  { title: "Státusz", key: "sent", align: 'center' },
+  { title: "Műveletek", key: "actions", sortable: false, align: 'end' }
 ]
 
-/* STATUS OPTIONS */
 const statusOptions = [
   { title: "Elküldve", value: true },
   { title: "Függőben", value: false }
@@ -195,21 +259,13 @@ const statusOptions = [
 /* FILTERED LIST */
 const filteredList = computed(() => {
   return list.value.filter(item => {
-    const matchesSearch =
-      !search.value ||
+    const matchesSearch = !search.value || 
       item.subject.toLowerCase().includes(search.value.toLowerCase()) ||
-      item.subscribers.some(s => s.email.toLowerCase().includes(search.value.toLowerCase()))
+      item.subscribers?.some(s => s.toLowerCase().includes(search.value.toLowerCase()))
 
-    const matchesStatus =
-      filterStatus.value === null || item.sent === filterStatus.value
-
-    const matchesDate =
-      !filterDate.value ||
-      item.sendDate?.substring(0, 10) === filterDate.value
-
-    const matchesCampaign =
-      !filterCampaign.value ||
-      item.campaignId === filterCampaign.value
+    const matchesStatus = filterStatus.value === null || item.sent === filterStatus.value
+    const matchesDate = !filterDate.value || item.sendDate?.substring(0, 10) === filterDate.value
+    const matchesCampaign = !filterCampaign.value || item.campaignId === filterCampaign.value
 
     return matchesSearch && matchesStatus && matchesDate && matchesCampaign
   })
@@ -218,24 +274,41 @@ const filteredList = computed(() => {
 /* PREVIEW */
 async function openPreview(item) {
   selectedItem.value = item
-
   const res = await $fetch("/api/newsletter/getonetemplate", {
     method: "POST",
     body: { _id: item.templateId }
   })
-
   selectedTemplate.value = res.oneNewsletter
   previewDialog.value = true
 }
 
-/* ACTIVITY */
-async function openActivity(item) {
-  // később: külön tracking collectionből
-  selectedItemActivity.value = {
-    opens: item.opens || [],
-    clicks: item.clicks || []
-  }
+/* ACTIVITY (DEEP DRILL) */
+function openActivity(item) {
+  selectedItem.value = item
+  
+  // Összefésüljük a feliratkozókat az eseményekkel (Backendről jövő opens/clicks alapján)
+  const activityMap = item.subscribers.map(email => {
+    // A backend aggregáció már visszaadja az opens/clicks listát a levélhez
+    const openEvent = item.opens?.find(o => o.email === email)
+    const clickEvent = item.clicks?.find(c => c.email === email)
+    
+    return {
+      email,
+      opened: !!openEvent,
+      openedAt: openEvent ? new Date(openEvent.openedAt).toLocaleString('hu-HU') : '–',
+      clicked: !!clickEvent,
+      clickedAt: clickEvent ? new Date(clickEvent.timestamp || clickEvent.clickedAt).toLocaleString('hu-HU') : '–'
+    }
+  })
 
+  // Sorbarendezés: aki kattintott/nyitott, az legyen elöl
+  selectedItemActivity.value = activityMap.sort((a, b) => b.opened - a.opened || b.clicked - a.clicked)
   activityDialog.value = true
 }
 </script>
+
+<style scoped>
+.v-data-table :deep(thead) {
+  background-color: #f8fafc;
+}
+</style>

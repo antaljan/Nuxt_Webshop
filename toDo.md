@@ -149,15 +149,10 @@ User functions:
 - GenericScheduler.vue dont has to be show the reserved slots, only the availables ✔️
 - frontend/pages/user/profile --> add language settings option to user profile settings        - booking of coaching - if I book 2 appointments at the same time and try to book for the same time, when I book the second one, I just press the button and nothing happens. For idiot buyers, it would be nice to have a feedback that dude you already booked that appointment.
 
-
 Bugs:
-    critical:
-        - booking of Coaching - you can book an appointment in the past.
-        - booking of coaching - every appointment sends the wrong date (one day earlier) in both the user and admin email
+    critical: - none
     Warnings:
         - Meditation video can be purchased multiple times - if it works, I bought it once, the purchase button should change to open or watch or something
-        - booking of coaching - if I book 2 appointments at the same time and try to book for the same time, when I book the second one, I just press the button and nothing happens. For idiot buyers, it would be nice to have a feedback that dude you already booked that appointment.
-
 
 Tasks are open:
 → build social media modul like mini ManyChat, to react for DM for example send freebie to answer with a speciel word.
@@ -169,13 +164,5 @@ Tasks are open:
         - Webhook: subscribed for Instagram Comments, Messages ✔️
         - Messenger - Instagram Setup: add Gyöngyi's Page and generate Verify Token for that, new Token add to Node Backend api, add webhook for Instagram Comments and Messages ✔️
     - add Gyöngyi like Instagram Tester for Meta-Api ✔️
-→ rework newsletter/campaigns admin dashboard:
-        - KPI: nuber of subscribers, number of sended/scheduled newsletters, number of Templates, number of campaigns ✔️
-        - diagramms:
-            - montly number of subscribers --> nead to create subscriber log to can be evaulate
-            - hourly sending rate for last 48 hours and next 48 hours, because our SMTP server is limited (300 mail/hour) and we has to be recognise, when we nead to switch to other mailing service (eg. mailgun) ✔️
-            - pareto diagramm - result of campaigns: actual delivery rate, actual open and click rate ✔️
-        - deep drill:
-            - click on campaign to open the list of newsletters --> click on newsletter to see (analyse), who is openes and after how many time and clicked on CTA or not
 → build in a video chat modul (with websocket or plug in: Daily.co vagy Jitsi Meet API-t) for coaching sections
 → build questionary modul to exams after online training or researching in dif. topics or to promote products with the evaulation result (eg. stress level test and with the evaultion promote relaxation techniks)

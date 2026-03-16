@@ -38,6 +38,17 @@
         class="elevation-1"
       >
 
+        <!-- Link on name -->
+        <template #item.name="{ item }">
+          <v-btn 
+            variant="text" 
+            color="primary"
+            :to="`/admin/newsletter/delivery-log?campaignId=${item._id}`"
+          >
+            {{ item.name }}
+          </v-btn>
+        </template>
+
         <!-- STATUS BADGE -->
         <template #item.status="{ item }">
           <v-chip

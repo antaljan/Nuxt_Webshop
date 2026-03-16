@@ -150,10 +150,8 @@ User functions:
 - frontend/pages/user/profile --> add language settings option to user profile settings        - booking of coaching - if I book 2 appointments at the same time and try to book for the same time, when I book the second one, I just press the button and nothing happens. For idiot buyers, it would be nice to have a feedback that dude you already booked that appointment.
 
 Bugs:
-    critical: - none
-    Warnings:
-        - Meditation video can be purchased multiple times - if it works, I bought it once, the purchase button should change to open or watch or something
-
+    critical: GenericFeedbackSection.vue click on adnmin feedbacks --> 404 Page not found: /admin/feedbacks , the page is wrily not available, deleted or not migrated.
+    Warnings: -none
 Tasks are open:
 → build social media modul like mini ManyChat, to react for DM for example send freebie to answer with a speciel word.
     - registered to meta developper platform ✔️

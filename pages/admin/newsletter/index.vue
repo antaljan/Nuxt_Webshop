@@ -60,6 +60,21 @@
         <p class="text-3xl font-bold">{{ templateCount }}</p>
       </v-card>
       </v-col>
+      <!-- freebie -->
+      <v-col cols="12" sm="6" md="2">
+        <v-card
+          border
+          elevation="1"
+          class="p-6 text-center rounded-xl cursor-pointer"
+          to="/admin/freebies"
+        >
+          <v-card-item title="Ingyenes anyagok">
+            <template v-slot:subtitle>Utolsó 30 nap</template>
+            <div class="text-h5 font-weight-black text-orange-darken-2">{{ summary.freebieDownloads }} letöltés</div>
+            <div class="text-caption">{{ summary.freebieUniqueUsers }} egyedi érdeklődő</div>
+          </v-card-item>
+        </v-card>
+      </v-col>
     </v-row>
 
     <!-- MONTHLY SUBSCRIBERS -->

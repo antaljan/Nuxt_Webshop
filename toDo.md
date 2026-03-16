@@ -131,6 +131,15 @@ Admin functions:
 - pages/admin/freebie/index.vue and create.vue --> dummy product for 0€ (honeypot) for newsletter subscribers, this is not a standard product becauese buying can only registrated users (because invoicing). ✔️
 - welcome newsletter automation. package for newcommers: 5-6 newsletters scheduled automaticaly after subscribe (scheduling due to over campaignmanager, welcom is a speciel campaign) ✔️
 - create (develop) Leadmagnet site: the lead magnet sites has to be use the generick items from components (hero,HTML Text, Text&mage...) witch are maintaned vie contentmanagement, the structure and SEO content of site stored in separeted data table ✔️
+- build social media modul like mini ManyChat, to react for DM for example send freebie to answer with a speciel word.
+    - registered to meta developper platform ✔️
+    - create backend moduls (GET:meta/webhook, POST:meta/webhook, GET:meta/stats ) ✔️
+    - build pages/admin/meta/index.vue ✔️
+    - add me like people for Gyöngyi's Meta Business Suit witch Facebook and Instagramm rights ✔️
+    - create Meta-Api: Gyongyi_Markateng-Automation with Products:
+        - Webhook: subscribed for Instagram Comments, Messages ✔️
+        - Messenger - Instagram Setup: add Gyöngyi's Page and generate Verify Token for that, new Token add to Node Backend api, add webhook for Instagram Comments and Messages ✔️
+    - add Gyöngyi like Instagram Tester for Meta-Api ✔️
 
 User functions:
 - /pages/products/index.vue --> Product overview site with searching(picture, name, short description, price on v-card) ✔️
@@ -150,17 +159,9 @@ User functions:
 - frontend/pages/user/profile --> add language settings option to user profile settings        - booking of coaching - if I book 2 appointments at the same time and try to book for the same time, when I book the second one, I just press the button and nothing happens. For idiot buyers, it would be nice to have a feedback that dude you already booked that appointment.
 
 Bugs:
-    critical: GenericFeedbackSection.vue click on adnmin feedbacks --> 404 Page not found: /admin/feedbacks , the page is wrily not available, deleted or not migrated.
+    critical: -none
     Warnings: -none
 Tasks are open:
-→ build social media modul like mini ManyChat, to react for DM for example send freebie to answer with a speciel word.
-    - registered to meta developper platform ✔️
-    - create backend moduls (GET:meta/webhook, POST:meta/webhook, GET:meta/stats ) ✔️
-    - build pages/admin/meta/index.vue ✔️
-    - add me like people for Gyöngyi's Meta Business Suit witch Facebook and Instagramm rights ✔️
-    - create Meta-Api: Gyongyi_Markateng-Automation with Products:
-        - Webhook: subscribed for Instagram Comments, Messages ✔️
-        - Messenger - Instagram Setup: add Gyöngyi's Page and generate Verify Token for that, new Token add to Node Backend api, add webhook for Instagram Comments and Messages ✔️
-    - add Gyöngyi like Instagram Tester for Meta-Api ✔️
+
 → build in a video chat modul (with websocket or plug in: Daily.co vagy Jitsi Meet API-t) for coaching sections
 → build questionary modul to exams after online training or researching in dif. topics or to promote products with the evaulation result (eg. stress level test and with the evaultion promote relaxation techniks)

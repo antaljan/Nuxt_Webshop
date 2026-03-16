@@ -347,9 +347,23 @@ watch(
 async function downloadPdf(file) {
   try {
     const config = useRuntimeConfig()
+    
+    // Keressük meg a megfelelő purchaseItem-et (ahogy korábban beszéltük)
+    const purchaseItem = relevantItems.value.find(item => 
+      item.downloadableFiles && item.downloadableFiles.includes(file)
+    ) || relevantItems.value[0]
 
+    if (!purchaseItem) {
+      alert('Nincs érvényes vásárlás ehhez a fájlhoz.')
+      return
+    }
+
+    // Használjunk 'query' kulcsot 'params' helyett
     const res = await $fetch('/api/user/pdf-token', {
-      params: { productId, file }   // <-- purchaseId helyett productId
+      query: {
+        purchaseId: String(purchaseItem.purchaseId), 
+        file: file
+      }
     })
 
     const downloadUrl = `${config.public.backendBase}${res.url.replace('/api', '')}`

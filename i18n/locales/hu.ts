@@ -232,7 +232,8 @@ export default defineI18nLocale(async (locale) => {
     coachingSessions: "Coaching alkalmaim",
     purchaseDetails: "Vásárlási részletek",
     errorMissing: "Nincs jogosultságod a tartalomhoz vagy a termék nem található.",
-    sessions: "Coaching alkalmak száma"
+    sessions: "Coaching alkalmak száma",
+    owned:"már mevásároltad"
   },
   cart: {
     title: "Bevásárló kosár",

@@ -18,8 +18,8 @@ export function useNewsletter() {
     })
 
   /* SUBSCRIBERS */
-  const fetchSubscribers = () =>
-    $fetch('/api/newsletter/subscribers', { method: 'POST' })
+ const fetchSubscribers = () =>
+  $fetch('/api/newsletter/subscribers')
 
   const deleteSubscriber = (email) =>
     $fetch(`/api/newsletter/unsubscribe/${email}`)

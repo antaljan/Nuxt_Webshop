@@ -227,7 +227,8 @@ export default defineI18nLocale(async (locale) => {
     coachingSessions: "My Coaching Sessions",
     purchaseDetails: "Purchase Details",
     errorMissing: "You do not have permission to access this content or the product is not available.",
-    sessions: "Coaching Sessions"
+    sessions: "Coaching Sessions",
+    owned:"owned"
   },
   cart: {
     title: "Shopping Cart",

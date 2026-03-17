@@ -163,5 +163,5 @@ Bugs:
     Warnings: -none
 Tasks are open:
 
-→ build in a video chat modul (with websocket or plug in: Daily.co vagy Jitsi Meet API-t) for coaching sections
+→ build in a video chat modul (with websocket or plug in: Daily.co vagy Jitsi Meet API-t) for coaching sections or simply use google meets
 → build questionary modul to exams after online training or researching in dif. topics or to promote products with the evaulation result (eg. stress level test and with the evaultion promote relaxation techniks)

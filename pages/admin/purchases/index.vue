@@ -18,8 +18,8 @@ const purchases = computed(() => data.value?.purchases || [])
         :loading="pending"
         :headers="[
           { title: 'Dátum', key: 'createdAt' },
-          { title: 'Név', key: 'user.name' },
-          { title: 'Cím', key: 'user.adress' },
+          { title: 'Név', key: 'buyerName' },
+          { title: 'Cím', key: 'buyerAdress' },
           { title: 'Termékek', key: 'itemsCount' },
           { title: 'Összeg', key: 'amount' },
           { title: 'Pénznem', key: 'currency' },
@@ -31,8 +31,12 @@ const purchases = computed(() => data.value?.purchases || [])
           {{ new Date(item.createdAt).toLocaleString() }}
         </template>
 
-        <template #item.user.name="{ item }">
-          {{ item.user?.firstname }} {{ item.user?.name }}
+        <template #item.buyerName="{ item }">
+          {{ item.buyer.firstname }} {{ item.buyer.lastname }}
+        </template>
+
+        <template #item.buyerAdress="{ item }">
+          {{ item.buyer.adress }}
         </template>
 
         <template #item.amount="{ item }">

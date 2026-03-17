@@ -6,7 +6,7 @@ const { data, pending, error } = await useFetch(
 )
 
 const purchase = computed(() => data.value?.purchase)
-const user = computed(() => data.value?.user)
+const buyer = computed(() => data.value?.buyer)
 const items = computed(() => data.value?.items || [])
 
 
@@ -61,10 +61,11 @@ async function downloadPdf() {
       <v-col cols="12" md="6">
         <v-card class="pa-4">
           <h2 class="text-h6 mb-2">Vásárló</h2>
-          <p><strong>Név:</strong> {{ user?.firstname }} {{ user?.name }}</p>
-          <p><strong>Email:</strong> {{ user?.email }}</p>
-          <p><strong>Cím:</strong> {{ user?.adress }}</p>
-          <p><strong>Nyelv:</strong> {{ user?.language }}</p>
+          <p><strong>Név:</strong> {{ purchase?.billingSnapshot.firstname }} {{ purchase?.billingSnapshot.lastname }}</p>
+          <p><strong>Email:</strong> {{ purchase?.billingSnapshot.email }}</p>
+          <p><strong>Cím:</strong> {{ purchase?.billingSnapshot.address }}</p>
+          <p><strong>Nyelv:</strong> {{ purchase?.billingSnapshot.language }}</p>
+          <p v-if="purchase?.billingSnapshot.vatId"><strong>VAT ID:</strong> {{ purchase.billingSnapshot.vatId }}</p>
         </v-card>
       </v-col>
     </v-row>

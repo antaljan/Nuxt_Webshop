@@ -209,6 +209,7 @@ async function saveSubscriber(subscriber) {
 async function confirmDelete(item) {
   if (!confirm("Biztosan törlöd?")) return
   await deleteSubscriber(item.email)
-  await refresh()
+  await refreshNuxtData("subscribers-list")
 }
+
 </script>

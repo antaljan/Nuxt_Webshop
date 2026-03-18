@@ -22,15 +22,27 @@ async function refundPurchase() {
 }
 
 async function downloadPdf() {
-  const response = await fetch(`/api/admin/purchases/${purchase.value._id}/pdf`)
-  const blob = await response.blob()
+  if (!route.params.id) return;
 
-  const url = window.URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = `invoice-${purchase.value._id}.pdf`
-  a.click()
-  window.URL.revokeObjectURL(url)
+  try {
+    // A Nuxt Proxy-t hívjuk (server/api/admin/purchases/[id]/pdf.get.ts)
+    const response = await fetch(`/api/admin/purchases/${route.params.id}/pdf`);
+    
+    if (!response.ok) throw new Error('Letöltési hiba');
+
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `invoice-${route.params.id}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  } catch (err) {
+    console.error("PDF letöltési hiba:", err);
+    alert("Nem sikerült a PDF letöltése.");
+  }
 }
 
 

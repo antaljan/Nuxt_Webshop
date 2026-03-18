@@ -54,15 +54,9 @@ export default defineNuxtConfig({
     // Itt adjuk meg az alapvető CSP-t a modul újabb logikája szerint
     contentSecurityPolicy: {
       'img-src': ["'self'", "data:", "https://antaligyongyi.hu", "https://*.bunny.net"],
-      'script-src': ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://js.stripe.com"],
-      'connect-src': ["'self'", "https:", "wss:", "ws:", "http://localhost:*"],
-      'frame-src': [
-        "'self'",
-        "https://js.stripe.com",
-        "https://iframe.mediadelivery.net",
-        "https://*.bunny.net",
-        "https://*.mediadelivery.net"
-      ],
+      'script-src': ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://js.stripe.com", "https://meet.jit.si"],
+      'connect-src': ["'self'", "https:", "wss:", "ws:", "http://localhost:*", "wss://meet.jit.si"],
+      'frame-src': ["'self'", "https://js.stripe.com", "https://iframe.mediadelivery.net", "https://*.bunny.net", "https://*.mediadelivery.net", "https://meet.jit.si"],
       'frame-ancestors': ["'self'"]
     }
   },
@@ -119,6 +113,9 @@ export default defineNuxtConfig({
           name: 'Antali Gyöngyi Edit',
           content: 'psychology, Life- and business Coaching, transversal skills development '
         }
+      ],
+      script: [
+        { src: 'https://meet.jit.si', defer: true }
       ]
     }
   }

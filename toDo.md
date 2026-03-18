@@ -156,12 +156,12 @@ User functions:
 - User dashboard (/pages/user/index.vue) is extended with list of booked coaching ✔️
 - /pages/user/profile --> add cancel end profile delete function ✔️
 - GenericScheduler.vue dont has to be show the reserved slots, only the availables ✔️
-- frontend/pages/user/profile --> add language settings option to user profile settings        - booking of coaching - if I book 2 appointments at the same time and try to book for the same time, when I book the second one, I just press the button and nothing happens. For idiot buyers, it would be nice to have a feedback that dude you already booked that appointment.
+- frontend/pages/user/profile --> add language settings option to user profile settings ✔️
 
 Bugs:
     critical: -none
     Warnings: -none
 Tasks are open:
 
-→ build in a video chat modul (with websocket or plug in: Daily.co vagy Jitsi Meet API-t) for coaching sections or simply use google meets
+→ build in a video chat modul with Jitsi Meet for coaching sections
 → build questionary modul to exams after online training or researching in dif. topics or to promote products with the evaulation result (eg. stress level test and with the evaultion promote relaxation techniks)

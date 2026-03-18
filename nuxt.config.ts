@@ -1,3 +1,5 @@
+import allGet from "./server/api/booking/all.get"
+
 export default defineNuxtConfig({
   ssr: true,
   devtools: { enabled: true },
@@ -7,7 +9,8 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
     '@nuxtjs/tailwindcss',
     'nuxt-security',
-    '@nuxt/fonts'
+    '@nuxt/fonts',
+    '@nuxtjs/sitemap'
   ],
 
   css: [
@@ -103,6 +106,39 @@ export default defineNuxtConfig({
     public: {
       backendBase: process.env.BACKEND_BASE_URL || 'https://antaligyongyi.hu/api'
     }
+  },
+
+  sitemap: {
+    hostname: 'https://antaligyongyi.hu',
+    gzip: true,
+
+    // Statikus oldalak
+  routes: async () => {
+    const routes = []
+    // Statikus oldalak
+    routes.push('/')
+    routes.push('/hu')
+    routes.push('/en')
+    routes.push('/de')
+    routes.push('/blog')
+    routes.push('/hu/blog')
+    routes.push('/en/blog')
+    routes.push('/de/blog')
+    routes.push('/products')
+    routes.push('/hu/products')
+    routes.push('/en/products')
+    routes.push('/de/products')
+    // Blog bejegyzések
+    const posts = await $fetch('/api/blog')
+    posts.forEach(post => {
+      routes.push(`/blog/${post.slug}`)
+      routes.push(`/hu/blog/${post.slug}`)
+      routes.push(`/en/blog/${post.slug}`)
+      routes.push(`/de/blog/${post.slug}`)
+    })
+
+  return routes
+}
   },
 
   app: {

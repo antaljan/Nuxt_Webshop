@@ -153,6 +153,7 @@ Login Flow:
   npm install v-calendar@next @popperjs/core
   npm install -D @nuxt/fonts
   npm install vuedraggable@next
+  npm install @nuxtjs/sitemap
 
 ## 🚀 Deployment (VPS)
 - NGINX reverse proxy

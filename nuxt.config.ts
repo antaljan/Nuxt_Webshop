@@ -109,36 +109,54 @@ export default defineNuxtConfig({
   },
 
   sitemap: {
-    hostname: 'https://antaligyongyi.hu',
-    gzip: true,
-
-    // Statikus oldalak
-  routes: async () => {
-    const routes = []
-    // Statikus oldalak
-    routes.push('/')
-    routes.push('/hu')
-    routes.push('/en')
-    routes.push('/de')
-    routes.push('/blog')
-    routes.push('/hu/blog')
-    routes.push('/en/blog')
-    routes.push('/de/blog')
-    routes.push('/products')
-    routes.push('/hu/products')
-    routes.push('/en/products')
-    routes.push('/de/products')
-    // Blog bejegyzések
-    const posts = await $fetch('/api/blog')
-    posts.forEach(post => {
-      routes.push(`/blog/${post.slug}`)
-      routes.push(`/hu/blog/${post.slug}`)
-      routes.push(`/en/blog/${post.slug}`)
-      routes.push(`/de/blog/${post.slug}`)
-    })
-
-  return routes
-}
+    sitemaps: false,
+    autoLastmod: false,
+    strictNuxtContentPaths: false,
+    exclude: [
+      '/admin/**',
+      '/user/**',
+      '/checkout/**',
+      '/login',
+      '/logout',
+      '/register',
+      '/reset-password',
+      '/forgot-password',
+      '/subscribe',
+    ],
+    routes: async () => {
+      const routes = []
+      // Statikus oldalak
+      routes.push('/')
+      routes.push('/hu')
+      routes.push('/en')
+      routes.push('/de')
+      routes.push('/kapcsolat')
+      // BLOG BEJEGYZÉSEK – HELYES API HÍVÁS
+      const config = useRuntimeConfig()
+      const backendBase = config.public.backendBase
+      // magyar
+      const postsHu = await $fetch(`${backendBase}/posts`, {
+        params: { language: 'hu' }
+      })
+      postsHu.forEach(post => {
+        routes.push(`/blog/${post.slug}`)
+      })
+      // angol
+      const postsEn = await $fetch(`${backendBase}/posts`, {
+        params: { language: 'en' }
+      })
+      postsEn.forEach(post => {
+        routes.push(`/en/blog/${post.slug}`)
+      })
+      // német
+      const postsDe = await $fetch(`${backendBase}/posts`, {
+        params: { language: 'de' }
+      })
+      postsDe.forEach(post => {
+        routes.push(`/de/blog/${post.slug}`)
+      })
+      return routes
+    }
   },
 
   app: {

@@ -78,7 +78,8 @@ const adminMenu = [
   { to: '/admin/products', label: 'admin.products.menu' },
   { to: '/admin/leadmagnet', label: 'admin.leadmagnet.menu' },
   { to: '/admin/coaching', label: 'admin.coaching.menu' },
-  { to: '/admin/brand', label: 'admin.brand.menu' },
+  { to: '/admin/coaching', label: 'admin.coaching.menu' },
+  { to: '/admin/questionnaire', label: 'menu.questionnaire' },
   { to: '/admin/meta', label: 'admin.meta' },
   { to: '/admin/images', label: 'admin.images' }
 ]

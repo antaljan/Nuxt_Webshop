@@ -49,7 +49,7 @@
           <v-window v-model="currentIdx">
             <v-window-item v-for="(q, idx) in questionnaire.questions" :key="idx">
               <h2 class="text-h5 font-weight-bold mb-6">{{ q.text }}</h2>
-
+              <!-- radio button -->
               <v-radio-group v-if="q.type === 'radio'" v-model="answers[q.id]">
                 <v-card
                   v-for="opt in q.options"
@@ -62,7 +62,40 @@
                   <v-radio :label="opt.label" :value="opt.label" class="ma-2" />
                 </v-card>
               </v-radio-group>
-
+              <!-- lickert -->
+              <div v-if="q.type === 'scale'" class="my-8">
+                <v-slider
+                  v-model="answers[q.id]"
+                  :min="1"
+                  :max="q.options.length"
+                  :step="1"
+                  color="primary"
+                  track-color="grey-lighten-2"
+                  thumb-size="28"
+                  show-ticks="always"
+                  tick-size="4"
+                />
+                <v-row class="justify-space-between mt-2">
+                  <v-col
+                    v-for="(opt, idx) in q.options"
+                    :key="idx"
+                    class="text-center text-caption"
+                  >
+                    {{ opt.label }}
+                  </v-col>
+                </v-row>
+              </div>
+              <!-- checkbox -->
+              <div v-if="q.type === 'checkbox'">
+                <v-checkbox
+                  v-for="opt in q.options"
+                  :key="opt.label"
+                  v-model="answers[q.id]"
+                  :label="opt.label"
+                  :value="opt.label"
+                />
+              </div>
+              <!-- Text -->
               <v-textarea
                 v-else-if="q.type === 'text'"
                 v-model="answers[q.id]"
@@ -146,6 +179,15 @@ const { data: questionnaire, pending, error } = await useAsyncData(
   () => $fetch(`/api/questionnaire/public/${route.params.slug}`)
 );
 
+// Itt inicializáljuk, NEM watch-ban
+if (questionnaire.value) {
+  questionnaire.value.questions.forEach(q => {
+    if (q.type === 'checkbox') {
+      answers.value[q.id] = [];
+    }
+  });
+}
+
 const progress = computed(() => {
   if (!questionnaire.value) return 0;
   return ((currentIdx.value + 1) / questionnaire.value.questions.length) * 100;
@@ -154,8 +196,16 @@ const progress = computed(() => {
 const isCurrentAnswered = computed(() => {
   const currentQ = questionnaire.value?.questions[currentIdx.value];
   if (!currentQ) return false;
-  return !!answers.value[currentQ.id];
+
+  const val = answers.value[currentQ.id];
+
+  if (currentQ.type === 'checkbox') {
+    return Array.isArray(val) && val.length > 0;
+  }
+
+  return val !== undefined && val !== null && val !== '';
 });
+
 
 const startTest = () => {
   step.value = 'questions';
@@ -178,10 +228,34 @@ const submitTest = async () => {
   
   // Válaszok formázása beküldéshez és pontszámítás
   const formattedAnswers = questionnaire.value.questions.map(q => {
-    const selectedOption = q.options?.find(o => o.label === answers.value[q.id]);
+    const rawValue = answers.value[q.id];
+    // checkbox: több válasz, több pont
+    if (q.type === 'checkbox') {
+      const selected = answers.value[q.id] || [];
+      const points = q.options
+        .filter(o => selected.includes(o.label))
+        .reduce((sum, o) => sum + o.points, 0);
+      return {
+        questionId: q.id,
+        value: selected,
+        points
+      };
+    }
+    // scale: slider -> index alapján opció
+    if (q.type === 'scale') {
+      const index = typeof rawValue === 'number' ? rawValue - 1 : -1;
+      const selectedOption = q.options?.[index];
+      return {
+        questionId: q.id,
+        value: rawValue,
+        points: selectedOption ? selectedOption.points : 0
+      };
+    }
+    // radio / text (single value)
+    const selectedOption = q.options?.find(o => o.label === rawValue);
     return {
       questionId: q.id,
-      value: answers.value[q.id],
+      value: rawValue,
       points: selectedOption ? selectedOption.points : 0
     };
   });

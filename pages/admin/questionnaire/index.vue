@@ -10,7 +10,7 @@
           color="primary" 
           prepend-icon="mdi-plus" 
           size="large" 
-          to="/admin/questionnaire/new"
+          to="/admin/questionnaire/edit/new"
           elevation="2"
         >
           Új kérdőív
@@ -89,7 +89,7 @@
               color="primary"
               size="small"
               class="mr-1"
-              :to="`/admin/questionnaire/${item._id}`"
+              :to="`/admin/questionnaire/edit/${item._id}`"
               title="Szerkesztés"
             ></v-btn>
 

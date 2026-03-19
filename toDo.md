@@ -50,6 +50,8 @@ Architect:
 - favicon recolor to green ✔️
 - create user language depending mail service: hu - info@antaligyongyi.hu , de,en - info@yowayoli.com ✔️
 - billing with backend acc EN16 (PDF/A‑3 metaadatok, ZUGFeRD, send invoice automatic per email after succsesfull checkout) invoiceNumber.js + a purchase.model.js  + rework stripeWebhook.routes.js + pdf.services.js + zugferd.services.js✔️
+- build in a video chat modul with Jitsi Meet for coaching sections✔️
+- build questionary modul to exams after online training or researching in dif. topics or to promote products with the evaulation result (eg. stress level test and with the evaultion promote relaxation techniks)✔️
 
 Landing Page (public page):
 - /components/GeneralHeroSection.vue ✔️
@@ -141,5 +143,3 @@ Bugs:
     Warnings: -none
 
 Tasks are open:
-→ build in a video chat modul with Jitsi Meet for coaching sections
-→ build questionary modul to exams after online training or researching in dif. topics or to promote products with the evaulation result (eg. stress level test and with the evaultion promote relaxation techniks)

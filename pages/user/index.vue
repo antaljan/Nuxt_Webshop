@@ -39,15 +39,36 @@
             <tr>
               <th class="text-left">{{ $t('common.termin') }}</th>
               <th class="text-left">{{ $t('common.type') }}</th>
+              <th class="text-left">Link</th>
               <th class="text-right">{{ $t('common.command') }}</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="b in bookings" :key="b._id">
               <td class="font-medium">
-                {{ new Date(b.start).toLocaleString('hu-HU', { month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }) }}
+                {{
+                  new Date(b.start).toLocaleString($i18n.locale, {
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  }) 
+                }}
               </td>
               <td>{{ b.title }}</td>
+              <td>
+                <NuxtLink
+                  v-if="isMeetingActive(b.start)"
+                  :to="`/user/coaching/${b._id}`"
+                  class="inline-flex items-center px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-bold hover:bg-green-200 transition"
+                >
+                  <v-icon start icon="mdi-video" size="x-small" class="mr-1"></v-icon>
+                  {{ $t('common.connecttomeeting') }}
+                </NuxtLink>
+                <span v-else class="text-xs text-gray-400 italic">
+                  {{ $t('user.linkActiveSoon') }}
+                </span>
+              </td>
               <td class="text-right">
                 <v-btn
                   color="error"
@@ -111,6 +132,16 @@ async function handleCancel(id) {
   } finally {
     cancellingId.value = null
   }
+}
+
+// Ellenőrzi, hogy eljött-e az idő a csatlakozáshoz
+function isMeetingActive(startTime) {
+  const now = new Date();
+  const start = new Date(startTime);
+  // 15 perccel kezdés előtt már engedjük be (900.000 ms)
+  const leadTime = 15 * 60 * 1000; 
+  // Akkor aktív, ha most az (időpont - 15 perc) után vagyunk
+  return now >= new (start.getTime() - leadTime);
 }
 
 </script>

@@ -199,7 +199,8 @@ export default defineI18nLocale(async (locale) => {
     downloadableFiles: "Letölthető fájlok",
     schedulerTitle: "Időpont választása",
     all:"Összes",
-    language:"nyelv"
+    language:"nyelv",
+    connecttomeeting:"bejelentkezés"
   },
   feedback: {
     title: "Visszajelzések"

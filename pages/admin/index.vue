@@ -165,9 +165,23 @@
                   <v-icon size="small" color="blue">mdi-account</v-icon>
                 </v-avatar>
               </template>
+
               <v-list-item-title class="text-body-2 font-weight-bold">
-                {{ session.userName || 'Vendég felhasználó' }}
+                {{ session.userName }}
               </v-list-item-title>
+
+              <template v-slot:append>
+                <v-btn
+                  v-if="isAdminLinkActive(session.start)"
+                  icon="mdi-video"
+                  variant="text"
+                  color="success"
+                  size="small"
+                  title="Belépés az ülésre"
+                  :to="`/user/coaching/${session._id}`"
+                ></v-btn>
+                <v-icon v-else size="x-small" color="grey-lighten-1">mdi-clock-outline</v-icon>
+              </template>
             </v-list-item>
             <v-list-item v-if="upcomingSessions.length === 0">
               <v-list-item-title class="text-caption text-center opacity-50">

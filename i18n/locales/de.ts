@@ -194,7 +194,8 @@ export default defineI18nLocale(async (locale) => {
     downloadableFiles: "Downloadbare Dateien",
     schedulerTitle: "Zeitfenster auswählen",
     all:"Alle",
-    language:"Sprache"
+    language:"Sprache",
+    connecttomeeting:"anmelden"
   },
   feedback: {
     title: "Rückmeldungen unserer Kunden"

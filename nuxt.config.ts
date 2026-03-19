@@ -51,19 +51,19 @@ export default defineNuxtConfig({
   }
 }
 ,
+  //security: { enabled: false }
   security: {
-    // Itt kapcsoljuk ki a hibás fejléc-kezelést
     headers: false, 
-    // Itt adjuk meg az alapvető CSP-t a modul újabb logikája szerint
     contentSecurityPolicy: {
       'img-src': ["'self'", "data:", "https://antaligyongyi.hu", "https://*.bunny.net"],
-      'script-src': ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://js.stripe.com", "https://meet.jit.si"],
-      'connect-src': ["'self'", "https:", "wss:", "ws:", "http://localhost:*", "wss://meet.jit.si"],
-      'frame-src': ["'self'", "https://js.stripe.com", "https://iframe.mediadelivery.net", "https://*.bunny.net", "https://*.mediadelivery.net", "https://meet.jit.si"],
+      'script-src': ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://js.stripe.com", "https://meet.jit.si", "https://8x8.vc"],
+      'connect-src': ["'self'", "https:", "wss:", "ws:", "http://localhost:*", "https://meet.jit.si", "https://*.8x8.vc", "wss://meet.jit.si"],
+      'frame-src': ["'self'", "https://js.stripe.com", "https://iframe.mediadelivery.net", "https://*.bunny.net", "https://*.mediadelivery.net","https://meet.jit.si", "https://8x8.vc", "https://*.8x8.vc"],
+      'child-src': ["https://meet.jit.si", "https://8x8.vc"],
       'frame-ancestors': ["'self'"]
     }
   },
-  
+
   // Rate limiting (DDoS)
     rateLimiter: {
       tokensPerInterval: 350,

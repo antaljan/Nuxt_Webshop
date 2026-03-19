@@ -1,21 +1,14 @@
 Short “architectural reality check”
 
 backend (NODE Express)
-    Running in productive mode on a VPS (IONOS) on port 3000, connected to MongoDB.
-    linked with 2 domains: https://antaligyongyi.hu/api (primary), https://yowayoli.com/api
-    hosted with nginx, nginx controlled the /api tag.
-Nuxt-Backend (Nuxt server routes):
-    Auth, blog, products, newsletter, stats, users ect... endpoints are structured and done.
-    The backend and frontend running on same VPS in productive system, frontend on port:3000 backend on port:4000.
+    Running in productive mode on a VPS (IONOS) on port 4000, connected to MongoDB.
+    linked with 2 domains: https://antaligyongyi.hu/backend (primary), https://yowayoli.com/backend
+    hosted with nginx, nginx controlled the /backend tag.
 Frontend:
-    Nuxt 4 SSR, Vuetify, n18n, Tailwind and component based design ✔️
-    The composables useAuth, useContent are integrated, the others (blog, product, newsletter, user) not yet.
-    The content pictures are stored on upload directory of NODE backend server, in the nuxt.config.ts is an a environmental variable defined for reach out that:
-    runtimeConfig: {
-        public: {
-            backendBase: process.env.BACKEND_BASE_URL || 'https://antaligyongyi.hu/api'
-        }
-    }
+    Nuxt 4 SSR, NUXT proxy, Vuetify, n18n, Tailwind and component based design
+    The composables useAuth, useContent, blog, product, newsletter are integrated.
+    The content pictures are stored on upload directory of NODE backend server, 
+    environmental variable defined for reach out the backend process.env.BACKEND_BASE_URL='https://antaligyongyi.hu/backend'
 
 Tasks are done:
 
@@ -55,7 +48,6 @@ Architect:
 - Email sending for user and admin bei one slot reservation ✔️
 - GO LIVE (nuxt app deployed on server and running under pm2) ✔️
 - favicon recolor to green ✔️
-- add info@antaligyongyi.hu mail service to backend ✔️
 - create user language depending mail service: hu - info@antaligyongyi.hu , de,en - info@yowayoli.com ✔️
 - billing with backend acc EN16 (PDF/A‑3 metaadatok, ZUGFeRD, send invoice automatic per email after succsesfull checkout) invoiceNumber.js + a purchase.model.js  + rework stripeWebhook.routes.js + pdf.services.js + zugferd.services.js✔️
 
@@ -101,25 +93,11 @@ Admin functions:
 - /pages/admin/coaching/index.vue --> overview of scheduled coaching sections in calender + create new slots button  ✔️
 - /pages/admin/coaching/create.vue --> crate new coaching slot in calendar  ✔️
 - /pages/admin/index.vue --> admin dashboard  ✔️
-    - statistics  ✔️
-    - funnel  ✔️
-    - pageviews  ✔️
-    - newsletter + performance  ✔️
 - /pages/admin/cibersecu.vue --> admin cyber security dashboard  ✔️
-- Branding design setup:
-    - all commponents cleaned from direct coloring, we use only: ✔️
-        - theme.themes.value.brandTheme.colors.primary = s.primaryColor
-        - theme.themes.value.brandTheme.colors.secondary = s.accentColor
-        - theme.themes.value.brandTheme.colors.background = s.backgroundColor
-        - theme.themes.value.brandTheme.colors.surface = s.backgroundColor
-        - theme.themes.value.brandTheme.colors.info = s.accentColor
-        - theme.themes.value.brandTheme.colors.success = s.accentColor
-        - theme.themes.value.brandTheme.colors.warning = s.accentColor
-        - theme.themes.value.brandTheme.colors.error = s.primaryColor
-    - /plugins/brand-theme-client.ts + define brandTheme in nuxt.config.ts ✔️
-    - /components/BrandThemeUpdater.vue + insert in layouts/default.vue ✔️
-    - /composable/useBrand + server/admin/brand.get.ts + server/admin/brand.put.ts ✔️
-- pages/admim/brand/index.vue ✔️
+- /plugins/brand-theme-client.ts + define brandTheme in nuxt.config.ts ✔️
+- /components/BrandThemeUpdater.vue + insert in layouts/default.vue ✔️
+- /composable/useBrand + server/admin/brand.get.ts + server/admin/brand.put.ts ✔️
+- /pages/admim/brand/index.vue ✔️
 - /pages/admin/products/create.vue --> add the language to product creating or edit - product has to be language relevant ✔️
 - admin has to be complete the booking slots, the frontend is missing, but the backend has already an a endpoint for that PUT:booking/complete/:id (verifyAdmin) ✔️
 - new function on pages/admin/brand: maintanance modus, if ist on than only a commong soon section available on the landing page and only admin  can log in (she can see and edit everything) ✔️
@@ -161,7 +139,7 @@ User functions:
 Bugs:
     critical: -none
     Warnings: -none
-Tasks are open:
 
+Tasks are open:
 → build in a video chat modul with Jitsi Meet for coaching sections
 → build questionary modul to exams after online training or researching in dif. topics or to promote products with the evaulation result (eg. stress level test and with the evaultion promote relaxation techniks)

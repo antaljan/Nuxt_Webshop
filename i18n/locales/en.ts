@@ -194,7 +194,8 @@ export default defineI18nLocale(async (locale) => {
     downloadableFiles: "Downloadable Files",
     schedulerTitle: "Select Time Slot",
     all:"All",
-    language:"language"
+    language:"language",
+    connecttomeeting:"connect"
   },
   feedback: {
     title: "Testimonials"

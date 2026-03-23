@@ -63,7 +63,7 @@ const initJitsi = async () => {
 
     const domain = "8x8.vc";
     const options = {
-      roomName: data.value.roomName.toLowerCase(),
+      roomName: `vpaas-magic-cookie-b0d7a44d8c2e4bc2a9122e6fff8950c4/agye_${route.params.id.toLowerCase()}`,
       jwt: data.value.token,
       parentNode: jitsiRef.value,
       width: '100%',

@@ -119,7 +119,6 @@ Admin functions:
     - create Meta-Api: Gyongyi_Markateng-Automation with Products:
         - Webhook: subscribed for Instagram Comments, Messages ✔️
         - Messenger - Instagram Setup: add Gyöngyi's Page and generate Verify Token for that, new Token add to Node Backend api, add webhook for Instagram Comments and Messages ✔️
-    - add Gyöngyi like Instagram Tester for Meta-Api ✔️
 
 User functions:
 - /pages/products/index.vue --> Product overview site with searching(picture, name, short description, price on v-card) ✔️
@@ -143,3 +142,6 @@ Bugs:
     Warnings: -none
 
 Tasks are open:
+ - create data down load to questionnaire
+ - add videdo freebie
+ - add VAT to billing and the seller property's has to be stored in brand database and editable via admin.

@@ -78,7 +78,7 @@
               color="info"
               size="small"
               class="mr-1"
-              :href="`/public/test/${item.slug}`"
+              :href="`https://antaligyongyi.hu/questionnaire/${item.slug}`"
               target="_blank"
               title="Publikus oldal"
             ></v-btn>

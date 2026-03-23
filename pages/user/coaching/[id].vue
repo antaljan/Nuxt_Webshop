@@ -14,6 +14,11 @@ const route = useRoute();
 const router = useRouter();
 const { user } = useAuth();
 
+// Kényszerítjük az autentikációt és a dashboard middleware-t
+definePageMeta({
+  middleware: ['auth']
+});
+
 const jitsiRef = ref(null);
 const isLoaded = ref(false);
 let api = null;
@@ -21,12 +26,10 @@ let api = null;
 // Manuális script betöltés
 const loadJitsiScript = () => {
   return new Promise((resolve, reject) => {
-    if (window.JitsiMeetExternalAPI) {
-      resolve();
-      return;
-    }
+    if (window.JitsiMeetExternalAPI) { resolve(); return; }
     const script = document.createElement('script');
-    script.src = "https://meet.jit.si/external_api.js";
+    // Fontos: a 8x8.vc-s linket használd az App ID-val!
+    script.src = "https://8x8.vc/vpaas-magic-cookie-b0d7a44d8c2e4bc2a9122e6fff8950c4/external_api.js";
     script.async = true;
     script.onload = () => resolve();
     script.onerror = () => reject(new Error('Jitsi script load failed'));
@@ -48,33 +51,35 @@ onMounted(async () => {
   }
 });
 
-const initJitsi = () => {
-  const domain = "meet.jit.si";
-  const options = {
-    roomName: `AGYE_${route.params.id}`,
-    parentNode: jitsiRef.value,
-    width: '100%',
-    height: '100%',
-    userInfo: {
-      displayName: user.value?.name || 'Kliens',
-      email: user.value?.email
-    },
-    configOverwrite: {
-      prejoinPageEnabled: false,
-      disableDeepLinking: true
+const initJitsi = async () => {
+  try {
+    // Ez a belső Nuxt /server/api végpontot hívja
+    const { data, error } = await useFetch(`/api/coaching/jitsi-token/${route.params.id}`);
+
+    if (error.value || !data.value?.ok) {
+      console.error("Hiba a token lekérésekor:", error.value);
+      return;
     }
-  };
 
-  api = new window.JitsiMeetExternalAPI(domain, options);
-  
-  api.addEventListener('videoConferenceJoined', () => {
-    isLoaded.value = true;
-  });
+    const domain = "8x8.vc";
+    const options = {
+      roomName: data.value.roomName,
+      jwt: data.value.token, 
+      parentNode: jitsiRef.value,
+      width: '100%',
+      height: '100%',
+      configOverwrite: {
+        prejoinPageEnabled: false,
+        disableDeepLinking: true
+      }
+    };
 
-  api.addEventListener('videoConferenceLeft', () => {
-    leaveMeeting();
-  });
+    api = new window.JitsiMeetExternalAPI(domain, options);
+  } catch (err) {
+    console.error("Jitsi inicializálási hiba:", err);
+  }
 };
+
 
 const leaveMeeting = () => {
   if (api) api.dispose();

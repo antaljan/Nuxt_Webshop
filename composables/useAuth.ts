@@ -1,51 +1,55 @@
 export const useAuth = () => {
+  // A useState megmarad, ez szinkronizálja az állapotot a szerver és kliens között
   const user = useState<any>('user', () => null)
   const loading = useState<boolean>('auth_loading', () => false)
 
   const loggedIn = computed(() => !!user.value)
   const isAdmin = computed(() => user.value?.role === 'admin')
 
-  const fetchUser = async () => {
-    if (process.server) return
-    loading.value = true
-    try {
-      const data = await $fetch('/api/auth/me', {
-        method: 'GET',
-        credentials: 'include'
-      })
-      // Csak akkor írjuk felül, ha tényleg kaptunk usert
-      if (data?.user) {
-        user.value = data.user
-      }
-      // ❗ Ha nincs user a válaszban, NEM nullázzuk le
-    } catch (err) {
-      console.warn('fetchUser failed, keeping existing user:', err)
-      // ❗ Hibára sem nullázzuk le a usert
-    } finally {
-      loading.value = false
-    }
-  }
+// useAuth.ts
+const fetchUser = async () => {
+  // Ha már van user, és nem kényszerített frissítés, ne csináljunk semmit 
+  // (megakadályozza a villogást és a véletlen nullázást)
+  if (user.value && !process.server) return 
 
+  loading.value = true
+  try {
+    const headers = useRequestHeaders(['cookie'])
+    const data = await $fetch<any>('/api/auth/me', { headers })
+
+    if (data?.user) {
+      user.value = data.user
+    } else {
+      // Csak akkor nullázzuk, ha a backend kifejezetten mondja (pl. 401)
+      user.value = null
+    }
+  } catch (err: any) {
+    // Ha 401 (Unauthorized), akkor tényleg nincs belépve
+    if (err.response?.status === 401) {
+      user.value = null
+    }
+    // Minden más hiba (hálózat, 500) esetén MEGTARTJUK a jelenlegi user-t!
+  } finally {
+    loading.value = false
+  }
+}
 
 
   const login = async (email: string, password: string) => {
     loading.value = true
     try {
-      const data = await $fetch('/api/auth/login', {
+      const data = await $fetch<any>('/api/auth/login', {
         method: 'POST',
         body: { email, password }
       })
 
-      // Ha a backend visszaadja a usert → beállítjuk
-      if (data.user) {
+      if (data?.user) {
         user.value = data.user
       } else {
-        // Client oldalon újra lekérjük
         await fetchUser()
       }
-
       return true
-    } catch {
+    } catch (e) {
       throw new Error('Login failed')
     } finally {
       loading.value = false

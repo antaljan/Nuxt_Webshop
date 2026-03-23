@@ -17,11 +17,16 @@ const { locale } = useI18n()
 /* ---------------------------
    AUTH + BRAND
 --------------------------- */
-const { user } = useAuth()
-const isAdmin = computed(() => user.value?.role === 'admin')
-
+const { user, fetchUser, isAdmin } = useAuth()
 const { settings: brand, loadBrand } = useBrand()
-await loadBrand()
+
+// Ezzel biztosítjuk, hogy a szerver tudja, ki vagy, MIELŐTT a template renderelődne
+if (process.server || !user.value) {
+  await Promise.all([
+    fetchUser(),
+    loadBrand()
+  ])
+}
 
 /* ---------------------------
    CONTENT LOADING

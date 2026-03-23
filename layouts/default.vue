@@ -1,11 +1,38 @@
 <script setup>
-// brand settings
-import { onMounted, watchEffect } from 'vue'
+
+import MyHeader from '~/components/MyHeader.vue'
+import MyFooter from '~/components/MyFooter.vue'
+import { useI18n } from 'vue-i18n'
+import CartDrawer from '~/components/CartDrawer.vue'
+import BrandThemeUpdater  from  '~/components/BrandThemeUpdater.vue'
+
+import { useAuth } from '@/composables/useAuth'
 import { useBrand } from '@/composables/useBrand'
+import { computed, ref, onMounted, watchEffect } from 'vue'
 
 const { settings, loadBrand } = useBrand()
+const { isAdmin, loggedIn, fetchUser, user } = useAuth() // fetchUser hozzáadva
 
-await loadBrand()
+watch(user, (newUser) => {
+  console.log("User changed in layout:", newUser?.role)
+}, { immediate: true })
+
+// SSR barát betöltés: megvárjuk a brandet és a usert is
+if (process.server || !settings.value) {
+  await Promise.all([
+    loadBrand(),
+    !user.value ? fetchUser() : Promise.resolve()
+  ])
+}
+
+// A hideMenu most már pontos lesz SSR alatt is
+const hideMenu = computed(() => {
+  // Ha admin VAGY be van jelentkezve, látnia kell a menüt a navigációhoz
+  if (isAdmin.value || loggedIn.value) return false
+  // Csak a publikus (nem belépett) látogatóknak rejtjük el karbantartás alatt
+  return settings.value?.maintenanceMode === true
+})
+
 
 onMounted(() => {
   watchEffect(() => {
@@ -21,29 +48,8 @@ onMounted(() => {
     
   })
 })
-
-import { ref } from 'vue'
-import MyHeader from '~/components/MyHeader.vue'
-import MyFooter from '~/components/MyFooter.vue'
-import { useAuth } from '@/composables/useAuth'
-import { useI18n } from 'vue-i18n'
-import CartDrawer from '~/components/CartDrawer.vue'
-import BrandThemeUpdater  from  '~/components/BrandThemeUpdater.vue'
-
 const menuOpen = ref(false)
-const { isAdmin, loggedIn } = useAuth()
 const { t } = useI18n()
-const brandLoaded = ref(false)
-await loadBrand()
-brandLoaded.value = true
-
-
-const hideMenu = computed(() => {
-  if (!brandLoaded.value) return false   // amíg nincs brand, ne rejtsen el semmit
-  if (isAdmin.value) return false        // admin mindig látja
-  return settings.value?.maintenanceMode === true
-})
-
 
 /* -----------------------------------------
    MAIN MENU (hash + route keverve)
@@ -96,7 +102,6 @@ const closeMenu = () => (menuOpen.value = false)
     <!-- CART DRAWER (MINDEN OLDALON ELÉRHETŐ) -->
     <CartDrawer v-if="!hideMenu" />
     <!-- MOBILE DRAWER -->
-    <client-only>
       <v-navigation-drawer
         v-if="!hideMenu"
         v-model="menuOpen"
@@ -142,25 +147,25 @@ const closeMenu = () => (menuOpen.value = false)
             </NuxtLink>
           </v-list-item>
         </template>
-
-        <!-- ADMIN SECTION -->
-        <template v-if="isAdmin">
-          <v-divider class="my-2" color="primary" />
-          <p class="px-4 py-2 font-bold text-lg">{{ t('admin.adminSection') }}</p>
-          <v-list-item
-            v-for="item in adminMenu"
-            :key="item.to"
-            @click="closeMenu"
-          >
-            <NuxtLink :to="item.to" class="w-full block py-2">
-              {{ t(item.label) }}
-            </NuxtLink>
-          </v-list-item>
+        <!-- ADMIN SECTION - Módosítva v-show-ra -->
+        <template v-if="loggedIn">
+          <div v-show="isAdmin">
+            <v-divider class="my-2" color="primary" />
+            <p class="px-4 py-2 font-bold text-lg">{{ t('admin.adminSection') }}</p>
+            <v-list-item
+              v-for="item in adminMenu"
+              :key="item.to"
+              @click="closeMenu"
+            >
+              <NuxtLink :to="item.to" class="w-full block py-2">
+                {{ t(item.label) }}
+              </NuxtLink>
+            </v-list-item>
+          </div>
         </template>
 
       </v-list>
     </v-navigation-drawer>
-    </client-only>
 
     <!-- MAIN CONTENT -->
     <v-main class="bg-background text-text">

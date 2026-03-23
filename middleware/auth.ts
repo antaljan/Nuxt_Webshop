@@ -1,26 +1,23 @@
 export default defineNuxtRouteMiddleware(async (to) => {
   const { loggedIn, fetchUser } = useAuth()
 
-  // Public sites
-  const publicRoutes = ['/', '/login', '/register']
-  if (publicRoutes.includes(to.path)) {
-    return
-  }
+  // 1. Ha publikus oldal, nem csinálunk semmit
+  const publicRoutes = ['/', '/login', '/register', '/forgot-password', '/reset-password']
+  if (publicRoutes.includes(to.path)) return
 
-  // Protected sites
-  const isProtected =
-    to.path.startsWith('/user') ||
-    to.path.startsWith('/admin')
-
+  // 2. Ha védett oldalra tart (user/admin)
+  const isProtected = to.path.startsWith('/user') || to.path.startsWith('/admin')
   if (!isProtected) return
 
-  // Try to load user if the status not logged in
+  // 3. KRITIKUS: Mindig próbáljuk frissíteni a felhasználót, ha nincs bent
+  // vagy ha épp most jövünk a loginról, hogy biztosak legyünk az állapotban
   if (!loggedIn.value) {
     await fetchUser()
   }
 
-  // If user is still not loaded → redirect to login
+  // 4. Ha még mindig nincs bent -> Irány a login, de mentsük el, hova akart menni!
   if (!loggedIn.value) {
-    return navigateTo('/login')
+    // encodeURIComponent kell, hogy a speciális karakterek (pl. /) ne törjék meg a URL-t
+    return navigateTo(`/login?redirect=${encodeURIComponent(to.fullPath)}`)
   }
 })

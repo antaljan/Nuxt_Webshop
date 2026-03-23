@@ -109,13 +109,28 @@ async function doLogin() {
   error.value = null
   try {
     const route = useRoute()
-    const redirect = route.query.redirect || '/'
+    const router = useRouter()
+    
+    // 1. Lefuttatjuk a logint (ami beállítja a sütit a backend-en)
     await login(email.value, psw.value)
-    navigateTo(redirect)
+    
+    // 2. Nagyon fontos: kényszerítsük a useAuth-ot a frissítésre MÉG ITT
+    const { fetchUser } = useAuth()
+    await fetchUser() 
+
+    // 3. Redirect kezelése
+    const redirectPath = route.query.redirect ? decodeURIComponent(route.query.redirect) : '/user'
+    
+    // 4. Navigáció
+    await router.push(redirectPath)
+    
   } catch (e) {
+    console.error("Belépési hiba:", e)
     error.value = t('auth.login.errors.invalid')
   } finally {
     loading.value = false
   }
 }
+
+
 </script>

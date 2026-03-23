@@ -63,8 +63,8 @@ const initJitsi = async () => {
 
     const domain = "8x8.vc";
     const options = {
-      roomName: data.value.roomName,
-      jwt: data.value.token, 
+      roomName: data.value.roomName.toLowerCase(),
+      jwt: data.value.token,
       parentNode: jitsiRef.value,
       width: '100%',
       height: '100%',

@@ -12,81 +12,81 @@
 <script setup>
 const route = useRoute();
 const router = useRouter();
-const { user } = useAuth();
 
-// Kényszerítjük az autentikációt és a dashboard middleware-t
 definePageMeta({
   middleware: ['auth']
 });
 
 const jitsiRef = ref(null);
 const isLoaded = ref(false);
-let api = null;
-
-// Manuális script betöltés
-const loadJitsiScript = () => {
-  return new Promise((resolve, reject) => {
-    if (window.JitsiMeetExternalAPI) { resolve(); return; }
-    const script = document.createElement('script');
-    // Fontos: a 8x8.vc-s linket használd az App ID-val!
-    script.src = "https://8x8.vc/vpaas-magic-cookie-b0d7a44d8c2e4bc2a9122e6fff8950c4/external_api.js";
-    script.async = true;
-    script.onload = () => resolve();
-    script.onerror = () => reject(new Error('Jitsi script load failed'));
-    document.head.appendChild(script);
-  });
-};
+// FONTOS: shallowRef-et használunk, hogy a Vue ne próbálja 
+// "megfigyelni" a Jitsi belső iFrame objektumait (Proxy hiba megelőzése)
+const api = shallowRef(null);
 
 onMounted(async () => {
   try {
     await loadJitsiScript();
-    // Várunk egy picit, hogy a DOM is biztosan kész legyen
-    nextTick(() => {
-      if (jitsiRef.value) {
-        initJitsi();
-      }
-    });
+    // Ahelyett, hogy az initJitsi-ben hívnánk useFetch-et:
+    await initJitsi();
   } catch (err) {
     console.error("Script hiba:", err);
   }
 });
 
+const loadJitsiScript = () => {
+  return new Promise((resolve, reject) => {
+    if (window.JitsiMeetExternalAPI) { resolve(); return; }
+    const script = document.createElement('script');
+    script.src = "https://8x8.vc/vpaas-magic-cookie-b0d7a44d8c2e4bc2a9122e6fff8950c4/external_api.js";
+    script.async = true;
+    script.onload = resolve;
+    script.onerror = () => reject(new Error('Jitsi script load failed'));
+    document.head.appendChild(script);
+  });
+};
+
 const initJitsi = async () => {
   try {
-    // Ez a belső Nuxt /server/api végpontot hívja
-    const { data, error } = await useFetch(`/api/coaching/jitsi-token/${route.params.id}`);
-
-    if (error.value || !data.value?.ok) {
-      console.error("Hiba a token lekérésekor:", error.value);
+    // JAVÍTÁS: $fetch-et használunk onMounted-en belül useFetch helyett!
+    const res = await $fetch(`/api/coaching/jitsi-token/${route.params.id}`);
+    
+    // A .value-t használjuk, mert a res már a tiszta adat (nem Ref)
+    if (!res?.ok || !res?.token) {
+      console.error("Hiba a token lekérésekor");
       return;
     }
 
     const domain = "8x8.vc";
     const options = {
+      // Room name-nél figyelj, hogy a backend pontosan ezt a stringet írja-e alá a JWT-ben!
       roomName: `vpaas-magic-cookie-b0d7a44d8c2e4bc2a9122e6fff8950c4/agye_${route.params.id.toLowerCase()}`,
-      jwt: data.value.token,
       parentNode: jitsiRef.value,
+      jwt: res.token, // Közvetlenül a res-ből vesszük
       width: '100%',
       height: '100%',
       configOverwrite: {
         prejoinPageEnabled: false,
-        disableDeepLinking: true
+        disableDeepLinking: true,
+        // Ezzel elkerülhető a logban látott speaker-selection hiba
+        disabledNotifications: ['speaker-stats-muted'] 
+      },
+      interfaceConfigOverwrite: {
+        // Opcionális: itt is tudsz finomhangolni
       }
     };
 
-    api = new window.JitsiMeetExternalAPI(domain, options);
+    api.value = new window.JitsiMeetExternalAPI(domain, options);
+    
+    api.value.addEventListener('videoConferenceJoined', () => {
+      isLoaded.value = true;
+    });
+
   } catch (err) {
     console.error("Jitsi inicializálási hiba:", err);
   }
 };
 
-
-const leaveMeeting = () => {
-  if (api) api.dispose();
-  router.push('/user');
-};
-
 onUnmounted(() => {
-  if (api) api.dispose();
+  if (api.value) api.value.dispose();
 });
 </script>

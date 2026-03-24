@@ -231,11 +231,10 @@ const formatSessionTime = (date) => {
 }
 
 function isAdminLinkActive(startTime) {
-  const now = new Date();
-  const start = new Date(startTime);
+  const now = new Date().getTime();
+  const start = new Date(startTime).getTime();
   const leadTime = 15 * 60 * 1000; 
-  // Az adminnak engedjük meg, hogy hamarabb is benézhessen, 
-  // vagy akár lássa a gombot egész nap:
-  return now >= new Date(start.getTime() - leadTime);
+  return now >= (start - leadTime);
 }
+
 </script>

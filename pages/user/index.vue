@@ -75,6 +75,7 @@
                   variant="tonal"
                   size="x-small"
                   :loading="cancellingId === b._id"
+                  :disabled="!canCancel(b.start)" 
                   @click="handleCancel(b._id)"
                 >
                   {{ $t('common.canceling') }}
@@ -109,9 +110,10 @@ const { data: rawBookings, pending: bookingsPending, refresh: refreshBookings } 
   'user-bookings',
   () => getMyBookings()
 )
-const bookings = computed(() =>
-  (rawBookings.value || []).filter(b => !b.completed) 
-)
+const bookings = computed(() => {
+  const list = [...(rawBookings.value || [])];
+  return list.sort((a, b) => new Date(a.start) - new Date(b.start));
+});
 
 // Load purchases
 const { data: purchaseData, pending, error } = await useAsyncData(
@@ -136,12 +138,22 @@ async function handleCancel(id) {
 
 // Ellenőrzi, hogy eljött-e az idő a csatlakozáshoz
 function isMeetingActive(startTime) {
-  const now = new Date();
-  const start = new Date(startTime);
-  // 15 perccel kezdés előtt már engedjük be (900.000 ms)
-  const leadTime = 15 * 60 * 1000; 
-  // Akkor aktív, ha most az (időpont - 15 perc) után vagyunk
-  return now >= new (start.getTime() - leadTime);
+  const now = new Date().getTime();
+  const start = new Date(startTime).getTime();
+  
+  const leadTime = 15 * 60 * 1000;    // 15 perc előtte
+  const duration = 60 * 60 * 1000;    // Tételezzük fel, hogy 60 perces a meeting
+  
+  // Akkor aktív, ha a (kezdés - 15p) és a (kezdés + 60p) között vagyunk
+  return now >= (start - leadTime) && now <= (start + duration);
+}
+
+
+function canCancel(startTime) {
+  const now = new Date().getTime();
+  const start = new Date(startTime).getTime();
+  const twentyFourHours = 24 * 60 * 60 * 1000;
+  return (start - now) > twentyFourHours;
 }
 
 </script>

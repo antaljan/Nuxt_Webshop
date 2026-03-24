@@ -80,9 +80,7 @@ Landing Page (public page):
 Admin functions:
 - access control for admin dashboard and pages realized ✔️
 - /pages/admin/blog/index.vue --> admin blog post list with edit, delete + create ✔️
-- /pages/admin/blog/create.vue --> admin blog post create  ✔️
-    - add upload of educations material (pdf file) and link in products database ✔️
-    - add upload education video to Bunny Stream or Vimeo Pro and link it in the database ✔️
+- /pages/admin/blog/create.vue --> admin blog post create upload of educations material pdf file and link to Bunny Stream ✔️
 - backend endpoints for product created (router, model) ✔️
 - backend checkout, with stripe module created  ✔️
 - /pages/admin/products/index.vue --> admin product overview (list with paginator, sort, filter, delete, edit) ✔️
@@ -102,7 +100,7 @@ Admin functions:
 - /pages/admim/brand/index.vue ✔️
 - /pages/admin/products/create.vue --> add the language to product creating or edit - product has to be language relevant ✔️
 - admin has to be complete the booking slots, the frontend is missing, but the backend has already an a endpoint for that PUT:booking/complete/:id (verifyAdmin) ✔️
-- new function on pages/admin/brand: maintanance modus, if ist on than only a commong soon section available on the landing page and only admin  can log in (she can see and edit everything) ✔️
+- new function on pages/admin/brand: maintanance modus, if ist on than only a comming soon section available on the landing page and only admin can log in (she can see and edit everything) ✔️
 - frontend/pages/admin/users/index.vue --> add language settings option to users on admin user management ✔️
 - frontend/pages/admin/newsletter/index.vue --> add language settings option to subscribers on admin newsletter management ✔️
 - New newsletter template with json amd tiptap editor for paragraph ✔️
@@ -111,14 +109,7 @@ Admin functions:
 - pages/admin/freebie/index.vue and create.vue --> dummy product for 0€ (honeypot) for newsletter subscribers, this is not a standard product becauese buying can only registrated users (because invoicing). ✔️
 - welcome newsletter automation. package for newcommers: 5-6 newsletters scheduled automaticaly after subscribe (scheduling due to over campaignmanager, welcom is a speciel campaign) ✔️
 - create (develop) Leadmagnet site: the lead magnet sites has to be use the generick items from components (hero,HTML Text, Text&mage...) witch are maintaned vie contentmanagement, the structure and SEO content of site stored in separeted data table ✔️
-- build social media modul like mini ManyChat, to react for DM for example send freebie to answer with a speciel word.
-    - registered to meta developper platform ✔️
-    - create backend moduls (GET:meta/webhook, POST:meta/webhook, GET:meta/stats ) ✔️
-    - build pages/admin/meta/index.vue ✔️
-    - add me like people for Gyöngyi's Meta Business Suit witch Facebook and Instagramm rights ✔️
-    - create Meta-Api: Gyongyi_Markateng-Automation with Products:
-        - Webhook: subscribed for Instagram Comments, Messages ✔️
-        - Messenger - Instagram Setup: add Gyöngyi's Page and generate Verify Token for that, new Token add to Node Backend api, add webhook for Instagram Comments and Messages ✔️
+- build social media modul like mini ManyChat, to react for DM for example send freebie to answer with a speciel word. pages/admin/meta/index.vue, create Meta Graph Api: Gyongyi_Markateng-Automation with Products: Webhook,Messenger ✔️
 
 User functions:
 - /pages/products/index.vue --> Product overview site with searching(picture, name, short description, price on v-card) ✔️

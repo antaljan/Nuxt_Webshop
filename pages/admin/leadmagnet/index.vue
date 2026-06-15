@@ -24,7 +24,7 @@ const copyLink = (slug) => {
 }
 
 const editItem = (item) => {
-  navigateTo(`/admin/leadmagnet/create?id=${item._id}`)
+  navigateTo(`/admin/leadmagnet/create?slug=${item.slug}`)
 }
 
 const deleteItem = async (id) => {

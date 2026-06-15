@@ -126,18 +126,27 @@ const existingKeys = ref(new Set()) // Itt tároljuk a már létező szekciókat
 
 // 2. Betöltés szerkesztés esetén
 onMounted(async () => {
-  if (isEdit.value) {
-    const slug = route.query.slug
-    try {
-      const res = await $fetch(`/api/leadmagnet/by-slug/${slug}`)
-      if (res?.item) {
-        form.value = res.item
-        // Elmentjük a már létező szekciókulcsokat, hogy ne írjuk őket felül dummy-val
-        res.item.sections.forEach(s => existingKeys.value.add(s.key))
-      }
-    } catch (err) {
-      console.error("Hiba a betöltéskor:", err)
+  if (!isEdit.value) return
+
+  try {
+    let res = null
+
+    if (route.query.id) {
+      // 1) Betöltés ID alapján
+      res = await $fetch(`/api/leadmagnet/admin/${route.query.id}`)
+    } else if (route.query.slug) {
+      // 2) Alternatíva: betöltés slug alapján
+      res = await $fetch(`/api/leadmagnet/by-slug/${route.query.slug}`)
     }
+
+    if (res?.item) {
+      form.value = res.item
+
+      // létező kulcsok mentése
+      res.item.sections.forEach(s => existingKeys.value.add(s.key))
+    }
+  } catch (err) {
+    console.error("Hiba a betöltéskor:", err)
   }
 })
 

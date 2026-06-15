@@ -41,7 +41,8 @@ export default defineI18nLocale(async (locale) => {
     blog: "Blog",
     products: "Szolgáltatások",
     adminSection: "Admin szekció",
-    questionnaire:"Kérdőívek"
+    questionnaire:"Kérdőívek",
+    freebies:"Ingyenes anyagok"
   },
   admin: {
     dashboard: "Admin irányítópult",

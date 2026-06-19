@@ -303,7 +303,8 @@ watch(
         html: val.html || '',
         image: val.image || '',
         backgroundColor: val.backgroundColor || '#ffffff',
-        wave: val.wave || 'organic-1'
+        wave: val.wave || null, // null, ha nincs wave, vagy az adatbázis szerinti érték
+        waveColor: val.waveColor || '#ffffff'
       }
     }
   },

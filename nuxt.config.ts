@@ -18,7 +18,21 @@ export default defineNuxtConfig({
     '@mdi/font/css/materialdesignicons.min.css'
   ],
 
-  fonts: { families: [ { name: 'Roboto', provider: 'google' } ] },
+fonts: {
+  families: [
+    { name: 'Inter', provider: 'google' },
+    { name: 'Lato', provider: 'google' },
+    { name: 'Montserrat', provider: 'google' },
+    { name: 'Playfair Display', provider: 'google' },
+    { name: 'Merriweather', provider: 'google' },
+    { name: 'Source Sans Pro', provider: 'google' },
+    { name: 'Source Serif Pro', provider: 'google' },
+    { name: 'Lora', provider: 'google' },
+    { name: 'Cormorant Garamond', provider: 'google' },
+    { name: 'Libre Baskerville', provider: 'google' },
+    { name: 'Roboto', provider: 'google' }
+  ]
+},
 
   vuetify: {
   moduleOptions: {},

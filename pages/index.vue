@@ -105,23 +105,17 @@ watch(locale, () => {
       :reverse="false"
     />
 
-    <section-separator />
-
-    <GenericTextSection
+    <GenericHtmlTextSection
       v-if="story?.data?.value"
       :content="story.data.value"
       sectionKey="story"
     />
 
-    <section-separator />
-
-    <GenericTextSection
+    <GenericHtmlTextSection
       v-if="methode?.data?.value"
       :content="methode.data.value"
       sectionKey="methode"
     />
-
-    <section-separator />
 
     <GenericFeedbackSection sectionKey="feedback" />
 

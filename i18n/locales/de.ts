@@ -101,7 +101,12 @@ export default defineI18nLocale(async (locale) => {
       font: "Font Type",
       previewTitle: "Vorshau",
       previewText: "so wird deine Webseite aussehen mit der aktuelle Einstellungen",
-      previewButton: "Muster Taste"
+      previewButton: "Muster Taste",
+      customBackground: "Benutzerdefinierte Hintergrundfarbe",
+      sectionWave: "Abschnitt Wellen",
+      sectionBackground: "Abschnitt Hintergrundfarbe",
+      sectionWaveColor: "Abschnitt Wellenfarbe",
+      sectionStyle: "Abschnitt Stil"
     },
     images: "Bilder verwalten",
     adminSection: "Admin Section",
@@ -197,7 +202,8 @@ export default defineI18nLocale(async (locale) => {
     schedulerTitle: "Zeitfenster auswählen",
     all:"Alle",
     language:"Sprache",
-    connecttomeeting:"anmelden"
+    connecttomeeting:"anmelden",
+    sectionStyle:"Section Stil"
   },
   feedback: {
     title: "Rückmeldungen unserer Kunden"

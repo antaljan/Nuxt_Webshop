@@ -8,17 +8,7 @@
 
   <div class="relative z-10 container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
 
-    <div class="flex justify-center md:justify-start">
-      <img
-        :src="imageUrl"
-        alt="Section image"
-        class="rounded-lg shadow max-w-sm w-full h-auto"
-      />
-    </div>
-
-    <div class="md:pl-4">
-
-      <div
+    <div class="md:pr-4"> <div
         v-if="!isAdmin || !editMode"
         class="prose max-w-none"
         v-html="sanitizedHtml"
@@ -125,99 +115,17 @@
       </div>
 
       <div v-if="isAdmin && showStyleEditor" class="mt-6 p-4 rounded-lg border bg-white/70 space-y-4">
-
-        <h3 class="font-semibold text-lg mb-2">
-          {{ t('admin.brand.sectionStyle') || 'Section style' }}
-        </h3>
-
-        <div>
-          <p class="text-sm font-medium mb-2">
-            {{ t('admin.brand.sectionBackground') || 'Section background color' }}
-          </p>
-          <div class="flex flex-wrap gap-2">
-            <button
-              v-for="color in backgroundPalette"
-              :key="color"
-              class="w-8 h-8 rounded-full border cursor-pointer"
-              :style="{ backgroundColor: color, borderColor: localContent.backgroundColor === color ? '#000' : 'transparent' }"
-              @click="localContent.backgroundColor = color"
-            />
-          </div>
         </div>
-
-        <div class="flex items-center gap-3">
-          <span class="text-sm font-medium">
-            {{ t('admin.brand.customBackground') || 'Custom background' }}
-          </span>
-          <input
-            type="color"
-            v-model="localContent.backgroundColor"
-            class="w-10 h-8 border rounded cursor-pointer"
-          />
-          <span class="text-xs text-gray-600">
-            {{ localContent.backgroundColor }}
-          </span>
-        </div>
-
-        <hr class="border-gray-200 my-2" />
-
-        <div>
-          <p class="text-sm font-medium mb-2">
-            {{ t('admin.brand.sectionWave') || 'Section shape' }}
-          </p>
-          <div class="flex flex-wrap gap-3">
-            <button
-              class="w-24 h-12 border rounded bg-gray-50 flex items-center justify-center cursor-pointer text-xs font-medium text-gray-500 transition-all"
-              :class="{ 'ring-2 ring-primary bg-white text-black font-semibold': !localContent.wave }"
-              @click="localContent.wave = null"
-            >
-              Egyenes él
-            </button>
-
-            <button
-              v-for="wave in wavePalette"
-              :key="wave"
-              class="w-24 h-12 border rounded overflow-hidden flex items-end justify-center bg-gray-50 cursor-pointer transition-all"
-              :class="{ 'ring-2 ring-primary': localContent.wave === wave }"
-              @click="localContent.wave = wave"
-            >
-              <img
-                :src="`/waves/${wave}.svg`"
-                alt=""
-                class="w-full h-full object-cover"
-                />
-            </button>
-          </div>
-        </div>
-
-        <div v-if="localContent.wave" class="space-y-3 pt-2">
-          <p class="text-sm font-medium">
-            Következő szakasz színe (Hullám színe)
-          </p>
-          <div class="flex flex-wrap gap-2">
-            <button
-              v-for="color in backgroundPalette"
-              :key="'wave-' + color"
-              class="w-8 h-8 rounded-full border cursor-pointer"
-              :style="{ backgroundColor: color, borderColor: localContent.waveColor === color ? '#000' : 'transparent' }"
-              @click="localContent.waveColor = color"
-            />
-          </div>
-          <div class="flex items-center gap-3">
-            <input
-              type="color"
-              v-model="localContent.waveColor"
-              class="w-10 h-8 border rounded cursor-pointer"
-            />
-            <span class="text-xs text-gray-600">
-              {{ localContent.waveColor }}
-            </span>
-          </div>
-        </div>
-
-      </div>
 
     </div>
+
+    <div class="flex justify-center md:justify-end"> <img
+        :src="imageUrl"
+        alt="Section image"
+        class="rounded-lg shadow max-w-sm w-full h-auto"
+      />
+    </div>
+
   </div>
 
   <div

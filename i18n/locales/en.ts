@@ -101,7 +101,12 @@ export default defineI18nLocale(async (locale) => {
       font: "Font type",
       previewTitle: "preview",
       previewText: "so will be looks like your Website witch the actual settings",
-      previewButton: "example button"
+      previewButton: "example button",
+      customBackground: "Custom Background Color",
+      sectionWave: "Section Wave",
+      sectionBackground: "Section Background Color",
+      sectionWaveColor: "Section Wave Color",
+      sectionStyle: "Section Style"
     },
     images: "Manage Images",
     adminSection: "Admin Section",
@@ -197,7 +202,8 @@ export default defineI18nLocale(async (locale) => {
     schedulerTitle: "Select Time Slot",
     all:"All",
     language:"language",
-    connecttomeeting:"connect"
+    connecttomeeting:"connect",
+    sectionStyle:"Section style"
   },
   feedback: {
     title: "Testimonials"

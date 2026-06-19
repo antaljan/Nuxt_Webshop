@@ -106,7 +106,12 @@ export default defineI18nLocale(async (locale) => {
       font: "Betűtípus",
       previewTitle: "Előnézet",
       previewText: "Így fog kinézni az oldal az aktuális beállításokkal.",
-      previewButton: "Példa gomb"
+      previewButton: "Példa gomb",
+      customBackground: "Egyedi háttérszín",
+      sectionWave: "Elválasztó hullám",
+      sectionBackground: "Szekció háttérszín",
+      sectionWaveColor: "Szekció hullám szín",
+      sectionStyle: "Szekció stílusa"
     },
     images: "Képek kezelése",
     adminSection: "Admin menü",
@@ -202,7 +207,8 @@ export default defineI18nLocale(async (locale) => {
     schedulerTitle: "Időpont választása",
     all:"Összes",
     language:"nyelv",
-    connecttomeeting:"bejelentkezés"
+    connecttomeeting:"bejelentkezés",
+    sectionStyle:"Szekció stílusa"
   },
   feedback: {
     title: "Visszajelzések"

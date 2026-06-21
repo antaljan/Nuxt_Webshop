@@ -133,6 +133,5 @@ Bugs:
     Warnings: -none
 
 Tasks are open:
- - adjust brand collors and put tham to all sections.
  - hamburger menu only for admin, upper mune for user
  - second layout for lead pages, without menu and login

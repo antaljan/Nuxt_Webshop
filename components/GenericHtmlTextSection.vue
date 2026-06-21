@@ -8,178 +8,125 @@
     <div class="relative z-10 container mx-auto max-w-4xl px-4">
 
       <div>
+        <!-- PUBLIKUS SZÖVEG MEGJELENÍTÉS: SSR-biztos opcionális láncolással -->
         <div
           v-if="!isAdmin || !editMode"
-          class="prose max-w-none"
+          class="prose max-w-none transition-all duration-300"
+          :style="{ 
+            color: brandTextAndFont?.textColor || '#2d3142', 
+            fontFamily: brandTextAndFont?.fontFamily || 'Inter' 
+          }"
           v-html="sanitizedHtml"
         />
 
+        <!-- ADMIN TIPTAP SZERKESZTŐ -->
         <div v-if="isAdmin && editMode" class="mt-4">
-          <div class="flex flex-wrap gap-2 mb-4 items-center">
+          <div class="flex flex-wrap gap-2 mb-4 items-center bg-gray-50 p-2 rounded-lg border">
 
-            <v-btn
-              icon
-              size="small"
-              variant="text"
-              @click="editor?.chain().focus().toggleBold().run()"
-              :color="editor?.isActive('bold') ? 'primary' : ''"
-            >
+            <v-btn icon size="small" variant="text" @click="editor?.chain().focus().toggleBold().run()" :color="editor?.isActive('bold') ? 'primary' : ''">
               <v-icon>mdi-format-bold</v-icon>
             </v-btn>
 
-            <v-btn
-              icon
-              size="small"
-              variant="text"
-              @click="editor?.chain().focus().toggleItalic().run()"
-              :color="editor?.isActive('italic') ? 'primary' : ''"
-            >
+            <v-btn icon size="small" variant="text" @click="editor?.chain().focus().toggleItalic().run()" :color="editor?.isActive('italic') ? 'primary' : ''">
               <v-icon>mdi-format-italic</v-icon>
             </v-btn>
 
-            <v-btn
-              icon
-              size="small"
-              variant="text"
-              @click="editor?.chain().focus().undo().run()"
-            >
+            <v-btn icon size="small" variant="text" @click="editor?.chain().focus().undo().run()">
               <v-icon>mdi-undo</v-icon>
             </v-btn>
 
-            <v-btn
-              icon
-              size="small"
-              variant="text"
-              @click="editor?.chain().focus().redo().run()"
-            >
+            <v-btn icon size="small" variant="text" @click="editor?.chain().focus().redo().run()">
               <v-icon>mdi-redo</v-icon>
             </v-btn>
 
-            <v-btn
-              icon
-              size="small"
-              variant="text"
-              @click="editor?.chain().focus().setTextAlign('left').run()"
-              :color="editor?.isActive({ textAlign: 'left' }) ? 'primary' : ''"
-            >
+            <v-btn icon size="small" variant="text" @click="editor?.chain().focus().setTextAlign('left').run()" :color="editor?.isActive({ textAlign: 'left' }) ? 'primary' : ''">
               <v-icon>mdi-format-align-left</v-icon>
             </v-btn>
 
-            <v-btn
-              icon
-              size="small"
-              variant="text"
-              @click="editor?.chain().focus().setTextAlign('center').run()"
-              :color="editor?.isActive({ textAlign: 'center' }) ? 'primary' : ''"
-            >
+            <v-btn icon size="small" variant="text" @click="editor?.chain().focus().setTextAlign('center').run()" :color="editor?.isActive({ textAlign: 'center' }) ? 'primary' : ''">
               <v-icon>mdi-format-align-center</v-icon>
             </v-btn>
 
-            <v-btn
-              icon
-              size="small"
-              variant="text"
-              @click="editor?.chain().focus().setTextAlign('right').run()"
-              :color="editor?.isActive({ textAlign: 'right' }) ? 'primary' : ''"
-            >
+            <v-btn icon size="small" variant="text" @click="editor?.chain().focus().setTextAlign('right').run()" :color="editor?.isActive({ textAlign: 'right' }) ? 'primary' : ''">
               <v-icon>mdi-format-align-right</v-icon>
             </v-btn>
 
-            <v-select
-              class="w-32"
-              density="compact"
-              :items="fontSizes"
-              label="Méret"
-              prepend-inner-icon="mdi-format-size"
-              @update:modelValue="size => editor?.chain().focus().setFontSize(size).run()"
-            />
-
-            <v-select
-              class="w-40"
-              density="compact"
-              :items="fontFamilies"
-              label="Betűtípus"
-              prepend-inner-icon="mdi-format-font"
-              @update:modelValue="family => editor?.chain().focus().setFontFamily(family).run()"
-            />
+            <v-select class="w-32" density="compact" hide-details :items="fontSizes" label="Méret" prepend-inner-icon="mdi-format-size" @update:modelValue="size => editor?.chain().focus().setFontSize(size).run()" />
+            <v-select class="w-40" density="compact" hide-details :items="fontFamilies" label="Betűtípus" prepend-inner-icon="mdi-format-font" @update:modelValue="family => editor?.chain().focus().setFontFamily(family).run()" />
 
             <div class="relative flex items-center">
               <v-btn icon size="small" variant="text">
                 <v-icon>mdi-format-color-text</v-icon>
               </v-btn>
-              <input
-                type="color"
-                class="absolute left-0 top-0 w-8 h-8 opacity-0 cursor-pointer"
-                @input="e => editor?.chain().focus().setColor((e.target as HTMLInputElement).value).run()"
-              />
+              <input type="color" class="absolute left-0 top-0 w-8 h-8 opacity-0 cursor-pointer" @input="e => editor?.chain().focus().setColor((e.target as HTMLInputElement).value).run()" />
             </div>
           </div>
 
-          <div class="editor-wrapper border rounded-lg p-2 bg-white min-h-[300px]">
+          <div 
+            class="editor-wrapper border rounded-lg p-3 bg-white min-h-[300px]"
+            :style="{ 
+              color: brandTextAndFont?.textColor || '#2d3142', 
+              fontFamily: brandTextAndFont?.fontFamily || 'Inter' 
+            }"
+          >
             <EditorContent v-if="editor" :editor="editor" />
           </div>
 
-          <div class="flex gap-4 mt-4 flex-wrap">
-            <v-btn color="primary" @click="saveContent">
-              {{ t('common.save') }}
-            </v-btn>
-            <v-btn color="secondary" @click="cancelEdit">
-              {{ t('common.cancel') }}
-            </v-btn>
-            <v-btn color="secondary" @click="editMode = false">
-              {{ t('common.closeEditor') }}
-            </v-btn>
+          <div class="flex gap-3 mt-4 flex-wrap">
+            <v-btn color="success" @click="saveContent">{{ t('common.save') || 'Mentés' }}</v-btn>
+            <v-btn color="grey" variant="outlined" @click="cancelEdit">{{ t('common.cancel') || 'Mégse' }}</v-btn>
           </div>
         </div>
 
+        <!-- ADMIN ALAPVÉZÉRLŐK -->
         <div v-if="isAdmin && !editMode" class="mt-6 flex flex-wrap gap-3">
           <v-btn color="primary" @click="editMode = true">
-            {{ t('common.edit') }}
+            {{ t('common.edit') || 'Szerkesztés' }}
           </v-btn>
           <v-btn color="secondary" @click="showStyleEditor = !showStyleEditor">
-            {{ showStyleEditor ? t('common.closeEditor') : t('common.sectionStyle') || 'Section style' }}
+            {{ showStyleEditor ? (t('common.closeEditor') || 'Bezárás') : (t('common.sectionStyle') || 'Szakasz stílusa') }}
           </v-btn>
         </div>
 
-        <div v-if="isAdmin && showStyleEditor" class="mt-6 p-4 rounded-lg border bg-white/70 space-y-4 text-black">
-          <h3 class="font-semibold text-lg mb-2">
-            {{ t('admin.brand.sectionStyle') || 'Section style' }}
+        <!-- ARCULATI SZEKCIÓ STÍLUS SZERKESZTŐ -->
+        <div v-if="isAdmin && showStyleEditor" class="mt-6 p-5 rounded-xl border bg-white shadow-inner space-y-5 text-black">
+          <h3 class="font-bold text-lg text-gray-800 border-b pb-2">
+            {{ t('admin.brand.sectionStyle') || 'Szakasz stílusbeállításai' }}
           </h3>
 
+          <!-- KORLÁTOZOTT MÁRKASPECIFIKUS HÁTTÉRSZÍN -->
           <div>
-            <p class="text-sm font-medium mb-2">
-              {{ t('admin.brand.sectionBackground') || 'Section background color' }}
+            <p class="text-sm font-semibold text-gray-600 mb-2">
+              {{ t('admin.brand.sectionBackground') || 'Szakasz háttérszíne:' }}
             </p>
-            <div class="flex flex-wrap gap-2">
+            <div class="flex flex-wrap gap-3">
               <button
-                v-for="color in backgroundPalette"
+                v-for="color in brandPaletteColors"
                 :key="color"
-                class="w-8 h-8 rounded-full border cursor-pointer"
-                :style="{ backgroundColor: color, borderColor: localContent.backgroundColor === color ? '#000' : 'transparent' }"
+                class="w-10 h-10 rounded-full border-2 cursor-pointer transition-transform hover:scale-110 flex items-center justify-center"
+                :style="{ backgroundColor: color, borderColor: localContent.backgroundColor === color ? '#000' : 'rgba(0,0,0,0.15)' }"
                 @click="localContent.backgroundColor = color"
-              />
+              >
+                <v-icon v-if="localContent.backgroundColor === color" size="x-small" color="black">mdi-check</v-icon>
+              </button>
             </div>
           </div>
 
-          <div class="flex items-center gap-3">
+          <!-- EGYEDI SZÍN VÁLASZTÓ -->
+          <div class="flex items-center gap-3 bg-gray-50 p-3 rounded-lg border">
             <span class="text-sm font-medium">
-              {{ t('admin.brand.customBackground') || 'Custom background' }}
+              {{ t('admin.brand.customBackground') || 'Egyedi háttérszín:' }}
             </span>
-            <input
-              type="color"
-              v-model="localContent.backgroundColor"
-              class="w-10 h-8 border rounded cursor-pointer"
-            />
-            <span class="text-xs text-gray-600">
-              {{ localContent.backgroundColor }}
-            </span>
+            <input type="color" v-model="localContent.backgroundColor" class="w-10 h-8 border rounded cursor-pointer" />
+            <span class="text-xs text-gray-500 font-mono">{{ localContent.backgroundColor }}</span>
           </div>
 
           <hr class="border-gray-200 my-2" />
 
+          <!-- HULLÁM FORMÁK VIZUÁLIS IKONOKKAL -->
           <div>
-            <p class="text-sm font-medium mb-2">
-              {{ t('admin.brand.sectionWave') || 'Section shape' }}
+            <p class="text-sm font-semibold text-gray-600 mb-2">
+              {{ t('admin.brand.sectionWave') || 'Szakasz lezáró él (Forma):' }}
             </p>
             <div class="flex flex-wrap gap-3">
               <button
@@ -193,48 +140,42 @@
               <button
                 v-for="wave in wavePalette"
                 :key="wave"
-                class="w-24 h-12 border rounded overflow-hidden flex items-end justify-center bg-gray-50 cursor-pointer transition-all"
-                :class="{ 'ring-2 ring-primary': localContent.wave === wave }"
+                class="w-24 h-12 border rounded overflow-hidden flex items-end justify-center bg-gray-50 cursor-pointer transition-all p-1"
+                :class="{ 'ring-2 ring-primary bg-white': localContent.wave === wave }"
                 @click="localContent.wave = wave"
               >
-                <img
-                  :src="`/waves/${wave}.svg`"
-                  alt=""
-                  class="w-full h-full object-cover"
-                />
+                <img :src="`/waves/${wave}.svg`" alt="Wave icon" class="w-full h-full object-contain opacity-70" />
               </button>
             </div>
           </div>
 
+          <!-- HULLÁM KITÖLTÉSI SZÍNE -->
           <div v-if="localContent.wave" class="space-y-3 pt-2">
-            <p class="text-sm font-medium">
-              Következő szakasz színe (Hullám színe)
+            <p class="text-sm font-semibold text-gray-600">
+              Következő szakasz színe (Hullám kitöltése):
             </p>
-            <div class="flex flex-wrap gap-2">
+            <div class="flex flex-wrap gap-3">
               <button
-                v-for="color in backgroundPalette"
+                v-for="color in brandPaletteColors"
                 :key="'wave-' + color"
-                class="w-8 h-8 rounded-full border cursor-pointer"
-                :style="{ backgroundColor: color, borderColor: localContent.waveColor === color ? '#000' : 'transparent' }"
+                class="w-10 h-10 rounded-full border-2 cursor-pointer transition-transform hover:scale-110 flex items-center justify-center"
+                :style="{ backgroundColor: color, borderColor: localContent.waveColor === color ? '#000' : 'rgba(0,0,0,0.15)' }"
                 @click="localContent.waveColor = color"
-              />
+              >
+                <v-icon v-if="localContent.waveColor === color" size="x-small" color="black">mdi-check</v-icon>
+              </button>
             </div>
-            <div class="flex items-center gap-3">
-              <input
-                type="color"
-                v-model="localContent.waveColor"
-                class="w-10 h-8 border rounded cursor-pointer"
-              />
-              <span class="text-xs text-gray-600">
-                {{ localContent.waveColor }}
-              </span>
+            <div class="flex items-center gap-3 bg-gray-50 p-3 rounded-lg border">
+              <input type="color" v-model="localContent.waveColor" class="w-10 h-8 border rounded cursor-pointer" />
+              <span class="text-xs text-gray-500 font-mono">{{ localContent.waveColor }}</span>
             </div>
           </div>
-        </div>
 
+        </div>
       </div>
     </div>
 
+    <!-- DINAMIKUS SVG HULLÁM -->
     <div
       v-if="localContent.wave"
       class="absolute bottom-0 left-0 w-full pointer-events-none z-10 leading-none"
@@ -249,6 +190,7 @@ import DOMPurify from 'dompurify'
 import { useI18n } from 'vue-i18n'
 import { useAuth } from '~/composables/useAuth'
 import { useContent } from '~/composables/useContent'
+import { useBrand } from '@/composables/useBrand'
 
 import { Editor, EditorContent } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
@@ -258,6 +200,7 @@ import { FontFamily } from '@tiptap/extension-font-family'
 import { FontSize } from '~/components/editor/extensions/FontSize'
 
 const { t, locale } = useI18n()
+const { settings: brandSettings } = useBrand()
 
 const props = defineProps<{
   sectionKey: string,
@@ -287,16 +230,6 @@ const fontFamilies = [
   'Source Sans Pro', 'Source Serif Pro', 'Lora', 'Cormorant Garamond',
   'Libre Baskerville', 'Roboto', 'Georgia', 'Times New Roman', 'Arial', 'Verdana'
 ]
-
-const backgroundPalette = ref<string[]>([
-  '#ffffff',
-  '#29459E',
-  '#E8C7D0',
-  '#C8A46B',
-  '#A8C3A0',
-  '#F7F3ED',
-  '#FAF8F5'
-])
 
 const wavePalette = ref<string[]>([
   'organic-1',
@@ -328,7 +261,7 @@ const coloredWaveSvg = computed(() => {
   return wave.replace(/currentColor/g, localContent.value.waveColor || '#ffffff') 
 })
 
-// Content loading
+// Eredeti Content loading asszinkron logika - Érintetlenül megőrizve!
 const { data: fetchedContent } = await useAsyncData(
   `content-${props.sectionKey}-${locale.value}`,
   () => props.content ? Promise.resolve(props.content) : getSection(props.sectionKey, locale.value),
@@ -401,7 +334,28 @@ const cancelEdit = () => {
   editMode.value = false
   showStyleEditor.value = false
 }
+
+/* -------------------------------------------------------------
+   INTELLIGENS ARCULATI SZÍNPALETTA GENERÁLÁS (SZIKLABIZTOS HEX)
+------------------------------------------------------------- */
+const brandPaletteColors = computed(() => {
+  const bg = brandSettings.value?.backgroundColor || '#f7f5f8'
+  const accent = brandSettings.value?.accentColor || '#1d3557'
+  return [bg, accent, '#ffffff']
+})
+
+/* -------------------------------------------------------------
+   SSR-BIZTOS SZÖVEGSZÍN ÉS BETŰTÍPUS FALLBACK LOGIKA
+------------------------------------------------------------- */
+const brandTextAndFont = computed(() => {
+  const currentSettings = brandSettings?.value || {}
+  return {
+    textColor: currentSettings.textColor || '#2d3142',
+    fontFamily: currentSettings.fontFamily || 'Inter'
+  }
+})
 </script>
+
 
 <style scoped>
 .editor-wrapper :deep(.ProseMirror) {

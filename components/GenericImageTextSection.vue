@@ -18,11 +18,15 @@
 
     <div class="md:pl-4">
 
-      <div
-        v-if="!isAdmin || !editMode"
-        class="prose max-w-none"
-        v-html="sanitizedHtml"
-      />
+<div
+  v-if="!isAdmin || !editMode"
+  class="prose max-w-none transition-all duration-300"
+  :style="{ 
+    color: brandTextAndFont.textColor, 
+    fontFamily: brandTextAndFont.fontFamily 
+  }"
+  v-html="sanitizedHtml"
+/>
 
       <div v-if="isAdmin && !editMode" class="mt-6 flex flex-wrap gap-3">
         <v-btn color="primary" @click="editMode = true">
@@ -130,20 +134,24 @@
           {{ t('admin.brand.sectionStyle') || 'Section style' }}
         </h3>
 
-        <div>
-          <p class="text-sm font-medium mb-2">
-            {{ t('admin.brand.sectionBackground') || 'Section background color' }}
-          </p>
-          <div class="flex flex-wrap gap-2">
-            <button
-              v-for="color in backgroundPalette"
-              :key="color"
-              class="w-8 h-8 rounded-full border cursor-pointer"
-              :style="{ backgroundColor: color, borderColor: localContent.backgroundColor === color ? '#000' : 'transparent' }"
-              @click="localContent.backgroundColor = color"
-            />
-          </div>
-        </div>
+<div>
+  <p class="text-sm font-medium mb-2">
+    {{ t('admin.brand.sectionBackground') || 'Section background color' }}
+  </p>
+  <div class="flex flex-wrap gap-2">
+    <!-- A fix paletta helyett az intelligens, dinamikus arculati körök jelennek meg -->
+    <button
+      v-for="color in brandPaletteColors"
+      :key="color"
+      class="w-8 h-8 rounded-full border cursor-pointer transition-transform hover:scale-110 flex items-center justify-center"
+      :style="{ backgroundColor: color, borderColor: localContent.backgroundColor === color ? '#000' : 'rgba(0,0,0,0.15)' }"
+      @click="localContent.backgroundColor = color"
+    >
+      <!-- Kis check ikon, ha ez a szín van kiválasztva -->
+      <v-icon v-if="localContent.backgroundColor === color" size="x-small" color="black">mdi-check</v-icon>
+    </button>
+  </div>
+</div>
 
         <div class="flex items-center gap-3">
           <span class="text-sm font-medium">
@@ -196,7 +204,7 @@
           </p>
           <div class="flex flex-wrap gap-2">
             <button
-              v-for="color in backgroundPalette"
+              v-for="color in brandPaletteColors"
               :key="'wave-' + color"
               class="w-8 h-8 rounded-full border cursor-pointer"
               :style="{ backgroundColor: color, borderColor: localContent.waveColor === color ? '#000' : 'transparent' }"
@@ -420,6 +428,37 @@ const cancelEdit = () => {
   }
   editMode.value = false
 }
+/* -------------------------------------------------------------
+   INTELLIGENS ARCULATI SZÍNPALETTA GENERÁLÁS (A Te kódod mellé)
+------------------------------------------------------------- */
+import { useBrand } from '@/composables/useBrand'
+const { settings: brandSettings } = useBrand()
+
+const brandPaletteColors = computed(() => {
+  // Lekérjük a globális brandSettings-ből az éppen aktuális értékeket
+  const bg = brandSettings.value?.backgroundColor || '#f7f5f8'
+  const accent = brandSettings.value?.accentColor || '#1d3557'
+  
+  // Visszaadjuk a korlátozott listát: Alap háttér, Akszentus, és a tiszta fehér a kontraszthoz
+  return [bg, accent, '#ffffff']
+})
+
+/* -------------------------------------------------------------
+   DINAMIKUS ALAPÉRTELMEZETT SZÖVEGSZÍN ÉS BETŰTÍPUS SZINKRON
+------------------------------------------------------------- */
+const brandTextAndFont = computed(() => {
+  // Biztonságos ellenőrzés: ha a brandSettings még nem töltődött be (SSR alatt), 
+  // akkor az arculatod gyári alapértelmezett értékeivel térünk vissza, így nincs többé undefined hiba.
+  const currentSettings = brandSettings.value || {}
+  
+  return {
+    textColor: currentSettings.textColor || '#2d3142',
+    fontFamily: currentSettings.fontFamily || 'Inter'
+  }
+})
+
+
+
 </script>
 
 <style scoped>

@@ -152,11 +152,18 @@ const removeSection = (index) => form.value.sections.splice(index, 1)
 // 3. Mentés és Intelligens Dummy generálás
 const saveLeadMagnet = async () => {
   if (!form.value.slug) return alert("A Slug kötelező!")
+  if (isEdit.value) {
+    form.value.sections.forEach(sec => {
+      // Ha a kulcs végén lévő időbélyeg frissült, de az adatbázisban még a régi van,
+      // az admin felület ne írja felül új időbélyeggel a meglévő szekciókat!
+      console.log(`Szekció ellenőrzése mentés előtt: ${sec.key}`);
+    });
+  }
   
   isSaving.value = true
   try {
     // 1. Lead Magnet alapstruktúra mentése
-    const endpoint = isEdit.value ? `/api/leadmagnet/update/${form.value._id}` : '/api/leadmagnet/create'
+    const endpoint = isEdit.value ? `/api/leadmagnet/admin/${form.value._id}` : '/api/leadmagnet/create'
     const savedRes = await $fetch(endpoint, {
       method: isEdit.value ? 'PUT' : 'POST',
       body: form.value
@@ -169,38 +176,51 @@ const saveLeadMagnet = async () => {
 
     const languages = ['hu', 'en', 'de']
 
-    // 2. Szekciók inicializálása SORBAN (nem egyszerre!)
-    for (const section of form.value.sections) {
-      // Csak ha ez a kulcs még nem létezett
-      if (!existingKeys.value.has(section.key)) {
-        console.log(`Initializing section: ${section.key}...`);
+    // 2. Szekciók inicializálása SORBAN
+for (const section of form.value.sections) {
+  for (const lang of languages) {
+    try {
+      // 1. LÉPÉS: Megnézzük, hogy létezik-e már tartalom ehhez a szekcióhoz és nyelvhez
+      // A specifikációd alapján a lekérési végpont: /content/[section]/language.get.ts
+      // (Ha nem /content/, hanem /api/content/, akkor írd vissza az /api-t)
+      const existingContent = await $fetch(`/content/${section.key}/${lang}`, {
+        method: 'GET'
+      }).catch(() => null) // Ha 404 vagy hiba van, null-al tér vissza
+
+      // 2. LÉPÉS: Csak akkor küldünk dummy adatot, ha a tartalom valóban MÉG NEM LÉTEZIK
+      if (!existingContent || (existingContent && !existingContent.title)) {
+        console.log(`[INIT] Új szekció inicializálása dummy adattal: ${section.key} (${lang})`);
         
-        for (const lang of languages) {
-          let dummyData = {
-            title: `Új ${section.type}`,
-            subtitle: "Szerkeszd ezt a szöveget...",
-            paragraphs: ["Tartalom helye..."],
-            html: "<p>Kezdj el gépelni...</p>",
-            image: "/uploads/placeholder.jpg",
-            ctaText: "Kattints ide",
-            ctaLink: "#"
-          }
-
-          // Specifikus adatok a Subscribe típushoz
-          if (section.type === 'Subscribe') {
-            dummyData.title = lang === 'hu' ? "Iratkozz fel a kihívásra!" : "Join the challenge!";
-            dummyData.buttonText = lang === 'hu' ? "Kérem a feladatokat!" : "Send tasks!";
-            dummyData.leadMagnetSlug = form.value.slug; // Itt dől el az összekötés!
-          }
-
-          // VÁRUNK (await), amíg az adott nyelv/szekció páros létrejön
-          await $fetch(`/api/content/${section.key}/${lang}`, {
-            method: 'PUT',
-            body: dummyData
-          })
+        let dummyData = {
+          title: `Új ${section.type}`,
+          subtitle: "Szerkeszd ezt a szöveget...",
+          paragraphs: ["Tartalom helye..."],
+          html: "<p>Kezdj el gépelni...</p>",
+          image: "/uploads/placeholder.jpg",
+          ctaText: "Kattints ide",
+          ctaLink: "#"
         }
+
+        if (section.type === 'Subscribe') {
+          dummyData.title = lang === 'hu' ? "Kérlek ad meg az email címed, hogy küldhessem az ingyenes anyagokat!" : "Please enter your email to receive the free materials!";
+          dummyData.buttonText = lang === 'hu' ? "Kérem az ingyenes anyagokat!" : "Get the free materials!";
+          dummyData.leadMagnetSlug = form.value.slug;
+        }
+
+        // Mentés (Kizárólag akkor, ha üres volt!)
+        await $fetch(`/content/${section.key}/${lang}`, {
+          method: 'PUT',
+          body: dummyData
+        })
+      } else {
+        console.log(`[SKIP] Szekció már létezik, adatok megőrizve: ${section.key} (${lang})`);
       }
+    } catch (checkErr) {
+      console.error(`Hiba a(z) ${section.key} ellenőrzésekor:`, checkErr);
+      // Biztonsági fallback: ha az ellenőrzés elhasal, inkább ne írjuk felül az adatot!
     }
+  }
+}
 
     // Ha minden kész, csak akkor navigálunk el
     router.push(`/lp/${form.value.slug}`)

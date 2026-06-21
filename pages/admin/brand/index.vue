@@ -8,23 +8,20 @@ const { settings, loadBrand, saveBrand } = useBrand()
 
 // local copy for editing
 const local = ref({
-  primaryColor: '#673fff',
-  backgroundColor: '#ffffff',
-  textColor: '#222222',
-  accentColor: '#8566ff',
-  fontFamily: 'Roboto',
+  primaryColor: '#b87d8e',
+  backgroundColor: '#f7f5f8',
+  textColor: '#2d3142',
+  accentColor: '#1d3557',
+  fontFamily: 'Inter',
+  titleFontFamily: 'Playfair Display',
   maintenanceMode: false
 })
 
 
 const fonts = [
-  'Roboto',
-  'Open Sans',
-  'Lato',
-  'Montserrat',
-  'Playfair Display',
-  'Inter',
-  'Poppins'
+'Inter', 'Lato', 'Montserrat', 'Playfair Display', 'Merriweather',
+  'Source Sans Pro', 'Source Serif Pro', 'Lora', 'Cormorant Garamond',
+  'Libre Baskerville', 'Roboto', 'Georgia', 'Times New Roman', 'Arial', 'Verdana'
 ]
 
 // load settings on mount
@@ -47,11 +44,12 @@ async function save() {
 // reset to defaults
 function resetDefaults() {
   local.value = {
-    primaryColor: '#673fff',
-    backgroundColor: '#ffffff',
-    textColor: '#222222',
-    accentColor: '#8566ff',
-    fontFamily: 'Roboto'
+    primaryColor: '#b87d8e',
+    backgroundColor: '#f7f5f8',
+    textColor: '#2d3142',
+    accentColor: '#1d3557',
+    fontFamily: 'Inter',
+    titleFontFamily: 'Playfair Display',
   }
 }
 </script>
@@ -67,22 +65,10 @@ function resetDefaults() {
       <!-- LEFT SIDE: FORM -->
       <div class="space-y-6">
 
-        <!-- PRIMARY COLOR -->
-        <div>
-          <label class="font-semibold">{{ t('admin.brand.primary') }}</label>
-          <input type="color" v-model="local.primaryColor" class="w-16 h-10 ml-4" />
-        </div>
-
         <!-- BACKGROUND COLOR -->
         <div>
           <label class="font-semibold">{{ t('admin.brand.background') }}</label>
           <input type="color" v-model="local.backgroundColor" class="w-16 h-10 ml-4" />
-        </div>
-
-        <!-- TEXT COLOR -->
-        <div>
-          <label class="font-semibold">{{ t('admin.brand.text') }}</label>
-          <input type="color" v-model="local.textColor" class="w-16 h-10 ml-4" />
         </div>
 
         <!-- ACCENT COLOR -->
@@ -91,13 +77,34 @@ function resetDefaults() {
           <input type="color" v-model="local.accentColor" class="w-16 h-10 ml-4" />
         </div>
 
-        <!-- FONT FAMILY -->
+                <!-- PRIMARY COLOR -->
+        <div>
+          <label class="font-semibold">{{ t('admin.brand.primary') }}</label>
+          <input type="color" v-model="local.primaryColor" class="w-16 h-10 ml-4" />
+        </div>
+
+        <!-- TEXT COLOR -->
+        <div>
+          <label class="font-semibold">{{ t('admin.brand.text') }}</label>
+          <input type="color" v-model="local.textColor" class="w-16 h-10 ml-4" />
+        </div>
+
+        <!-- basic TEXT FONT FAMILY -->
         <div>
           <label class="font-semibold">{{ t('admin.brand.font') }}</label>
           <select v-model="local.fontFamily" class="border rounded px-3 py-2 ml-4">
             <option v-for="f in fonts" :key="f" :value="f">{{ f }}</option>
           </select>
         </div>
+
+        <!-- title text FONT FAMILY -->
+        <div>
+          <label class="font-semibold">{{ t('admin.brand.titlefont') }}</label>
+          <select v-model="local.titleFontFamily" class="border rounded px-3 py-2 ml-4">
+            <option v-for="f in fonts" :key="f" :value="f">{{ f }}</option>
+          </select>
+        </div>
+
 
         <!-- MAINTENANCE MODE -->
         <div class="mt-8 p-4 border rounded-lg bg-red-50">

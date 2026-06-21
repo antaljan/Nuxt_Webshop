@@ -26,10 +26,24 @@ const { data: lpResponse, refresh } = await useAsyncData(
     })
 
     // Indexeljük a tartalmat a könnyű eléréshez: { "key-123": { title: '...', html: '...' } }
-    const contentMap = contents.reduce((acc, curr) => {
-      acc[curr.section] = curr
-      return acc
-    }, {})
+// JAVÍTOTT rész a pages/lp/[slug].vue fájlban
+
+// Ellenőrizzük, hogy kaptunk-e egyáltalán tömböt
+const rawContents = Array.isArray(contents) ? contents : [];
+
+const contentMap = rawContents.reduce((acc, curr) => {
+  // Csak akkor dolgozzuk fel, ha van érvényes szekció kulcsa
+  if (curr && (curr.section || curr.sectionKey)) {
+    const key = curr.section || curr.sectionKey;
+    
+    // Ha még nincs ilyen kulcs az indexben, vagy a mostani frissebb/teljesebb, elmentjük
+    if (!acc[key] || (curr.updatedAt && (!acc[key].updatedAt || new Date(curr.updatedAt) > new Date(acc[key].updatedAt)))) {
+      acc[key] = curr;
+    }
+  }
+  return acc;
+}, {});
+
 
     return {
       page: lm.item,
@@ -68,20 +82,24 @@ const componentMap = {
 }
 
 const getSectionProps = (sec, content) => {
+  // Biztonsági fallback objektum, ha a tartalom hiányos lenne
+  const safeContent = content || { title: '', buttonText: '', paragraphs: [], html: '' };
+
   if (sec.type === 'Subscribe') {
     return {
-      title: content.title,
-      buttonText: content.buttonText,
-      leadMagnetSlug: content.leadMagnetSlug
+      title: safeContent.title || 'Feliratkozás',
+      buttonText: safeContent.buttonText || 'Küldés',
+      leadMagnetSlug: safeContent.leadMagnetSlug || route.params.slug
     }
   }
-  // A többi szekciónál marad a megszokott 'content'
+  
   return {
-    content: content,
+    content: safeContent,
     sectionKey: sec.key,
     ...sec.props
   }
 }
+
 </script>
 
 <template>

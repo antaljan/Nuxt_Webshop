@@ -133,6 +133,6 @@ Bugs:
     Warnings: -none
 
 Tasks are open:
- - create data down load to questionnaire
- - add videdo freebie
- - add VAT to billing and the seller property's has to be stored in brand database and editable via admin.
+ - adjust brand collors and put tham to all sections.
+ - hamburger menu only for admin, upper mune for user
+ - second layout for lead pages, without menu and login

@@ -13,7 +13,7 @@
     <!-- IMAGE -->
     <div
       class="flex justify-center md:justify-start relative"
-      :class="reverse ? 'md:order-2' : 'md:order-1'"
+      :class="localContent.reverse ? 'md:order-2' : 'md:order-1'"
     >
       <img
         :src="imageUrl"
@@ -40,7 +40,7 @@
     <!-- TEXT -->
     <div
       class="md:pl-4"
-      :class="reverse ? 'md:order-1' : 'md:order-2'"
+      :class="localContent.reverse ? 'md:order-1' : 'md:order-2'"
     >
       <!-- PUBLIC TEXT -->
       <div
@@ -129,6 +129,18 @@
         <h3 class="font-bold text-lg text-gray-800 border-b pb-2">
           Szakasz stílusbeállításai
         </h3>
+
+        <!-- Image position switch -->
+        <div class="flex items-center gap-3 bg-gray-50 p-3 rounded-lg border">
+          <span class="text-sm font-medium">Kép pozíciója:</span>
+
+          <v-switch
+            v-model="localContent.reverse"
+            inset
+            color="primary"
+            :label="localContent.reverse ? 'Kép jobbra' : 'Kép balra'"
+          />
+        </div>
 
         <!-- BACKGROUND COLOR -->
         <div>
@@ -248,10 +260,6 @@ const props = defineProps<{
   sectionKey: string
 }>()
 
-const reverse = computed(() => {
-  return props.content?.reverse === true
-})
-
 /* -------------------------------------------------------------
    EDITOR MÓDOK KÜLÖN
 ------------------------------------------------------------- */
@@ -266,7 +274,8 @@ const localContent = ref<any>({
   image: '',
   backgroundColor: '#ffffff',
   wave: null,
-  waveColor: '#ffffff'
+  waveColor: '#ffffff',
+  reverse: false
 })
 
 const originalTextContent = ref<{ html: string } | null>(null)
@@ -424,7 +433,8 @@ const saveDesign = async () => {
         backgroundColor: localContent.value.backgroundColor,
         wave: localContent.value.wave,
         waveColor: localContent.value.waveColor,
-        image: localContent.value.image
+        image: localContent.value.image,
+        reverse: localContent.value.reverse
       }
     })
     editDesignMode.value = false

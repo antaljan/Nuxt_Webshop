@@ -102,7 +102,6 @@ watch(locale, () => {
       v-if="about?.data?.value"
       :content="about.data.value"
       sectionKey="about"
-      :reverse="false"
     />
 
     <GenericHtmlTextSection

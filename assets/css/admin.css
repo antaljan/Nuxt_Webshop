@@ -1,0 +1,46 @@
+/* ADMIN BUTTONS */
+.admin-primary {
+  background-color: #1976d2 !important;
+  color: white !important;
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+.admin-primary:hover {
+  background-color: #1565c0 !important;
+}
+
+.admin-secondary {
+  background-color: #e0e0e0 !important;
+  color: #333 !important;
+  font-weight: 500;
+  border-radius: 6px;
+}
+
+.admin-secondary:hover {
+  background-color: #d5d5d5 !important;
+}
+
+.admin-danger {
+  background-color: #d32f2f !important;
+  color: white !important;
+}
+
+.admin-success {
+  background-color: #2e7d32 !important;
+  color: white !important;
+}
+
+/* ADMIN PANELS */
+.admin-panel {
+  background: #f5f7fa !important;
+  border: 1px solid #d0d7e2 !important;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+/* ADMIN TEXT */
+.admin-text {
+  color: #1e293b !important;
+  font-weight: 600;
+}

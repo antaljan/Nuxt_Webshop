@@ -185,7 +185,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
-import DOMPurify from 'dompurify'
+import DOMPurify from 'isomorphic-dompurify'
 import { useI18n } from 'vue-i18n'
 import { useAuth } from '~/composables/useAuth'
 import { useContent } from '~/composables/useContent'

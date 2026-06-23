@@ -1,23 +1,21 @@
-<script setup>
-
+<script setup lang="ts">
 import MyHeader from '~/components/MyHeader.vue'
 import MyFooter from '~/components/MyFooter.vue'
-import { useI18n } from 'vue-i18n'
 import CartDrawer from '~/components/CartDrawer.vue'
-import BrandThemeUpdater  from  '~/components/BrandThemeUpdater.vue'
+import CookieBanner from '~/components/CookieBanner.vue'
+import BrandThemeUpdater from '~/components/BrandThemeUpdater.vue'
 
 import { useAuth } from '@/composables/useAuth'
 import { useBrand } from '@/composables/useBrand'
+import { useI18n } from 'vue-i18n'
 import { computed, ref, onMounted, watchEffect } from 'vue'
 
+/* -----------------------------------------
+   LOAD BRAND + USER (SSR SAFE)
+----------------------------------------- */
 const { settings, loadBrand } = useBrand()
-const { isAdmin, loggedIn, fetchUser, user } = useAuth() // fetchUser hozzáadva
+const { user, loggedIn, isAdmin, fetchUser } = useAuth()
 
-watch(user, (newUser) => {
-  console.log("User changed in layout:", newUser?.role)
-}, { immediate: true })
-
-// SSR barát betöltés: megvárjuk a brandet és a usert is
 if (process.server || !settings.value) {
   await Promise.all([
     loadBrand(),
@@ -25,19 +23,32 @@ if (process.server || !settings.value) {
   ])
 }
 
-// A hideMenu most már pontos lesz SSR alatt is
-const hideMenu = computed(() => {
-  // Ha admin VAGY be van jelentkezve, látnia kell a menüt a navigációhoz
-  if (isAdmin.value || loggedIn.value) return false
-  // Csak a publikus (nem belépett) látogatóknak rejtjük el karbantartás alatt
-  return settings.value?.maintenanceMode === true
+/* -----------------------------------------
+   HEADER MODE (admin / user / visitor)
+----------------------------------------- */
+const headerMode = computed(() => {
+  if (isAdmin.value) return 'admin'
+  if (loggedIn.value) return 'user'
+  return 'visitor'
 })
 
+/* -----------------------------------------
+   LAYOUT MODE (default / maintenance)
+----------------------------------------- */
+const layoutMode = computed(() => {
+  if (settings.value?.maintenanceMode) {
+    // maintenance alatt csak admin láthatja a menüt
+    return isAdmin.value ? 'default' : 'maintenance'
+  }
+  return 'default'
+})
 
+/* -----------------------------------------
+   BRAND THEME CSS VARIABLES
+----------------------------------------- */
 onMounted(() => {
   watchEffect(() => {
     if (!settings.value) return
-
     const root = document.documentElement
 
     root.style.setProperty('--primary', settings.value.primaryColor || '#673fff')
@@ -45,132 +56,42 @@ onMounted(() => {
     root.style.setProperty('--text', settings.value.textColor || '#222222')
     root.style.setProperty('--accent', settings.value.accentColor || '#8566ff')
     root.style.setProperty('--font-family', settings.value.fontFamily || 'Roboto')
-    
   })
 })
+
+/* -----------------------------------------
+   CART DRAWER
+----------------------------------------- */
 const menuOpen = ref(false)
-const { t } = useI18n()
-
-/* -----------------------------------------
-   MAIN MENU 
------------------------------------------ */
-const mainMenu = [
-  { type: 'hash', to: '/', label: 'menu.home' },
-  { type: 'route', to: '/blog', label: 'menu.blog', icon: 'mdi-book-open-page-variant' },
-  { type: 'route', to: '/products', label: 'menu.products', icon: 'mdi-medical-bag' }
-]
-
-/* -----------------------------------------
-   User MENU
------------------------------------------ */
-const userMenu = [
-  { to: '/user', label: 'user.dashboard' },
-]
-
-/* -----------------------------------------
-   ADMIN MENU
------------------------------------------ */
-const adminMenu = [
-  { to: '/admin', label: 'admin.dashboard' },
-  { to: '/admin/blog', label: 'admin.Posts' },
-  { to: '/admin/newsletter', label: 'admin.newsletter.title' },
-  { to: '/admin/products', label: 'admin.products.menu' },
-  { to: '/admin/freebies', label: 'menu.freebies' },
-  { to: '/admin/leadmagnet', label: 'admin.leadmagnet.menu' },
-  { to: '/admin/coaching', label: 'admin.coaching.menu' },
-  { to: '/admin/questionnaire', label: 'menu.questionnaire' },
-  { to: '/admin/brand', label: 'admin.brand.menu' },
-  { to: '/admin/meta', label: 'admin.meta' },
-  { to: '/admin/images', label: 'admin.images' }
-]
-
-const closeMenu = () => (menuOpen.value = false)
 </script>
 
 <template>
-<BrandThemeUpdater />
+  <BrandThemeUpdater />
 
-<v-app class="bg-background text-text">
-    <!-- HEADER -->
-    <MyHeader @toggle-menu="menuOpen = !menuOpen" />
-    <!-- CART DRAWER (MINDEN OLDALON ELÉRHETŐ) -->
-    <CartDrawer v-if="!hideMenu" />
-    <!-- MOBILE DRAWER -->
-      <v-navigation-drawer
-        v-if="!hideMenu"
-        v-model="menuOpen"
-        location="start"
-        mode="temporary"
-        width="280"
-        color="background"
-        class="text-text"
-      >
-      <v-list>
-        <!-- MAIN MENU -->
-        <v-list-item
-          v-for="item in mainMenu"
-          :key="item.label"
-          @click="closeMenu"
-        >
-          <!-- ROUTE LINK -->
-          <template v-if="item.type === 'route'">
-            <NuxtLink :to="item.to" class="flex items-center w-full py-2 text-text hover:text-primary">
-              <v-icon v-if="item.icon" class="mr-2">{{ item.icon }}</v-icon>
-              {{ t(item.label) }}
-            </NuxtLink>
-          </template>
+  <v-app class="bg-background text-text">
 
-          <!-- HASH LINK -->
-          <template v-else>
-            <NuxtLink :to="item.to" class="flex items-center w-full py-2">
-              {{ t(item.label) }}
-            </NuxtLink>
-          </template>
-        </v-list-item>
+    <!-- HEADER (maintenance alatt csak adminnak) -->
+  <MyHeader
+    v-if="layoutMode === 'default' || layoutMode === 'maintenance'"
+    :mode="headerMode"
+    :layout="layoutMode"
+  />
 
-        <!-- User SECTION -->
-        <template v-if="loggedIn">
-          <v-divider class="my-2" color="primary" />
-          <v-list-item
-            v-for="item in userMenu"
-            :key="item.to"
-            @click="closeMenu"
-          >
-            <NuxtLink :to="item.to" class="w-full block py-2">
-              {{ t(item.label) }}
-            </NuxtLink>
-          </v-list-item>
-        </template>
-        <!-- ADMIN SECTION - Módosítva v-show-ra -->
-        <template v-if="loggedIn">
-          <div v-show="isAdmin">
-            <v-divider class="my-2" color="primary" />
-            <p class="px-4 py-2 font-bold text-lg">{{ t('admin.adminSection') }}</p>
-            <v-list-item
-              v-for="item in adminMenu"
-              :key="item.to"
-              @click="closeMenu"
-            >
-              <NuxtLink :to="item.to" class="w-full block py-2">
-                {{ t(item.label) }}
-              </NuxtLink>
-            </v-list-item>
-          </div>
-        </template>
-
-      </v-list>
-    </v-navigation-drawer>
+    <!-- CART DRAWER (adminnak nincs) -->
+    <CartDrawer
+      v-if="headerMode !== 'admin' && layoutMode === 'default'"
+    />
 
     <!-- MAIN CONTENT -->
     <v-main class="bg-background text-text">
       <slot />
     </v-main>
 
-    <!-- Cookie Banner -->
+    <!-- COOKIE BANNER -->
     <CookieBanner />
 
-    <!-- FOOTER -->
-    <MyFooter />
+    <!-- FOOTER (maintenance alatt csak adminnak) -->
+    <MyFooter v-if="layoutMode === 'default'" />
 
   </v-app>
 </template>
@@ -183,13 +104,5 @@ html, body, .v-application, .v-application__wrap {
   background-color: var(--background) !important;
   color: var(--text) !important;
   font-family: var(--font-family) !important;
-}
-
-:root {
-  --primary: #673fff;
-  --background: #ffffff;
-  --text: #222222;
-  --accent: #8566ff;
-  --font-family: Roboto;
 }
 </style>

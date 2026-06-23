@@ -1,11 +1,85 @@
 <template>
-  <v-app-bar flat color="background" class="border-b border-text/15 text-text">
-    <!-- ALWAYS VISIBLE HAMBURGER -->
-    <v-app-bar-nav-icon @click="$emit('toggle-menu')" />
+  <v-app-bar
+    flat
+    color="background"
+    class="border-b border-text/15 text-text"
+  >
 
-    <!-- customer cart -->
+    <!-- -----------------------------------------
+         DEFAULT LAYOUT: FELSŐ MENÜ
+         (maintenance alatt csak admin)
+    ----------------------------------------- -->
+    <template v-if="layout === 'default'">
+      <!-- MAIN NAV -->
+      <div class="flex items-center gap-6">
 
-    <v-btn icon @click="openCart">
+        <!-- HOME -->
+        <NuxtLink to="/" class="hover:text-primary">
+          {{ t('menu.home') }}
+        </NuxtLink>
+
+        <!-- BLOG -->
+        <NuxtLink to="/blog" class="hover:text-primary">
+          {{ t('menu.blog') }}
+        </NuxtLink>
+
+        <!-- SHOP -->
+        <NuxtLink to="/products" class="hover:text-primary">
+          {{ t('menu.products') }}
+        </NuxtLink>
+
+        <!-- MY ACCOUNT (user/admin) -->
+        <NuxtLink
+          v-if="mode !== 'visitor'"
+          :to="mode === 'admin' ? '/admin' : '/user'"
+          class="hover:text-primary"
+        >
+          {{ t('header.myAccount') }}
+        </NuxtLink>
+      </div>
+    </template>
+
+    <!-- -----------------------------------------
+         LEAD LAYOUT:
+         nincs felső menü, csak login + language
+    ----------------------------------------- -->
+    <template v-if="layout === 'lead'">
+      <div class="text-lg font-semibold">
+        <!-- üres hely a bal oldalon, hogy a jobb oldali ikonok ne ugorjanak -->
+      </div>
+    </template>
+
+    <!-- -----------------------------------------
+         MAINTENANCE:
+         csak admin lát menüt
+    ----------------------------------------- -->
+    <template v-if="layout === 'maintenance' && mode === 'admin'">
+      <div class="flex items-center gap-6">
+        <NuxtLink to="/" class="hover:text-primary">
+          {{ t('menu.home') }}
+        </NuxtLink>
+        <NuxtLink to="/blog" class="hover:text-primary">
+          {{ t('menu.blog') }}
+        </NuxtLink>
+        <NuxtLink to="/products" class="hover:text-primary">
+          {{ t('menu.products') }}
+        </NuxtLink>
+        <NuxtLink to="/admin" class="hover:text-primary">
+          {{ t('header.myAccount') }}
+        </NuxtLink>
+      </div>
+    </template>
+
+    <v-spacer />
+
+    <!-- -----------------------------------------
+         CART ICON (csak user + visitor, default layout)
+    ----------------------------------------- -->
+    <v-btn
+      v-if="layout === 'default' && mode !== 'admin'"
+      icon
+      @click="openCart"
+    >
       <v-badge
         :content="cart.length"
         color="red"
@@ -16,9 +90,9 @@
       <v-icon v-else>mdi-cart-outline</v-icon>
     </v-btn>
 
-    <v-spacer />
-
-    <!-- LANGUAGE SWITCH -->
+    <!-- -----------------------------------------
+         LANGUAGE SWITCH
+    ----------------------------------------- -->
     <v-select
       :model-value="locale"
       :items="languages"
@@ -31,55 +105,74 @@
       item-value="value"
     />
 
-
-    <!-- LOGIN / LOGOUT -->
+    <!-- -----------------------------------------
+         LOGIN / LOGOUT (mindig látszik)
+    ----------------------------------------- -->
     <v-btn variant="text" @click="onLoginLogout">
       <v-icon v-if="loggedIn">mdi-logout</v-icon>
       <v-icon v-else>mdi-login</v-icon>
       <span class="ml-2">
-        {{ loggedIn ? user?.name : $t('header.login') }}
+        {{ loggedIn ? user?.name : t('header.login') }}
       </span>
     </v-btn>
+
   </v-app-bar>
 </template>
 
-<script setup>
-import { useProducts } from '~/composables/useProducts'
-import { useCartDrawer } from '~/composables/useCartDrawer'
-// NE importáld a vue-i18n-t manuálisan!
-const { locale, setLocale, locales } = useI18n()
-const { user, loggedIn, logout } = useAuth()
+<script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+import { useAuth } from '@/composables/useAuth'
+import { useProducts } from '@/composables/useProducts'
+import { useCartDrawer } from '@/composables/useCartDrawer'
+import { computed } from 'vue'
 
-// Alakítsuk át a locales tömböt a Vuetify számára
-const languages = computed(() => 
+/* -----------------------------------------
+   PROPS
+----------------------------------------- */
+const props = defineProps({
+  mode: { type: String, default: 'visitor' },     // admin | user | visitor
+  layout: { type: String, default: 'default' }    // default | lead | maintenance
+})
+
+/* -----------------------------------------
+   I18N
+----------------------------------------- */
+const { t, locale, setLocale, locales } = useI18n()
+
+const languages = computed(() =>
   locales.value.map(l => ({
     title: l.code.toUpperCase(),
     value: l.code
   }))
 )
 
+/* -----------------------------------------
+   AUTH
+----------------------------------------- */
+const { user, loggedIn, logout } = useAuth()
+
 const onLoginLogout = async () => {
   if (loggedIn.value) {
     await logout()
-    // Kijelentkezés után maradjon ugyanott
     return
   }
-
-  // Bejelentkezés → átirányítás a login oldalra, de megőrizzük a jelenlegi route-ot
   const current = useRoute().fullPath
   navigateTo(`/login?redirect=${encodeURIComponent(current)}`)
 }
 
-// Cart drawer kezelése
+/* -----------------------------------------
+   CART
+----------------------------------------- */
 const { cart } = useProducts()
 const { isOpen } = useCartDrawer()
+
 function openCart() {
   isOpen.value = true
 }
-
 </script>
 
-
-<style>
-
+<style scoped>
+a {
+  text-decoration: none;
+}
 </style>

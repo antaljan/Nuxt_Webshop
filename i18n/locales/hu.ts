@@ -34,12 +34,8 @@ export default defineI18nLocale(async (locale) => {
   },
   menu: {
     home: "Kezdőlap",
-    about: "Rólam",
-    story: "Történetem",
-    methode: "Módszer",
-    contact: "Kapcsolat",
     blog: "Blog",
-    products: "Szolgáltatások",
+    products: "Vásárlás",
     adminSection: "Admin szekció",
     questionnaire:"Kérdőívek",
     freebies:"Ingyenes anyagok"
@@ -261,7 +257,7 @@ export default defineI18nLocale(async (locale) => {
     backToProducts: "Vissza a termékekhez"
   },
   user: {
-    dashboard: "Saját fiók",
+    dashboard: "Fiókom",
     profile: "Fiók beállítások",
     products: "Saját termékek",
     productsDescription: "Megvásárolt workshopok, videók, PDF-ek",

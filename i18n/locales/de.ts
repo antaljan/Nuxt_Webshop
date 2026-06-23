@@ -30,12 +30,8 @@ export default defineI18nLocale(async (locale) => {
   },
   menu: {
     home: "Startseite",
-    about: "Über mich",
-    story: "Meine Geschichte",
-    methode: "Methode",
-    contact: "Kontakt",
     blog: "Blog",
-    products: "Dienstleistungen",
+    products: "Shop",
     questionnaire:"Fragebogen",
     freebies:"Freebies"
   },
@@ -256,7 +252,7 @@ export default defineI18nLocale(async (locale) => {
     backToProducts: "Zurück zu den Produkten"
   },
   user: {
-    dashboard: "Mein Dashboard",
+    dashboard: "Mein Arbeitsbereich",
     profile: "Mein Profil",
     products: "Meine Produkte",
     productsDescription: "Meine gekauften Workshops, Videos und PDFs",

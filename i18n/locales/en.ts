@@ -29,14 +29,10 @@ export default defineI18nLocale(async (locale) => {
       }
   },
   menu: {
-    home: "home",
-    about: "About",
-    story: "My Story",
-    methode: "Method",
-    contact: "Contact",
+    home: "Home",
     blog: "Blog",
-    products: "Services",
-    questionnaire:"questionnaire",
+    products: "Shop",
+    questionnaire:"Questionnaire",
     freebies:"Freebies"
   },
   admin: {
@@ -256,7 +252,7 @@ export default defineI18nLocale(async (locale) => {
     backToProducts: "Back to Products"
   },
   user: {
-    dashboard: "My Dashboard",
+    dashboard: "My Account",
     profile: "My Profile",
     products: "My Products",
     productsDescription: "My purchased workshops, videos, and PDFs",

@@ -2,14 +2,15 @@
 Modern MEVN + Nuxt 4 SSR based content and client management system
 
 ## 📌 Overview
-This project is a complete webshop + content management + client portal designed for coaches, psychologists, and consultants operating as small businesses.
+This project is a complete webshop + content management + client portal + marketing funel designed for coaches, psychologists, and consultants operating as small businesses.
 The platform enables:
-- Selling digital products (PDFs, e‑books, videos, coaching time)
-- Managing blog content and newsletters inculiseve brand settings
+- Selling digital products (PDFs, e‑books, videos, coaching time), inclusive billing and online payment
+- Managing blog content
+- Marketing funel with Newsletter, Leadmagnet, Freebie, Meta integration, inculiseve brand settings
 - Providing a multilingual, SEO‑optimized public website
 - Offering a secure user dashboard for purchased content
 - Running a scalable, modern architecture (Nuxt 4 SSR + Node + MongoDB)
-The system supports three main user roles:
+The system supports three main roles:
 - Visitor (public user)
 - Customer (authenticated user)
 - Admin (coach / business owner)
@@ -32,7 +33,7 @@ Capabilities:
 - Login
 - Access personal dashboard
 - View purchased products:
-- coaching sessions
+- booking and realisesing coaching sessions via own videochat
 - downloadable PDFs / e‑books
 - training videos (streaming)
 - Purchase additional products
@@ -71,8 +72,7 @@ Technical Notes:
 - Multi‑domain support (.hu, .com), language dependent email communication
 
 ## 🎬 Video Streaming
-Recommended provider:
-- Bunny Stream
+With provider Bunny Stream
 
 ## 🏗️ Technology Stack
 Frontend:
@@ -159,7 +159,7 @@ Login Flow:
 - NGINX reverse proxy
 - PM2 process manager
 - HTTPS via Let's Encrypt
-- Node backend + Nuxt SSR as separate processes
+- Node backend (port 3000) + Nuxt SSR (port 4000) witch proxy as separate processes on same linux debian virtual server
 
 ## 📄 License
   MIT License.

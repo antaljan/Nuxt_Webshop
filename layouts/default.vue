@@ -52,15 +52,10 @@ const menuOpen = ref(false)
 const { t } = useI18n()
 
 /* -----------------------------------------
-   MAIN MENU (hash + route keverve)
+   MAIN MENU 
 ----------------------------------------- */
 const mainMenu = [
-  { type: 'hash', to: '/#hero', label: 'menu.home' },
-  { type: 'hash', to: '/#about', label: 'menu.about' },
-  { type: 'hash', to: '/#story', label: 'menu.story' },
-  { type: 'hash', to: '/#methode', label: 'menu.methode' },
-  { type: 'hash', to: '/#contact', label: 'menu.contact' },
-
+  { type: 'hash', to: '/', label: 'menu.home' },
   { type: 'route', to: '/blog', label: 'menu.blog', icon: 'mdi-book-open-page-variant' },
   { type: 'route', to: '/products', label: 'menu.products', icon: 'mdi-medical-bag' }
 ]
@@ -70,8 +65,6 @@ const mainMenu = [
 ----------------------------------------- */
 const userMenu = [
   { to: '/user', label: 'user.dashboard' },
-  { to: '/user/profile', label: 'user.profile' },
-  { to: '/user/products', label: 'user.products' }
 ]
 
 /* -----------------------------------------

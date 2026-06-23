@@ -33,7 +33,8 @@ export default defineI18nLocale(async (locale) => {
     blog: "Blog",
     products: "Shop",
     questionnaire:"Fragebogen",
-    freebies:"Freebies"
+    freebies:"Freebies",
+    myaccount:"Mein Konto"
   },
   admin: {
     dashboard: "Admin Dashboard",

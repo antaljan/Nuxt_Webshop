@@ -38,7 +38,8 @@ export default defineI18nLocale(async (locale) => {
     products: "Vásárlás",
     adminSection: "Admin szekció",
     questionnaire:"Kérdőívek",
-    freebies:"Ingyenes anyagok"
+    freebies:"Ingyenes anyagok",
+    myaccount: "Fiókom"
   },
   admin: {
     dashboard: "Admin irányítópult",

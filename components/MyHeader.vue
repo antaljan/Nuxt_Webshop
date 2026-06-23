@@ -34,7 +34,7 @@
           :to="mode === 'admin' ? '/admin' : '/user'"
           class="hover:text-primary"
         >
-          {{ t('header.myAccount') }}
+          {{ t('menu.myaccount') }}
         </NuxtLink>
       </div>
     </template>

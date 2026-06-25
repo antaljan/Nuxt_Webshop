@@ -1,8 +1,7 @@
 <script setup>
 import GenericHeroSection from '@/components/GenericHeroSection.vue'
 import GenericImageTextSection from '@/components/GenericImageTextSection.vue'
-import SectionSeparator from '@/components/sectionSeparator.vue'
-import GenericTextSection from '~/components/GenericTextSection.vue'
+import GenericHtmlTextSection from '~/components/GenericTextSection.vue'
 import GenericFeedbackSection from '~/components/GenericFeedbackSection.vue'
 import GenericContactSection from '~/components/GenericContactSection.vue'
 import GenericBlogSection from '~/components/GenericBlogSection.vue'

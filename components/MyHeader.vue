@@ -18,6 +18,11 @@
           {{ t('menu.home') }}
         </NuxtLink>
 
+        <!-- ABOUT -->
+        <NuxtLink to="/about" class="hover:text-primary">
+          {{ t('menu.about') }}
+        </NuxtLink>
+
         <!-- BLOG -->
         <NuxtLink to="/blog" class="hover:text-primary">
           {{ t('menu.blog') }}

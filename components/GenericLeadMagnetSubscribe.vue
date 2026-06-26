@@ -48,7 +48,11 @@ async function handleSubscribe() {
 </script>
 
 <template>
-  <v-card class="pa-6 rounded-xl shadow-lg border-2" :style="{ borderColor: 'var(--v-primary-base)' }">
+  <v-card
+    id="subscribe"
+    class="pa-6 rounded-xl shadow-lg border-2"
+    :style="{ borderColor: 'var(--v-primary-base)' }"
+  >
     <h3 class="text-h5 font-bold mb-4 text-center">{{ title || t('newsletter.subscribeTitle') }}</h3>
     
     <v-form ref="form" v-model="valid" @submit.prevent="handleSubscribe">

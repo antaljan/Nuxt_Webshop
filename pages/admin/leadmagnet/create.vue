@@ -183,7 +183,7 @@ for (const section of form.value.sections) {
       // 1. LÉPÉS: Megnézzük, hogy létezik-e már tartalom ehhez a szekcióhoz és nyelvhez
       // A specifikációd alapján a lekérési végpont: /content/[section]/language.get.ts
       // (Ha nem /content/, hanem /api/content/, akkor írd vissza az /api-t)
-      const existingContent = await $fetch(`/content/${section.key}/${lang}`, {
+      const existingContent = await $fetch(`/api/content/${section.key}/${lang}`, {
         method: 'GET'
       }).catch(() => null) // Ha 404 vagy hiba van, null-al tér vissza
 
@@ -208,7 +208,7 @@ for (const section of form.value.sections) {
         }
 
         // Mentés (Kizárólag akkor, ha üres volt!)
-        await $fetch(`/content/${section.key}/${lang}`, {
+        await $fetch(`/api/content/${section.key}/${lang}`, {
           method: 'PUT',
           body: dummyData
         })

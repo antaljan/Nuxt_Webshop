@@ -1,15 +1,6 @@
 <template>
   <v-container>
     <!-- BACK BUTTON -->
-    <v-btn
-      color="primary"
-      variant="text"
-      prepend-icon="mdi-arrow-left"
-      to="/admin/newsletter"
-      class="mb-4"
-    >
-      Vissza a hírlevelekhez
-    </v-btn>
     <v-row class="mb-6" align="center">
       <v-col>
         <h1 class="text-h4">Ingyenes anyagok (Freebies)</h1>
@@ -29,7 +20,7 @@
         class="elevation-1"
       >
         <template v-slot:item.slug="{ item }">
-          <v-chip size="small" variant="outlined">/download/{{ item.slug }}</v-chip>
+          <v-chip size="small" variant="outlined">https://antaligyongyi.hu/backend/freebie/download/{{ item.slug }}</v-chip>
         </template>
 
         <template v-slot:item.downloadCount="{ item }">

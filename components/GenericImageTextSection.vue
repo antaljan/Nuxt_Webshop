@@ -1,8 +1,8 @@
 <template>
 <section
   :id="sectionKey"
-  class="relative overflow-hidden pt-24"
-  :class="localContent.wave ? 'pb-44' : 'pb-24'"
+  class="relative overflow-hidden pt-12"
+  :class="localContent.wave ? 'pb-24' : 'pb-24'"
   :style="{ backgroundColor: localContent.backgroundColor }"
 >
 
@@ -18,7 +18,8 @@
       <img
         :src="imageUrl"
         alt="Section image"
-        class="rounded-lg max-w-sm w-full h-auto"
+        class="rounded-lg w-full h-auto"
+        :style="{ maxWidth: localContent.imageSize + 'px' }"
       />
 
       <!-- IMAGE UPLOAD BUTTON (ADMIN) -->
@@ -52,6 +53,16 @@
         }"
         v-html="sanitizedHtml"
       />
+
+      <!-- CTA BUTTON (PUBLIC) -->
+      <div v-if="localContent.ctaText && localContent.ctaLink" class="mt-6">
+        <NuxtLink
+          :to="localContent.ctaLink"
+          class="inline-block px-6 py-3 rounded-lg font-medium transition bg-primary text-white hover:bg-primary/90"
+        >
+          {{ localContent.ctaText }}
+        </NuxtLink>
+      </div>
 
       <!-- ADMIN BUTTONS -->
       <div v-if="isAdmin && !editTextMode && !editDesignMode" class="mt-6 flex flex-wrap gap-3">
@@ -213,6 +224,57 @@
           </div>
         </div>
 
+        <!-- CTA SETTINGS -->
+        <div class="bg-gray-50 p-4 rounded-lg border space-y-3">
+          <h4 class="text-sm font-semibold text-gray-700">CTA gomb</h4>
+
+          <!-- CTA TEXT -->
+          <div class="flex flex-col gap-1">
+            <label class="text-xs text-gray-600 font-medium">CTA szöveg:</label>
+            <input
+              type="text"
+              v-model="localContent.ctaText"
+              class="border rounded px-3 py-2 text-sm w-full"
+              placeholder="Pl.: Tudj meg többet rólam"
+            />
+          </div>
+
+          <!-- CTA LINK -->
+          <div class="flex flex-col gap-1">
+            <label class="text-xs text-gray-600 font-medium">CTA link:</label>
+            <input
+              type="text"
+              v-model="localContent.ctaLink"
+              class="border rounded px-3 py-2 text-sm w-full"
+              placeholder="Pl.: /about"
+            />
+          </div>
+
+          <!-- INFO -->
+          <p class="text-xs text-gray-500">
+            A CTA gomb csak akkor jelenik meg, ha mindkét mező ki van töltve.
+          </p>
+        </div>
+
+        <!-- IMAGE SIZE -->
+        <div class="bg-gray-50 p-3 rounded-lg border space-y-2">
+        <p class="text-sm font-medium">Kép mérete:</p>
+
+        <v-slider
+          v-model="localContent.imageSize"
+          :min="150"
+          :max="800"
+          step="10"
+          color="primary"
+          thumb-label="always"
+        />
+
+  <p class="text-xs text-gray-500 font-mono">
+    {{ localContent.imageSize }} px
+  </p>
+</div>
+
+
         <!-- DESIGN EDITOR ACTIONS -->
         <div class="flex gap-3 mt-4 flex-wrap">
           <v-btn class="admin-success" @click="saveDesign">Mentés</v-btn>
@@ -275,7 +337,8 @@ const localContent = ref<any>({
   backgroundColor: '#ffffff',
   wave: null,
   waveColor: '#ffffff',
-  reverse: false
+  reverse: false,
+  imageSize: 400
 })
 
 const originalTextContent = ref<{ html: string } | null>(null)
@@ -326,7 +389,11 @@ watch(
         image: val.image || '',
         backgroundColor: val.backgroundColor || '#ffffff',
         wave: val.wave || null,
-        waveColor: val.waveColor || '#ffffff'
+        waveColor: val.waveColor || '#ffffff',
+        reverse: val.reverse || false,
+        imageSize: val.imageSize || 400,
+        ctaText: val.ctaText || '',
+        ctaLink: val.ctaLink || ''
       }
     }
   },
@@ -397,7 +464,6 @@ const saveText = async () => {
       }
     })
     editTextMode.value = false
-    alert(t('common.saved') || 'Mentve')
   } catch (err) {
     console.error('Saving text failed:', err)
     alert('Hiba a szöveg mentésekor')
@@ -419,7 +485,11 @@ const openDesignEditor = () => {
   originalDesignContent.value = {
     backgroundColor: localContent.value.backgroundColor,
     wave: localContent.value.wave,
-    waveColor: localContent.value.waveColor
+    waveColor: localContent.value.waveColor,
+    reverse: localContent.value.reverse,
+    imageSize: localContent.value.imageSize,
+    ctaText: localContent.value.ctaText,
+    ctaLink: localContent.value.ctaLink
   }
   editDesignMode.value = true
 }
@@ -434,11 +504,13 @@ const saveDesign = async () => {
         wave: localContent.value.wave,
         waveColor: localContent.value.waveColor,
         image: localContent.value.image,
-        reverse: localContent.value.reverse
+        reverse: localContent.value.reverse,
+        imageSize: localContent.value.imageSize,
+        ctaText: localContent.value.ctaText,
+        ctaLink: localContent.value.ctaLink
       }
     })
     editDesignMode.value = false
-    alert(t('common.saved') || 'Mentve')
   } catch (err) {
     console.error('Saving design failed:', err)
     alert('Hiba a design mentésekor')
@@ -450,6 +522,10 @@ const cancelDesign = () => {
     localContent.value.backgroundColor = originalDesignContent.value.backgroundColor
     localContent.value.wave = originalDesignContent.value.wave
     localContent.value.waveColor = originalDesignContent.value.waveColor
+    localContent.value.reverse = originalDesignContent.value.reverse
+    localContent.value.imageSize = originalDesignContent.value.imageSize
+    localContent.value.ctaText = originalDesignContent.value.ctaText
+    localContent.value.ctaLink = originalDesignContent.value.ctaLink
   }
   editDesignMode.value = false
 }
@@ -491,8 +567,6 @@ const onImageSelected = async (event: Event) => {
           html: localContent.value.html
         }
       })
-
-      alert(t('common.saved') || 'Kép mentve!')
     }
   } catch (err) {
     console.error('Image upload failed:', err)

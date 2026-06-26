@@ -67,6 +67,9 @@ watchEffect(() => {
       description: seo.description,
       ogTitle: seo.title,
       ogDescription: seo.description,
+      ogImage: seo.image || 'https://antaligyongyi.hu/backend/uploads/image-1768250585414-470165819.jpg',
+      twitterImage: seo.image || 'https://antaligyongyi.hu/backend/uploads/image-1768250585414-470165819.jpg',
+      twitterCard: 'summary_large_image'
     })
   }
 })

@@ -91,7 +91,7 @@ const menuOpen = ref(false)
     <CookieBanner />
 
     <!-- FOOTER (maintenance alatt csak adminnak) -->
-    <MyFooter v-if="layoutMode === 'default'" />
+    <MyFooter/>
 
   </v-app>
 </template>

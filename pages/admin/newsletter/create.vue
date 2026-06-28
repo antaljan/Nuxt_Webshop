@@ -147,8 +147,12 @@
                       dot-color="blue"
                     >
                       <div class="flex justify-between items-center w-full">
-                        <span class="text-xs font-bold truncate pr-2">{{ block.label }}</span>
+                        <span class="text-xs font-bold truncate pr-2">
+                          {{ getBlockName(block.type) }}
+                        </span>
                         <div class="flex">
+                          <v-btn icon="mdi-arrow-up" variant="text" size="x-small" @click="moveBlockUp(index)" />
+                          <v-btn icon="mdi-arrow-down" variant="text" size="x-small" @click="moveBlockDown(index)" />
                           <v-btn icon="mdi-pencil" variant="text" size="x-small" @click="editBlock(index)" />
                           <v-btn icon="mdi-delete" variant="text" size="x-small" color="red" @click="removeBlock(index)" />
                         </div>
@@ -296,6 +300,50 @@ async function loadTemplates() {
 onMounted(loadTemplates)
 
 /* ---------------------------------------------
+   normalizer - convert empty lines to <br> for preview
+--------------------------------------------- */
+function normalizeParagraphHtml(html) {
+  return html.replace(/<p><\/p>/g, '<p><br></p>');
+}
+
+/* ---------------------------------------------
+   get block name for display in the structure timeline
+--------------------------------------------- */
+function getBlockName(type) {
+  const map = {
+    header: "Fejléc",
+    hero: "Hero",
+    title: "Cím",
+    paragraph: "Bekezdés",
+    image: "Kép",
+    imageLeft: "Kép bal",
+    imageRight: "Kép jobb",
+    button: "Gomb",
+    divider: "Elválasztó",
+    footer: "Lábléc"
+  }
+  return map[type] || type
+}
+/* ---------------------------------------------
+   move block up/down
+--------------------------------------------- */
+function moveBlockUp(index) {
+  if (index === 0) return
+  const arr = structure.value
+  const temp = arr[index - 1]
+  arr[index - 1] = arr[index]
+  arr[index] = temp
+}
+function moveBlockDown(index) {
+  const arr = structure.value
+  if (index === arr.length - 1) return
+  const temp = arr[index + 1]
+  arr[index + 1] = arr[index]
+  arr[index] = temp
+}
+
+
+/* ---------------------------------------------
    START NEW TEMPLATE
 --------------------------------------------- */
 function startNewTemplate() {
@@ -315,9 +363,17 @@ async function loadSelectedTemplate(item) {
 
   title.value = item.title || ''     // ÚJ
   subject.value = item.subject || ''
-  structure.value = Array.isArray(item.blocks)
+
+  const blocks = Array.isArray(item.blocks)
     ? JSON.parse(JSON.stringify(item.blocks))
     : []
+  blocks.forEach(block => {
+    if (block.type === 'paragraph') {
+      block.props.text = normalizeParagraphHtml(block.props.text)
+    }
+  })
+
+  structure.value = blocks
 
   showEditor.value = true
   templateDialogVisible.value = false
@@ -344,9 +400,14 @@ function editBlock(index) {
 }
 
 function saveEditedBlock() {
+  // Ha bekezdés blokkot szerkeszt az admin → sortörések konvertálása
+if (editedBlock.value?.type === 'paragraph') {
+  editedBlock.value.props.text = normalizeParagraphHtml(editedBlock.value.props.text);
+}
   structure.value[editedBlockIndex.value] = JSON.parse(JSON.stringify(editedBlock.value))
   dialogVisible.value = false
 }
+
 
 /* ---------------------------------------------
    REMOVE BLOCK

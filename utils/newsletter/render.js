@@ -224,28 +224,30 @@ function renderDivider() {
 
 function renderFooter({ text = "" }) {
   return `
-  <div style="background-color:#f8f8f8;padding:20px;text-align:center;font-family:Arial,sans-serif;color:#555;font-size:14px;margin-top:40px;">
-    
-    <p style="margin:0 0 10px 0;color:#333;">
-      Kedves {{firstname}}, köszönöm, hogy engem választottál!
-    </p>
-
-    <p style="margin:0 0 15px 0;">
-      Antali Gyöngyi • 
-      <a href="mailto:info@antaligyongyi.com" style="color:#0077cc;text-decoration:none;">
-        info@antaligyongyi.com
-      </a>
-    </p>
-
-    <div style="display:inline-block;margin-top:10px;">
-      <a href="https://antaligyongyi.hu" style="margin:0 10px;color:#0077cc;text-decoration:none;">Weboldal</a> |
-      <a href="https://www.facebook.com/profile.php?id=100064353450604" style="margin:0 10px;color:#0077cc;text-decoration:none;">Facebook</a> |
-      <a href="https://www.instagram.com/antaligyongyiedit/" style="margin:0 10px;color:#0077cc;text-decoration:none;">Instagram</a> |
-      <a href="https://antaligyongyi.hu/gdpr" style="margin:0 10px;color:#0077cc;text-decoration:none;">GDPR</a>
-    </div>
-
-    ${text ? `<p style="margin-top:20px;color:#777;font-size:13px;">${text}</p>` : ""}
-  </div>`;
+     <div style="background-color:#f8f8f8;padding:20px;text-align:center;font-family:Arial,sans-serif;color:#555;font-size:14px;margin-top:40px;">
+      <div style="margin-bottom:15px;">
+        <img src="https://antaligyongyi.hu/backend/uploads/image-1782061564924-313084120.jpg"
+            alt="Antali Gyöngyi Edit"
+            width="90" height="90"
+            style="border-radius:50%;object-fit:cover;display:block;margin:0 auto;">
+      </div>
+      <p style="margin:0 0 10px 0;color:#333;">
+        ${text ? `<p style="margin-top:20px;color:#777;font-size:13px;">${text}</p>` : ""}
+      </p>
+      <p style="margin:0 0 15px 0;">
+        Antali Gyöngyi Edit •
+        <a href="mailto:info@antaligyongyi.hu" style="color:#0077cc;text-decoration:none;">
+          info@antaligyongyi.hu
+        </a>
+      </p>
+      <div style="display:inline-block;margin-top:10px;">
+        <a href="https://antaligyongyi.hu" style="margin:0 10px;color:#0077cc;text-decoration:none;">Weboldal</a> |
+        <a href="https://www.facebook.com/profile.php?id=100064353450604" style="margin:0 10px;color:#0077cc;text-decoration:none;">Facebook</a> |
+        <a href="https://www.instagram.com/antaligyongyiedit/" style="margin:0 10px;color:#0077cc;text-decoration:none;">Instagram</a> |
+        <a href="https://antaligyongyi.hu/gdpr" style="margin:0 10px;color:#0077cc;text-decoration:none;">GDPR</a> |
+        <a href="https://antaligyongyi.hu/backend/newsletter/unsubscribe/{{email}}" style="margin:0 10px;color:#0077cc;text-decoration:none;">Leiratkozás</a>
+      </div>
+    </div>`;
 }
 
 /* -----------------------------------------------------

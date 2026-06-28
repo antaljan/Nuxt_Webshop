@@ -83,7 +83,7 @@ const menuOpen = ref(false)
     />
 
     <!-- MAIN CONTENT -->
-    <v-main class="bg-background text-text  page-wrapper">
+    <v-main class="bg-background text-text">
       <slot />
     </v-main>
 
@@ -105,8 +105,4 @@ html, body, .v-application, .v-application__wrap {
   color: var(--text) !important;
   font-family: var(--font-family) !important;
 }
-.page-wrapper {
-  padding-left: 32px; /* vagy 40px, 48px, 64px – amit szeretnél */
-}
-
 </style>

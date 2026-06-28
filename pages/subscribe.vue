@@ -75,6 +75,7 @@
       class="mt-6 p-4 bg-green-100 text-green-800 rounded-lg text-center"
     >
       {{ $t('newsletter.successMessage') }}
+      {{ $t('newsletter.warningMessage') }}
     </div>
   </section>
 </template>

@@ -80,6 +80,7 @@ async function handleSubscribe() {
     <v-fade-transition>
       <v-alert v-if="success" type="success" variant="tonal" class="mt-4" icon="mdi-check-circle">
         {{ t('newsletter.successMessage') }}
+        {{ t('newsletter.warningMessage') }}
       </v-alert>
     </v-fade-transition>
   </v-card>

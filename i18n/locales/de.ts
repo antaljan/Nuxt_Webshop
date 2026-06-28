@@ -160,6 +160,7 @@ export default defineI18nLocale(async (locale) => {
     subscribeTitle: "Newsletter Anmeldung",
     subscribeDescription: "Praktische Selbstreflexions-Tools, Coaching-Methoden und Impulse für deine persönliche Entwicklung — genau dann, wenn sie echten Mehrwert bieten. In meinen Newslettern teile ich Erkenntnisse, Methoden und Orientierungshilfen, die dir helfen, bewusster zu leben, Herausforderungen klarer zu sehen und Entscheidungen mit mehr Sicherheit zu treffen. Ich verspreche keine unnötigen E-Mails oder leere Worte. Ich schreibe nur dann, wenn ich dir wirklich hilfreiche Inhalte geben kann — solche, die dich auf deinem Weg spürbar unterstützen.",
     successMessage: "Erfolgreich angemeldet! Vielen Dank für dein Vertrauen.",
+    warningMessage: "Sie erhalten in Kürze eine Bestätigungs-E-Mail an Ihre E-Mail-Adresse. Falls die E-Mail nicht innerhalb weniger Minuten eintrifft, überprüfen Sie bitte Ihren Spam-Ordner und verschieben Sie die E-Mail falls gefunden in Ihren Posteingang.",
     errorGeneral: "Bei der Anmeldung ist ein Fehler aufgetreten."
   },
   common: {

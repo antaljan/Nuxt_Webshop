@@ -159,6 +159,7 @@ export default defineI18nLocale(async (locale) => {
     },
     subscribeTitle: "Newsletter Subscription",
     subscribeDescription: "Practical self-development tools, coaching techniques and insights to support your personal growth — shared only when they truly add value. My intention is to offer methods, reflections and guidance that help you live more consciously, navigate challenges with clarity and make decisions with greater confidence. I won’t send unnecessary emails or empty messages. I write only when I can offer something genuinely useful — something that supports you on your journey.",
+    warningMessage: "You will receive a confirmation email at your email address shortly. If it doesn't arrive within a few minutes, please check your spam folder and move it to your inbox if found.",
     successMessage: "Successful subscription! Thank you for your trust.",
     errorGeneral: "An error occurred during subscription."
   },

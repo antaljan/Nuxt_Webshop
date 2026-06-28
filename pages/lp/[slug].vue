@@ -81,7 +81,8 @@ const componentMap = {
   ImageText: resolveComponent('GenericImageTextSection'),
   Separator: resolveComponent('SectionSeparator'),
   Contact: resolveComponent('GenericContactSection'),
-  Subscribe: resolveComponent('GenericLeadMagnetSubscribe')
+  Subscribe: resolveComponent('GenericLeadMagnetSubscribe'),
+  Feedback: resolveComponent('GenericFeedbackSection')
 }
 
 const getSectionProps = (sec, content) => {

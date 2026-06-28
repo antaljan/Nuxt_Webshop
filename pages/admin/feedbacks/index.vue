@@ -61,7 +61,15 @@
               <v-text-field v-model="editedItem.name" label="Név" required></v-text-field>
               <v-select v-model="editedItem.language" :items="['hu', 'de', 'en']" label="Nyelv"></v-select>
             </v-text-row>
-            
+
+            <!-- ÚJ SLUG MEZŐ -->
+            <v-text-field
+              v-model="editedItem.slug"
+              label="Slug (opcionális)"
+              hint="Pl.: amikormarszakadacerna"
+              persistent-hint
+            ></v-text-field>
+
             <v-select v-model="editedItem.source" :items="['Facebook', 'Google', 'Email', 'Webpage']" label="Forrás"></v-select>
             
             <v-textarea v-model="editedItem.content" label="Tartalom (HTML)" rows="4"></v-textarea>
@@ -93,6 +101,7 @@ const saving = ref(false)
 
 const headers = [
   { title: 'Név', key: 'name' },
+  { title: 'Slug', key: 'slug' },
   { title: 'Nyelv', key: 'language' },
   { title: 'Értékelés', key: 'rating' },
   { title: 'Forrás', key: 'source' },
@@ -106,7 +115,8 @@ const defaultItem = {
   language: 'hu',
   rating: 5,
   status: 'published',
-  source: 'Facebook'
+  source: 'Facebook',
+  slug: ''
 }
 
 const editedItem = ref({ ...defaultItem })

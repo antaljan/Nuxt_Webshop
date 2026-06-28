@@ -77,9 +77,11 @@ import { ref, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuth } from '@/composables/useAuth'
 import { useRouter } from 'vue-router'
+import Slug from '~/pages/blog/[slug].vue'
 
 const props = defineProps({
-  sectionKey: { type: String, required: true }
+  sectionKey: { type: String, required: true },
+  slug: { type: String, required: false }
 })
 
 /* ---------------------------
@@ -109,12 +111,13 @@ const backendBase = config.public.backendBase
    LOAD FEEDBACKS (SSR + CSR)
 --------------------------- */
 const { data: feedbacks, refresh } = await useAsyncData(
-  () => `feedbacks-${locale.value}`,
+  () => `feedbacks-${locale.value}-${props.slug || 'all'}`,
   () =>
     $fetch(`${backendBase}/feedbacks`, {
       params: {
         language: locale.value,
-        status: 'published'
+        status: 'published',
+        slug: props.slug || undefined
       }
     })
 )

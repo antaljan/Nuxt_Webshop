@@ -96,6 +96,15 @@ const getSectionProps = (sec, content) => {
       leadMagnetSlug: safeContent.leadMagnetSlug || route.params.slug
     }
   }
+
+  if (sec.type === 'Feedback') {
+  return {
+    sectionKey: sec.key,
+    slug: route.params.slug,
+    ...sec.props
+  }
+}
+
   
   return {
     content: safeContent,

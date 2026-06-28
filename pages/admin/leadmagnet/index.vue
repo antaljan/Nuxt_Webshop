@@ -99,17 +99,17 @@ const deleteItem = async (id) => {
             </td>
 
             <td class="text-center">
-              <v-btn 
-                icon="mdi-content-copy" 
-                variant="text" 
-                size="small" 
+              <v-btn
+                icon="mdi-content-copy"
+                variant="text"
+                size="small"
                 @click="copyLink(item.slug)"
                 title="Link másolása"
               />
-              <v-btn 
-                icon="mdi-open-in-new" 
-                variant="text" 
-                size="small" 
+              <v-btn
+                icon="mdi-eye"
+                variant="text"
+                size="small"
                 color="info"
                 :to="`/lp/${item.slug}`"
                 target="_blank"

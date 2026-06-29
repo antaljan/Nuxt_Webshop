@@ -1,4 +1,8 @@
 <script setup>
+definePageMeta({
+  layout: 'lead'
+})
+
 const route = useRoute()
 const { locale } = useI18n()
 

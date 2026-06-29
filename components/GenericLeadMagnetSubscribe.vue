@@ -38,6 +38,8 @@ async function handleSubscribe() {
     gdpr.value = false
     if (form.value) form.value.resetValidation()
 
+    navigateTo(`/lp/${props.leadMagnetSlug}_success`, { replace: true })
+
   } catch (err) {
     console.error("Subscription error:", err)
     alert("Hiba történt. Kérlek próbáld újra!")
@@ -76,12 +78,12 @@ async function handleSubscribe() {
         {{ buttonText || t('newsletter.subscribeButton') }}
       </v-btn>
     </v-form>
-
+    <!-- Sikeres feliratkozás üzenet 
     <v-fade-transition>
       <v-alert v-if="success" type="success" variant="tonal" class="mt-4" icon="mdi-check-circle">
         {{ t('newsletter.successMessage') }}
         {{ t('newsletter.warningMessage') }}
       </v-alert>
-    </v-fade-transition>
+    </v-fade-transition>-->
   </v-card>
 </template>

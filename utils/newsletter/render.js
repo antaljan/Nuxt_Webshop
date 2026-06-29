@@ -198,7 +198,7 @@ function renderButton({ label = "Kattints ide", url = "#" }) {
   <div style="text-align:center;margin:35px 0;">
     <a href="${url}"
        style="
-         background:#4CAF50;
+         background:#b87d8e;
          color:white;
          padding:14px 28px;
          border-radius:6px;

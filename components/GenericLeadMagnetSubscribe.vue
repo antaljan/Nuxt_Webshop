@@ -59,7 +59,7 @@ async function handleSubscribe() {
     
     <v-form ref="form" v-model="valid" @submit.prevent="handleSubscribe">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-        <v-text-field v-model="name" :label="t('newsletter.lastname')" :rules="[v => !!v || '']" variant="outlined" density="comfortable" />
+        <!-- <v-text-field v-model="name" :label="t('newsletter.lastname')" :rules="[v => !!v || '']" variant="outlined" density="comfortable" />-->
         <v-text-field v-model="firstname" :label="t('newsletter.firstname')" :rules="[v => !!v || '']" variant="outlined" density="comfortable" />
       </div>
 

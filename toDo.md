@@ -133,5 +133,4 @@ Bugs:
     Warnings: -none
 
 Tasks are open:
- - hamburger menu only for admin, upper mune for user
- - second layout for lead pages, without menu and login
+ - add answer to comment to meta modul

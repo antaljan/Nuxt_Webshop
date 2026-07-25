@@ -211,7 +211,21 @@ export default defineI18nLocale(async (locale) => {
     sectionStyle:"Szekció stílusa"
   },
   feedback: {
-    title: "Visszajelzések"
+    title: "Visszajelzések",
+    leaveFeedback: "Hagyd meg a véleményed",
+    feedbackList: "Visszajelzések listája",
+    form: {
+      name: "Név",
+      content: "Visszajelzés",
+      rating: "Értékelés",
+      submit: "Visszajelzés küldése",
+      success: "Köszönjük a visszajelzést!",
+      tooShort: "A visszajelzés túl rövid, kérlek adj meg legalább 20 karaktert.",
+      error: "Hiba történt a visszajelzés küldésekor.",
+      open: "Visszajelzés küldése",
+      hide: "Űrlap elrejtése",
+      cancel: "Mégse"
+    } 
   },
   blog: {
     latest: "Legfrissebb Blogbejegyzések",

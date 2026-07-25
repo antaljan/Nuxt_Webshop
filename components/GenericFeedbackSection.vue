@@ -68,21 +68,104 @@
         </v-btn>
       </div>
 
+      <!-- PUBLIC FEEDBACK TOGGLE BUTTON -->
+      <div class="text-center mt-8">
+        <v-btn
+          color="secondary"
+          variant="outlined"
+          @click="showForm = !showForm"
+        >
+          {{ showForm ? t('feedback.form.hide') : t('feedback.form.open') }}
+        </v-btn>
+      </div>
+
+      <!-- PUBLIC FEEDBACK FORM -->
+      <div v-if="showForm" class="mt-12 max-w-xl mx-auto">
+        <v-card class="pa-4">
+          <h3 class="text-xl font-bold mb-4 text-center">
+            {{ t('feedback.leaveFeedback') }}
+          </h3>
+          <v-form @submit.prevent="submitFeedback">
+            <v-text-field
+              v-model="form.name"
+              :label="t('feedback.form.name')"
+              required
+            />
+            <v-textarea
+              v-model="content"
+              :label="t('feedback.form.content')"
+              rows="4"
+              required
+              :rules="[v => !!v && v.length >= 20 || t('feedback.form.tooShort')]"
+            />
+            <div class="my-3">
+              <span>{{ t('feedback.form.rating') }}:</span>
+              <v-rating v-model="form.rating" color="amber" />
+            </div>
+            <!-- Honeypot -->
+            <input v-model="form.website" type="text" style="display:none;" />
+            <!-- button row   -->
+            <v-row class="mt-4" dense>
+              <v-col cols="6">
+                <v-btn
+                  color="grey"
+                  variant="text"
+                  block
+                  @click="showForm = false"
+                >
+                  {{ t('feedback.form.cancel') }}
+                </v-btn>
+              </v-col>
+            <v-col cols="6">
+              <v-btn
+                color="primary"
+                block
+                :disabled="!isContentValid || loading"
+                @click="submitFeedback"
+              >
+                {{ t('feedback.form.submit') }}
+              </v-btn>
+            </v-col>
+            </v-row>
+          </v-form>
+          <v-alert
+            v-if="success"
+            type="success"
+            class="mt-4"
+          >
+            {{ t('feedback.form.success') }}
+          </v-alert>
+          <v-alert
+            v-if="error"
+            type="error"
+            class="mt-4"
+          >
+            {{ error }}
+          </v-alert>
+        </v-card>
+      </div>
+
     </div>
   </section>
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuth } from '@/composables/useAuth'
 import { useRouter } from 'vue-router'
-import Slug from '~/pages/blog/[slug].vue'
+
+const showForm = ref(false)
 
 const props = defineProps({
   sectionKey: { type: String, required: true },
   slug: { type: String, required: false }
 })
+
+/* ---------------------------
+   I18N (MUSS GANZ OBEN SEIN!)
+--------------------------- */
+const { locale, t } = useI18n()
 
 /* ---------------------------
    AUTH
@@ -97,18 +180,34 @@ const router = useRouter()
 const goAdmin = () => router.push('/admin/feedbacks')
 
 /* ---------------------------
-   I18N
---------------------------- */
-const { locale, t } = useI18n()
-
-/* ---------------------------
    RUNTIME CONFIG
 --------------------------- */
 const config = useRuntimeConfig()
 const backendBase = config.public.backendBase
 
 /* ---------------------------
-   LOAD FEEDBACKS (SSR + CSR)
+   PUBLIC FORM STATE
+--------------------------- */
+const loading = ref(false)
+const success = ref(false)
+const error = ref(null)
+
+const content = ref('')
+const isContentValid = computed(() => {
+  return content.value.trim().length >= 20
+})
+
+const form = reactive({
+  name: '',
+  content: '',
+  rating: 5,
+  language: locale.value,      // jetzt OK
+  slug: props.slug || null,
+  website: ''                  // honeypot
+})
+
+/* ---------------------------
+   LOAD FEEDBACKS
 --------------------------- */
 const { data: feedbacks, refresh } = await useAsyncData(
   () => `feedbacks-${locale.value}-${props.slug || 'all'}`,
@@ -126,6 +225,7 @@ const { data: feedbacks, refresh } = await useAsyncData(
    LANGUAGE CHANGE
 --------------------------- */
 watch(locale, () => {
+  form.language = locale.value   // wichtig!
   refresh()
 })
 
@@ -157,7 +257,40 @@ const grouped = computed(() => {
   }
   return groups
 })
+
+/* ---------------------------
+   SUBMIT FEEDBACK
+--------------------------- */
+
+const submitFeedback = async () => {
+  form.content = content.value
+  loading.value = true
+  error.value = null
+
+  try {
+    const res = await $fetch(`${backendBase}/feedbacks/new`, {
+      method: 'POST',
+      body: form
+    })
+
+    if (res.success) {
+      success.value = true
+      form.name = ''
+      form.content = ''
+      form.rating = 5
+      content.value = ''
+    }
+
+  } catch (e) {
+    error.value = e?.data?.error || 'Hiba történt'
+  } finally {
+    loading.value = false
+  }
+}
+
+
 </script>
+
 
 <style scoped>
 .scrollable-text {

@@ -206,7 +206,21 @@ export default defineI18nLocale(async (locale) => {
     sectionStyle:"Section Stil"
   },
   feedback: {
-    title: "Rückmeldungen unserer Kunden"
+    title: "Rückmeldungen unserer Kunden",
+    leaveFeedback: "Feedback abgeben",
+    feedbackList: "Feedback-Liste",
+    form: {
+      name: "Name",
+      content: "Feedback",
+      rating: "Bewertung",
+      submit: "Feedback absenden",
+      success: "Vielen Dank für Ihr Feedback!",
+      tooShort: "Das Feedback ist zu kurz. Bitte geben Sie mindestens 20 Zeichen ein.",
+      error: "Beim Absenden des Feedbacks ist ein Fehler aufgetreten.",
+      open: "Feedback abgeben",
+      hide: "Formular ausblenden",
+      cancel: "Abbrechen"
+    }
   },
   blog: {
     latest: "Neueste Blogbeiträge",

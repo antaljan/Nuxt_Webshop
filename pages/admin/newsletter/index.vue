@@ -85,13 +85,13 @@
       </div>
     </v-card>
 
-    <!-- SENDING CAPACITY -->
+    <!-- SENDING CAPACITY 
     <v-card class="p-6" style="height: 350px;">
       <h2 class="text-xl font-semibold mb-4">Küldési kapacitás</h2>
       <div class="h-[250px]">
         <NewsletterSendingCapacityChart :data="sendingCapacity" />
       </div>
-    </v-card>
+    </v-card>-->
 
     <!-- CAMPAIGN PARETO -->
     <v-card class="p-6" style="height: 350px;">
@@ -114,7 +114,7 @@
 <script setup>
 import { computed } from 'vue'
 import NewsletterMonthlySubscribersChart from '@/components/admin/newsletter/NewsletterMonthlySubscribersChart.vue'
-import NewsletterSendingCapacityChart from '@/components/admin/newsletter/NewsletterSendingCapacityChart.vue'
+// import NewsletterSendingCapacityChart from '@/components/admin/newsletter/NewsletterSendingCapacityChart.vue'
 import NewsletterParetoChart from '@/components/admin/newsletter/NewsletterCampaignParetoChart.vue'
 
 const {
@@ -159,12 +159,13 @@ const { data: monthlySubscribersRaw } = await useAsyncData(
 )
 const monthlySubscribers = computed(() => monthlySubscribersRaw.value || [])
 
-/* SENDING CAPACITY */
-const { data: sendingCapacityRaw } = await useAsyncData(
+/* SENDING CAPACITY 
+ const { data: sendingCapacityRaw } = await useAsyncData(
   'newsletter-sending-capacity',
   () => fetchSendingCapacity()
 )
 const sendingCapacity = computed(() => sendingCapacityRaw.value || [])
+*/
 
 /* CAMPAIGN PARETO */
 const { data: campaignParetoRaw } = await useAsyncData(

@@ -185,9 +185,9 @@
           <p class="text-body-2 text-grey-darken-1 mb-4">
             A válaszaidat rögzítettük.
           </p>
-
+          
           <v-divider class="mb-4" />
-
+          <!----
           <div class="text-h6 mb-4">
             Elért pontszám: <strong>{{ totalScore }}</strong>
           </div>
@@ -199,7 +199,7 @@
           >
             Hamarosan jelentkezünk a részletes elemzéssel.
           </v-alert>
-
+          --->
           <v-btn color="primary" block rounded="lg" to="/">
             Vissza a főoldalra
           </v-btn>

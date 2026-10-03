@@ -152,7 +152,6 @@ const subscribers = computed(() => data.value?.subscribers || [])
 /* TABLE HEADERS */
 const headers = [
   { title: "Név", key: "firstname" },
-  { title: "Vezetéknév", key: "name" },
   { title: "Email", key: "email" },
   { title: "Nyelv", key: "language" },
   { title: "Csoport", key: "group" },

@@ -22,19 +22,6 @@
       </v-card>
       </v-col>
 
-      <!-- Number of newsletters -->
-      <v-col cols="12" sm="6" md="2">
-      <v-card
-        border
-        elevation="1"
-        class="p-6 text-center rounded-xl cursor-pointer"
-        to="/admin/newsletter/delivery-log"
-      >
-        <h3 class="text-lg font-semibold">Elküldött hírlevelek</h3>
-        <p class="text-3xl font-bold">{{ stats.totalNewsletters }}</p>
-      </v-card>
-      </v-col>
-
       <!-- Number of campaigns -->
       <v-col cols="12" sm="6" md="2">
       <v-card 
@@ -60,6 +47,7 @@
         <p class="text-3xl font-bold">{{ templateCount }}</p>
       </v-card>
       </v-col>
+
       <!-- freebie -->
       <v-col cols="12" sm="6" md="2">
         <v-card
@@ -68,13 +56,24 @@
           class="p-6 text-center rounded-xl cursor-pointer"
           to="/admin/freebies"
         >
-          <v-card-item title="Ingyenes anyagok">
-            <template v-slot:subtitle>Utolsó 30 nap</template>
-            <div class="text-h5 font-weight-black text-orange-darken-2">{{ summary.freebieDownloads }} letöltés</div>
-            <div class="text-caption">{{ summary.freebieUniqueUsers }} egyedi érdeklődő</div>
-          </v-card-item>
+          <h3 class="text-lg font-semibold">Freebie letöltések</h3>
+          <p class="text-3xl font-bold">{{ summary.freebieDownloads }}</p>
         </v-card>
       </v-col>
+
+      <!-- Number of newsletters -->
+      <v-col cols="12" sm="6" md="2">
+      <v-card
+        border
+        elevation="1"
+        class="p-6 text-center rounded-xl cursor-pointer"
+        to="/admin/newsletter/delivery-log"
+      >
+        <h3 class="text-lg font-semibold">Küldési napló</h3>
+        <p class="text-3xl font-bold">{{ stats.totalNewsletters }}</p>
+      </v-card>
+      </v-col>
+
     </v-row>
 
     <!-- MONTHLY SUBSCRIBERS -->
@@ -85,45 +84,18 @@
       </div>
     </v-card>
 
-    <!-- SENDING CAPACITY 
-    <v-card class="p-6" style="height: 350px;">
-      <h2 class="text-xl font-semibold mb-4">Küldési kapacitás</h2>
-      <div class="h-[250px]">
-        <NewsletterSendingCapacityChart :data="sendingCapacity" />
-      </div>
-    </v-card>-->
-
-    <!-- CAMPAIGN PARETO -->
-    <v-card class="p-6" style="height: 350px;">
-      <h2 class="text-xl font-semibold mb-4">Kampányok teljesítménye (Pareto)</h2>
-      <div class="h-[250px]">
-        <NewsletterParetoChart :data="campaignPareto" />
-      </div>
-    </v-card>
-
-    <!-- DEEP DRILL CTA -->
-    <v-card class="p-6 text-center">
-      <v-btn color="primary" to="/admin/newsletter/campaigns">
-        Kampányok részletes elemzése
-      </v-btn>
-    </v-card>
-
   </section>
 </template>
 
 <script setup>
 import { computed } from 'vue'
 import NewsletterMonthlySubscribersChart from '@/components/admin/newsletter/NewsletterMonthlySubscribersChart.vue'
-// import NewsletterSendingCapacityChart from '@/components/admin/newsletter/NewsletterSendingCapacityChart.vue'
-import NewsletterParetoChart from '@/components/admin/newsletter/NewsletterCampaignParetoChart.vue'
 
 const {
   fetchSummary,
   fetchCampaignStats,
   fetchTemplates,
   fetchMonthlySubscribers,
-  fetchSendingCapacity,
-  fetchCampaignPareto
 } = useNewsletter()
 
 /* SUMMARY */
@@ -159,19 +131,5 @@ const { data: monthlySubscribersRaw } = await useAsyncData(
 )
 const monthlySubscribers = computed(() => monthlySubscribersRaw.value || [])
 
-/* SENDING CAPACITY 
- const { data: sendingCapacityRaw } = await useAsyncData(
-  'newsletter-sending-capacity',
-  () => fetchSendingCapacity()
-)
-const sendingCapacity = computed(() => sendingCapacityRaw.value || [])
-*/
-
-/* CAMPAIGN PARETO */
-const { data: campaignParetoRaw } = await useAsyncData(
-  'newsletter-campaign-pareto',
-  () => fetchCampaignPareto()
-)
-const campaignPareto = computed(() => campaignParetoRaw.value || [])
 </script>
 

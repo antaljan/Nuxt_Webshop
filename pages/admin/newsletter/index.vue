@@ -3,7 +3,7 @@
 
     <!-- HEADER -->
     <div class="flex justify-between items-center">
-      <h1 class="text-3xl font-bold">Hírlevél/Kampány Dashboard</h1>
+      <h1 class="text-3xl font-bold">Hírlevél kezelés</h1>
     </div>
 
     <!-- KPI CARDS -->
@@ -22,19 +22,6 @@
       </v-card>
       </v-col>
 
-      <!-- Number of campaigns -->
-      <v-col cols="12" sm="6" md="2">
-      <v-card 
-        border
-        elevation="1"
-        class="p-6 text-center rounded-xl cursor-pointer"
-        to="/admin/newsletter/campaigns"
-      >
-        <h3 class="text-lg font-semibold">Kampányok</h3>
-        <p class="text-3xl font-bold">{{ totalCampaigns }}</p>
-      </v-card>
-      </v-col>
-
       <!-- Number of templates -->
       <v-col cols="12" sm="6" md="2">
       <v-card 
@@ -43,25 +30,25 @@
         class="p-6 text-center rounded-xl cursor-pointer"
         to="/admin/newsletter/create"
       >
-        <h3 class="text-lg font-semibold">Elérhető sablonok</h3>
+        <h3 class="text-lg font-semibold">Hírlevelek</h3>
         <p class="text-3xl font-bold">{{ templateCount }}</p>
       </v-card>
       </v-col>
 
-      <!-- freebie -->
+      <!-- Number of campaigns -->
       <v-col cols="12" sm="6" md="2">
-        <v-card
-          border
-          elevation="1"
-          class="p-6 text-center rounded-xl cursor-pointer"
-          to="/admin/freebies"
-        >
-          <h3 class="text-lg font-semibold">Freebie letöltések</h3>
-          <p class="text-3xl font-bold">{{ summary.freebieDownloads }}</p>
-        </v-card>
+      <v-card 
+        border
+        elevation="1"
+        class="p-6 text-center rounded-xl cursor-pointer"
+        to="/admin/newsletter/campaigns"
+      >
+        <h3 class="text-lg font-semibold">Hírlevél idözítések</h3>
+        <p class="text-3xl font-bold">{{ totalCampaigns }}</p>
+      </v-card>
       </v-col>
 
-      <!-- Number of newsletters -->
+      <!-- newsletter delivery log -->
       <v-col cols="12" sm="6" md="2">
       <v-card
         border

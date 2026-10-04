@@ -1,14 +1,16 @@
-// server/api/newsletter/subscriber-logs/[email].get.ts
+// server/api/newsletter/groups/index.post.ts
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   const token = getCookie(event, 'jwt')
 
-  const { email } = event.context.params!
+  const body = await readBody(event)
 
   return await $fetch(
-    `${config.public.backendBase}/newsletter/subscriber-logs/${email}`,
+    `${config.public.backendBase}/newsletter/groups`,
     {
+      method: 'POST',
+      body,
       headers: {
         Authorization: `Bearer ${token}`
       }

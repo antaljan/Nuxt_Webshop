@@ -15,10 +15,15 @@
         <v-text-field v-model="subscriber.firstname" label="Keresztnév" />
         <v-text-field v-model="subscriber.email" label="Email" :disabled="isEdit" />
 
-        <v-select
-          v-model="subscriber.group"
-          :items="['ujjonc', 'torzsvasarlo', 'coach']"
-          label="Csoport"
+        <v-autocomplete
+          v-model="subscriber.groups"
+          :items="groups"
+          item-title="title"
+          item-value="value"
+          label="Csoportok"
+          multiple
+          chips
+          closable-chips
         />
 
         <v-select
@@ -46,7 +51,8 @@ defineProps({
   modelValue: Boolean,
   isEdit: Boolean,
   subscriber: Object,
-  languages: Array
+  languages: Array,
+  groups: Array
 })
 
 defineEmits(['update:modelValue', 'save'])

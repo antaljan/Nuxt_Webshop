@@ -14,15 +14,27 @@
       
     <!-- HEADER -->
     <div class="flex justify-between items-center">
-      <h1 class="text-2xl font-bold">Feliratkozók kezelése</h1>
+      <h1 class="text-2xl font-bold">
+        Feliratkozók kezelése
+      </h1>
 
-      <v-btn
-        color="success"
-        prepend-icon="mdi-account-plus"
-        @click="openNewSubscriber"
-      >
-        Új feliratkozó
-      </v-btn>
+      <div class="flex gap-2">
+        <v-btn
+          color="secondary"
+          prepend-icon="mdi-account-group"
+          @click="groupDialog = true"
+        >
+          Csoportok
+        </v-btn>
+
+        <v-btn
+          color="success"
+          prepend-icon="mdi-account-plus"
+          @click="openNewSubscriber"
+        >
+          Új feliratkozó
+        </v-btn>
+      </div>
     </div>
 
     <!-- FILTERS -->
@@ -78,10 +90,17 @@
         </template>
 
         <!-- GROUP -->
-        <template #item.group="{ item }">
-          <v-chip size="small" color="secondary" text-color="white">
-            {{ item.group }}
-          </v-chip>
+        <template #item.groups="{ item }">
+          <div class="flex flex-wrap gap-1">
+            <v-chip
+              v-for="group in item.groups"
+              :key="group"
+              size="small"
+              color="secondary"
+            >
+              {{ group }}
+            </v-chip>
+          </div>
         </template>
 
         <!-- ACTIONS -->
@@ -109,7 +128,15 @@
       :is-edit="isEditMode"
       :subscriber="editingSubscriber"
       :languages="languages"
+      :groups="groups"
       @save="saveSubscriber"
+    />
+
+    <!-- GROUP EDIT DIALOG -->
+    <NewsletterGroupsDialog
+      v-model="groupDialog"
+      :groups="groupsData?.groups || []"
+      @refresh="refreshGroups"
     />
 
   </section>
@@ -118,6 +145,7 @@
 <script setup>
 /* IMPORTS */
 import NewsletterSubscriberDialog from '~/components/admin/newsletter/NewsletterSubscriberDialog.vue'
+import NewsletterGroupsDialog from '~/components/admin/newsletter/NewsletterGroupsDialog.vue'
 const { fetchSubscribers, deleteSubscriber } = useNewsletter()
 
 /* STATE */
@@ -129,17 +157,25 @@ const editDialog = ref(false)
 const isEditMode = ref(false)
 const editingSubscriber = ref({})
 
+const groupDialog = ref(false)
+
 /* LANGUAGES + GROUPS */
 const languages = [
   { title: "HU", value: "hu" },
   { title: "EN", value: "en" }
 ]
 
-const groups = [
-  { title: "Újonc", value: "ujjonc" },
-  { title: "VIP", value: "vip" },
-  { title: "Coaching", value: "coaching" }
-]
+// Fetch newsletter groups
+const { data: groupsData , refresh: refreshGroups} = await useAsyncData(
+  'newsletter-groups',
+  () => $fetch('/api/newsletter/groups')
+)
+const groups = computed(() =>
+  (groupsData.value?.groups || []).map(group => ({
+    title: group.name,
+    value: group.slug
+  }))
+)
 
 /* FETCH SUBSCRIBERS */
 const { data, pending, refresh } = await useAsyncData(
@@ -154,7 +190,7 @@ const headers = [
   { title: "Név", key: "firstname" },
   { title: "Email", key: "email" },
   { title: "Nyelv", key: "language" },
-  { title: "Csoport", key: "group" },
+  { title: "Csoport", key: "groups" },
   { title: "Műveletek", key: "actions", sortable: false }
 ]
 
@@ -171,7 +207,8 @@ const filteredSubscribers = computed(() => {
       !filterLanguage.value || s.language === filterLanguage.value
 
     const matchesGroup =
-      !filterGroup.value || s.group === filterGroup.value
+      !filterGroup.value ||
+      s.groups?.includes(filterGroup.value)
 
     return matchesSearch && matchesLanguage && matchesGroup
   })
@@ -184,7 +221,7 @@ function openNewSubscriber() {
     firstname: "",
     name: "",
     email: "",
-    group: "ujjonc",
+    groups: ["ujjonc"],
     language: "hu"
   }
   editDialog.value = true

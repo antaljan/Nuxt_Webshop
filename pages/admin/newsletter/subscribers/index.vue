@@ -81,6 +81,15 @@
         :loading="pending"
         class="elevation-1"
       >
+        <!-- NAME -->
+        <template #item.firstname="{ item }">
+          <NuxtLink
+            :to="`/admin/newsletter/subscribers/${encodeURIComponent(item.email)}`"
+            class="text-primary font-medium hover:underline"
+          >
+            {{ item.firstname }}
+          </NuxtLink>
+        </template>
 
         <!-- LANGUAGE -->
         <template #item.language="{ item }">
@@ -93,12 +102,12 @@
         <template #item.groups="{ item }">
           <div class="flex flex-wrap gap-1">
             <v-chip
-              v-for="group in item.groups"
-              :key="group"
+              v-for="slug in item.groups"
+              :key="slug"
+              :color="groupMap[slug]?.color || 'secondary'"
               size="small"
-              color="secondary"
             >
-              {{ group }}
+              {{ groupMap[slug]?.name || slug }}
             </v-chip>
           </div>
         </template>
@@ -171,11 +180,22 @@ const { data: groupsData , refresh: refreshGroups} = await useAsyncData(
   () => $fetch('/api/newsletter/groups')
 )
 const groups = computed(() =>
-  (groupsData.value?.groups || []).map(group => ({
-    title: group.name,
-    value: group.slug
-  }))
+  [...(groupsData.value?.groups || [])]
+    .sort((a, b) => a.order - b.order)
+    .map(group => ({
+      title: group.name,
+      value: group.slug
+    }))
 )
+const groupMap = computed(() => {
+  const map = {}
+
+  for (const group of groupsData.value?.groups || []) {
+    map[group.slug] = group
+  }
+
+  return map
+})
 
 /* FETCH SUBSCRIBERS */
 const { data, pending, refresh } = await useAsyncData(

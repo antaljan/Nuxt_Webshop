@@ -1,185 +1,237 @@
 <template>
-  <section class="p-6 space-y-8">
+  <section class="p-6 space-y-6">
 
-    <!-- HEADER -->
     <div class="flex justify-between items-center">
-      <h1 class="text-2xl font-bold">
-        Feliratkozó aktivitása – {{ subscriber?.firstname }} {{ subscriber?.name }}
-      </h1>
+      <div>
+        <h1 class="text-2xl font-bold">
+          Feliratkozó aktivitása
+        </h1>
+
+        <p class="text-gray-500">
+          {{ subscriber?.firstname }}
+        </p>
+      </div>
 
       <v-btn
-        color="grey"
+        color="primary"
         variant="text"
-        to="/admin/newsletter/subscribers"
         prepend-icon="mdi-arrow-left"
+        to="/admin/newsletter/subscribers"
       >
         Vissza
       </v-btn>
     </div>
 
-    <!-- SUBSCRIBER INFO -->
-    <v-card class="p-6 space-y-2">
-      <p><strong>Email:</strong> {{ subscriber?.email }}</p>
-      <p><strong>Nyelv:</strong> {{ subscriber?.language?.toUpperCase() }}</p>
-      <p><strong>Csoport:</strong> {{ subscriber?.group }}</p>
-    </v-card>
+    <!-- Subscriber Info -->
 
-    <!-- FILTERS -->
-    <v-card class="p-4 space-y-4">
+    <v-card class="p-6">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-        <v-select
-          v-model="filterType"
-          :items="[
-            { title: 'Összes', value: null },
-            { title: 'Megnyitások', value: 'open' },
-            { title: 'Kattintások', value: 'click' }
-          ]"
-          label="Aktivitás típusa"
-          variant="outlined"
-          clearable
-        />
+        <div>
+          <strong>Email</strong>
+          <div>{{ subscriber?.email }}</div>
+        </div>
 
-        <v-select
-          v-model="filterCampaign"
-          :items="campaignOptions"
-          item-title="name"
-          item-value="_id"
-          label="Kampány"
-          variant="outlined"
-          clearable
-        />
+        <div>
+          <strong>Nyelv</strong>
+          <div>{{ subscriber?.language?.toUpperCase() }}</div>
+        </div>
 
-        <v-text-field
-          v-model="filterDate"
-          type="date"
-          label="Dátum"
-          variant="outlined"
-          clearable
-        />
+        <div>
+          <strong>Csoportok</strong>
+
+          <div class="flex gap-1 flex-wrap mt-1">
+            <v-chip
+              v-for="group in subscriber?.groups || []"
+              :key="group"
+              size="small"
+            >
+              {{ group }}
+            </v-chip>
+          </div>
+        </div>
 
       </div>
     </v-card>
 
-    <!-- ACTIVITY LIST -->
+    <!-- Statistics -->
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+      <v-card class="p-4 text-center">
+        <div class="text-h5">
+          {{ stats.total }}
+        </div>
+        <div>
+          Küldött levelek
+        </div>
+      </v-card>
+
+      <v-card class="p-4 text-center">
+        <div class="text-h5 text-green">
+          {{ stats.opens }}
+        </div>
+        <div>
+          Megnyitások
+        </div>
+      </v-card>
+
+      <v-card class="p-4 text-center">
+        <div class="text-h5 text-blue">
+          {{ stats.clicks }}
+        </div>
+        <div>
+          Kattintások
+        </div>
+      </v-card>
+
+    </div>
+
+    <!-- Newsletter List -->
+
     <v-card>
       <v-data-table
-        :items="filteredActivity"
         :headers="headers"
-        :loading="pending"
-        class="elevation-1"
+        :items="newsletterHistory"
       >
 
-        <!-- TYPE -->
-        <template #item.type="{ item }">
+        <template #item.sendDate="{ item }">
+          {{
+            item.sendDate
+              ? new Date(item.sendDate).toLocaleString('hu-HU')
+              : '-'
+          }}
+        </template>
+
+        <template #item.opened="{ item }">
           <v-chip
-            :color="item.type === 'open' ? 'green' : 'blue'"
-            text-color="white"
+            :color="item.opened ? 'success' : 'grey'"
             size="small"
           >
-            {{ item.type === 'open' ? 'Megnyitás' : 'Kattintás' }}
+            {{ item.opened ? 'Igen' : 'Nem' }}
           </v-chip>
         </template>
 
-        <!-- ACTIONS -->
-        <template #item.actions="{ item }">
-          <v-btn
-            icon="mdi-eye"
-            variant="text"
-            @click="openPreview(item)"
-          />
+        <template #item.clicked="{ item }">
+          <v-chip
+            :color="item.clicked ? 'primary' : 'grey'"
+            size="small"
+          >
+            {{ item.clicked ? 'Igen' : 'Nem' }}
+          </v-chip>
         </template>
 
       </v-data-table>
     </v-card>
 
-    <!-- PREVIEW DIALOG -->
-    <NewsletterPreviewDialog
-      v-model="previewDialog"
-      :campaign="selectedItem"
-      :template="selectedTemplate"
-    />
-
   </section>
 </template>
 
 <script setup>
-import NewsletterPreviewDialog from '~/components/admin/newsletter/NewsletterPreviewDialog.vue'
 
 const route = useRoute()
+
 const email = route.params.id
 
-/* FETCH SUBSCRIBER */
+/* subscriber */
+
 const { data: subscriberData } = await useAsyncData(
   `subscriber-${email}`,
-  () => $fetch('/api/newsletter/subscribers', { method: 'POST' })
+  () =>
+    $fetch('/api/newsletter/subscribers')
 )
 
 const subscriber = computed(() =>
-  subscriberData.value?.subscribers?.find(s => s.email === email)
+  subscriberData.value?.subscribers?.find(
+    s => s.email === email
+  )
 )
 
-/* FETCH ACTIVITY */
-const { data: activityData, pending } = await useAsyncData(
+
+/* activity */
+
+const { data: activityData } = await useAsyncData(
   `activity-${email}`,
-  () => $fetch(`/api/newsletter/activity/${email}`)
+  () =>
+    $fetch(`/api/newsletter/activity/${email}`)
 )
 
-const activity = computed(() => activityData.value?.activity || [])
-
-/* FETCH CAMPAIGNS */
-const { data: campaigns } = await useAsyncData(
-  "campaigns-for-activity",
-  () => $fetch("/api/campaigns")
+const activity = computed(
+  () => activityData.value?.activity || []
 )
+console.log('activityData', activityData.value)
 
-const campaignOptions = computed(() => campaigns.value || [])
 
-/* FILTERS */
-const filterType = ref(null)
-const filterCampaign = ref(null)
-const filterDate = ref(null)
+/* transform */
 
-/* TABLE HEADERS */
-const headers = [
-  { title: "Típus", key: "type" },
-  { title: "Kampány", key: "campaignName" },
-  { title: "Hírlevél", key: "subject" },
-  { title: "Időpont", key: "date" },
-  { title: "URL (kattintásnál)", key: "url" },
-  { title: "Műveletek", key: "actions", sortable: false }
-]
+const newsletterHistory = computed(() => {
 
-/* FILTERED ACTIVITY */
-const filteredActivity = computed(() => {
-  return activity.value.filter(a => {
-    const matchesType =
-      !filterType.value || a.type === filterType.value
+  const map = {}
 
-    const matchesCampaign =
-      !filterCampaign.value || a.campaignId === filterCampaign.value
+  activity.value.forEach(event => {
 
-    const matchesDate =
-      !filterDate.value || a.date.substring(0, 10) === filterDate.value
+    const key =
+      event.emailId ||
+      `${event.subject}-${event.date}`
 
-    return matchesType && matchesCampaign && matchesDate
+    if (!map[key]) {
+      map[key] = {
+        subject: event.subject,
+        sendDate: event.date,
+        opened: false,
+        clicked: false,
+        campaignId: event.campaignId,
+        templateId: event.templateId
+      }
+    }
+
+    if (event.type === 'open') {
+      map[key].opened = true
+    }
+
+    if (event.type === 'click') {
+      map[key].clicked = true
+    }
+
   })
+
+  return Object.values(map)
+    .sort(
+      (a, b) =>
+        new Date(b.sendDate) -
+        new Date(a.sendDate)
+    )
 })
 
-/* PREVIEW */
-const previewDialog = ref(false)
-const selectedItem = ref({})
-const selectedTemplate = ref({})
+/* statistics */
 
-async function openPreview(item) {
-  selectedItem.value = item
+const stats = computed(() => ({
+  total: newsletterHistory.value.length,
+  opens: newsletterHistory.value.filter(
+    x => x.opened
+  ).length,
+  clicks: newsletterHistory.value.filter(
+    x => x.clicked
+  ).length
+}))
 
-  const res = await $fetch("/api/newsletter/getonetemplate", {
-    method: "POST",
-    body: { _id: item.templateId }
-  })
+const headers = [
+  {
+    title: 'Küldés',
+    key: 'sendDate'
+  },
+  {
+    title: 'Hírlevél',
+    key: 'subject'
+  },
+  {
+    title: 'Megnyitotta',
+    key: 'opened'
+  },
+  {
+    title: 'Kattintott',
+    key: 'clicked'
+  }
+]
 
-  selectedTemplate.value = res.oneNewsletter
-  previewDialog.value = true
-}
 </script>

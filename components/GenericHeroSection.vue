@@ -171,7 +171,7 @@
             class="w-10 h-8 border rounded cursor-pointer"
           />
           <span class="text-xs text-gray-500 font-mono">
-            Overlay szín: {{ localContent.overlayColor }}
+            Overlay szín: {{ overlayColorRgb  }}
           </span>
         </div>
 
@@ -183,7 +183,7 @@
     class="w-10 h-8 border rounded cursor-pointer"
   />
   <span class="text-xs text-gray-500 font-mono">
-    CTA háttér: {{ localContent.ctaBgColor }}
+    CTA háttér: {{ ctaBgColorRgb }}
   </span>
 </div>
 
@@ -194,7 +194,7 @@
     class="w-10 h-8 border rounded cursor-pointer"
   />
   <span class="text-xs text-gray-500 font-mono">
-    CTA szöveg: {{ localContent.ctaTextColor }}
+    CTA szöveg: {{ ctaTextColorRgb }}
   </span>
 </div>
 
@@ -205,7 +205,7 @@
     class="w-10 h-8 border rounded cursor-pointer"
   />
   <span class="text-xs text-gray-500 font-mono">
-    Hover háttér: {{ localContent.ctaHoverBgColor }}
+    Hover háttér: {{ ctaHoverBgColorRgb }}
   </span>
 </div>
 
@@ -216,7 +216,7 @@
     class="w-10 h-8 border rounded cursor-pointer"
   />
   <span class="text-xs text-gray-500 font-mono">
-    Hover szöveg: {{ localContent.ctaHoverTextColor }}
+    Hover szöveg: {{ ctaHoverTextColorRgb }}
   </span>
 </div>
 
@@ -405,6 +405,27 @@ const heroTypographyStyle = computed(() => ({
   '--hero-font-size': `${localContent.value.heroFontSize}px`
 }))
 
+/* color computed */
+const overlayColorRgb = computed(() =>
+  hexToRgb(localContent.value.overlayColor)
+)
+
+const ctaBgColorRgb = computed(() =>
+  hexToRgb(localContent.value.ctaBgColor)
+)
+
+const ctaTextColorRgb = computed(() =>
+  hexToRgb(localContent.value.ctaTextColor)
+)
+
+const ctaHoverBgColorRgb = computed(() =>
+  hexToRgb(localContent.value.ctaHoverBgColor)
+)
+
+const ctaHoverTextColorRgb = computed(() =>
+  hexToRgb(localContent.value.ctaHoverTextColor)
+)
+
 /* IMAGE UPLOAD */
 async function onImageSelected(event) {
   const file = event.target.files[0]
@@ -457,6 +478,24 @@ onMounted(() => {
 
 /* READY CHECK */
 const contentReady = computed(() => !!localContent.value.html)
+
+/* font helper */
+function hexToRgb(hex) {
+  if (!hex) return ''
+
+  const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i
+
+  hex = hex.replace(
+    shorthandRegex,
+    (_, r, g, b) => r + r + g + g + b + b
+  )
+
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+
+  return result
+    ? `rgb(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)})`
+    : hex
+}
 </script>
 <style scoped>
 .parallax-bg {

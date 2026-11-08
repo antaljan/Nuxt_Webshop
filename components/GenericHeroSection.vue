@@ -27,8 +27,9 @@
     <!-- TEXT CONTENT -->
 <!-- TEXT CONTENT -->
 <div
-  class="relative z-10 px-4 max-w-3xl"
+  class="relative z-10 px-4 max-w-3xl hero-content"
   :class="heroTextClass"
+  :style="heroTypographyStyle"
 >
   <div
     v-html="sanitizedHtml"
@@ -101,15 +102,31 @@
           <v-icon>mdi-redo</v-icon>
         </v-btn>
 
-        <v-select class="w-32" density="compact" hide-details
-          :items="fontSizes" label="Méret"
-          prepend-inner-icon="mdi-format-size"
-          @update:modelValue="size => editor?.chain().focus().setFontSize(size).run()" />
+        <div class="mb-2 text-sm text-grey">
+          Címsor méret:
+          <strong>{{ localContent.heroFontSize }} px</strong>
+        </div>
 
-        <v-select class="w-40" density="compact" hide-details
-          :items="fontFamilies" label="Betűtípus"
-          prepend-inner-icon="mdi-format-font"
-          @update:modelValue="family => editor?.chain().focus().setFontFamily(family).run()" />
+        <v-slider
+          v-model="localContent.heroFontSize"
+          :min="24"
+          :max="120"
+          :step="2"
+          color="primary"
+        />
+
+        <v-select
+          v-model="selectedFont"
+          :items="fontFamilies"
+          label="Betűtípus"
+        >
+        <template #item="{ item, props }">
+          <v-list-item
+            v-bind="props"
+            :style="{ fontFamily: item.raw }"
+          />
+        </template>
+</v-select>
 
         <div class="relative flex items-center">
           <v-btn icon size="small" variant="text">
@@ -290,25 +307,7 @@ const showDesignEditor = ref(false)
 
 const fontSizes = ['12px', '14px', '16px', '18px', '20px', '24px', '32px', '48px', '64px', '72px']
 
-const fontFamilies = [
-  'Inter',
-  'Lato',
-  'Montserrat',
-  'Playfair Display',
-  'Merriweather',
-  'Source Sans Pro',
-  'Source Serif Pro',
-  'Lora',
-  'Cormorant Garamond',
-  'Libre Baskerville',
-  'Roboto',
-  'Georgia',
-  'Times New Roman',
-  'Arial',
-  'Verdana',
-  'Tahoma',
-  'Courier New'
-]
+const { fontFamilies } = useEditorFonts()
 
 const hovering = ref(false)
 
@@ -331,6 +330,7 @@ const localContent = ref({
   backgroundPosition: 'center',
   height: 75,
   textPosition: 'center',
+  heroFontSize: 48,
   ctaText: '',
   ctaLink: '',
   ctaBgColor: '#ffffff',
@@ -358,6 +358,7 @@ watch(
       backgroundPosition: val.backgroundPosition || 'center',
       height: val.height || 75,
       textPosition: val.textPosition || 'center',
+      heroFontSize: val.heroFontSize || 48,
       ctaText: val.ctaText || '',
       ctaLink: val.ctaLink || '',
       ctaBgColor: val.ctaBgColor || '#ffffff',
@@ -398,6 +399,11 @@ const heroTextClass = computed(() => {
       return 'text-center mx-auto'
   }
 })
+
+/* HERO FONT SIZE */
+const heroTypographyStyle = computed(() => ({
+  '--hero-font-size': `${localContent.value.heroFontSize}px`
+}))
 
 /* IMAGE UPLOAD */
 async function onImageSelected(event) {
@@ -467,5 +473,18 @@ const contentReady = computed(() => !!localContent.value.html)
 .prose-invert p {
   color: rgba(255,255,255,0.9);
   font-size: 1.25rem;
+}
+.hero-content :deep(h1) {
+  font-size: var(--hero-font-size);
+  line-height: 1.1;
+}
+
+.hero-content :deep(h2) {
+  font-size: calc(var(--hero-font-size) * 0.6);
+  line-height: 1.2;
+}
+
+.hero-content :deep(p) {
+  font-size: calc(var(--hero-font-size) * 0.35);
 }
 </style>

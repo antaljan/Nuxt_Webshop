@@ -97,12 +97,6 @@ watch(locale, () => {
       sectionKey="hero"
     />
 
-    <GenericImageTextSection
-      v-if="about?.data?.value"
-      :content="about.data.value"
-      sectionKey="about"
-    />
-
     <GenericHtmlTextSection
       v-if="story?.data?.value"
       :content="story.data.value"
@@ -113,6 +107,12 @@ watch(locale, () => {
       v-if="methode?.data?.value"
       :content="methode.data.value"
       sectionKey="methode"
+    />
+
+    <GenericImageTextSection
+      v-if="about?.data?.value"
+      :content="about.data.value"
+      sectionKey="about"
     />
 
     <GenericFeedbackSection sectionKey="feedback" />

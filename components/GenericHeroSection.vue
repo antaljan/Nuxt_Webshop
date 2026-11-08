@@ -25,25 +25,33 @@
     ></div>
 
     <!-- TEXT CONTENT -->
-    <div class="relative z-10 px-4 max-w-3xl">
-      <div v-html="sanitizedHtml" class="prose prose-invert max-w-none"></div>
-
-<a
-  v-if="localContent.ctaText && localContent.ctaText.trim() !== ''"
-  :href="localContent.ctaLink"
-  class="inline-block transition px-6 py-3 rounded-lg text-lg font-medium backdrop-blur-sm"
-  :style="{
-    backgroundColor: hovering ? localContent.ctaHoverBgColor : localContent.ctaBgColor,
-    color: hovering ? localContent.ctaHoverTextColor : localContent.ctaTextColor
-  }"
-  @mouseover="hovering = true"
-  @mouseleave="hovering = false"
+<!-- TEXT CONTENT -->
+<div
+  class="relative z-10 px-4 max-w-3xl"
+  :class="heroTextClass"
 >
-  {{ localContent.ctaText }}
-</a>
+  <div
+    v-html="sanitizedHtml"
+    class="prose prose-invert max-w-none"
+  ></div>
 
+  <div class="mt-6">
+    <a
+      v-if="localContent.ctaText && localContent.ctaText.trim() !== ''"
+      :href="localContent.ctaLink"
+      class="inline-block transition px-6 py-3 rounded-lg text-lg font-medium backdrop-blur-sm"
+      :style="{
+        backgroundColor: hovering ? localContent.ctaHoverBgColor : localContent.ctaBgColor,
+        color: hovering ? localContent.ctaHoverTextColor : localContent.ctaTextColor
+      }"
+      @mouseover="hovering = true"
+      @mouseleave="hovering = false"
+    >
+      {{ localContent.ctaText }}
+    </a>
+  </div>
+</div>
 
-    </div>
   </section>
 
   <!-- ADMIN TOOLS -->
@@ -216,6 +224,16 @@
           :items="['top', 'center', 'bottom']"
           label="Háttér pozíció"
         />
+
+        <v-select
+          v-model="localContent.textPosition"
+          :items="[
+            { title: 'Bal', value: 'left' },
+            { title: 'Közép', value: 'center' },
+            { title: 'Jobb', value: 'right' }
+          ]"
+          label="Szöveg pozíció"
+        />
       </div>
 
       <v-btn class="admin-primary mt-6" @click="saveContent">
@@ -273,9 +291,20 @@ const showDesignEditor = ref(false)
 const fontSizes = ['12px', '14px', '16px', '18px', '20px', '24px', '32px', '48px', '64px', '72px']
 
 const fontFamilies = [
-  'Arial',
+  'Inter',
+  'Lato',
+  'Montserrat',
+  'Playfair Display',
+  'Merriweather',
+  'Source Sans Pro',
+  'Source Serif Pro',
+  'Lora',
+  'Cormorant Garamond',
+  'Libre Baskerville',
+  'Roboto',
   'Georgia',
   'Times New Roman',
+  'Arial',
   'Verdana',
   'Tahoma',
   'Courier New'
@@ -301,6 +330,7 @@ const localContent = ref({
   overlayOpacity: 0.4,
   backgroundPosition: 'center',
   height: 75,
+  textPosition: 'center',
   ctaText: '',
   ctaLink: '',
   ctaBgColor: '#ffffff',
@@ -327,6 +357,7 @@ watch(
       overlayOpacity: val.overlayOpacity ?? 0.4,
       backgroundPosition: val.backgroundPosition || 'center',
       height: val.height || 75,
+      textPosition: val.textPosition || 'center',
       ctaText: val.ctaText || '',
       ctaLink: val.ctaLink || '',
       ctaBgColor: val.ctaBgColor || '#ffffff',
@@ -353,6 +384,20 @@ const backgroundUrl = computed(() => {
 
 /* HERO HEIGHT */
 const heroHeight = computed(() => `${localContent.value.height}vh`)
+
+/* TEXT POSITION */
+const heroTextClass = computed(() => {
+  switch (localContent.value.textPosition) {
+    case 'left':
+      return 'text-left mr-auto'
+
+    case 'right':
+      return 'text-right ml-auto'
+
+    default:
+      return 'text-center mx-auto'
+  }
+})
 
 /* IMAGE UPLOAD */
 async function onImageSelected(event) {

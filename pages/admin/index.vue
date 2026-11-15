@@ -271,6 +271,12 @@ const adminTools = [
     color: 'orange'
   },
   {
+    to: '/admin/pages',
+    label: 'Web Oldalak',
+    icon: 'mdi-file-document',
+    color: 'orange'
+  },
+  {
     to: '/admin/coaching',
     label: 'Coaching ülések',
     icon: 'mdi-calendar-check',

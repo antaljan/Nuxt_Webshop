@@ -180,7 +180,7 @@ const selectedType = ref(null)
 const editableSections = ref(
   [...(props.page.sections || [])]
 )
-const deletedSections = ref<any[]>([])
+const deletedSections = ref([])
 
 watch(
   () => props.page.sections,

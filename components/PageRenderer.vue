@@ -104,6 +104,89 @@
 
         <v-divider class="my-4" />
 
+        <h3 class="mb-2 mt-4">
+  SEO
+</h3>
+
+<v-tabs
+  v-model="seoTab"
+  density="compact"
+  color="primary"
+>
+  <v-tab value="hu">
+    HU
+  </v-tab>
+
+  <v-tab value="en">
+    EN
+  </v-tab>
+
+  <v-tab value="de">
+    DE
+  </v-tab>
+</v-tabs>
+
+<v-window
+  v-model="seoTab"
+  class="mt-3"
+>
+
+  <v-window-item value="hu">
+
+    <v-text-field
+      v-model="seoForm.hu.title"
+      label="SEO Title"
+      variant="outlined"
+      density="compact"
+    />
+
+    <v-textarea
+      v-model="seoForm.hu.description"
+      label="Meta Description"
+      variant="outlined"
+      rows="3"
+    />
+
+  </v-window-item>
+
+  <v-window-item value="en">
+
+    <v-text-field
+      v-model="seoForm.en.title"
+      label="SEO Title"
+      variant="outlined"
+      density="compact"
+    />
+
+    <v-textarea
+      v-model="seoForm.en.description"
+      label="Meta Description"
+      variant="outlined"
+      rows="3"
+    />
+
+  </v-window-item>
+
+  <v-window-item value="de">
+
+    <v-text-field
+      v-model="seoForm.de.title"
+      label="SEO Title"
+      variant="outlined"
+      density="compact"
+    />
+
+    <v-textarea
+      v-model="seoForm.de.description"
+      label="Meta Description"
+      variant="outlined"
+      rows="3"
+    />
+
+  </v-window-item>
+
+</v-window>
+
         <v-btn
           block
           color="success"
@@ -181,6 +264,29 @@ const editableSections = ref(
   [...(props.page.sections || [])]
 )
 const deletedSections = ref([])
+
+const seoTab = ref('hu')
+
+const seoForm = ref(
+  JSON.parse(
+    JSON.stringify(
+      props.page.seo || {
+        hu: {
+          title: '',
+          description: ''
+        },
+        en: {
+          title: '',
+          description: ''
+        },
+        de: {
+          title: '',
+          description: ''
+        }
+      }
+    )
+  )
+)
 
 watch(
   () => props.page.sections,
@@ -351,8 +457,8 @@ async function saveStructure() {
 
         body: {
           ...props.page,
-          sections:
-            editableSections.value
+          sections:editableSections.value,
+          seo: seoForm.value
         }
       }
     )

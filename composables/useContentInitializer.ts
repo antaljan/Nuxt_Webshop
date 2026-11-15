@@ -67,22 +67,26 @@ export function useContentInitializer() {
 
   }
 
-  async function deleteSectionContent(
+async function deleteSectionContent(
   sectionKey: string
 ) {
 
   try {
 
-    await $fetch(
-      `/api/content/${sectionKey}`,
-      {
-        method: 'DELETE'
-      }
-    )
+    const result =
+      await $fetch(
+        `/api/content/${sectionKey}`,
+        {
+          method: 'DELETE'
+        }
+      )
 
     console.log(
-      `[DELETE] ${sectionKey}`
+      `[DELETE] ${sectionKey}`,
+      result
     )
+
+    return result
 
   } catch (err) {
 
@@ -90,6 +94,8 @@ export function useContentInitializer() {
       `Delete failed: ${sectionKey}`,
       err
     )
+
+    throw err
 
   }
 

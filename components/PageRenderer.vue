@@ -20,7 +20,7 @@
     <!-- EMPTY PAGE -->
 
     <div
-      v-if="page.sections?.length === 0"
+      v-if="editableSections.length === 0"
       class="text-center py-12 text-grey"
     >
       Az oldal még nem tartalmaz szekciókat.
@@ -155,7 +155,8 @@ import {
 } from '~/composables/useContentInitializer'
 
 const {
-  initializeSection
+  initializeSection,
+  deleteSectionContent
 } = useContentInitializer()
 
 const props = defineProps({
@@ -179,6 +180,7 @@ const selectedType = ref(null)
 const editableSections = ref(
   [...(props.page.sections || [])]
 )
+const deletedSections = ref<any[]>([])
 
 watch(
   () => props.page.sections,
@@ -318,6 +320,17 @@ function addSection() {
 
 function removeSection(index) {
 
+  const section =
+    editableSections.value[index]
+
+  if (section) {
+
+    deletedSections.value.push(
+      section
+    )
+
+  }
+
   editableSections.value.splice(
     index,
     1
@@ -344,7 +357,7 @@ async function saveStructure() {
       }
     )
 
-    // Új szekciók SiteContent rekordjainak létrehozása
+    // Új szekciók inicializálása
 
     for (const section of editableSections.value) {
 
@@ -353,6 +366,18 @@ async function saveStructure() {
       )
 
     }
+
+    // Törölt szekciók takarítása
+
+    for (const section of deletedSections.value) {
+
+      await deleteSectionContent(
+        section.key
+      )
+
+    }
+
+    deletedSections.value = []
 
     await refresh()
 

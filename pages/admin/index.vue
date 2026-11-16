@@ -265,12 +265,6 @@ const adminTools = [
     color: 'pink'
   },
   {
-    to: '/admin/leadmagnet',
-    label: 'Leadmagnet oldalak',
-    icon: 'mdi-bullhorn',
-    color: 'orange'
-  },
-  {
     to: '/admin/pages',
     label: 'Web Oldalak',
     icon: 'mdi-file-document',

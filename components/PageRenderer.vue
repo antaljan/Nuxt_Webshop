@@ -232,6 +232,7 @@ import GenericContactSection from '~/components/GenericContactSection.vue'
 import GenericFeedbackSection from '~/components/GenericFeedbackSection.vue'
 import GenericBlogSection from '~/components/GenericBlogSection.vue'
 import SectionSeparator from '~/components/sectionSeparator.vue'
+import GenericLeadMagnetSubscribe from '~/components/GenericLeadMagnetSubscribe.vue'
 
 import {
   useContentInitializer
@@ -302,7 +303,8 @@ const availableSections = [
   'Contact',
   'Feedback',
   'Blog',
-  'Separator'
+  'Separator',
+  'Subscribe'
 ]
 
 const componentMap = {
@@ -312,7 +314,8 @@ const componentMap = {
   Contact: GenericContactSection,
   Feedback: GenericFeedbackSection,
   Blog: GenericBlogSection,
-  Separator: SectionSeparator
+  Separator: SectionSeparator,
+  Subscribe: GenericLeadMagnetSubscribe
 }
 
 //

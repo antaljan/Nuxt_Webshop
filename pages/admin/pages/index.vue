@@ -62,7 +62,7 @@
         <template #item.pageType="{ item }">
 
           <v-chip
-            color="primary"
+            :color="getPageTypeColor(item.pageType)"
             size="small"
           >
             {{ item.pageType }}
@@ -79,6 +79,13 @@
             color="primary"
             @click="openPage(item)"
           />
+
+          <v-btn
+            icon="mdi-content-copy"
+            variant="text"
+            color="info"
+            @click="copyLink(item)"
+          />       
 
           <v-btn
             icon="mdi-delete"
@@ -320,5 +327,41 @@ function normalizeSlug(slug) {
     .replace(/\/+$/, '')
 }
 
+async function copyLink(page) {
+
+  const url =
+    `${window.location.origin}/${page.slug}`
+
+  await navigator.clipboard.writeText(
+    url
+  )
+
+  alert(
+    'Link a vágólapra másolva.'
+  )
+
+}
+
+function getPageTypeColor(
+  type
+) {
+
+  switch (type) {
+
+    case 'leadmagnet':
+      return 'success'
+
+    case 'homepage':
+      return 'warning'
+
+    case 'service':
+      return 'info'
+
+    default:
+      return 'primary'
+
+  }
+
+}
 
 </script>

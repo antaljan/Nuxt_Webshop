@@ -207,6 +207,29 @@ function createDummyContent(
         style: 'default'
       }
 
+    case 'Subscribe':
+
+     return {
+
+       title:
+         lang === 'hu'
+            ? 'Kérem az ingyenes anyagot'
+            : 'Get the free resource',
+
+        description:
+          lang === 'hu'
+           ? 'Add meg az email címedet és elküldöm az ingyenes anyagot.'
+           : 'Enter your email address and I will send you the free resource.',
+
+        ctaText:
+          lang === 'hu'
+           ? 'Feliratkozás'
+           : 'Subscribe',
+
+       leadMagnetSlug: ''
+
+      }
+
     default:
 
       return {}

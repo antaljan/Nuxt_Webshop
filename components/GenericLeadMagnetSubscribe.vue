@@ -1,89 +1,222 @@
+```vue
 <script setup>
+
 const { t, locale } = useI18n()
-// Props: leadMagnetSlug a legfontosabb összekötő kapocs!
-const props = defineProps(['title', 'buttonText', 'leadMagnetSlug'])
+
+const props = defineProps({
+  content: {
+    type: Object,
+    default: () => ({})
+  }
+})
 
 const firstname = ref('')
-const name = ref('') // Hozzáadva a vezetéknévhez
+const name = ref('')
 const email = ref('')
+
 const gdpr = ref(false)
 const loading = ref(false)
 const success = ref(false)
+
 const valid = ref(false)
 const form = ref(null)
 
 async function handleSubscribe() {
-  const { valid: isFormValid } = await form.value.validate()
-  if (!isFormValid) return
+
+  const { valid: isFormValid } =
+    await form.value.validate()
+
+  if (!isFormValid) {
+    return
+  }
+
+  const campaignSlug =
+    props.content?.leadMagnetSlug
+
+  if (!campaignSlug) {
+
+    console.error(
+      'Missing leadMagnetSlug'
+    )
+
+    alert(
+      'A feliratkozási kampány nincs konfigurálva.'
+    )
+
+    return
+
+  }
 
   loading.value = true
+
   try {
-    await $fetch('/api/newsletter/subscribe', {
-      method: 'POST',
-      body: {
-        firstname: firstname.value,
-        name: name.value,
-        email: email.value,
-        language: locale.value,
-        // FONTOS: Összehangolva a Controller campaignSlug változójával
-        campaignSlug: props.leadMagnetSlug
+
+    await $fetch(
+      '/api/newsletter/subscribe',
+      {
+        method: 'POST',
+
+        body: {
+          firstname: firstname.value,
+          name: name.value,
+          email: email.value,
+
+          language: locale.value,
+
+          campaignSlug
+        }
       }
-    })
+    )
+
     success.value = true
-    
-    // Profi érintés: sikeres feliratkozás után ürítjük a formot
+
     firstname.value = ''
     name.value = ''
     email.value = ''
-    gdpr.value = false
-    if (form.value) form.value.resetValidation()
 
-    navigateTo(`/lp/${props.leadMagnetSlug}_success`, { replace: true })
+    gdpr.value = false
+
+    if (form.value) {
+      form.value.resetValidation()
+    }
+
+    navigateTo(
+      `/lp/${campaignSlug}_success`,
+      {
+        replace: true
+      }
+    )
 
   } catch (err) {
-    console.error("Subscription error:", err)
-    alert("Hiba történt. Kérlek próbáld újra!")
+
+    console.error(
+      'Subscription error:',
+      err
+    )
+
+    alert(
+      'Hiba történt. Kérlek próbáld újra!'
+    )
+
   } finally {
+
     loading.value = false
+
   }
+
 }
+
 </script>
 
 <template>
+
   <v-card
     id="subscribe"
     class="pa-6 rounded-xl shadow-lg border-2"
-    :style="{ borderColor: 'var(--v-primary-base)' }"
+    :style="{
+      borderColor: 'var(--v-primary-base)'
+    }"
   >
-    <h3 class="text-h5 font-bold mb-4 text-center">{{ title || t('newsletter.subscribeTitle') }}</h3>
-    
-    <v-form ref="form" v-model="valid" @submit.prevent="handleSubscribe">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-        <!-- <v-text-field v-model="name" :label="t('newsletter.lastname')" :rules="[v => !!v || '']" variant="outlined" density="comfortable" />-->
-        <v-text-field v-model="firstname" :label="t('newsletter.firstname')" :rules="[v => !!v || '']" variant="outlined" density="comfortable" />
+
+    <h3
+      class="text-h5 font-bold mb-2 text-center"
+    >
+      {{
+        content.title ||
+        t('newsletter.subscribeTitle')
+      }}
+    </h3>
+
+    <div
+      v-if="content.description"
+      class="text-center mb-4"
+    >
+      {{ content.description }}
+    </div>
+
+    <v-form
+      ref="form"
+      v-model="valid"
+      @submit.prevent="handleSubscribe"
+    >
+
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 gap-2"
+      >
+
+        <v-text-field
+          v-model="firstname"
+          :label="
+            t('newsletter.firstname')
+          "
+          :rules="[
+            v => !!v || ''
+          ]"
+          variant="outlined"
+          density="comfortable"
+        />
+
       </div>
 
-      <v-text-field v-model="email" :label="t('newsletter.email')" :rules="[v => /.+@.+\..+/.test(v) || '']" variant="outlined" density="comfortable" />
-      
-      <v-checkbox v-model="gdpr" :rules="[v => !!v || '']" density="compact" hide-details class="mb-4">
-          <template #label>
-            {{ $t('newsletter.gdpr.before') }}
-            <NuxtLink to="/gdpr" target="_blank" class="text-primary">
-              {{ $t('newsletter.gdpr.link') }}
-            </NuxtLink>
-          </template>
+      <v-text-field
+        v-model="email"
+        :label="
+          t('newsletter.email')
+        "
+        :rules="[
+          v =>
+            /.+@.+\..+/.test(v)
+            || ''
+        ]"
+        variant="outlined"
+        density="comfortable"
+      />
+
+      <v-checkbox
+        v-model="gdpr"
+        :rules="[
+          v => !!v || ''
+        ]"
+        density="compact"
+        hide-details
+        class="mb-4"
+      >
+
+        <template #label>
+
+          {{ $t('newsletter.gdpr.before') }}
+
+          <NuxtLink
+            to="/gdpr"
+            target="_blank"
+            class="text-primary"
+          >
+            {{ $t('newsletter.gdpr.link') }}
+          </NuxtLink>
+
+        </template>
+
       </v-checkbox>
 
-      <v-btn type="submit" color="primary" block size="x-large" :loading="loading" :disabled="!valid">
-        {{ buttonText || t('newsletter.subscribeButton') }}
+      <v-btn
+        type="submit"
+        color="primary"
+        block
+        size="x-large"
+        :loading="loading"
+        :disabled="!valid"
+      >
+        {{
+          content.ctaText ||
+          t(
+            'newsletter.subscribeButton'
+          )
+        }}
       </v-btn>
+
     </v-form>
-    <!-- Sikeres feliratkozás üzenet 
-    <v-fade-transition>
-      <v-alert v-if="success" type="success" variant="tonal" class="mt-4" icon="mdi-check-circle">
-        {{ t('newsletter.successMessage') }}
-        {{ t('newsletter.warningMessage') }}
-      </v-alert>
-    </v-fade-transition>-->
+
   </v-card>
+
 </template>
+```

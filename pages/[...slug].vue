@@ -32,16 +32,6 @@ const slug = computed(() => {
 
 })
 
-console.log(
-  'ROUTE PARAM:',
-  route.params.slug
-)
-
-console.log(
-  'SLUG:',
-  slug.value
-)
-
 const { user } = useAuth()
 
 const isAdmin = computed(
@@ -58,11 +48,6 @@ const {
 
   async () => {
 
-    console.log(
-      'FETCHING PAGE:',
-      slug.value
-    )
-
     return await $fetch(
       '/api/page/by-path',
       {
@@ -74,16 +59,6 @@ const {
 
   }
 
-)
-
-console.log(
-  'DATA:',
-  data.value
-)
-
-console.log(
-  'ERROR:',
-  error.value
 )
 
 const page = computed(

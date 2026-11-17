@@ -209,25 +209,27 @@ function createDummyContent(
 
     case 'Subscribe':
 
-     return {
+      return {
+        html:
+          '<h2>Kérem az ingyenes anyagot</h2><p>Add meg az email címedet és elküldöm.</p>',
 
-       title:
-         lang === 'hu'
-            ? 'Kérem az ingyenes anyagot'
-            : 'Get the free resource',
-
-        description:
-          lang === 'hu'
-           ? 'Add meg az email címedet és elküldöm az ingyenes anyagot.'
-           : 'Enter your email address and I will send you the free resource.',
+        consentHtml:
+          '<p>Elfogadom az adatkezelési tájékoztatót.</p>',
 
         ctaText:
-          lang === 'hu'
-           ? 'Feliratkozás'
-           : 'Subscribe',
+          'Kérem az anyagot',
 
-       leadMagnetSlug: ''
+        campaignSlug: '',
 
+        successSlug: '',
+
+        backgroundColor:
+          '#f7f5f8',
+
+        wave: null,
+
+        waveColor:
+          '#ffffff'
       }
 
     default:

@@ -19,23 +19,63 @@
 <script setup>
 
 import { useAuth } from '@/composables/useAuth'
+import { useBrand } from '@/composables/useBrand'
 
 const route = useRoute()
 
 const slug = computed(() => {
-
   const value = route.params.slug
-
+  if (!value) {
+    return ''
+  }
   return Array.isArray(value)
     ? value.join('/')
     : value
-
 })
-
-const { user } = useAuth()
 
 const isAdmin = computed(
   () => user.value?.role === 'admin'
+)
+
+const {
+  settings: brand,
+  loadBrand
+} = useBrand()
+
+const {
+  user,
+  fetchUser
+} = useAuth()
+
+await Promise.all([
+  fetchUser(),
+  loadBrand()
+])
+
+const effectiveSlug =
+  computed(() => {
+
+    if (
+      brand.value?.maintenanceMode &&
+      !isAdmin.value
+    ) {
+      return 'commingSoon'
+    }
+
+    return slug.value
+
+})
+
+console.log('brand', brand.value)
+
+console.log(
+  'maintenance',
+  brand.value?.maintenanceMode
+)
+
+console.log(
+  'effectiveSlug',
+  effectiveSlug.value
 )
 
 const {
@@ -44,7 +84,7 @@ const {
   error
 } = await useAsyncData(
 
-  () => `page-${slug.value}`,
+  () => `page-${effectiveSlug.value}`,
 
   async () => {
 
@@ -52,7 +92,7 @@ const {
       '/api/page/by-path',
       {
         query: {
-          slug: slug.value
+          slug: effectiveSlug.value
         }
       }
     )

@@ -9,7 +9,12 @@
     >
       <component
         :is="componentMap[sec.type]"
-        v-if="contentMap[sec.key]"
+
+        v-if="
+          contentMap[sec.key] ||
+          sec.type === 'Blog'
+        "
+
         v-bind="getSectionProps(
           sec,
           contentMap[sec.key]

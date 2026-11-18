@@ -232,6 +232,28 @@ function createDummyContent(
           '#ffffff'
       }
 
+      case 'NavigationLink':
+
+  return {
+
+    section: section.key,
+
+    text: 'Vissza a kezdőlapra',
+
+    url: '/',
+
+    icon: 'mdi-home',
+
+    variant: 'link',
+
+    openInNewWindow: false,
+
+    alignment: 'left',
+
+    color: '#2563eb'
+
+  }
+
     default:
 
       return {}

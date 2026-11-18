@@ -66,18 +66,6 @@ const effectiveSlug =
 
 })
 
-console.log('brand', brand.value)
-
-console.log(
-  'maintenance',
-  brand.value?.maintenanceMode
-)
-
-console.log(
-  'effectiveSlug',
-  effectiveSlug.value
-)
-
 const {
   data,
   pending,

@@ -36,15 +36,50 @@
     <v-card
       v-if="isAdmin"
       class="page-builder-card"
+        :style="{
+    width:
+      builderCollapsed
+        ? '60px'
+        : '360px'
+  }"
       elevation="10"
     >
 
-      <v-card-title>
-        Oldal struktúra
-      </v-card-title>
+<v-card-title
+  class="
+    flex
+    justify-between
+    items-center
+    cursor-pointer
+  "
+  @click="
+    builderCollapsed =
+      !builderCollapsed
+  "
+>
 
-      <v-card-text>
+<span
+  v-if="!builderCollapsed"
+>
+  Oldal struktúra
+</span>
 
+<v-icon>
+  {{
+    builderCollapsed
+      ? 'mdi-chevron-right'
+      : 'mdi-chevron-left'
+  }}
+</v-icon>
+
+</v-card-title>
+<v-expand-transition>
+
+  <v-card-text
+    v-if="
+      !builderCollapsed
+    "
+  >
         <draggable
           v-model="editableSections"
           item-key="key"
@@ -202,7 +237,7 @@
         </v-btn>
 
       </v-card-text>
-
+</v-expand-transition>
     </v-card>
     <v-snackbar
       v-model="snackbar"
@@ -238,6 +273,7 @@ import GenericFeedbackSection from '~/components/GenericFeedbackSection.vue'
 import GenericBlogSection from '~/components/GenericBlogSection.vue'
 import SectionSeparator from '~/components/sectionSeparator.vue'
 import GenericLeadMagnetSubscribe from '~/components/GenericLeadMagnetSubscribe.vue'
+import GenericNavigationLink from '~/components/GenericNavigationLink.vue'
 
 import {
   useContentInitializer
@@ -271,6 +307,14 @@ const editableSections = ref(
 )
 const deletedSections = ref([])
 
+const builderCollapsed =
+  useCookie(
+    'page-builder-collapsed',
+    {
+      default: () => false
+    }
+  )
+  
 const seoTab = ref('hu')
 
 const seoForm = ref(
@@ -309,7 +353,8 @@ const availableSections = [
   'Feedback',
   'Blog',
   'Separator',
-  'Subscribe'
+  'Subscribe',
+  'NavigationLink'
 ]
 
 const componentMap = {
@@ -320,7 +365,8 @@ const componentMap = {
   Feedback: GenericFeedbackSection,
   Blog: GenericBlogSection,
   Separator: SectionSeparator,
-  Subscribe: GenericLeadMagnetSubscribe
+  Subscribe: GenericLeadMagnetSubscribe,
+  NavigationLink: GenericNavigationLink
 }
 
 //
@@ -537,11 +583,13 @@ async function saveStructure() {
 
   width: 360px;
 
+  z-index: 2000;
+
   max-height: 80vh;
 
   overflow-y: auto;
 
-  z-index: 2000;
 }
+
 
 </style>

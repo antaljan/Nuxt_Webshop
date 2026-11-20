@@ -274,6 +274,7 @@ import GenericBlogSection from '~/components/GenericBlogSection.vue'
 import SectionSeparator from '~/components/sectionSeparator.vue'
 import GenericLeadMagnetSubscribe from '~/components/GenericLeadMagnetSubscribe.vue'
 import GenericNavigationLink from '~/components/GenericNavigationLink.vue'
+import GenericCardsSection from '~/components/GenericCardsSection.vue'
 
 import {
   useContentInitializer
@@ -354,7 +355,8 @@ const availableSections = [
   'Blog',
   'Separator',
   'Subscribe',
-  'NavigationLink'
+  'NavigationLink',
+  'Cards'
 ]
 
 const componentMap = {
@@ -366,7 +368,8 @@ const componentMap = {
   Blog: GenericBlogSection,
   Separator: SectionSeparator,
   Subscribe: GenericLeadMagnetSubscribe,
-  NavigationLink: GenericNavigationLink
+  NavigationLink: GenericNavigationLink,
+  Cards: GenericCardsSection
 }
 
 //

@@ -234,25 +234,102 @@ function createDummyContent(
 
       case 'NavigationLink':
 
-  return {
+        return {
 
-    section: section.key,
+          section: section.key,
 
-    text: 'Vissza a kezdőlapra',
+          text: 'Vissza a kezdőlapra',
 
-    url: '/',
+          url: '/',
 
-    icon: 'mdi-home',
+          icon: 'mdi-home',
 
-    variant: 'link',
+          variant: 'link',
 
-    openInNewWindow: false,
+          openInNewWindow: false,
 
-    alignment: 'left',
+          alignment: 'left',
 
-    color: '#2563eb'
+          color: '#2563eb'
 
-  }
+        }
+
+      case 'Cards':
+
+        return {
+
+          title:
+            lang === 'hu'
+              ? 'Új kártya szekció'
+              : lang === 'de'
+                ? 'Neue Kartensektion'
+                : 'New Card Section',
+
+          description:
+            lang === 'hu'
+              ? 'Szerkeszd az első kártyát vagy adj hozzá újakat.'
+              : lang === 'de'
+                ? 'Bearbeite die erste Karte oder füge weitere hinzu.'
+                : 'Edit the first card or add more cards.',
+
+          variant: 'outlined',
+
+          rounded: true,
+
+          elevation: 2,
+
+          showBorder: true,
+
+          cardColor: '#ffffff',
+
+          titleColor: '#222222',
+
+          descriptionColor: '#555555',
+
+          cardTitleColor: '#222222',
+
+          cardTextColor: '#555555',
+
+          buttonColor: 'primary',
+
+          buttonVariant: 'flat',
+
+          cards: [
+
+            {
+
+              title:
+                lang === 'hu'
+                  ? 'Első kártya'
+                  : lang === 'de'
+                    ? 'Erste Karte'
+                    : 'First Card',
+
+              subtitle: '',
+
+              text:
+                lang === 'hu'
+                  ? 'Itt jelenik meg a kártya tartalma.'
+                  : lang === 'de'
+                    ? 'Hier erscheint der Inhalt der Karte.'
+                    : 'Card content goes here.',
+
+              icon: 'mdi-star',
+
+              buttonText:
+                lang === 'hu'
+                  ? 'Tovább'
+                  : lang === 'de'
+                    ? 'Weiter'
+                    : 'Learn More',
+
+              buttonUrl: '/'
+
+            }
+
+          ]
+
+        }
 
     default:
 

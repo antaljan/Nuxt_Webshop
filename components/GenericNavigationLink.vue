@@ -29,21 +29,18 @@ const editMode = ref(false)
 ------------------------------------------------------------- */
 
 const localContent = ref({
-
+  title: '',
+  description: '',
   text: '',
-
   url: '/',
-
   icon: 'mdi-home',
-
   variant: 'link',
-
   openInNewWindow: false,
-
   alignment: 'left',
-
-  color: '#2563eb'
-
+  color: '#2563eb',
+  backgroundColor: '',
+  titleColor: '#222222',
+  descriptionColor: '#555555'
 })
 
 watch(
@@ -55,28 +52,30 @@ watch(
     }
 
     localContent.value = {
-
+      title:
+        value.title || '',
+      description:
+        value.description || '',
       text:
         value.text || '',
-
       url:
         value.url || '/',
-
       icon:
         value.icon || 'mdi-home',
-
       variant:
         value.variant || 'link',
-
       openInNewWindow:
         value.openInNewWindow || false,
-
       alignment:
         value.alignment || 'left',
-
       color:
-        value.color || '#2563eb'
-
+        value.color || '#2563eb',
+      backgroundColor:
+        value.backgroundColor || '',
+      titleColor:
+        value.titleColor || '#222222',
+      descriptionColor:
+        value.descriptionColor || '#555555'
     }
 
   },
@@ -90,29 +89,17 @@ watch(
 ------------------------------------------------------------- */
 
 const iconOptions = [
-
   'mdi-home',
-
   'mdi-arrow-left',
-
   'mdi-arrow-right',
-
   'mdi-account',
-
   'mdi-email',
-
   'mdi-phone',
-
   'mdi-web',
-
   'mdi-file-document',
-
   'mdi-information',
-
   'mdi-chevron-left',
-
   'mdi-chevron-right'
-
 ]
 
 /* -------------------------------------------------------------
@@ -204,37 +191,21 @@ async function saveContent() {
       `/api/content/${props.sectionKey}/${locale.value}`,
       {
         method: 'PUT',
-
         body: {
-
           ...props.content,
-
-          text:
-            localContent.value.text,
-
-          url:
-            localContent.value.url,
-
-          icon:
-            localContent.value.icon,
-
-          variant:
-            localContent.value.variant,
-
-          openInNewWindow:
-            localContent.value
-              .openInNewWindow,
-
-          alignment:
-            localContent.value
-              .alignment,
-
-          color:
-            localContent.value
-              .color
-
+          title: localContent.value.title,
+          description: localContent.value.description,
+          text: localContent.value.text,
+          url: localContent.value.url,
+          icon: localContent.value.icon,
+          variant: localContent.value.variant,
+          openInNewWindow: localContent.value.openInNewWindow,
+          alignment: localContent.value.alignment,
+          color: localContent.value.color,
+          backgroundColor: localContent.value.backgroundColor,
+          titleColor: localContent.value.titleColor,
+          descriptionColor: localContent.value.descriptionColor
         }
-
       }
     )
 
@@ -259,28 +230,30 @@ async function saveContent() {
 function cancelEdit() {
 
   localContent.value = {
-
+    title:
+      props.content?.title || '',
+    description:
+      props.content?.description || '',
     text:
       props.content?.text || '',
-
     url:
       props.content?.url || '/',
-
     icon:
       props.content?.icon || 'mdi-home',
-
     variant:
       props.content?.variant || 'link',
-
     openInNewWindow:
       props.content?.openInNewWindow || false,
-
     alignment:
       props.content?.alignment || 'left',
-
     color:
-      props.content?.color || '#2563eb'
-
+      props.content?.color || '#2563eb',
+    backgroundColor:
+      props.content?.backgroundColor || '',
+    titleColor:
+      props.content?.titleColor || '#222222',
+    descriptionColor:
+      props.content?.descriptionColor || '#555555'
   }
 
   editMode.value = false
@@ -298,30 +271,68 @@ function cancelEdit() {
 
     <div
       :class="wrapperClass"
+      class="
+        py-6
+        px-4
+        rounded-lg
+      "
+      :style="{
+        backgroundColor: localContent.backgroundColor
+      }"
     >
-
-<NuxtLink
-  :to="localContent.url"
-
-  :target="
-    localContent.openInNewWindow
-      ? '_blank'
-      : undefined
-  "
-
-  :class="linkClass"
-
-  :style="
-    localContent.variant === 'button'
-      ? buttonStyle
-      : {
-          color:
-            localContent.color
-        }
-  "
->
-
-
+    <!-- Title and Description -->
+    <div
+      v-if="
+        localContent.title ||
+        localContent.description
+      "
+      class="mb-4"
+      :class="wrapperClass"
+    >
+    <!-- Title -->
+    <h2
+      v-if="localContent.title"
+      class="
+        text-3xl
+       font-bold
+       mb-2
+     "
+      :style="{
+        color:
+          localContent.titleColor
+      }"
+    >
+      {{ localContent.title }}
+    </h2>
+    <!-- Description -->
+    <p
+      v-if="localContent.description"
+      :style="{
+        color:
+          localContent.descriptionColor
+      }"
+    >
+      {{ localContent.description }}
+    </p>
+  </div>
+  <!-- Link -->
+  <NuxtLink
+   :to="localContent.url"
+    :target="
+      localContent.openInNewWindow
+        ? '_blank'
+        : undefined
+    "
+    :class="linkClass"
+    :style="
+      localContent.variant === 'button'
+        ? buttonStyle
+        : {
+            color: localContent.color
+          }
+    "
+  >
+        <!-- Icon -->
         <v-icon
           v-if="localContent.icon"
           size="small"
@@ -348,7 +359,16 @@ function cancelEdit() {
         rounded-lg
       "
     >
+      <v-text-field
+       v-model="localContent.title"
+       label="Cím"
+      />
 
+      <v-textarea
+       v-model= "localContent.description"
+        label="Leírás"
+        rows="3"
+      />
       <v-text-field
         v-model="localContent.text"
         label="Link szöveg"
@@ -381,31 +401,64 @@ function cancelEdit() {
         "
         label="Új lapon nyíljon"
       />
-
+      <label>
+        Link/Gomb szín
+      </label>
       <input
         type="color"
         v-model="
           localContent.color
         "
       />
+      <label>
+        Háttérszín
+      </label>
+      <input
+        type="color"
+        v-model="localContent.backgroundColor"
+      />
+      <label>
+        Cím színe
+      </label>
+      <input
+        type="color"
+        v-model="localContent.titleColor"
+      />
 
-<div class="mt-3 flex gap-3">
+      <label>
+        Leírás színe
+      </label>
+      <input
+        type="color"
+        v-model="localContent.descriptionColor"
+      />
 
-  <v-btn
-    color="success"
-    @click="saveContent"
-  >
-    Mentés
-  </v-btn>
+      <v-select
+        v-model="localContent.variant"
+        :items="[
+          'link',
+          'button'
+        ]"
+        label="Megjelenés"
+      />
 
-  <v-btn
-    variant="outlined"
-    @click="cancelEdit"
-  >
-    Mégse
-  </v-btn>
+      <div class="mt-3 flex gap-3">
 
-</div>
+        <v-btn
+          color="success"
+          @click="saveContent"
+        >
+        Mentés
+      </v-btn>
+
+      <v-btn
+        variant="outlined"
+        @click="cancelEdit"
+      >
+        Mégse
+      </v-btn>
+
+      </div>
 
     </div>
 

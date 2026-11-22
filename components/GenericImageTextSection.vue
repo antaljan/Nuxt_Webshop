@@ -58,7 +58,24 @@
       <div v-if="localContent.ctaText && localContent.ctaLink" class="mt-6">
         <NuxtLink
           :to="localContent.ctaLink"
-          class="inline-block px-6 py-3 rounded-lg font-medium transition bg-primary text-white hover:bg-primary/90"
+          class="
+            inline-block
+            px-6
+            py-3
+            rounded-lg
+            font-medium
+            transition-all
+            duration-200
+            text-white
+          "
+          :style="{
+            backgroundColor:
+              hovering
+                ? localContent.ctaHoverColor
+                : localContent.ctaColor
+          }"
+          @mouseover="hovering = true"
+          @mouseleave="hovering = false"
         >
           {{ localContent.ctaText }}
         </NuxtLink>
@@ -76,62 +93,32 @@
 
       <!-- TEXT EDITOR -->
       <div v-if="isAdmin && editTextMode" class="mt-4">
-
-        <!-- TOOLBAR -->
-        <div class="flex flex-wrap gap-2 mb-4 items-center bg-gray-50 p-2 rounded-lg border">
-
-          <v-btn icon size="small" variant="text"
-            @click="editor?.chain().focus().toggleBold().run()"
-            :color="editor?.isActive('bold') ? 'primary' : ''">
-            <v-icon>mdi-format-bold</v-icon>
+        <RichTextEditor
+          v-model="localContent.html"
+          minHeight="300px"
+        />
+        <div
+          class="
+            flex
+            gap-3
+            mt-4
+            flex-wrap
+          "
+        >
+          <v-btn
+            class="admin-success"
+            @click="saveText"
+          >
+            Mentés
           </v-btn>
-
-          <v-btn icon size="small" variant="text"
-            @click="editor?.chain().focus().toggleItalic().run()"
-            :color="editor?.isActive('italic') ? 'primary' : ''">
-            <v-icon>mdi-format-italic</v-icon>
+          <v-btn
+            class="admin-secondary"
+            variant="outlined"
+            @click="cancelText"
+          >
+            Mégse
           </v-btn>
-
-          <v-btn icon size="small" variant="text" @click="editor?.chain().focus().undo().run()">
-            <v-icon>mdi-undo</v-icon>
-          </v-btn>
-
-          <v-btn icon size="small" variant="text" @click="editor?.chain().focus().redo().run()">
-            <v-icon>mdi-redo</v-icon>
-          </v-btn>
-
-          <v-select class="w-32" density="compact" hide-details
-            :items="fontSizes" label="Méret"
-            prepend-inner-icon="mdi-format-size"
-            @update:modelValue="size => editor?.chain().focus().setFontSize(size).run()" />
-
-          <v-select class="w-40" density="compact" hide-details
-            :items="fontFamilies" label="Betűtípus"
-            prepend-inner-icon="mdi-format-font"
-            @update:modelValue="family => editor?.chain().focus().setFontFamily(family).run()" />
-
-          <div class="relative flex items-center">
-            <v-btn icon size="small" variant="text">
-              <v-icon>mdi-format-color-text</v-icon>
-            </v-btn>
-            <input type="color"
-              class="absolute left-0 top-0 w-8 h-8 opacity-0 cursor-pointer"
-              @input="e => editor?.chain().focus().setColor((e.target as HTMLInputElement).value).run()" />
-          </div>
-
         </div>
-
-        <!-- EDITOR CONTENT -->
-        <div class="editor-wrapper border rounded-lg p-3 bg-white min-h-[300px]">
-          <EditorContent v-if="editor" :editor="editor" />
-        </div>
-
-        <!-- TEXT EDITOR ACTIONS -->
-        <div class="flex gap-3 mt-4 flex-wrap">
-          <v-btn class="admin-success" @click="saveText">Mentés</v-btn>
-          <v-btn class="admin-secondary" variant="outlined" @click="cancelText">Mégse</v-btn>
-        </div>
-
       </div>
 
       <!-- DESIGN EDITOR -->
@@ -250,6 +237,60 @@
             />
           </div>
 
+          <!-- CTA COLOR -->
+          <div
+            class="
+              flex
+              flex-col
+              gap-2
+            "
+          >
+            <label
+              class="
+                text-xs
+                text-gray-600
+                font-medium
+              "
+            >
+              CTA szín
+            </label>
+            <input
+              type="color"
+              v-model="
+                localContent.ctaColor
+              "
+              class="
+                w-12
+                h-10
+                border
+                rounded
+                cursor-pointer
+              "
+            />
+            <label
+              class="
+                  text-xs
+                  text-gray-600
+                  font-medium
+                "
+              >
+                CTA hover szín
+              </label>
+              <input
+                type="color"
+                v-model="
+                  localContent.ctaHoverColor
+                "
+                class="
+                  w-12
+                  h-10
+                  border
+                  rounded
+                  cursor-pointer
+                "
+              />
+          </div>
+          
           <!-- INFO -->
           <p class="text-xs text-gray-500">
             A CTA gomb csak akkor jelenik meg, ha mindkét mező ki van töltve.
@@ -296,19 +337,15 @@
 </section>
 </template>
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, watch, } from 'vue'
 import DOMPurify from 'dompurify'
 import { useI18n } from 'vue-i18n'
 import { useAuth } from '@/composables/useAuth'
 import { useRuntimeConfig } from '#app'
 
-import { Editor, EditorContent } from '@tiptap/vue-3'
-import StarterKit from '@tiptap/starter-kit'
-import { TextStyle } from '@tiptap/extension-text-style'
-import { Color } from '@tiptap/extension-color'
-import { FontFamily } from '@tiptap/extension-font-family'
-import { FontSize } from '~/components/editor/extensions/FontSize'
 import { useBrand } from '@/composables/useBrand'
+
+import RichTextEditor from '@/components/editor/RichTextEditor.vue'
 
 const { t, locale } = useI18n()
 const { user } = useAuth()
@@ -316,6 +353,9 @@ const isAdmin = computed(() => user.value?.role === 'admin')
 
 const config = useRuntimeConfig()
 const backendBase = config.public.backendBase
+const { settings: brandSettings } = useBrand()
+const hovering = ref(false)
+
 
 const props = defineProps<{
   content: any,
@@ -338,7 +378,9 @@ const localContent = ref<any>({
   wave: null,
   waveColor: '#ffffff',
   reverse: false,
-  imageSize: 400
+  imageSize: 400,
+  ctaColor: '#b87d8e',
+  ctaHoverColor: '#9a6373'
 })
 
 const originalTextContent = ref<{ html: string } | null>(null)
@@ -393,37 +435,19 @@ watch(
         reverse: val.reverse || false,
         imageSize: val.imageSize || 400,
         ctaText: val.ctaText || '',
-        ctaLink: val.ctaLink || ''
+        ctaLink: val.ctaLink || '',
+        ctaColor:
+          val.ctaColor ||
+          brandSettings.value?.primaryColor ||
+          '#b87d8e',
+        ctaHoverColor:
+            val.ctaHoverColor ||
+            '#9a6373'
       }
     }
   },
   { immediate: true }
 )
-
-/* -------------------------------------------------------------
-   TIPTAP EDITOR
-------------------------------------------------------------- */
-const editor = ref<Editor | null>(null)
-const fontSizes = ['12px', '14px', '16px', '18px', '20px', '24px', '32px']
-const fontFamilies = [
-  'Inter', 'Lato', 'Montserrat', 'Playfair Display', 'Merriweather',
-  'Source Sans Pro', 'Source Serif Pro', 'Lora', 'Cormorant Garamond',
-  'Libre Baskerville', 'Roboto', 'Georgia', 'Times New Roman', 'Arial', 'Verdana'
-]
-
-onMounted(() => {
-  editor.value = new Editor({
-    content: localContent.value.html || '',
-    extensions: [StarterKit, TextStyle, Color, FontFamily, FontSize],
-    onUpdate: ({ editor: e }) => {
-      localContent.value.html = e.getHTML()
-    }
-  })
-})
-
-onBeforeUnmount(() => {
-  editor.value?.destroy()
-})
 
 /* -------------------------------------------------------------
    IMAGE URL
@@ -472,8 +496,8 @@ const saveText = async () => {
 
 const cancelText = () => {
   if (originalTextContent.value) {
-    localContent.value.html = originalTextContent.value.html
-    editor.value?.commands.setContent(localContent.value.html)
+    localContent.value.html =
+      originalTextContent.value.html
   }
   editTextMode.value = false
 }
@@ -489,7 +513,8 @@ const openDesignEditor = () => {
     reverse: localContent.value.reverse,
     imageSize: localContent.value.imageSize,
     ctaText: localContent.value.ctaText,
-    ctaLink: localContent.value.ctaLink
+    ctaLink: localContent.value.ctaLink,
+    ctaColor: localContent.value.ctaColor
   }
   editDesignMode.value = true
 }
@@ -507,7 +532,9 @@ const saveDesign = async () => {
         reverse: localContent.value.reverse,
         imageSize: localContent.value.imageSize,
         ctaText: localContent.value.ctaText,
-        ctaLink: localContent.value.ctaLink
+        ctaLink: localContent.value.ctaLink,
+        ctaColor:localContent.ctaColor,
+        ctaHoverColor:localContent.value.ctaHoverColor
       }
     })
     editDesignMode.value = false
@@ -526,6 +553,8 @@ const cancelDesign = () => {
     localContent.value.imageSize = originalDesignContent.value.imageSize
     localContent.value.ctaText = originalDesignContent.value.ctaText
     localContent.value.ctaLink = originalDesignContent.value.ctaLink
+    localContent.value.ctaColor = originalDesignContent.value.ctaColor
+    localContent.value.ctaHoverColor = originalDesignContent.value.ctaHoverColor
   }
   editDesignMode.value = false
 }
@@ -579,7 +608,6 @@ const onImageSelected = async (event: Event) => {
 /* -------------------------------------------------------------
    BRAND ARCULAT
 ------------------------------------------------------------- */
-const { settings: brandSettings } = useBrand()
 
 const brandPaletteColors = computed(() => {
   const bg = brandSettings.value?.backgroundColor || '#f7f5f8'
@@ -596,9 +624,3 @@ const brandTextAndFont = computed(() => {
 })
 </script>
 
-<style scoped>
-.editor-wrapper :deep(.ProseMirror) {
-  min-height: 250px;
-  outline: none;
-}
-</style>

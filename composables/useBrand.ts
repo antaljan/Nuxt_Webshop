@@ -1,10 +1,19 @@
 import { ref } from 'vue';
 
+type BrandSettings = {
+  primaryColor: string
+  backgroundColor: string
+  textColor: string
+  accentColor: string
+  fontFamily: string
+  titleFontFamily: string
+  maintenanceMode: boolean
+}
+
 export function useBrand() {
-  const settings = ref(null);
+  const settings = ref<BrandSettings | null>( null );
   const loading = ref(false);
   const error = ref(null);
-
   // GET brand settings
   async function loadBrand() {
     loading.value = true;
@@ -19,7 +28,7 @@ export function useBrand() {
   }
 
   // PUT brand settings
-  async function saveBrand(newSettings) {
+  async function saveBrand( newSettings: BrandSettings) {
     loading.value = true;
     try {
       settings.value = await $fetch('/api/admin/brand', {

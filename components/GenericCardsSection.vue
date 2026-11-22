@@ -53,49 +53,46 @@
     >
 
       <v-card
-
         :variant="localContent.variant"
-
         :rounded="
           localContent.rounded
             ? 'lg'
             : 0
         "
-
         :elevation="
           localContent.elevation
         "
-
         class="h-full"
-
         :style="{
-
           backgroundColor:
             localContent.cardColor,
-
           border:
             localContent.showBorder
               ? undefined
               : 'none'
-
         }"
-
       >
 
         <!-- TITLE -->
-
-        <v-card-title
-          v-if="card.title"
-          :style="{
-            color:
+        <v-card-title>
+          <v-icon
+            v-if="card.icon"
+            class="mb-3"
+          >
+            {{ card.icon }}
+          </v-icon>
+          <div
+            v-if="card.title"
+            :style="{
+              color:
               localContent.cardTitleColor
-          }"
-        >
-          {{ card.title }}
+            }"
+          >
+            {{ card.title }}
+          </div>
         </v-card-title>
 
         <!-- SUBTITLE -->
-
         <v-card-subtitle
           v-if="card.subtitle"
         >
@@ -103,31 +100,16 @@
         </v-card-subtitle>
 
         <!-- TEXT -->
-
         <v-card-text
           :style="{
             color:
               localContent.cardTextColor
           }"
         >
-
-          <v-icon
-            v-if="card.icon"
-            class="mb-3"
-          >
-            {{ card.icon }}
-          </v-icon>
-
-          <div>
-
-            {{ card.text }}
-
-          </div>
-
+          <div   class="card-html" v-html="card.text" />
         </v-card-text>
 
         <!-- ACTION -->
-
         <template
           v-if="
             card.buttonText &&
@@ -356,11 +338,22 @@
           label="Alcím"
         />
 
-        <v-textarea
-          v-model="card.text"
-          label="Szöveg"
-          rows="4"
-        />
+        <div class="mb-4">
+          <label
+            class="
+              text-sm
+              font-medium
+              mb-2
+             block
+            "
+          >
+            Szöveg
+          </label>
+          <RichTextEditor
+            v-model="card.text"
+            minHeight="200px"
+          />
+        </div>
 
         <v-text-field
           v-model="card.icon"
@@ -487,6 +480,7 @@ import {
 
 import { useAuth } from '@/composables/useAuth'
 import { useI18n } from 'vue-i18n'
+import RichTextEditor from '@/components/editor/RichTextEditor.vue'
 
 const { locale } = useI18n()
 
@@ -720,3 +714,35 @@ function resetContent() {
 }
 
 </script>
+
+<style scoped>
+
+.card-html :deep(ul) {
+
+  list-style-type: disc;
+
+  padding-left: 1.5rem;
+
+  margin-top: .5rem;
+
+  margin-bottom: .5rem;
+}
+
+.card-html :deep(ol) {
+
+  list-style-type: decimal;
+
+  padding-left: 1.5rem;
+
+  margin-top: .5rem;
+
+  margin-bottom: .5rem;
+}
+
+.card-html :deep(li) {
+
+  margin-bottom: .25rem;
+
+}
+
+</style>

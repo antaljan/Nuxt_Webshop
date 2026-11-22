@@ -20,66 +20,26 @@
 
       <!-- TEXT EDITOR (Tiptap) -->
       <div v-if="isAdmin && editTextMode" class="mt-4">
-
-        <!-- TOOLBAR -->
-        <div class="flex flex-wrap gap-2 mb-4 items-center bg-gray-50 p-2 rounded-lg border">
-
-          <v-btn icon size="small" variant="text" @click="editor?.chain().focus().toggleBold().run()" :color="editor?.isActive('bold') ? 'primary' : ''">
-            <v-icon>mdi-format-bold</v-icon>
-          </v-btn>
-
-          <v-btn icon size="small" variant="text" @click="editor?.chain().focus().toggleItalic().run()" :color="editor?.isActive('italic') ? 'primary' : ''">
-            <v-icon>mdi-format-italic</v-icon>
-          </v-btn>
-
-          <v-btn icon size="small" variant="text" @click="editor?.chain().focus().undo().run()">
-            <v-icon>mdi-undo</v-icon>
-          </v-btn>
-
-          <v-btn icon size="small" variant="text" @click="editor?.chain().focus().redo().run()">
-            <v-icon>mdi-redo</v-icon>
-          </v-btn>
-
-          <v-btn icon size="small" variant="text" @click="editor?.chain().focus().setTextAlign('left').run()" :color="editor?.isActive({ textAlign: 'left' }) ? 'primary' : ''">
-            <v-icon>mdi-format-align-left</v-icon>
-          </v-btn>
-
-          <v-btn icon size="small" variant="text" @click="editor?.chain().focus().setTextAlign('center').run()" :color="editor?.isActive({ textAlign: 'center' }) ? 'primary' : ''">
-            <v-icon>mdi-format-align-center</v-icon>
-          </v-btn>
-
-          <v-btn icon size="small" variant="text" @click="editor?.chain().focus().setTextAlign('right').run()" :color="editor?.isActive({ textAlign: 'right' }) ? 'primary' : ''">
-            <v-icon>mdi-format-align-right</v-icon>
-          </v-btn>
-
-          <v-select class="w-32" density="compact" hide-details :items="fontSizes" label="Méret" prepend-inner-icon="mdi-format-size" @update:modelValue="size => editor?.chain().focus().setFontSize(size).run()" />
-          <v-select class="w-40" density="compact" hide-details :items="fontFamilies" label="Betűtípus" prepend-inner-icon="mdi-format-font" @update:modelValue="family => editor?.chain().focus().setFontFamily(family).run()" />
-
-          <div class="relative flex items-center">
-            <v-btn icon size="small" variant="text">
-              <v-icon>mdi-format-color-text</v-icon>
-            </v-btn>
-            <input type="color" class="absolute left-0 top-0 w-8 h-8 opacity-0 cursor-pointer" @input="e => editor?.chain().focus().setColor((e.target as HTMLInputElement).value).run()" />
-          </div>
-        </div>
-
-        <!-- EDITOR CONTENT -->
-        <div 
-          class="editor-wrapper border rounded-lg p-3 bg-white min-h-[300px]"
-          :style="{ 
-            color: brandTextAndFont?.textColor || '#2d3142', 
-            fontFamily: brandTextAndFont?.fontFamily || 'Inter' 
-          }"
-        >
-          <EditorContent v-if="editor" :editor="editor" />
-        </div>
-
-        <!-- TEXT EDITOR ACTIONS -->
+        <RichTextEditor
+          v-model="localContent.html"
+          minHeight="300px"
+        />
         <div class="flex gap-3 mt-4 flex-wrap">
-          <v-btn class="admin-success" @click="saveText">Mentés</v-btn>
-          <v-btn class="admin-secondary" variant="outlined" @click="cancelText">Mégse</v-btn>
+          <v-btn
+            class="admin-success"
+            @click="saveText"
+          >
+            Mentés
+          </v-btn>
+          <v-btn
+            class="admin-secondary"
+            variant="outlined"
+            @click="cancelText"
+          >
+            Mégse
+          </v-btn>
         </div>
-      </div>
+        </div>
 
       <!-- ADMIN BUTTONS -->
       <div v-if="isAdmin && !editTextMode && !editDesignMode" class="mt-6 flex flex-wrap gap-3">
@@ -184,19 +144,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 import DOMPurify from 'isomorphic-dompurify'
 import { useI18n } from 'vue-i18n'
 import { useAuth } from '~/composables/useAuth'
 import { useContent } from '~/composables/useContent'
 import { useBrand } from '@/composables/useBrand'
 
-import { Editor, EditorContent } from '@tiptap/vue-3'
-import StarterKit from '@tiptap/starter-kit'
-import { TextStyle } from '@tiptap/extension-text-style'
-import { Color } from '@tiptap/extension-color'
-import { FontFamily } from '@tiptap/extension-font-family'
-import { FontSize } from '~/components/editor/extensions/FontSize'
+import RichTextEditor from '@/components/editor/RichTextEditor.vue'
 
 /* -------------------------------------------------------------
    ALAP ADATOK
@@ -235,18 +190,6 @@ const localContent = ref<any>({
 ------------------------------------------------------------- */
 const originalTextContent = ref(null)
 const originalDesignContent = ref(null)
-
-/* -------------------------------------------------------------
-   TIPTAP EDITOR
-------------------------------------------------------------- */
-const editor = ref<Editor | null>(null)
-
-const fontSizes = ['12px', '14px', '16px', '18px', '20px', '24px', '32px']
-const fontFamilies = [
-  'Inter', 'Lato', 'Montserrat', 'Playfair Display', 'Merriweather',
-  'Source Sans Pro', 'Source Serif Pro', 'Lora', 'Cormorant Garamond',
-  'Libre Baskerville', 'Roboto', 'Georgia', 'Times New Roman', 'Arial', 'Verdana'
-]
 
 /* -------------------------------------------------------------
    HULLÁMOK
@@ -310,29 +253,6 @@ watch(activeContent, (newVal) => {
 }, { immediate: true })
 
 /* -------------------------------------------------------------
-   TIPTAP INIT
-------------------------------------------------------------- */
-onMounted(() => {
-  editor.value = new Editor({
-    content: localContent.value.html,
-    extensions: [
-      StarterKit,
-      TextStyle,
-      Color,
-      FontFamily,
-      FontSize
-    ],
-    onUpdate: ({ editor: e }) => {
-      localContent.value.html = e.getHTML()
-    }
-  })
-})
-
-onBeforeUnmount(() => {
-  editor.value?.destroy()
-})
-
-/* -------------------------------------------------------------
    SZÖVEG EDITOR MEGNYITÁSA / MENTÉSE / MÉGSE
 ------------------------------------------------------------- */
 const openTextEditor = () => {
@@ -351,9 +271,11 @@ const saveText = async () => {
 }
 
 const cancelText = () => {
-  if (originalTextContent.value) {
-    localContent.value.html = originalTextContent.value.html
-    editor.value?.commands.setContent(localContent.value.html)
+  if (
+    originalTextContent.value
+  ) {
+    localContent.value.html =
+      originalTextContent.value.html
   }
   editTextMode.value = false
 }

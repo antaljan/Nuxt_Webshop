@@ -384,7 +384,17 @@ const localContent = ref<any>({
 })
 
 const originalTextContent = ref<{ html: string } | null>(null)
-const originalDesignContent = ref<{ backgroundColor: string, wave: any, waveColor: string } | null>(null)
+const originalDesignContent = ref<{
+  backgroundColor: string
+  wave: any
+  waveColor: string
+  reverse: boolean
+  imageSize: number
+  ctaText: string
+  ctaLink: string
+  ctaColor: string
+  ctaHoverColor: string
+} | null>(null)
 
 /* -------------------------------------------------------------
    HULLÁMOK
@@ -514,7 +524,8 @@ const openDesignEditor = () => {
     imageSize: localContent.value.imageSize,
     ctaText: localContent.value.ctaText,
     ctaLink: localContent.value.ctaLink,
-    ctaColor: localContent.value.ctaColor
+    ctaColor: localContent.value.ctaColor,
+    ctaHoverColor: localContent.value.ctaHoverColor
   }
   editDesignMode.value = true
 }
@@ -523,19 +534,10 @@ const saveDesign = async () => {
   try {
     await $fetch(`/api/content/${props.sectionKey}/${locale.value}`, {
       method: 'PUT',
-      body: {
-        ...props.content,
-        backgroundColor: localContent.value.backgroundColor,
-        wave: localContent.value.wave,
-        waveColor: localContent.value.waveColor,
-        image: localContent.value.image,
-        reverse: localContent.value.reverse,
-        imageSize: localContent.value.imageSize,
-        ctaText: localContent.value.ctaText,
-        ctaLink: localContent.value.ctaLink,
-        ctaColor:localContent.ctaColor,
-        ctaHoverColor:localContent.value.ctaHoverColor
-      }
+        body: {
+          ...props.content,
+          ...localContent.value
+        }
     })
     editDesignMode.value = false
   } catch (err) {
